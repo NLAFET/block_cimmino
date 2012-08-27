@@ -1,0 +1,1 @@
+void mc77id_(int *, double *);
