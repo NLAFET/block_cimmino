@@ -13,10 +13,11 @@ BOOST_AUTO_TEST_CASE(my_test)
 {
     BOOST_REQUIRE(true);
     
-    mpi::environment env();
-    mpi::communicator world;
     
-    cout << "Hey, I'm process " << world.rank() << " of " << world.size() << endl;
+    mpi::environment env();
+//     mpi::communicator world;
+    
+//     cout << "Hey, I'm process " << world.rank() << " of " << world.size() << endl;
     
     abcd obj;
     FILE *f;
