@@ -9,11 +9,11 @@ extern "C"
 }
 
 
-int abcd::preprocess()
+void abcd::preprocess()
 {
     int ret = 0;
 
-    if (icntl[9] > 0) {
+    if(icntl[9] > 0) {
         drow = VectorXd(m);
         dcol = VectorXd(n);
 
@@ -21,34 +21,39 @@ int abcd::preprocess()
         dcol.setOnes();
     }
 
-
-    if (icntl[9] == 2) {
+    if(icntl[9] == 2) {
         ///TODO:Use logging
         std::cout << "[-] Scaling with Infinity" << std::endl;
 
-        ret = abcd::scal_matrix(0);
+        abcd::scal_matrix(0);
 
-        if (ret != 0)
-            return -10;
+        /* TODO: Check that this is correct */
+        SparseMatrix<double> rmtx(m, m);
+
+        rmtx.reserve(VectorXi::Constant(m, 1));
+        for(unsigned k = 0; k < m; k++) {
+            drow(k) = sqrt(mtx.row(k).squaredNorm());
+            rmtx.insert(k, k) = 1 / drow[k];
+        }
+        mtx = rmtx * mtx;
+        drow.setOnes();
+        dcol.setOnes();
+        /* END Checking */
     }
 
     abcd::comp_norm();
 
 
-    if (icntl[9] >= 1) {
+    if(icntl[9] >= 1) {
         std::cout << "[-] Scaling with Norm 1 & 2" << std::endl;
 
-        ret = abcd::scal_matrix(1);
-        ret = abcd::scal_matrix(2);
-
-        if (ret != 0)
-            return -11;
+        abcd::scal_matrix(1);
+        abcd::scal_matrix(2);
     }
 
-    return 0;
 }
 
-int abcd::scal_matrix(int norm)
+void abcd::scal_matrix(int norm)
 {
     int ldw, liw, nout, job;
     int *iw;
@@ -64,12 +69,12 @@ int abcd::scal_matrix(int norm)
 
     mc77id_(mc77_icntl, mc77_dcntl);
 
-    if (mc77_icntl[4] == 0)
+    if(mc77_icntl[4] == 0)
         ldw = nz;
     else
         ldw = 0;
 
-    if (mc77_icntl[5] == 0) {
+    if(mc77_icntl[5] == 0) {
         liw = n * 2;
         ldw = ldw + 4 * n;
     } else {
@@ -83,59 +88,57 @@ int abcd::scal_matrix(int norm)
     iw = new int[liw];
     dw = new double[ldw];
 
-
     // Increment indices to call fortran code
-    for (unsigned k = 0; k < n + 1 ; k++) {
+    for(unsigned k = 0; k < n + 1 ; k++) {
         mtx.outerIndexPtr()[k]++;
         mtx.innerIndexPtr()[k]++;
     }
-    for (unsigned k = n + 1; k < nz ; k++) {
+    for(unsigned k = n + 1; k < nz ; k++) {
         mtx.innerIndexPtr()[k]++;
     }
-    if (norm < 0) return -12;
+    if(norm < 0) throw - 12;
 
     mc77_icntl[9] = 0;
-    if (norm == 2) mc77_icntl[6] = 20;
+    if(norm == 2) mc77_icntl[6] = 20;
 
     job = norm;
     mc77ad_(&job, &m, &n, &nz, mtx.outerIndexPtr(), mtx.innerIndexPtr(), mtx.valuePtr(),
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
-    if (norm == 0)
+    if(mc77_info[0] < 0) throw - 100 + mc77_info;
+
+    if(norm == 0)
         cout << "Distance from 1 (norm inf) : " << mc77_rinfo[0] << endl;
     else
         cout << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0] << endl;
 
     // put them back to 0-based for C/C++
-    for (unsigned k = 0; k < n + 1 ; k++) {
+    for(unsigned k = 0; k < n + 1 ; k++) {
         mtx.outerIndexPtr()[k]--;
         mtx.innerIndexPtr()[k]--;
     }
-    for (unsigned k = n + 1; k < nz ; k++) {
+    for(unsigned k = n + 1; k < nz ; k++) {
         mtx.innerIndexPtr()[k]--;
     }
 
     // Scale the matrix
-    for (unsigned k = 0; k < m; k++){
-        rmtx.insert(k, k) = 1/dw[k];
+    for(unsigned k = 0; k < m; k++) {
+        cmtx.insert(k, k) = 1 / dw[k];
         // save the scaling meanwhile
-        drow(k) *= 1 / dw[k];
+        dcol(k) *= 1 / dw[k];
     }
-    
-    for (unsigned k = 0; k < n; k++){
-        cmtx.insert(k, k) = 1/dw[k+m];
+
+    for(unsigned k = 0; k < n; k++) {
+        rmtx.insert(k, k) = 1 / dw[k + m];
         // save the scaling meanwhile
-        dcol(k) *= 1 / dw[k + m];
+        drow(k) *= 1 / dw[k + m];
     }
-    
+
     mtx = rmtx * mtx * cmtx;
 
     delete iw, dw;
-
-    return 0;
 }
 
-int abcd::comp_norm()
+void abcd::comp_norm()
 {
-    return 0;
 }
