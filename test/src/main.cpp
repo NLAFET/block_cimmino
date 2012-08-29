@@ -1,52 +1,73 @@
 #include <iostream>
 #include <string>
-
 #include <cstdio>
 
 #include "abcd.h"
-#include "mpi.h"
-
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    abcd obj;
-    FILE *f;
-    MM_typecode mat_code;
-    
-    MPI_Init();
+    mpi::environment env;
+    mpi::communicator world;
 
-    // read the file and its content
-//     f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
-    f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
-    mm_read_banner(f, &mat_code);
-    mm_read_mtx_crd_size(f, &obj.m, &obj.n, &obj.nz);
+    // This should be done only by the master
+    if(world.rank() == 0) {
+        abcd obj;
+        FILE *f;
+        MM_typecode mat_code;
 
-    if (mm_is_symmetric(mat_code))
-        obj.sym = true;
-    else
-        obj.sym = false;
+        // read the file and its content
+        f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
+//         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
+//         f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
+//         f = fopen("/home/knuthy/stash/Huhs_DNA_CC.mtx", "r");
+//         f = fopen("/home/knuthy/stash/1970", "r");
+        mm_read_banner(f, &mat_code);
+        mm_read_mtx_crd_size(f, (int *)&obj.m, (int *)&obj.n, (int *)&obj.nz);
 
-    // allocate the arrays
-    obj.irn = new int[obj.nz];
-    obj.jcn = new int[obj.nz];
-    obj.val = new double[obj.nz];
+        if(mm_is_symmetric(mat_code))
+            obj.sym = true;
+        else
+            obj.sym = false;
 
-    obj.start_index = 1;
+        // allocate the arrays
+        obj.irn = new int[obj.nz];
+        obj.jcn = new int[obj.nz];
+        obj.val = new double[obj.nz];
 
-    mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val,
-                         mat_code);
+        obj.start_index = 1;
+        obj.icntl[9] = 2;
 
-    cout << "Matrix information : ";
-    cout << "m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
+        obj.nbparts = 5;
+        obj.partitioning_type = 2;
 
-    fclose(f);
+        obj.parallel_cg = ceil(world.size() * 0.3);
 
-    obj.icntl[9] = 2;
-    obj.bc(-1);
+        mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val,
+                             mat_code);
 
-    obj.bc(1);
+        cout << "Matrix information : ";
+        cout << "m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
+
+        fclose(f);
+
+        try {
+            obj.bc(-1);
+            obj.bc(1);
+            obj.bc(2);
+        } catch(int e) {
+            cout << "Error code : " << e << endl;
+        }
+    } else {
+        abcd obj;
+
+        obj.bc(-1);
+        obj.bc(1);
+        obj.bc(2);
+    }
+    world.barrier();
+
 
     return 0;
 }
