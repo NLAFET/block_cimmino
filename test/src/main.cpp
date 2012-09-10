@@ -18,7 +18,9 @@ int main(int argc, char *argv[])
         MM_typecode mat_code;
 
         // read the file and its content
-        f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
+//         f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
+//         f = fopen("/home/knuthy/stash/lhr34c/lhr34c.mtx", "r");
+        f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
 //         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
 //         f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
 //         f = fopen("/home/knuthy/stash/Huhs_DNA_CC.mtx", "r");
@@ -39,10 +41,10 @@ int main(int argc, char *argv[])
         obj.start_index = 1;
         obj.icntl[9] = 2;
 
-        obj.nbparts = 5;
+        obj.nbparts = 4;
         obj.partitioning_type = 2;
 
-        obj.parallel_cg = ceil(world.size() * 0.3);
+        obj.parallel_cg = obj.nbparts < world.size() ? obj.nbparts : world.size();
 
         mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val,
                              mat_code);
@@ -62,9 +64,13 @@ int main(int argc, char *argv[])
     } else {
         abcd obj;
 
-        obj.bc(-1);
-        obj.bc(1);
-        obj.bc(2);
+        try {
+            obj.bc(-1);
+            obj.bc(1);
+            obj.bc(2);
+        } catch(int e) {
+            cout << "Error code : " << e << endl;
+        }
     }
     world.barrier();
 

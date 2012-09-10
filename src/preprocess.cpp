@@ -11,49 +11,49 @@ extern "C"
 
 void abcd::preprocess()
 {
-    int ret = 0;
+    return;
 
     if(icntl[9] > 0) {
-        drow = VectorXd(m);
-        dcol = VectorXd(n);
+        drow_ = VectorXd(m);
+        dcol_ = VectorXd(n);
 
-        drow.setOnes();
-        dcol.setOnes();
+        drow_.setOnes();
+        dcol_.setOnes();
     }
 
     if(icntl[9] == 2) {
         ///TODO:Use logging
         std::cout << "[-] Scaling with Infinity" << std::endl;
 
-        abcd::scal_matrix(0);
+        abcd::scaleMatrix(0);
 
         /* TODO: Check that this is correct */
         SparseMatrix<double> rmtx(m, m);
 
         rmtx.reserve(VectorXi::Constant(m, 1));
         for(unsigned k = 0; k < m; k++) {
-            drow(k) = sqrt(mtx.row(k).squaredNorm());
-            rmtx.insert(k, k) = 1 / drow[k];
+            drow_(k) = sqrt(mtx.row(k).squaredNorm());
+            rmtx.insert(k, k) = 1 / drow_[k];
         }
         mtx = rmtx * mtx;
-        drow.setOnes();
-        dcol.setOnes();
+        drow_.setOnes();
+        dcol_.setOnes();
         /* END Checking */
     }
 
-    abcd::comp_norm();
+    abcd::computeNorms();
 
 
     if(icntl[9] >= 1) {
         std::cout << "[-] Scaling with Norm 1 & 2" << std::endl;
 
-        abcd::scal_matrix(1);
-        abcd::scal_matrix(2);
+        abcd::scaleMatrix(1);
+        abcd::scaleMatrix(2);
     }
 
 }
 
-void abcd::scal_matrix(int norm)
+void abcd::scaleMatrix(int norm)
 {
     int ldw, liw, nout, job;
     int *iw;
@@ -125,13 +125,13 @@ void abcd::scal_matrix(int norm)
     for(unsigned k = 0; k < m; k++) {
         cmtx.insert(k, k) = 1 / dw[k];
         // save the scaling meanwhile
-        dcol(k) *= 1 / dw[k];
+        dcol_(k) *= 1 / dw[k];
     }
 
     for(unsigned k = 0; k < n; k++) {
         rmtx.insert(k, k) = 1 / dw[k + m];
         // save the scaling meanwhile
-        drow(k) *= 1 / dw[k + m];
+        drow_(k) *= 1 / dw[k + m];
     }
 
     mtx = rmtx * mtx * cmtx;
@@ -139,6 +139,6 @@ void abcd::scal_matrix(int norm)
     delete iw, dw;
 }
 
-void abcd::comp_norm()
+void abcd::computeNorms()
 {
 }
