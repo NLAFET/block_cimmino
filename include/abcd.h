@@ -20,7 +20,6 @@
 #include <Eigen/Sparse>
 
 #include <boost/mpi.hpp>
-#include <boost/range/irange.hpp>
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
