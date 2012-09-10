@@ -10,7 +10,6 @@ project(abcd CXX C Fortran)
 find_package (Boost COMPONENTS mpi serialization unit_test_framework REQUIRED)
 
 # Dependencies
-set(EIGEN_DIR /usr/local/include/eigen3)
 set(MUMPS_DIR /opt/MUMPS_4.10.0/)
 
 # the library
@@ -18,7 +17,7 @@ set(CMAKE_BUILD_TYPE "Debug")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
 
 
-include_directories(include ${Boost_INCLUDE_DIRS} ${EIGEN_DIR} ${MUMPS_DIR}/include/)
+include_directories(include ${Boost_INCLUDE_DIRS} ${MUMPS_DIR}/include/)
 
 file(
 	GLOB_RECURSE
