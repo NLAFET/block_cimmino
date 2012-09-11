@@ -45,6 +45,7 @@ private:
     void initialize();
 
     // preprocess stuffs
+    void preprocess();
     /**
      * Scales the matrix
      * @norm the norm at which the matrix is scaled
@@ -71,6 +72,8 @@ private:
 
     // Cimmino
     void initializeCimmino();
+    void distributeRhs();
+    void bcg();
     
     // MUMPS
     int m_n;
@@ -84,6 +87,7 @@ private:
     void factorizeAugmentedSystems();
     std::vector<int> my_slaves;
     int my_master;
+    void sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
     
     // MUMPS setters and getters
     inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
@@ -101,13 +105,23 @@ private:
     VectorXd drow_;
     VectorXd dcol_;
 
+    /***************************************************************************
+     * The matrix object itself
+    ***************************************************************************/
+    Eigen::SparseMatrix<double, RowMajor> mtx;
+    std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;
+    Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> b;
+    Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xk;
+
 public:
     /***************************************************************************
      * Matrix information
      */
-    unsigned m;
-    unsigned n;
-    unsigned nz;
+    int m;
+    int n;
+    int nz;
+    int nrhs;
+    int m_l, nz_l;
 
     /***************************************************************************
      * Temporary data about the matrix
@@ -115,18 +129,13 @@ public:
     int *irn;
     int *jcn;
     double *val;
+    double *rhs;
 
     /***************************************************************************
      * Matrix properties
     ***************************************************************************/
     bool sym; /// Symmetry
     int start_index; /// To define wether it's Fortran-Style (1) or C-Style (0)
-
-    /***************************************************************************
-     * The matrix object itself
-    ***************************************************************************/
-    Eigen::SparseMatrix<double, RowMajor> mtx;
-    std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;
 
     /***************************************************************************
      * Partitioning informations
@@ -144,7 +153,7 @@ public:
     /// A reverse index of columns, contains the original index of each column for each partition
     std::vector<std::vector<int> > columns_index;
     /// A merge of col_index vectors, determines non-null columns in all local partitions
-    std::vector<int> global_column_index;
+    std::vector<std::vector<int> > local_column_index;
     /**
      * Contains the mutual interconnections between partitions
      * The key is the cg-master rank (in inter_comm) and the value is the column indices
@@ -170,7 +179,6 @@ public:
 
 
     int bc(int);
-    void preprocess();
     abcd();
     ~abcd();
 
@@ -178,5 +186,8 @@ public:
 
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
+int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);
+int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);
+int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);
 
 #endif // ABCD_HXX
