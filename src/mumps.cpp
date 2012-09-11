@@ -1,4 +1,5 @@
 #include "abcd.h"
+#include <Eigen/src/Geometry/Translation.h>
 void abcd::initializeMumps()
 {
     initializeMumps(false);
@@ -20,7 +21,7 @@ void abcd::initializeMumps(bool local)
             r.push_back(my_master);
         }
         std::copy(my_slaves.begin(), my_slaves.end(), std::back_inserter(r));
-        
+
         mpi::group grp = world.group().include(r.begin(), r.end());
         intra_comm = mpi::communicator(world, grp);
     }
@@ -233,5 +234,131 @@ void abcd::factorizeAugmentedSystems()
     }
 }
 
+void abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
+{
+    mpi::communicator world;
+    // Build the mumps rhs
+    mumps.rhs = new double[mumps.n];
+    int pos = 0;
+    int b_pos = 0;
+    for(int k = 0; k < parts.size(); k++) {
+        Eigen::MatrixXd r(parts[k].rows(), nrhs);
+        Eigen::MatrixXd compressed_x(parts[k].cols(), nrhs);
+
+        int x_pos = 0;
+        for(int i = 0; i < local_column_index[k].size(); i++) {
+            int ci = local_column_index[k][i];
+            for(int j = 0; j < nrhs; j++) {
+                compressed_x(x_pos, j) = X(ci, j);
+            }
+            x_pos++;
+        }
+
+        r = beta * parts[k] * compressed_x;
+        r = r + alpha * B.block(b_pos, 0, parts[k].rows(), nrhs);
+        b_pos += parts[k].rows();
+
+        for(int i = pos; i < pos + parts[k].cols(); i++) {
+            mumps.rhs[i] = 0;
+        }
+        int j = 0;
+        for(int i = pos + parts[k].cols(); i < pos + parts[k].cols() + parts[k].rows(); i++) {
+            mumps.rhs[i] = r.data()[j++];
+        }
+
+        pos += parts[k].cols() + parts[k].rows();
+
+    }
+    mumps.job = 3;
+    dmumps_c(&mumps);
+    Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, nrhs);
+    Eigen::MatrixXd Delta(X.rows(), X.cols());
+    Delta.setZero();
+
+    int x_pos = 0;
+    for(int k = 0; k < parts.size(); k++) {
+        for(int i = 0; i < local_column_index[k].size(); i++) {
+            int ci = local_column_index[k][i];
+            for(int j = 0; j < nrhs; j++) {
+                Delta(ci, j) = Delta(ci, j) + Sol(x_pos, j) ;
+            }
+            x_pos++;
+        }
+        x_pos += parts[k].rows();
+    }
+    Eigen::MatrixXd Others(X.rows(), X.cols());
+
+
+
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
+        // EVEN -> ODD && ODD -> EVEN
+        if(inter_comm.rank() % 2 == 0) {
+            if(it->first % 2 != 0) {
+                int z = 3;
+                inter_comm.send(it->first, 31, z);
+                inter_comm.recv(it->first, 32, z);
+                cout << world.rank() << " < " << it->first <<  " done " << endl;
+            } else { // EVEN -> EVEN
+                if(it->first > inter_comm.rank()) {
+                    int z = 3;
+                    inter_comm.send(it->first, 33, z);
+                    inter_comm.recv(it->first, 34, z);
+                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                } else {
+                    int z;
+                    inter_comm.recv(it->first, 33, z);
+                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                    inter_comm.send(it->first, 34, z);
+                }
+            }
+        } else {
+            if(it->first % 2 == 0) {
+                int z;
+                inter_comm.recv(it->first, 31, z);
+                cout << world.rank() << " < " << it->first << " done " << endl;
+                inter_comm.send(it->first, 32, z);
+            } else { // ODD -> ODD
+                if(it->first > inter_comm.rank()) {
+                    int z = 3;
+                    inter_comm.send(it->first, 33, z);
+                    inter_comm.recv(it->first, 34, z);
+                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                } else {
+                    int z;
+                    inter_comm.recv(it->first, 33, z);
+                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                    inter_comm.send(it->first, 34, z);
+                }
+            }
+        }
+
+    }
+
+    /*
+    for(int turn = 0; turn < 4; turn++) {
+        int same_to_same = 0;
+        if(turn > 1) same_to_same = 1;
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
+            if((inter_comm.rank() + turn) % 2 == 0) {
+                if((it->first + turn + same_to_same) % 2 == 0) continue;
+                std::vector<double> itc;
+                for(int j = 0; j < nrhs; j++)
+                    for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                        itc.push_back(Delta(*i, j));
+                    }
+                cout << world.rank() << " -> " << it->first << endl;
+                inter_comm.send(it->first, 31, itc);
+                cout << world.rank() << " -> " << it->first << " done" << endl;
+            } else {
+                if((it->first + turn + same_to_same) % 2 != 0) continue;
+                std::vector<double> itc;
+                cout << world.rank() << " <- " << it->first << endl;
+                inter_comm.recv(it->first, 31, itc);
+                cout << world.rank() << " <- " << it->first << " done" << endl;
+            }
+        }
+    }
+    */
+}
 
 

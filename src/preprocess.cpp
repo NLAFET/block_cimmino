@@ -3,7 +3,7 @@
 extern "C"
 {
     void mc77id_(int *, double *);
-    void mc77ad_(int *job, unsigned *m, unsigned *n, unsigned *nnz, int *jcst, int *irn, double *a,
+    void mc77ad_(int *job, int *m, int *n, int *nnz, int *jcst, int *irn, double *a,
                  int *iw, int *liw, double *dw, int *ldw, int *icntl, double *cntl,
                  int *info, double *rinfo);
 }
@@ -31,7 +31,7 @@ void abcd::preprocess()
         SparseMatrix<double> rmtx(m, m);
 
         rmtx.reserve(VectorXi::Constant(m, 1));
-        for(unsigned k = 0; k < m; k++) {
+        for(int k = 0; k < m; k++) {
             drow_(k) = sqrt(mtx.row(k).squaredNorm());
             rmtx.insert(k, k) = 1 / drow_[k];
         }
@@ -89,11 +89,11 @@ void abcd::scaleMatrix(int norm)
     dw = new double[ldw];
 
     // Increment indices to call fortran code
-    for(unsigned k = 0; k < n + 1 ; k++) {
+    for(int k = 0; k < n + 1 ; k++) {
         mtx.outerIndexPtr()[k]++;
         mtx.innerIndexPtr()[k]++;
     }
-    for(unsigned k = n + 1; k < nz ; k++) {
+    for(int k = n + 1; k < nz ; k++) {
         mtx.innerIndexPtr()[k]++;
     }
     if(norm < 0) throw - 12;
@@ -113,22 +113,22 @@ void abcd::scaleMatrix(int norm)
         cout << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0] << endl;
 
     // put them back to 0-based for C/C++
-    for(unsigned k = 0; k < n + 1 ; k++) {
+    for(int k = 0; k < n + 1 ; k++) {
         mtx.outerIndexPtr()[k]--;
         mtx.innerIndexPtr()[k]--;
     }
-    for(unsigned k = n + 1; k < nz ; k++) {
+    for(int k = n + 1; k < nz ; k++) {
         mtx.innerIndexPtr()[k]--;
     }
 
     // Scale the matrix
-    for(unsigned k = 0; k < m; k++) {
+    for(int k = 0; k < m; k++) {
         cmtx.insert(k, k) = 1 / dw[k];
         // save the scaling meanwhile
         dcol_(k) *= 1 / dw[k];
     }
 
-    for(unsigned k = 0; k < n; k++) {
+    for(int k = 0; k < n; k++) {
         rmtx.insert(k, k) = 1 / dw[k + m];
         // save the scaling meanwhile
         drow_(k) *= 1 / dw[k + m];

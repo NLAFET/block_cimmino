@@ -33,3 +33,17 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
 /// Compair pairs
 bool ip_comp ( const dipair& l, const dipair& r)
    { return l.first > r.first; }
+   
+/// Sum nonzeros from parts
+int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)
+{
+    return res += M.nonZeros();
+}
+int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)
+{
+    return res += M.rows();
+}
+int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)
+{
+    return res += M.cols();
+}

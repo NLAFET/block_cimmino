@@ -10,7 +10,7 @@ int abcd::bc(int job)
     switch(job) {
 
     case -1:
-        if(world.rank() == 0){
+        if(world.rank() == 0) {
             abcd::initialize();
         }
         world.barrier();
@@ -42,6 +42,14 @@ int abcd::bc(int job)
         break;
 
     case 3:
+        if(instance_type == 0) {
+            inter_comm.barrier();
+            abcd::distributeRhs();
+            xk = MatrixXd(n, nrhs);
+            xk.setOnes();
+            abcd::sumProject(0, b, 1, xk);
+        }
+        world.barrier();
         break;
 
     default:

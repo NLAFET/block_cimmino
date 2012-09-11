@@ -51,6 +51,7 @@ void abcd::distributePartitions()
                 sh.push_back(parts[j].cols());
                 inter_comm.send(i, 1, parts[j].nonZeros());
                 inter_comm.send(i, 2, sh);
+                inter_comm.send(i, 21, n);
                 inter_comm.send(i, 3, parts[j].innerIndexPtr(), parts[j].nonZeros());
                 inter_comm.send(i, 4, parts[j].outerIndexPtr(), sh[0] + 1);
                 inter_comm.send(i, 5, parts[j].valuePtr(), parts[j].nonZeros());
@@ -89,11 +90,16 @@ void abcd::distributePartitions()
                 inter_comm.send(j, 8, inter);
             }
         }
+        for(int i = 1; i < parallel_cg; i++) inter_comm.send(i, 7, -1);
 
 
         // Now that everybody got its partition, delete them from the master
         parts.erase(parts.begin() + groups[0] + 1, parts.end());
         columns_index.erase(columns_index.begin() + groups[0] + 1, columns_index.end());
+        local_column_index = columns_index;
+        
+        m = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
+        nz = std::accumulate(parts.begin(), parts.end(), 0, sum_nnz);
     } else {
         std::vector<int> se;
         inter_comm.recv(0, 0, se);
@@ -108,6 +114,7 @@ void abcd::distributePartitions()
             int l_nz, l_m, l_n;
             inter_comm.recv(0, 1, l_nz);
             inter_comm.recv(0, 2, sh);
+            inter_comm.recv(0, 21, n);
             l_m = sh[0];
             l_n = sh[1];
 
@@ -123,6 +130,9 @@ void abcd::distributePartitions()
             std::vector<int> ci;
             inter_comm.recv(0, 6, ci);
             columns_index.push_back(ci);
+            int dec = ci[0];
+            for(int i=0; i<ci.size(); i++) ci[i] -= dec;
+            local_column_index.push_back(ci);
 
 
             // Create the matrix and push it in!
@@ -133,17 +143,66 @@ void abcd::distributePartitions()
             snz += l_nz;
         }
 
-        for(int i = inter_comm.rank(); i < parallel_cg; i++) {
+        while(true){
             int the_other;
             std::vector<int> inter;
             inter_comm.recv(0, 7, the_other);
+            if(the_other==-1) break;
             inter_comm.recv(0, 8, inter);
             col_interconnections[the_other] = inter;
+            cout << inter_comm.rank() << " " << the_other << endl;
         }
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
         nz = snz;
+    }
+}
+
+void abcd::distributeRhs()
+{
+    mpi::communicator world;
+
+    if(world.rank() == 0) {
+        int r_pos = 0;
+        // Build my part of the RHS
+        int r = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
+        b = Eigen::MatrixXd(r, nrhs);
+
+        for(int j = 0; j < nrhs; j++)
+            for(int i = 0; i < r; i++)
+                b(i, j) = rhs[i + j * m];
+
+        r_pos += r;
+
+        // for other masters except me!
+        for(int k = 1; k < parallel_cg; k++) {
+            // get the partitions that will be sent to the master
+            int rows_for_k;
+            inter_comm.recv(k, 16, rows_for_k);
+            inter_comm.send(k, 17, nrhs);
+            for(int j = 0; j < nrhs; j++) {
+                inter_comm.send(k, 18, rhs + r_pos + j * m, rows_for_k);
+            }
+
+            r_pos += rows_for_k;
+        }
+    } else {
+        inter_comm.send(0, 16, m);
+        inter_comm.recv(0, 17, nrhs);
+
+        b = Eigen::MatrixXd(m, nrhs);
+
+        rhs = new double[m * nrhs];
+
+        for(int j = 0; j < nrhs; j++) {
+
+            inter_comm.recv(0, 18, rhs + j * m, m);
+
+            for(int i = 0; i < m; i++)
+                b(i, j) = rhs[i + j * m];
+
+        }
     }
 }
 
