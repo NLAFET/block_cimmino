@@ -11,7 +11,7 @@ void abcd::initializeMumps(bool local)
     // The first run of MUMPS is local to CG-masters
     std::vector<int> r;
     if(local) {
-        r = { inter_comm.rank() };
+        r.push_back(inter_comm.rank());
         mpi::group grp = inter_comm.group().include(r.begin(), r.end());
         intra_comm = mpi::communicator(inter_comm, grp);
     } else {
