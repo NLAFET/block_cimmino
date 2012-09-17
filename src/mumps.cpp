@@ -234,7 +234,7 @@ void abcd::factorizeAugmentedSystems()
     }
 }
 
-void abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
+Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
 {
     mpi::communicator world;
     // Build the mumps rhs
@@ -286,79 +286,100 @@ void abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::Matri
         }
         x_pos += parts[k].rows();
     }
+    // Where the other Deltas are going to be summed
     Eigen::MatrixXd Others(X.rows(), X.cols());
+    Others.setZero();
+    
 
-
-
+#ifndef SERIALIZED
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+        it != col_interconnections.end(); it++) {
+        
+        // Prepare the data to be sent
+        std::vector<double> itc;
+        for(int j = 0; j < nrhs; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                itc.push_back(Delta(*i, j));
+            }
+        }
+        inter_comm.isend(it->first, 31, itc);
+    }
+    int received = 0;
+    while(received != col_interconnections.size()){
+        std::vector<double> otc;
+        mpi::status st = inter_comm.recv(mpi::any_source, 31, otc);
+        
+        // Uncompress data and sum it inside Others
+        int p = 0;
+        for(int j = 0; j < nrhs; j++) {
+            for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
+                i != col_interconnections[st.source()].end(); i++) {
+                Others(*i, j) += otc[p++];
+            }
+        }
+        received++;
+    }
+    
+    
+    
+    
+#else
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
+
+        // Prepare the data to be sent
+        std::vector<double> itc, otc;
+        for(int j = 0; j < nrhs; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                itc.push_back(Delta(*i, j));
+            }
+        }
+
         // EVEN -> ODD && ODD -> EVEN
         if(inter_comm.rank() % 2 == 0) {
             if(it->first % 2 != 0) {
-                int z = 3;
-                inter_comm.send(it->first, 31, z);
-                inter_comm.recv(it->first, 32, z);
-                cout << world.rank() << " < " << it->first <<  " done " << endl;
+                inter_comm.send(it->first, 31, itc);
+                inter_comm.recv(it->first, 32, otc);
             } else { // EVEN -> EVEN
                 if(it->first > inter_comm.rank()) {
-                    int z = 3;
-                    inter_comm.send(it->first, 33, z);
-                    inter_comm.recv(it->first, 34, z);
-                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                    inter_comm.send(it->first, 33, itc);
+                    inter_comm.recv(it->first, 34, otc);
                 } else {
                     int z;
-                    inter_comm.recv(it->first, 33, z);
-                    cout << world.rank() << " < " << it->first <<  " done " << endl;
-                    inter_comm.send(it->first, 34, z);
+                    inter_comm.recv(it->first, 33, otc);
+                    inter_comm.send(it->first, 34, itc);
                 }
             }
         } else {
             if(it->first % 2 == 0) {
-                int z;
-                inter_comm.recv(it->first, 31, z);
-                cout << world.rank() << " < " << it->first << " done " << endl;
-                inter_comm.send(it->first, 32, z);
+                inter_comm.recv(it->first, 31, otc);
+                inter_comm.send(it->first, 32, itc);
             } else { // ODD -> ODD
                 if(it->first > inter_comm.rank()) {
-                    int z = 3;
-                    inter_comm.send(it->first, 33, z);
-                    inter_comm.recv(it->first, 34, z);
-                    cout << world.rank() << " < " << it->first <<  " done " << endl;
+                    inter_comm.send(it->first, 33, itc);
+                    inter_comm.recv(it->first, 34, otc);
                 } else {
-                    int z;
-                    inter_comm.recv(it->first, 33, z);
-                    cout << world.rank() << " < " << it->first <<  " done " << endl;
-                    inter_comm.send(it->first, 34, z);
+                    inter_comm.recv(it->first, 33, otc);
+                    inter_comm.send(it->first, 34, itc);
                 }
             }
         }
 
-    }
-
-    /*
-    for(int turn = 0; turn < 4; turn++) {
-        int same_to_same = 0;
-        if(turn > 1) same_to_same = 1;
-        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
-            if((inter_comm.rank() + turn) % 2 == 0) {
-                if((it->first + turn + same_to_same) % 2 == 0) continue;
-                std::vector<double> itc;
-                for(int j = 0; j < nrhs; j++)
-                    for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                        itc.push_back(Delta(*i, j));
-                    }
-                cout << world.rank() << " -> " << it->first << endl;
-                inter_comm.send(it->first, 31, itc);
-                cout << world.rank() << " -> " << it->first << " done" << endl;
-            } else {
-                if((it->first + turn + same_to_same) % 2 != 0) continue;
-                std::vector<double> itc;
-                cout << world.rank() << " <- " << it->first << endl;
-                inter_comm.recv(it->first, 31, itc);
-                cout << world.rank() << " <- " << it->first << " done" << endl;
+        // Uncompress data and sum it inside Others
+        int p = 0;
+        for(int j = 0; j < nrhs; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                Others(*i, j) += otc[p++];
             }
         }
+
     }
-    */
+#endif
+
+    // Now sum the data to Delta
+    Delta += Others;
+    if(world.rank() == 0) cout << Delta << endl;
+
+    return Delta;
 }
 
 

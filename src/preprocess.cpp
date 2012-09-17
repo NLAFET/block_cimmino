@@ -12,7 +12,6 @@ extern "C"
 void abcd::preprocess()
 {
     return;
-
     if(icntl[9] > 0) {
         drow_ = VectorXd(m);
         dcol_ = VectorXd(n);
@@ -40,15 +39,19 @@ void abcd::preprocess()
         dcol_.setOnes();
         /* END Checking */
     }
-
-    abcd::computeNorms();
+    return;
 
 
     if(icntl[9] >= 1) {
         std::cout << "[-] Scaling with Norm 1 & 2" << std::endl;
 
+        double t = MPI_Wtime();
         abcd::scaleMatrix(1);
+        cout << MPI_Wtime() - t << endl;
+        t = MPI_Wtime();
         abcd::scaleMatrix(2);
+        cout << MPI_Wtime() - t << endl;
+        exit(0);
     }
 
 }
@@ -137,8 +140,4 @@ void abcd::scaleMatrix(int norm)
     mtx = rmtx * mtx * cmtx;
 
     delete iw, dw;
-}
-
-void abcd::computeNorms()
-{
 }
