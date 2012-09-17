@@ -4,6 +4,8 @@
 void abcd::initializeCimmino()
 {
     mpi::communicator world;
+    int *sym_perm;
+    
     if(instance_type == 0) {
         initializeMumps(true);
         createAugmentedSystems();
@@ -20,6 +22,10 @@ void abcd::initializeCimmino()
         }
         cout << "[+] Launching MUMPS analysis" << endl;
         analyseAugmentedSystems();
+        
+        sym_perm = new int[mumps.n];
+        std::copy(mumps.sym_perm, mumps.sym_perm + mumps.n, sym_perm);
+
     }
 
     allocateMumpsSlaves();
@@ -31,9 +37,16 @@ void abcd::initializeCimmino()
 
     world.barrier();
     initializeMumps();
+    setMumpsIcntl(7,1);
+    
 
     if(instance_type == 0) {
         createAugmentedSystems();
+        mumps.perm_in = sym_perm;
     }
+    
+    if(instance_type == 0)
+        cout << "[+] Launching MUMPS analysis" << endl;
+    abcd::analyseAugmentedSystems();
 
 }

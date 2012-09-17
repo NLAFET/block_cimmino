@@ -47,3 +47,4 @@ int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)
 {
     return res += M.cols();
 }
+bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R){ return (L.cols() < R.cols()); }

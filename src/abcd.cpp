@@ -34,9 +34,6 @@ int abcd::bc(int job)
         }
         abcd::initializeCimmino();
         if(instance_type == 0)
-            cout << "[+] Launching MUMPS analysis" << endl;
-        abcd::analyseAugmentedSystems();
-        if(instance_type == 0)
             cout << "[+] Launching MUMPS factorization" << endl;
         abcd::factorizeAugmentedSystems();
         break;

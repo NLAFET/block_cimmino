@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 //         f = fopen("/home/knuthy/stash/lhr34c/lhr34c.mtx", "r");
 //         f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
 //         f = fopen("/home/knuthy/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
+//         f = fopen("/home/knuthy/stash/PR02R/PR02R.mtx", "r");
 //         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
 //         f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
 //         f = fopen("/home/knuthy/stash/Huhs_DNA_CC.mtx", "r");
@@ -61,10 +62,10 @@ int main(int argc, char *argv[])
             obj.bc(2);
 
             obj.nrhs = 1;
-            obj.rhs = new double[obj.m * obj.nrhs];
+            obj.rhs = new double[obj.m_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++)
-                for(int i = 0; i < obj.m; i++)
-                    obj.rhs[i + j * obj.m] = i + j * obj.m;
+                for(int i = 0; i < obj.m_l; i++)
+                    obj.rhs[i + j * obj.m_l] = i + j * obj.m_l;
 
             obj.bc(3);
         } catch(int e) {

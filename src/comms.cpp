@@ -56,7 +56,7 @@ void abcd::distributePartitions()
                 inter_comm.send(i, 4, parts[j].outerIndexPtr(), sh[0] + 1);
                 inter_comm.send(i, 5, parts[j].valuePtr(), parts[j].nonZeros());
 
-                inter_comm.send(i, 6, columns_index[j]);
+                inter_comm.send(i, 6, column_index[j]);
             }
         }
 
@@ -64,40 +64,70 @@ void abcd::distributePartitions()
         std::vector<std::vector<int> > group_column_index;
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
+            std::vector<int> merge_index;
             for(int j = st; j <= groups[i] ; j++) {
-                std::vector<int> merge_index;
-                std::copy(columns_index[j].begin(), columns_index[j].end(), back_inserter(merge_index));
-                std::sort(merge_index.begin(), merge_index.end());
-                std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
-                merge_index.erase(last, merge_index.end());
-                group_column_index.push_back(merge_index);
+                std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
             }
+            std::sort(merge_index.begin(), merge_index.end());
+            std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
+            merge_index.erase(last, merge_index.end());
+            group_column_index.push_back(merge_index);
             st = groups[i] + 1;
+
         }
+
         for(int i = 0; i < parallel_cg; i++) {
             for(int j = i + 1; j < parallel_cg; j++) {
-                std::vector<int> inter;
-                set_intersection(group_column_index[i].begin(), group_column_index[i].end(),
-                                 group_column_index[j].begin(), group_column_index[j].end(),
-                                 back_inserter(inter));
+                std::vector<int> inter1;
+                std::vector<int> inter2;
+                std::vector<int>::iterator it1 = group_column_index[i].begin();
+                std::vector<int>::iterator it2 = group_column_index[j].begin();
+                while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
+                    if(*it1 < *it2) {
+                        ++it1;
+                    } else {
+                        if(!(*it2 < *it1)) {
+                            inter1.push_back(it1 - group_column_index[i].begin());
+                            inter2.push_back(it2 - group_column_index[j].begin());
+                        }
+                        ++it2;
+                    }
+                }
+//                 set_intersection(group_column_index[i].begin(), group_column_index[i].end(),
+//                                  group_column_index[j].begin(), group_column_index[j].end(),
+//                                  back_inserter(inter));
                 if(i == 0) {
-                    col_interconnections[j] = inter;
+                    col_interconnections[j] = inter1;
                 } else {
                     inter_comm.send(i, 7, j);
-                    inter_comm.send(i, 8, inter);
+                    inter_comm.send(i, 8, inter1);
                 }
                 inter_comm.send(j, 7, i);
-                inter_comm.send(j, 8, inter);
+                inter_comm.send(j, 8, inter2);
             }
         }
-        for(int i = 1; i < parallel_cg; i++) inter_comm.send(i, 7, -1);
+        for(int i = 1; i < parallel_cg; i++) {
+            inter_comm.send(i, 7, -1);
+            std::map<int, int> l_glob_to_local;
+            for(int j = 0; j < group_column_index[i].size(); j++) {
+                l_glob_to_local[group_column_index[i][j]] = j;
+            }
+        }
+
+        std::map<int, int> l_glob_to_local;
+        for(int j = 0; j < group_column_index[0].size(); j++) {
+            l_glob_to_local[group_column_index[0][j]] = j;
+        }
+
+        glob_to_local = l_glob_to_local;
 
 
         // Now that everybody got its partition, delete them from the master
         parts.erase(parts.begin() + groups[0] + 1, parts.end());
-        columns_index.erase(columns_index.begin() + groups[0] + 1, columns_index.end());
-        local_column_index = columns_index;
-        
+        column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
+        local_column_index = column_index;
+
+        m_l = m;
         m = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
         nz = std::accumulate(parts.begin(), parts.end(), 0, sum_nnz);
     } else {
@@ -129,9 +159,9 @@ void abcd::distributePartitions()
             // Continue the communications and let the initialization of the matrix at the end
             std::vector<int> ci;
             inter_comm.recv(0, 6, ci);
-            columns_index.push_back(ci);
+            column_index.push_back(ci);
             int dec = ci[0];
-            for(int i=0; i<ci.size(); i++) ci[i] -= dec;
+            for(int i = 0; i < ci.size(); i++) ci[i] -= dec;
             local_column_index.push_back(ci);
 
 
@@ -143,20 +173,43 @@ void abcd::distributePartitions()
             snz += l_nz;
         }
 
-        while(true){
+        while(true) {
             int the_other;
             std::vector<int> inter;
             inter_comm.recv(0, 7, the_other);
-            if(the_other==-1) break;
+            if(the_other == -1) break;
             inter_comm.recv(0, 8, inter);
             col_interconnections[the_other] = inter;
-            cout << inter_comm.rank() << " " << the_other << endl;
         }
+
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
         nz = snz;
     }
+
+    std::vector<int> merge_index;
+    for(int j = 0; j < parts.size(); j++) {
+        std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
+    }
+    std::sort(merge_index.begin(), merge_index.end());
+    std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
+    merge_index.erase(last, merge_index.end());
+
+    int indices[parts.size()];
+    for(int i = 0; i < parts.size(); i++) indices[i] = 0;
+    local_column_index = std::vector<std::vector<int> >(parts.size());
+
+    for(int j = 0; j < merge_index.size(); j++) {
+        for(int i = 0; i < parts.size(); i++) {
+            if(column_index[i][indices[i]] == merge_index[j]) {
+                indices[i]++;
+                local_column_index[i].push_back(j);
+            }
+        }
+    }
+
+    n = merge_index.size();
 }
 
 void abcd::distributeRhs()
@@ -170,8 +223,9 @@ void abcd::distributeRhs()
         b = Eigen::MatrixXd(r, nrhs);
 
         for(int j = 0; j < nrhs; j++)
-            for(int i = 0; i < r; i++)
+            for(int i = 0; i < r; i++) {
                 b(i, j) = rhs[i + j * m];
+            }
 
         r_pos += r;
 
@@ -192,18 +246,41 @@ void abcd::distributeRhs()
         inter_comm.recv(0, 17, nrhs);
 
         b = Eigen::MatrixXd(m, nrhs);
+        b.setZero();
 
         rhs = new double[m * nrhs];
+        for(int i = 0; i < m * nrhs; i++) rhs[i] = 0;
 
         for(int j = 0; j < nrhs; j++) {
 
             inter_comm.recv(0, 18, rhs + j * m, m);
 
-            for(int i = 0; i < m; i++)
+            for(int i = 0; i < m; i++) {
                 b(i, j) = rhs[i + j * m];
+            }
 
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

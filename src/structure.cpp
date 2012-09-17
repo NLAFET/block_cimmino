@@ -34,6 +34,7 @@ void abcd::analyseFrame()
         // Our k-th partition
         SparseMatrix<double, ColMajor> part = mtx.middleRows(strow[k], nbrows[k]);
 
+        double t1, t2;
         // Build the column index of part
         std::vector<int> ci;
         int j = 0;
@@ -42,7 +43,7 @@ void abcd::analyseFrame()
                 ci.push_back(j);
             j++;
         }
-        columns_index.push_back(ci);
+        column_index.push_back(ci);
 
         int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
         parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));

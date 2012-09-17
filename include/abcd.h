@@ -87,7 +87,7 @@ private:
     void factorizeAugmentedSystems();
     std::vector<int> my_slaves;
     int my_master;
-    void sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
+    Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
     
     // MUMPS setters and getters
     inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
@@ -122,6 +122,7 @@ public:
     int nz;
     int nrhs;
     int m_l, nz_l;
+    
 
     /***************************************************************************
      * Temporary data about the matrix
@@ -151,9 +152,11 @@ public:
     ArrayXi strow; /// The starting row index of each partition
     ArrayXi nbrows; /// The number of rows per partition
     /// A reverse index of columns, contains the original index of each column for each partition
-    std::vector<std::vector<int> > columns_index;
+    std::vector<std::vector<int> > column_index;
     /// A merge of col_index vectors, determines non-null columns in all local partitions
     std::vector<std::vector<int> > local_column_index;
+    std::map<int,int> glob_to_local;
+    
     /**
      * Contains the mutual interconnections between partitions
      * The key is the cg-master rank (in inter_comm) and the value is the column indices
@@ -162,6 +165,7 @@ public:
     /// Contains the partitions that are handled by this instance
     std::vector<int> parts_id;
 
+    int block_size = 1;
 
 
     /***************************************************************************
@@ -189,5 +193,6 @@ bool ip_comp(const dipair &, const dipair &);
 int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);
 int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);
 int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);
+bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R);
 
 #endif // ABCD_HXX
