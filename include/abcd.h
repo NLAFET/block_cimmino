@@ -10,8 +10,10 @@
 
 #include <iostream>
 #include <iomanip>
+#include <numeric>
 #include <vector>
 #include <cstdio>
+#include <algorithm>
 #include "mmio.h"
 #include "mpi.h"
 
