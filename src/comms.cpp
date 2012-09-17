@@ -41,7 +41,10 @@ void abcd::distributePartitions()
 
         for(int i = 1; i < parallel_cg ; i++) {
             // send to each CG-Master its starting and ending partitions ids
-            std::vector<int> se = {groups[i - 1], groups[i]};
+            std::vector<int> se;
+            se.push_back(groups[i - 1]);
+            se.push_back(groups[i]);
+            
             inter_comm.send(i, 0, se);
 
             // send to each CG-Master the corresponding col_index and partitions
