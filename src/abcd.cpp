@@ -70,6 +70,7 @@ void abcd::initialize()
         // Hey!! where is my data?
         throw - 1;
     }
+    
 
     mtx = SparseMatrix<double>(m, n);
     if(sym) {
@@ -95,6 +96,7 @@ void abcd::initialize()
 abcd::abcd()
 {
     start_index = 0;
+    block_size = 1;
 }
 
 abcd::~abcd()

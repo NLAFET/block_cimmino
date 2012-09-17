@@ -165,7 +165,7 @@ public:
     /// Contains the partitions that are handled by this instance
     std::vector<int> parts_id;
 
-    int block_size = 1;
+    int block_size;
 
 
     /***************************************************************************
