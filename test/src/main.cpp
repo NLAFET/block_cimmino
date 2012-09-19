@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
             obj.bc(1);
             obj.bc(2);
 
-            obj.nrhs = 1;
+            obj.nrhs = 8;
             obj.rhs = new double[obj.m_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++)
                 for(int i = 0; i < obj.m_l; i++)

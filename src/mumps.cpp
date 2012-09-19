@@ -234,11 +234,12 @@ void abcd::factorizeAugmentedSystems()
     }
 }
 
+// TODO: change nrhs to "s"
 Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
 {
     mpi::communicator world;
     // Build the mumps rhs
-    mumps.rhs = new double[mumps.n];
+    mumps.rhs = new double[mumps.n*nrhs];
     int pos = 0;
     int b_pos = 0;
     for(int k = 0; k < parts.size(); k++) {
@@ -258,20 +259,25 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         r = r + alpha * B.block(b_pos, 0, parts[k].rows(), nrhs);
         b_pos += parts[k].rows();
 
-        for(int i = pos; i < pos + parts[k].cols(); i++) {
-            mumps.rhs[i] = 0;
-        }
-        int j = 0;
-        for(int i = pos + parts[k].cols(); i < pos + parts[k].cols() + parts[k].rows(); i++) {
-            mumps.rhs[i] = r.data()[j++];
+        for(int r_p = 0; r_p < nrhs; r_p++) {
+            for(int i = pos; i < pos + parts[k].cols(); i++) {
+                mumps.rhs[i + r_p*mumps.n] = 0;
+            }
+            int j = 0;
+            for(int i = pos + parts[k].cols(); i < pos + parts[k].cols() + parts[k].rows(); i++) {
+                mumps.rhs[i + r_p*mumps.n] = r(j++,r_p);
+            }
         }
 
         pos += parts[k].cols() + parts[k].rows();
 
     }
+    mumps.nrhs = nrhs;
+    mumps.lrhs = mumps.n;
     mumps.job = 3;
     dmumps_c(&mumps);
     Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, nrhs);
+    
     Eigen::MatrixXd Delta(X.rows(), X.cols());
     Delta.setZero();
 
@@ -289,12 +295,12 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     // Where the other Deltas are going to be summed
     Eigen::MatrixXd Others(X.rows(), X.cols());
     Others.setZero();
-    
+
 
 #ifndef SERIALIZED
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-        it != col_interconnections.end(); it++) {
-        
+            it != col_interconnections.end(); it++) {
+
         // Prepare the data to be sent
         std::vector<double> itc;
         for(int j = 0; j < nrhs; j++) {
@@ -305,24 +311,24 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         inter_comm.isend(it->first, 31, itc);
     }
     int received = 0;
-    while(received != col_interconnections.size()){
+    while(received != col_interconnections.size()) {
         std::vector<double> otc;
         mpi::status st = inter_comm.recv(mpi::any_source, 31, otc);
-        
+
         // Uncompress data and sum it inside Others
         int p = 0;
         for(int j = 0; j < nrhs; j++) {
             for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
-                i != col_interconnections[st.source()].end(); i++) {
+                    i != col_interconnections[st.source()].end(); i++) {
                 Others(*i, j) += otc[p++];
             }
         }
         received++;
     }
-    
-    
-    
-    
+
+
+
+
 #else
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
 
@@ -377,7 +383,6 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
 
     // Now sum the data to Delta
     Delta += Others;
-    if(world.rank() == 0) cout << Delta << endl;
 
     return Delta;
 }

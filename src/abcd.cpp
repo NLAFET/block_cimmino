@@ -43,8 +43,20 @@ int abcd::bc(int job)
             inter_comm.barrier();
             abcd::distributeRhs();
             xk = MatrixXd(n, nrhs);
+            MatrixXd p(n, nrhs);
+            MatrixXd ap(n, nrhs);
+            MatrixXd r(nrhs, nrhs);
             xk.setOnes();
-            abcd::sumProject(0, b, 1, xk);
+            xk.col(0) = 5*xk.col(0);
+            p.setOnes();
+            ap.setOnes();
+            r.setZero();
+            p = abcd::sumProject(0, b, 1, xk);
+            ap = p;
+            double t = MPI_Wtime();
+            abcd::gmgs(p, ap, r, nrhs, false);
+            cout << p.transpose()*ap << endl;
+            cout << "TIME : " << MPI_Wtime() -t << endl;
         }
         world.barrier();
         break;
