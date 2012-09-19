@@ -44,7 +44,7 @@ void abcd::distributePartitions()
             std::vector<int> se;
             se.push_back(groups[i - 1]);
             se.push_back(groups[i]);
-            
+
             inter_comm.send(i, 0, se);
 
             // send to each CG-Master the corresponding col_index and partitions
@@ -79,12 +79,14 @@ void abcd::distributePartitions()
 
         }
 
+        std::map<int, std::vector<int> > inter;
         for(int i = 0; i < parallel_cg; i++) {
             for(int j = i + 1; j < parallel_cg; j++) {
                 std::vector<int> inter1;
                 std::vector<int> inter2;
                 std::vector<int>::iterator it1 = group_column_index[i].begin();
                 std::vector<int>::iterator it2 = group_column_index[j].begin();
+
                 while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
                     if(*it1 < *it2) {
                         ++it1;
@@ -92,13 +94,13 @@ void abcd::distributePartitions()
                         if(!(*it2 < *it1)) {
                             inter1.push_back(it1 - group_column_index[i].begin());
                             inter2.push_back(it2 - group_column_index[j].begin());
+
+                            inter[i].push_back(it1 - group_column_index[i].begin());
+                            inter[j].push_back(it1 - group_column_index[i].begin());
                         }
                         ++it2;
                     }
                 }
-//                 set_intersection(group_column_index[i].begin(), group_column_index[i].end(),
-//                                  group_column_index[j].begin(), group_column_index[j].end(),
-//                                  back_inserter(inter));
                 if(i == 0) {
                     col_interconnections[j] = inter1;
                 } else {
@@ -109,6 +111,7 @@ void abcd::distributePartitions()
                 inter_comm.send(j, 8, inter2);
             }
         }
+
         for(int i = 1; i < parallel_cg; i++) {
             inter_comm.send(i, 7, -1);
             std::map<int, int> l_glob_to_local;
@@ -213,6 +216,18 @@ void abcd::distributePartitions()
     }
 
     n = merge_index.size();
+
+    // Create a Communication map for ddot
+    comm_map = Eigen::VectorXi(n);
+    comm_map.setOnes();
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
+        if(inter_comm.rank() > it->first) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                if(comm_map[*i] == 1) comm_map[*i] = -1;
+            }
+        }
+    }
 }
 
 void abcd::distributeRhs()

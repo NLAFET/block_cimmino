@@ -20,6 +20,8 @@
 #include "dmumps_c.h"
 
 #include <Eigen/Sparse>
+#include <Eigen/LU>
+#include <Eigen/Dense>
 
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -76,6 +78,10 @@ private:
     void initializeCimmino();
     void distributeRhs();
     void bcg();
+    void gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
+    void gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
+    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
+    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
     
     // MUMPS
     int m_n;
@@ -90,6 +96,7 @@ private:
     std::vector<int> my_slaves;
     int my_master;
     Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
+    Eigen::VectorXi comm_map;
     
     // MUMPS setters and getters
     inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
@@ -99,6 +106,7 @@ private:
 
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
+    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);
 
 
     /*
