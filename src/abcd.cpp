@@ -42,21 +42,7 @@ int abcd::bc(int job)
         if(instance_type == 0) {
             inter_comm.barrier();
             abcd::distributeRhs();
-            xk = MatrixXd(n, nrhs);
-            MatrixXd p(n, nrhs);
-            MatrixXd ap(n, nrhs);
-            MatrixXd r(nrhs, nrhs);
-            xk.setOnes();
-            xk.col(0) = 5*xk.col(0);
-            p.setOnes();
-            ap.setOnes();
-            r.setZero();
-            p = abcd::sumProject(0, b, 1, xk);
-            ap = p;
-            double t = MPI_Wtime();
-            abcd::gmgs(p, ap, r, nrhs, false);
-            cout << p.transpose()*ap << endl;
-            cout << "TIME : " << MPI_Wtime() -t << endl;
+            abcd::bcg();
         }
         world.barrier();
         break;
@@ -82,7 +68,7 @@ void abcd::initialize()
         // Hey!! where is my data?
         throw - 1;
     }
-    
+
 
     mtx = SparseMatrix<double>(m, n);
     if(sym) {
@@ -107,8 +93,10 @@ void abcd::initialize()
 /// Set the defaults in the constructor
 abcd::abcd()
 {
+    nrhs = 1;
     start_index = 0;
     block_size = 1;
+    use_xk = false;
 }
 
 abcd::~abcd()

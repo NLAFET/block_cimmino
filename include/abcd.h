@@ -42,9 +42,9 @@ class abcd
 {
 private:
     // Types to be used localy
-
-    double *absa;
-    double *vnrma;
+    double nrmA;
+    double nrmB;
+    double nrmMtx;
 
     void initialize();
 
@@ -78,10 +78,13 @@ private:
     void initializeCimmino();
     void distributeRhs();
     void bcg();
-    void gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
-    void gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
+    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
+    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
     void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
     void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
+    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);
+    std::vector<double> normres;
+    bool use_xk;
     
     // MUMPS
     int m_n;
@@ -107,6 +110,7 @@ private:
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
     Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);
+    void get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX);
 
 
     /*
@@ -176,6 +180,7 @@ public:
     std::vector<int> parts_id;
 
     int block_size;
+    int itmax;
 
 
     /***************************************************************************

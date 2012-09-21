@@ -234,50 +234,57 @@ void abcd::factorizeAugmentedSystems()
     }
 }
 
-// TODO: change nrhs to "s"
 Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
 {
     mpi::communicator world;
+    int s = X.cols();
     // Build the mumps rhs
-    mumps.rhs = new double[mumps.n*nrhs];
+    mumps.rhs = new double[mumps.n * s];
     int pos = 0;
     int b_pos = 0;
     for(int k = 0; k < parts.size(); k++) {
-        Eigen::MatrixXd r(parts[k].rows(), nrhs);
-        Eigen::MatrixXd compressed_x(parts[k].cols(), nrhs);
+        Eigen::MatrixXd r(parts[k].rows(), s);
+        r.setZero();
+        Eigen::MatrixXd compressed_x(parts[k].cols(), s);
+        compressed_x.setZero();
 
         int x_pos = 0;
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
-            for(int j = 0; j < nrhs; j++) {
+            for(int j = 0; j < s; j++) {
                 compressed_x(x_pos, j) = X(ci, j);
             }
             x_pos++;
         }
 
-        r = beta * parts[k] * compressed_x;
-        r = r + alpha * B.block(b_pos, 0, parts[k].rows(), nrhs);
+        // avoid useless operations
+        if(beta != 0)
+            r = beta * parts[k] * compressed_x;
+        if(alpha != 0)
+            r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
+        
         b_pos += parts[k].rows();
 
-        for(int r_p = 0; r_p < nrhs; r_p++) {
+        for(int r_p = 0; r_p < s; r_p++) {
             for(int i = pos; i < pos + parts[k].cols(); i++) {
-                mumps.rhs[i + r_p*mumps.n] = 0;
+                mumps.rhs[i + r_p * mumps.n] = 0;
             }
             int j = 0;
             for(int i = pos + parts[k].cols(); i < pos + parts[k].cols() + parts[k].rows(); i++) {
-                mumps.rhs[i + r_p*mumps.n] = r(j++,r_p);
+                mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
             }
         }
 
         pos += parts[k].cols() + parts[k].rows();
 
     }
-    mumps.nrhs = nrhs;
+    mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
     dmumps_c(&mumps);
-    Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, nrhs);
-    
+    Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, s);
+        
+
     Eigen::MatrixXd Delta(X.rows(), X.cols());
     Delta.setZero();
 
@@ -285,7 +292,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     for(int k = 0; k < parts.size(); k++) {
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
-            for(int j = 0; j < nrhs; j++) {
+            for(int j = 0; j < s; j++) {
                 Delta(ci, j) = Delta(ci, j) + Sol(x_pos, j) ;
             }
             x_pos++;
@@ -303,7 +310,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
 
         // Prepare the data to be sent
         std::vector<double> itc;
-        for(int j = 0; j < nrhs; j++) {
+        for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 itc.push_back(Delta(*i, j));
             }
@@ -317,7 +324,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
 
         // Uncompress data and sum it inside Others
         int p = 0;
-        for(int j = 0; j < nrhs; j++) {
+        for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
                     i != col_interconnections[st.source()].end(); i++) {
                 Others(*i, j) += otc[p++];
@@ -334,7 +341,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
 
         // Prepare the data to be sent
         std::vector<double> itc, otc;
-        for(int j = 0; j < nrhs; j++) {
+        for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 itc.push_back(Delta(*i, j));
             }
@@ -372,7 +379,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
 
         // Uncompress data and sum it inside Others
         int p = 0;
-        for(int j = 0; j < nrhs; j++) {
+        for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 Others(*i, j) += otc[p++];
             }

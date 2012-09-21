@@ -69,6 +69,60 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
     return r;
 }
 
+void abcd::get_nrmres(Eigen::MatrixXd v, double &nrmR, double &nrmX)
+{
+    int rn = v.cols();
+    int rm = v.rows();
+    nrmX = 0;
+    nrmR = 0;
+
+    Eigen::MatrixXd loc_v(rm, rn);
+    Eigen::MatrixXd loc_r(m, rn);
+    loc_v.setZero();
+    loc_r.setZero();
+
+    int pos = 0;
+    for(int i = 0; i < rm; i++) {
+        if(comm_map(i) == 1) {
+            for(int j = 0; j < rn; j++) {
+                //@todo : this stands only when there is one rhs
+                nrmX += pow(v(i, j), 2);
+            }
+            pos++;
+        }
+    }
+
+    pos = 0;
+    for(int p = 0; p < parts.size(); p++) {
+        Eigen::VectorXd compressed_x(parts[p].cols());
+        for(int j = 0; j < v.cols(); j++) {
+            compressed_x.setZero();
+
+            int x_pos = 0;
+            for(int i = 0; i < local_column_index[p].size(); i++) {
+                int ci = local_column_index[p][i];
+                compressed_x(x_pos) = v(ci, j);
+                x_pos++;
+            }
+            loc_r.col(j).segment(pos, parts[p].rows()) = parts[p] * compressed_x;
+        }
+        //nrmX += compressed_x.squaredNorm();
+
+        pos += parts[p].rows();
+    }
+
+    loc_r  = b - loc_r;
+    //nrmX = v.squaredNorm();
+
+    double loc_nrm = loc_r.squaredNorm();
+    //double loc_nrm = loc_r.lpNorm<Infinity>();
+    double nrm;
+    mpi::all_reduce(inter_comm, &loc_nrm, 1,  &nrm, std::plus<double>());
+    nrmR = sqrt(nrm);
+    mpi::all_reduce(inter_comm, &nrmX, 1,  &nrm, std::plus<double>());
+    nrmX = sqrt(nrm);
+}
+
 /// Compair pairs
 bool ip_comp(const dipair &l, const dipair &r)
 {
