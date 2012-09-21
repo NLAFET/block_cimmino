@@ -228,6 +228,13 @@ void abcd::distributePartitions()
             }
         }
     }
+    nrmA = 0;
+    for(int i=0; i<parts.size(); i++)
+        nrmA += parts[i].squaredNorm();
+    mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, std::plus<double>());
+    nrmA = sqrt(nrmA);
+    nrmMtx = sqrt(nrmMtx);
+
 }
 
 void abcd::distributeRhs()
@@ -279,6 +286,9 @@ void abcd::distributeRhs()
 
         }
     }
+    
+    // and distribute max iterations
+    mpi::broadcast(inter_comm, itmax, 0);
 }
 
 

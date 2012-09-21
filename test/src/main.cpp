@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         // read the file and its content
         f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
 //         f = fopen("/home/knuthy/stash/lhr34c/lhr34c.mtx", "r");
-//         f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
+        //f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
 //         f = fopen("/home/knuthy/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
 //         f = fopen("/home/knuthy/stash/PR02R/PR02R.mtx", "r");
 //         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         obj.val = new double[obj.nz];
 
         obj.start_index = 1;
-        obj.icntl[9] = 2;
+        obj.icntl[9] = 0;
 
         obj.nbparts = 4;
         obj.partitioning_type = 2;
@@ -61,11 +61,12 @@ int main(int argc, char *argv[])
             obj.bc(1);
             obj.bc(2);
 
-            obj.nrhs = 8;
+            obj.block_size = 1;
+            obj.itmax = 1000;
             obj.rhs = new double[obj.m_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++)
                 for(int i = 0; i < obj.m_l; i++)
-                    obj.rhs[i + j * obj.m_l] = i + j * obj.m_l;
+                    obj.rhs[i + j * obj.m_l] = j+1;
 
             obj.bc(3);
         } catch(int e) {

@@ -11,7 +11,6 @@ extern "C"
 
 void abcd::preprocess()
 {
-    return;
     if(icntl[9] > 0) {
         drow_ = VectorXd(m);
         dcol_ = VectorXd(n);
@@ -20,13 +19,12 @@ void abcd::preprocess()
         dcol_.setOnes();
     }
 
-    if(icntl[9] == 2) {
+    if(icntl[9] == 1) {
         ///TODO:Use logging
         std::cout << "[-] Scaling with Infinity" << std::endl;
 
         abcd::scaleMatrix(0);
 
-        /* TODO: Check that this is correct */
         SparseMatrix<double> rmtx(m, m);
 
         rmtx.reserve(VectorXi::Constant(m, 1));
@@ -39,19 +37,13 @@ void abcd::preprocess()
         dcol_.setOnes();
         /* END Checking */
     }
-    return;
 
 
-    if(icntl[9] >= 1) {
+    if(icntl[9] == 2) {
         std::cout << "[-] Scaling with Norm 1 & 2" << std::endl;
 
-        double t = MPI_Wtime();
         abcd::scaleMatrix(1);
-        cout << MPI_Wtime() - t << endl;
-        t = MPI_Wtime();
         abcd::scaleMatrix(2);
-        cout << MPI_Wtime() - t << endl;
-        exit(0);
     }
 
 }
