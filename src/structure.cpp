@@ -1,4 +1,4 @@
-#include "abcd.h"
+#include <abcd.h>
 
 ///@TODO Add the case of manual partitioning
 void abcd::partitionMatrix()

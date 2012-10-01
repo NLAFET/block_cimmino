@@ -1,4 +1,4 @@
-#include "abcd.h"
+#include <abcd.h>
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
