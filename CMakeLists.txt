@@ -17,14 +17,18 @@ set(CMAKE_BUILD_TYPE "Debug")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
 
 
-include_directories(include ${Boost_INCLUDE_DIRS} ${MUMPS_DIR}/include/)
+include_directories(
+  include
+  ${Boost_INCLUDE_DIRS}
+  ${MUMPS_DIR}/include/
+)
 
 file(
-	GLOB_RECURSE
-	source_files
-  src/*.f
-	src/*.cpp
-	include/*
+    GLOB_RECURSE
+    source_files
+    src/*.f
+    src/*.cpp
+    include/*
 )
 
 add_library(abcd STATIC ${source_files})

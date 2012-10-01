@@ -1,4 +1,4 @@
-#include "abcd.h"
+#include <abcd.h>
 
 extern "C"
 {
@@ -11,6 +11,7 @@ extern "C"
 
 void abcd::preprocess()
 {
+    return;
     if(icntl[9] > 0) {
         drow_ = VectorXd(m);
         dcol_ = VectorXd(n);

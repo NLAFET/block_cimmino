@@ -1,4 +1,4 @@
-#include "abcd.h"
+#include <abcd.h>
 
 /// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
 void abcd::createInterComm()
