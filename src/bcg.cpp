@@ -4,6 +4,7 @@
 void abcd::bcg()
 {
     // s is the block size of the current run
+    mpi::broadcast(inter_comm, block_size, 0);
     int s = std::max<int>(block_size, nrhs);
     if(s < 1) throw - 51;
 
