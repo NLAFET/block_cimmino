@@ -193,6 +193,7 @@ public:
     mpi::communicator intra_comm; /// The communicator of local slaves
 
 
+    ///@todo say which is which here!
     int icntl[10];
     double dcntl[10];
 

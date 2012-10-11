@@ -240,12 +240,21 @@ void abcd::distributePartitions()
 void abcd::distributeRhs()
 {
     mpi::communicator world;
+    mpi::broadcast(inter_comm, block_size, 0);
+    int s = std::max<int>(block_size, nrhs);
+    if(s < 1) throw - 41;
 
     if(world.rank() == 0) {
         int r_pos = 0;
         // Build my part of the RHS
         int r = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
-        b = Eigen::MatrixXd(r, nrhs);
+        b = Eigen::MatrixXd(r, s);
+
+        if(s > nrhs) {
+            Eigen::MatrixXd RR =  MatrixXd::Random(r, s - nrhs);
+            //RR.setOnes();
+            b.block(0, nrhs, r, s - nrhs) = RR;
+        }
 
         for(int j = 0; j < nrhs; j++)
             for(int i = 0; i < r; i++) {
@@ -270,7 +279,7 @@ void abcd::distributeRhs()
         inter_comm.send(0, 16, m);
         inter_comm.recv(0, 17, nrhs);
 
-        b = Eigen::MatrixXd(m, nrhs);
+        b = Eigen::MatrixXd(m, s);
         b.setZero();
 
         rhs = new double[m * nrhs];
@@ -284,6 +293,12 @@ void abcd::distributeRhs()
                 b(i, j) = rhs[i + j * m];
             }
 
+        }
+
+        if(s > nrhs) {
+            Eigen::MatrixXd RR =  MatrixXd::Random(m, s - nrhs);
+            //RR.setOnes();
+            b.block(0, nrhs, m, s - nrhs) = RR;
         }
     }
     

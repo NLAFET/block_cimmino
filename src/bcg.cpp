@@ -4,7 +4,6 @@
 void abcd::bcg()
 {
     // s is the block size of the current run
-    mpi::broadcast(inter_comm, block_size, 0);
     int s = std::max<int>(block_size, nrhs);
     if(s < 1) throw - 51;
 
@@ -13,7 +12,7 @@ void abcd::bcg()
         xk.setZero();
     }
 
-    Eigen::MatrixXd u(b.rows(), s);
+    Eigen::MatrixXd u(n, s);
     Eigen::MatrixXd p(n, s);
     Eigen::MatrixXd qp(n, s);
     Eigen::MatrixXd r(n, s);
@@ -54,19 +53,14 @@ void abcd::bcg()
      * ITERATION k = 0                                 *
      **************************************************/
 
-    u.col(0) = b;
-
     if(use_xk) {
-        r.block(0, 0, n, 1) = sumProject(1e0, b, -1e0, xk);
+        u.block(0, nrhs, n, s-nrhs).setZero();
+        r = sumProject(1e0, b, -1e0, u);
     } else {
-        r.block(0, 0, n, 1) = sumProject(1e0, b, 0, xk);
+        r = sumProject(1e0, b, 0, u);
     }
-    
-    if(s > nrhs) {
-        Eigen::MatrixXd RR =  MatrixXd::Random(n, s - nrhs);
-        //RR.setOnes();
-        r.block(0, nrhs, n, s - nrhs) = RR;
-    }
+
+    b = b.block(0, 0, m, nrhs);
 
     // orthogonalize
     // r = r*gamma^-1
@@ -88,7 +82,7 @@ void abcd::bcg()
     while((mrho > thresh) && (it < itmax)) {
         it++;
 
-        qp = sumProject(0e0, u, 1e0, p);
+        qp = sumProject(0e0, b, 1e0, p);
         if(gqr(p, qp, betak, s, true) != 0)
             gmgs(p, qp, betak, s, true);
 
@@ -283,6 +277,7 @@ int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,
         loc_r = loc_p.transpose() * loc_ap;
     else
         loc_r = loc_p.transpose() * loc_p;
+
 
     const double *l_r_ptr = loc_r.data();
     double *r_ptr = r.data();
