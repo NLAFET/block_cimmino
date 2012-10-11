@@ -265,6 +265,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         
         b_pos += parts[k].rows();
 
+
         for(int r_p = 0; r_p < s; r_p++) {
             for(int i = pos; i < pos + parts[k].cols(); i++) {
                 mumps.rhs[i + r_p * mumps.n] = 0;
@@ -278,12 +279,12 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         pos += parts[k].cols() + parts[k].rows();
 
     }
+
     mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
     dmumps_c(&mumps);
     Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, s);
-        
 
     Eigen::MatrixXd Delta(X.rows(), X.cols());
     Delta.setZero();
@@ -303,6 +304,12 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     Eigen::MatrixXd Others(X.rows(), X.cols());
     Others.setZero();
 
+    //if(inter_comm.rank() == inter_comm.size()-1){
+        ////for(int i=0; i<mumps.n; i++) cout << mumps.rhs[i] << endl;
+        //cout << Delta << endl;
+    //}
+    //inter_comm.barrier();
+        //exit(0);
 
 #ifndef SERIALIZED
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();

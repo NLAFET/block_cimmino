@@ -43,6 +43,9 @@ int main(int argc, char *argv[])
         obj.start_index = 1;
         obj.icntl[9] = 0;
 
+        // ABCD
+        obj.icntl[10] = 1;
+
         obj.nbparts = 32;
         obj.partitioning_type = 2;
 
