@@ -43,10 +43,7 @@ int main(int argc, char *argv[])
         obj.start_index = 1;
         obj.icntl[9] = 0;
 
-        // ABCD
-        obj.icntl[10] = 1;
-
-        obj.nbparts = 32;
+        obj.nbparts = 4;
         obj.partitioning_type = 2;
 
         obj.parallel_cg = obj.nbparts < world.size() ? obj.nbparts : world.size();
@@ -64,7 +61,7 @@ int main(int argc, char *argv[])
             obj.bc(1);
             obj.bc(2);
 
-            obj.block_size = 1;
+            obj.block_size = 2;
             obj.itmax = 1000;
             obj.rhs = new double[obj.m_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++)
