@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         MM_typecode mat_code;
 
         // read the file and its content
-        f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
+        //f = fopen("/home/knuthy/stash/gre_1107/gre_1107.mtx", "r");
 //         f = fopen("/home/knuthy/stash/lhr34c/lhr34c.mtx", "r");
 //        f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
 //         f = fopen("/home/knuthy/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 //         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
 //         f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
 //         f = fopen("/home/knuthy/stash/Huhs_DNA_CC.mtx", "r");
-         //f = fopen("/home/knuthy/stash/1970", "r");
+         f = fopen("/home/knuthy/stash/1970", "r");
         mm_read_banner(f, &mat_code);
         mm_read_mtx_crd_size(f, (int *)&obj.m, (int *)&obj.n, (int *)&obj.nz);
 
