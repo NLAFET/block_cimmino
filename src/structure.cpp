@@ -13,7 +13,17 @@ void abcd::partitionMatrix()
 
     nbrows_per_part = ceil(float(m)/float(nbparts));
 
-    if(partitioning_type == 2) {
+    switch(partitioning_type){
+      case 1:
+        strow = ArrayXi(nbparts);
+
+        for(unsigned k = 0; k < nbparts; k++) {
+            strow(k) = row_sum;
+            row_sum += nbrows(k);
+        }
+        break;
+
+      case 2:
         strow = ArrayXi(nbparts);
         nbrows = ArrayXi(nbparts);
 
@@ -24,6 +34,7 @@ void abcd::partitionMatrix()
             strow(k) = row_sum;
             row_sum += nbrows(k);
         }
+        break;
     }
 
 }

@@ -252,6 +252,8 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
             for(int j = 0; j < s; j++) {
+                assert(x_pos < compressed_x.rows());
+                assert(ci < X.rows());
                 compressed_x(x_pos, j) = X(ci, j);
             }
             x_pos++;
@@ -304,39 +306,6 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     Others.setZero();
 
 
-#ifndef SERIALIZED
-    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); it++) {
-
-        // Prepare the data to be sent
-        std::vector<double> itc;
-        for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                itc.push_back(Delta(*i, j));
-            }
-        }
-        inter_comm.isend(it->first, 31, itc);
-    }
-    int received = 0;
-    while(received != col_interconnections.size()) {
-        std::vector<double> otc;
-        mpi::status st = inter_comm.recv(mpi::any_source, 31, otc);
-
-        // Uncompress data and sum it inside Others
-        int p = 0;
-        for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
-                    i != col_interconnections[st.source()].end(); i++) {
-                Others(*i, j) += otc[p++];
-            }
-        }
-        received++;
-    }
-
-
-
-
-#else
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
 
         // Prepare the data to be sent
@@ -386,7 +355,6 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
         }
 
     }
-#endif
 
     // Now sum the data to Delta
     Delta += Others;
