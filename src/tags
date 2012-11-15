@@ -13664,6 +13664,7 @@ a	../include/Eigen/src/SVD/JacobiSVD.h	/^  enum { a = MatrixType::RowsAtCompileT
 abcd	../include/abcd.h	/^    abcd();$/;"	p	class:abcd	access:public	signature:()
 abcd	../include/abcd.h	/^class abcd$/;"	c
 abcd	../src/abcd.cpp	/^abcd::abcd()$/;"	f	class:abcd	signature:()
+abcd	abcd.cpp	/^abcd::abcd()$/;"	f	class:abcd
 abcd::abcd	../include/abcd.h	/^    abcd();$/;"	p	class:abcd	access:public	signature:()
 abcd::abcd	../src/abcd.cpp	/^abcd::abcd()$/;"	f	class:abcd	signature:()
 abcd::allocateMumpsSlaves	../include/abcd.h	/^    void allocateMumpsSlaves();$/;"	p	class:abcd	access:private	signature:()
@@ -13858,6 +13859,7 @@ allocateB	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    inline 
 allocateB	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    void allocateB()$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:()
 allocateMumpsSlaves	../include/abcd.h	/^    void allocateMumpsSlaves();$/;"	p	class:abcd	access:private	signature:()
 allocateMumpsSlaves	../src/mumps.cpp	/^void abcd::allocateMumpsSlaves()$/;"	f	class:abcd	signature:()
+allocateMumpsSlaves	mumps.cpp	/^void abcd::allocateMumpsSlaves()$/;"	f	class:abcd
 allocateW	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    inline void allocateW() {}$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:()
 allocateW	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    void allocateW()$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:()
 allocatedSize	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    inline size_t allocatedSize() const { return m_allocatedSize; }$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:() const
@@ -13869,6 +13871,7 @@ amd_marked	../include/Eigen/src/OrderingMethods/Amd.h	/^template<typename T0, ty
 amd_unflip	../include/Eigen/src/OrderingMethods/Amd.h	/^template<typename T> inline T amd_unflip(const T& i) { return i<0 ? amd_flip(i) : i; }$/;"	f	namespace:Eigen::internal	signature:(const T& i)
 analyseAugmentedSystems	../include/abcd.h	/^    void analyseAugmentedSystems();$/;"	p	class:abcd	access:private	signature:()
 analyseAugmentedSystems	../src/mumps.cpp	/^void abcd::analyseAugmentedSystems()$/;"	f	class:abcd	signature:()
+analyseAugmentedSystems	mumps.cpp	/^void abcd::analyseAugmentedSystems()$/;"	f	class:abcd
 analyseFrame	../include/abcd.h	/^    void analyseFrame();$/;"	p	class:abcd	access:private	signature:()
 analyseFrame	../src/structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd	signature:()
 analyzePattern	../include/Eigen/src/CholmodSupport/CholmodSupport.h	/^    void analyzePattern(const MatrixType& matrix)$/;"	f	class:Eigen::CholmodBase	access:public	signature:(const MatrixType& matrix)
@@ -14007,8 +14010,10 @@ base	../include/Eigen/src/Core/PlainObjectBase.h	/^    Base& base() { return *st
 base	../include/Eigen/src/Core/PlainObjectBase.h	/^    const Base& base() const { return *static_cast<const Base*>(this); }$/;"	f	class:Eigen::PlainObjectBase	access:public	signature:() const
 bc	../include/abcd.h	/^    int bc(int);$/;"	p	class:abcd	access:public	signature:(int)
 bc	../src/abcd.cpp	/^int abcd::bc(int job)$/;"	f	class:abcd	signature:(int job)
+bc	abcd.cpp	/^int abcd::bc(int job)$/;"	f	class:abcd
 bcg	../include/abcd.h	/^    void bcg();$/;"	p	class:abcd	access:private	signature:()
 bcg	../src/bcg.cpp	/^void abcd::bcg()$/;"	f	class:abcd	signature:()
+bcg	bcg.cpp	/^void abcd::bcg()$/;"	f	class:abcd
 bicgstab	../include/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h	/^bool bicgstab(const MatrixType& mat, const Rhs& rhs, Dest& x,$/;"	f	namespace:Eigen::internal	signature:(const MatrixType& mat, const Rhs& rhs, Dest& x, const Preconditioner& precond, int& iters, typename Dest::RealScalar& tol_error)
 bidiagonal	../include/Eigen/src/SVD/UpperBidiagonalization.h	/^    const BidiagonalType& bidiagonal() const { return m_bidiagonal; }$/;"	f	class:Eigen::internal::UpperBidiagonalization	access:public	signature:() const
 binaryExpr	../include/Eigen/src/plugins/CommonCwiseBinaryOps.h	/^binaryExpr(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other, const CustomBinaryOp& func = CustomBinaryOp()) const$/;"	f	signature:(const EIGEN_CURRENT_STORAGE_BASE_CLASS<OtherDerived> &other, const CustomBinaryOp& func = CustomBinaryOp()) const
@@ -14418,6 +14423,7 @@ colwise	../include/Eigen/src/Core/VectorwiseOp.h	/^DenseBase<Derived>::colwise()
 comm_map	../include/abcd.h	/^    Eigen::VectorXi comm_map;$/;"	m	class:abcd	access:private
 comp_cols	../include/abcd.h	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R);$/;"	p	signature:(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
 comp_cols	../src/utils.cpp	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)$/;"	f	signature:(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
+comp_cols	utils.cpp	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)$/;"	f
 complex_schur_reduce_to_hessenberg	../include/Eigen/src/Eigenvalues/ComplexSchur.h	/^struct complex_schur_reduce_to_hessenberg$/;"	s	namespace:Eigen::internal
 complex_schur_reduce_to_hessenberg	../include/Eigen/src/Eigenvalues/ComplexSchur.h	/^struct complex_schur_reduce_to_hessenberg<MatrixType, false>$/;"	s	namespace:Eigen::internal
 compute	../include/Eigen/src/Cholesky/LDLT.h	/^    LDLT& compute(const MatrixType& matrix);$/;"	p	class:Eigen::LDLT	access:public	signature:(const MatrixType& matrix)
@@ -14530,6 +14536,7 @@ compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct comput
 compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct compute_inverse_size4<Architecture::SSE, float, MatrixType, ResultType>$/;"	s	namespace:Eigen::internal
 compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
+compute_rho	bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd
 conditionMatrix	../include/Eigen/src/Core/Select.h	/^    const ConditionMatrixType& conditionMatrix() const$/;"	f	class:Eigen::Select	access:public	signature:() const
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional <false, Then, Else> { typedef Else type; };$/;"	s	namespace:Eigen::internal
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional { typedef Then type; };$/;"	s	namespace:Eigen::internal
@@ -14668,8 +14675,10 @@ cpotri	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(cpotri)(char *, int *, fl
 cpuid_is_vendor	../include/Eigen/src/Core/util/Memory.h	/^inline bool cpuid_is_vendor(int abcd[4], const char* vendor)$/;"	f	namespace:Eigen::internal	signature:(int abcd[4], const char* vendor)
 createAugmentedSystems	../include/abcd.h	/^    void createAugmentedSystems();$/;"	p	class:abcd	access:private	signature:()
 createAugmentedSystems	../src/mumps.cpp	/^void abcd::createAugmentedSystems()$/;"	f	class:abcd	signature:()
+createAugmentedSystems	mumps.cpp	/^void abcd::createAugmentedSystems()$/;"	f	class:abcd
 createInterComm	../include/abcd.h	/^    void createInterComm();$/;"	p	class:abcd	access:private	signature:()
 createInterComm	../src/comms.cpp	/^void abcd::createInterComm()$/;"	f	class:abcd	signature:()
+createInterComm	comms.cpp	/^void abcd::createInterComm()$/;"	f	class:abcd
 cross	../include/Eigen/src/Core/MatrixBase.h	/^    cross(const MatrixBase<OtherDerived>& other) const;$/;"	p	class:Eigen::MatrixBase	access:public	signature:(const MatrixBase<OtherDerived>& other) const
 cross	../include/Eigen/src/Core/VectorwiseOp.h	/^    const CrossReturnType cross(const MatrixBase<OtherDerived>& other) const;$/;"	p	class:Eigen::VectorwiseOp	access:public	signature:(const MatrixBase<OtherDerived>& other) const
 cross	../include/Eigen/src/Geometry/OrthoMethods.h	/^MatrixBase<Derived>::cross(const MatrixBase<OtherDerived>& other) const$/;"	f	class:Eigen::MatrixBase	signature:(const MatrixBase<OtherDerived>& other) const
@@ -14770,6 +14779,7 @@ dcopy	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(dcopy) (int *, double *
 ddot	../include/Eigen/src/misc/blas.h	/^double BLASFUNC(ddot)  (int *, double *, int *, double *, int *);$/;"	p	signature:(int *, double *, int *, double *, int *)
 ddot	../include/abcd.h	/^    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
 ddot	../src/utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
+ddot	utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd
 deallocate	../include/Eigen/src/Core/util/Memory.h	/^    void deallocate( pointer p, size_type \/*num*\/ )$/;"	f	class:Eigen::aligned_allocator	access:public	signature:( pointer p, size_type )
 debug	../include/Eigen/src/Core/Assign.h	/^  static void debug()$/;"	f	struct:Eigen::internal::assign_traits	access:public	signature:()
 debug	../include/Eigen/src/Core/GeneralProduct.h	/^  static void debug()$/;"	f	struct:Eigen::internal::product_type	access:public	signature:()
@@ -14903,8 +14913,10 @@ distance	../include/Eigen/src/Eigen2Support/Geometry/ParametrizedLine.h	/^  Real
 distance	../include/Eigen/src/Geometry/ParametrizedLine.h	/^  RealScalar distance(const VectorType& p) const { return internal::sqrt(squaredDistance(p)); }$/;"	f	class:Eigen::ParametrizedLine	access:public	signature:(const VectorType& p) const
 distributePartitions	../include/abcd.h	/^    void distributePartitions();$/;"	p	class:abcd	access:private	signature:()
 distributePartitions	../src/comms.cpp	/^void abcd::distributePartitions()$/;"	f	class:abcd	signature:()
+distributePartitions	comms.cpp	/^void abcd::distributePartitions()$/;"	f	class:abcd
 distributeRhs	../include/abcd.h	/^    void distributeRhs();$/;"	p	class:abcd	access:private	signature:()
 distributeRhs	../src/comms.cpp	/^void abcd::distributeRhs()$/;"	f	class:abcd	signature:()
+distributeRhs	comms.cpp	/^void abcd::distributeRhs()$/;"	f	class:abcd
 dlaswp	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dlaswp)(int *, double *, int *, int *, int *, int *, int *);$/;"	p	signature:(int *, double *, int *, int *, int *, int *, int *)
 dlauu2	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dlauu2)(char *, int *, double *, int *, int *);$/;"	p	signature:(char *, int *, double *, int *, int *)
 dlauum	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dlauum)(char *, int *, double *, int *, int *);$/;"	p	signature:(char *, int *, double *, int *, int *)
@@ -15210,6 +15222,7 @@ factorize	../include/Eigen/src/SuperLUSupport/SuperLUSupport.h	/^void SuperLU<Ma
 factorize	../include/Eigen/src/UmfPackSupport/UmfPackSupport.h	/^    void factorize(const MatrixType& matrix)$/;"	f	class:Eigen::UmfPackLU	access:public	signature:(const MatrixType& matrix)
 factorizeAugmentedSystems	../include/abcd.h	/^    void factorizeAugmentedSystems();$/;"	p	class:abcd	access:private	signature:()
 factorizeAugmentedSystems	../src/mumps.cpp	/^void abcd::factorizeAugmentedSystems()$/;"	f	class:abcd	signature:()
+factorizeAugmentedSystems	mumps.cpp	/^void abcd::factorizeAugmentedSystems()$/;"	f	class:abcd
 factorize_preordered	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^    void factorize_preordered(const CholMatrixType& a);$/;"	p	class:Eigen::SimplicialCholeskyBase	access:protected	signature:(const CholMatrixType& a)
 factorize_preordered	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^void SimplicialCholeskyBase<Derived>::factorize_preordered(const CholMatrixType& ap)$/;"	f	class:Eigen::SimplicialCholeskyBase	signature:(const CholMatrixType& ap)
 false_type	../include/Eigen/src/Core/util/Meta.h	/^struct false_type { enum { value = 0 }; };$/;"	s	namespace:Eigen::internal
@@ -15404,16 +15417,21 @@ getU	../include/Eigen/src/Cholesky/LLT.h	/^  static inline MatrixU getU(const Ma
 getU	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^  static inline MatrixU getU(const MatrixType& m) { return m.adjoint(); }$/;"	f	struct:Eigen::internal::traits	access:public	signature:(const MatrixType& m)
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename From,typename To> struct get_factor {$/;"	s	namespace:Eigen::internal
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename Scalar> struct get_factor<Scalar,typename NumTraits<Scalar>::Real> {$/;"	s	namespace:Eigen::internal
+get_nrmres	utils.cpp	/^void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
 glob_to_local	../include/abcd.h	/^    std::map<int,int> glob_to_local;$/;"	m	class:abcd	access:public
 global_math_functions_filtering_base	../include/Eigen/src/Core/MathFunctions.h	/^struct global_math_functions_filtering_base$/;"	s	namespace:Eigen::internal
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a)
 gmgs	../src/bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
 gmgs	../src/bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, Eigen::SparseMatrix<double> g, int s, bool use_a)
+gmgs	bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd
+gmgs	bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd
 gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
 gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a)
 gqr	../src/bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
 gqr	../src/bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, Eigen::SparseMatrix<double> g, int s, bool use_a)
+gqr	bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd
+gqr	bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLDLT	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLLT	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLU	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
@@ -15582,12 +15600,15 @@ initParallel	../include/Eigen/src/Core/products/Parallelizer.h	/^inline void ini
 initParallelSession	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^  void initParallelSession() const$/;"	f	struct:Eigen::internal::gemm_functor	access:public	signature:() const
 initialize	../include/abcd.h	/^    void initialize();$/;"	p	class:abcd	access:private	signature:()
 initialize	../src/abcd.cpp	/^void abcd::initialize()$/;"	f	class:abcd	signature:()
+initialize	abcd.cpp	/^void abcd::initialize()$/;"	f	class:abcd
 initializeCimmino	../include/abcd.h	/^    void initializeCimmino();$/;"	p	class:abcd	access:private	signature:()
 initializeCimmino	../src/cimmino.cpp	/^void abcd::initializeCimmino()$/;"	f	class:abcd	signature:()
 initializeMumps	../include/abcd.h	/^    void initializeMumps();$/;"	p	class:abcd	access:private	signature:()
 initializeMumps	../include/abcd.h	/^    void initializeMumps(bool local);$/;"	p	class:abcd	access:private	signature:(bool local)
 initializeMumps	../src/mumps.cpp	/^void abcd::initializeMumps()$/;"	f	class:abcd	signature:()
 initializeMumps	../src/mumps.cpp	/^void abcd::initializeMumps(bool local)$/;"	f	class:abcd	signature:(bool local)
+initializeMumps	mumps.cpp	/^void abcd::initializeMumps()$/;"	f	class:abcd
+initializeMumps	mumps.cpp	/^void abcd::initializeMumps(bool local)$/;"	f	class:abcd
 inner	../include/Eigen/src/Core/Assign.h	/^    inner = Index % Derived1::InnerSizeAtCompileTime$/;"	e	enum:Eigen::internal::assign_DefaultTraversal_CompleteUnrolling::__anon224
 inner	../include/Eigen/src/Core/Assign.h	/^    inner = Index % Derived1::InnerSizeAtCompileTime,$/;"	e	enum:Eigen::internal::assign_innervec_CompleteUnrolling::__anon225
 inner	../include/Eigen/src/Core/Redux.h	/^    inner = Start % Derived::InnerSizeAtCompileTime$/;"	e	enum:Eigen::internal::redux_novec_unroller::__anon273
@@ -15883,6 +15904,7 @@ inverse_impl	../include/Eigen/src/LU/Inverse.h	/^  inverse_impl(const MatrixType
 inverse_impl	../include/Eigen/src/LU/Inverse.h	/^struct inverse_impl : public ReturnByValue<inverse_impl<MatrixType> >$/;"	s	namespace:Eigen::internal	inherits:ReturnByValue
 ip_comp	../include/abcd.h	/^bool ip_comp(const dipair &, const dipair &);$/;"	p	signature:(const dipair &, const dipair &)
 ip_comp	../src/utils.cpp	/^bool ip_comp(const dipair &l, const dipair &r)$/;"	f	signature:(const dipair &l, const dipair &r)
+ip_comp	utils.cpp	/^bool ip_comp(const dipair &l, const dipair &r)$/;"	f
 iparm	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    Array<Index,IPARM_SIZE,1>& iparm()$/;"	f	class:Eigen::PastixBase	access:public	signature:()
 iparm	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    int& iparm(int idxparam)$/;"	f	class:Eigen::PastixBase	access:public	signature:(int idxparam)
 iqamax	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(iqamax)(int *, double *, int *);$/;"	p	signature:(int *, double *, int *)
@@ -17742,6 +17764,7 @@ partitionMatrix	../include/abcd.h	/^    void partitionMatrix();$/;"	p	class:abcd
 partitionMatrix	../src/structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd	signature:()
 partitionWeights	../include/abcd.h	/^    void partitionWeights(std::vector<int> &, std::vector<int>, int);$/;"	p	class:abcd	access:private	signature:(std::vector<int> &, std::vector<int>, int)
 partitionWeights	../src/utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd	signature:(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
+partitionWeights	utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd
 partitioning_type	../include/abcd.h	/^    int partitioning_type;$/;"	m	class:abcd	access:public
 parts	../include/abcd.h	/^    std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;$/;"	m	class:abcd	access:private
 parts_id	../include/abcd.h	/^    std::vector<int> parts_id;$/;"	m	class:abcd	access:public
@@ -18042,6 +18065,7 @@ prefetch	../include/Eigen/src/Core/arch/SSE/PacketMath.h	/^template<> EIGEN_STRO
 prefetch	../include/Eigen/src/Core/arch/SSE/PacketMath.h	/^template<> EIGEN_STRONG_INLINE void prefetch<int>(const int*       addr) { _mm_prefetch((const char*)(addr), _MM_HINT_T0); }$/;"	f	namespace:Eigen::internal	signature:(const int* addr)
 preprocess	../include/abcd.h	/^    void preprocess();$/;"	p	class:abcd	access:private	signature:()
 preprocess	../src/preprocess.cpp	/^void abcd::preprocess()$/;"	f	class:abcd	signature:()
+preprocess	preprocess.cpp	/^void abcd::preprocess()$/;"	f	class:abcd
 prerotate	../include/Eigen/src/Eigen2Support/Geometry/Transform.h	/^  inline Transform& prerotate(const RotationType& rotation);$/;"	p	class:Eigen::Transform	access:public	signature:(const RotationType& rotation)
 prerotate	../include/Eigen/src/Eigen2Support/Geometry/Transform.h	/^Transform<Scalar,Dim>::prerotate(const RotationType& rotation)$/;"	f	class:Eigen::Transform	signature:(const RotationType& rotation)
 prerotate	../include/Eigen/src/Geometry/Transform.h	/^  inline Transform& prerotate(const RotationType& rotation);$/;"	p	class:Eigen::Transform	access:public	signature:(const RotationType& rotation)
@@ -18961,6 +18985,7 @@ scaleAndAddTo	../include/Eigen/src/SparseCore/SparseSelfAdjointView.h	/^    temp
 scaleAndAddTo	../include/Eigen/src/SparseCore/SparseSelfAdjointView.h	/^    template<typename Dest> void scaleAndAddTo(Dest& dest, Scalar alpha) const$/;"	f	class:Eigen::SparseSelfAdjointTimeDenseProduct	access:public	signature:(Dest& dest, Scalar alpha) const
 scaleMatrix	../include/abcd.h	/^    void scaleMatrix(int norm);$/;"	p	class:abcd	access:private	signature:(int norm)
 scaleMatrix	../src/preprocess.cpp	/^void abcd::scaleMatrix(int norm)$/;"	f	class:abcd	signature:(int norm)
+scaleMatrix	preprocess.cpp	/^void abcd::scaleMatrix(int norm)$/;"	f	class:abcd
 scamax	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(scamax)(int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 scamin	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(scamin)(int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 scasum	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(scasum)(int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
@@ -19430,12 +19455,16 @@ sum	../include/Eigen/src/SparseCore/SparseRedux.h	/^SparseVector<_Scalar,_Option
 sum	../include/Eigen/src/SparseCore/SparseVector.h	/^    Scalar sum() const;$/;"	p	class:Eigen::SparseVector	access:public	signature:() const
 sumProject	../include/abcd.h	/^    Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);$/;"	p	class:abcd	access:private	signature:(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
 sumProject	../src/mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd	signature:(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
+sumProject	mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd
 sum_cols	../include/abcd.h	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_cols	../src/utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
+sum_cols	utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
 sum_nnz	../include/abcd.h	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_nnz	../src/utils.cpp	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
+sum_nnz	utils.cpp	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
 sum_rows	../include/abcd.h	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_rows	../src/utils.cpp	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
+sum_rows	utils.cpp	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^    void sumupDuplicates();$/;"	p	class:Eigen::SparseMatrix	access:public	signature:()
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^void SparseMatrix<Scalar,_Options,_Index>::sumupDuplicates()$/;"	f	class:Eigen::SparseMatrix	signature:()
 super	../include/Eigen/src/Core/BandMatrix.h	/^    inline const typename Base::template DiagonalIntReturnType<1>::Type super() const$/;"	f	class:Eigen::internal::TridiagonalMatrix	access:public	signature:() const
@@ -20232,6 +20261,7 @@ ztrtri	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(ztrtri)(char *, char *, i
 ~UmfPackLU	../include/Eigen/src/UmfPackSupport/UmfPackSupport.h	/^    ~UmfPackLU()$/;"	f	class:Eigen::UmfPackLU	access:public	signature:()
 ~abcd	../include/abcd.h	/^    ~abcd();$/;"	p	class:abcd	access:public	signature:()
 ~abcd	../src/abcd.cpp	/^abcd::~abcd()$/;"	f	class:abcd	signature:()
+~abcd	abcd.cpp	/^abcd::~abcd()$/;"	f	class:abcd
 ~aligned_allocator	../include/Eigen/src/Core/util/Memory.h	/^    ~aligned_allocator()$/;"	f	class:Eigen::aligned_allocator	access:public	signature:()
 ~aligned_allocator_indirection	../include/Eigen/src/StlSupport/details.h	/^    ~aligned_allocator_indirection() {}$/;"	f	class:Eigen::aligned_allocator_indirection	access:public	signature:()
 ~aligned_stack_memory_handler	../include/Eigen/src/Core/util/Memory.h	/^    ~aligned_stack_memory_handler()$/;"	f	class:Eigen::internal::aligned_stack_memory_handler	access:public	signature:()

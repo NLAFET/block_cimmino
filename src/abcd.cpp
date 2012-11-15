@@ -7,6 +7,7 @@ using namespace std;
 int abcd::bc(int job)
 {
     mpi::communicator world;
+
     switch(job) {
 
     case -1:
@@ -102,4 +103,3 @@ abcd::abcd()
 abcd::~abcd()
 {
 }
-

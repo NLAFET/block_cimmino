@@ -79,6 +79,7 @@ void abcd::distributePartitions()
 
         }
 
+        // Send those interconnections to the other masters
         std::map<int, std::vector<int> > inter;
         for(int i = 0; i < parallel_cg; i++) {
             for(int j = i + 1; j < parallel_cg; j++) {
@@ -131,7 +132,6 @@ void abcd::distributePartitions()
         // Now that everybody got its partition, delete them from the master
         parts.erase(parts.begin() + groups[0] + 1, parts.end());
         column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
-        local_column_index = column_index;
 
         m_l = m;
         m = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
@@ -166,10 +166,6 @@ void abcd::distributePartitions()
             std::vector<int> ci;
             inter_comm.recv(0, 6, ci);
             column_index.push_back(ci);
-            int dec = ci[0];
-            for(int i = 0; i < ci.size(); i++) ci[i] -= dec;
-            local_column_index.push_back(ci);
-
 
             // Create the matrix and push it in!
             MappedSparseMatrix<double, RowMajor> mat(l_m, l_n, l_nz, l_irst, l_jcn, l_v);
@@ -194,6 +190,7 @@ void abcd::distributePartitions()
         nz = snz;
     }
 
+    // Create a merge of the column indices
     std::vector<int> merge_index;
     for(int j = 0; j < parts.size(); j++) {
         std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
@@ -202,15 +199,19 @@ void abcd::distributePartitions()
     std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
     merge_index.erase(last, merge_index.end());
 
+    // for each partition find a local column index for the previous merge
     int indices[parts.size()];
     for(int i = 0; i < parts.size(); i++) indices[i] = 0;
+
     local_column_index = std::vector<std::vector<int> >(parts.size());
 
     for(int j = 0; j < merge_index.size(); j++) {
         for(int i = 0; i < parts.size(); i++) {
-            if(column_index[i][indices[i]] == merge_index[j]) {
-                indices[i]++;
+            if(column_index[i][indices[i]] == merge_index[j] &&
+                    indices[i] < column_index[i].size() ) {
+
                 local_column_index[i].push_back(j);
+                indices[i]++;
             }
         }
     }
@@ -241,16 +242,35 @@ void abcd::distributeRhs()
 {
     mpi::communicator world;
 
+    mpi::broadcast(inter_comm, use_xf, 0);
+
     if(world.rank() == 0) {
         int r_pos = 0;
         // Build my part of the RHS
         int r = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
-        b = Eigen::MatrixXd(r, nrhs);
+        if(use_xf){
+            xf = Eigen::MatrixXd(mtx.cols(), nrhs);
+            for(int j = 0; j < nrhs; j++){
+                for(int i = 0; i < mtx.cols(); i++) {
+                    xf(i, j) = rhs[i + j * m];
+                }
+            }
+            nrmXf = xf.lpNorm<Infinity>();
+            Eigen::MatrixXd B = mtx * xf;
 
-        for(int j = 0; j < nrhs; j++)
+            for(int j = 0; j < B.cols(); j++){
+                for(int i = 0; i < B.rows(); i++) {
+                    rhs[i + j * B.rows()] = B(i, j);
+                }
+            }
+        }
+
+        b = Eigen::MatrixXd(r, nrhs);
+        for(int j = 0; j < nrhs; j++){
             for(int i = 0; i < r; i++) {
                 b(i, j) = rhs[i + j * m];
             }
+        }
 
         r_pos += r;
 

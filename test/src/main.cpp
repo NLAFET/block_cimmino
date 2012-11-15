@@ -18,15 +18,20 @@ int main(int argc, char *argv[])
         MM_typecode mat_code;
 
         // read the file and its content
-        f = fopen("/home/knuthy/stash/gre_1107/gre_1107_pr.mtx", "r");
-//         f = fopen("/home/knuthy/stash/lhr34c/lhr34c.mtx", "r");
-//        f = fopen("/home/knuthy/stash/bayer01/bayer01.mtx", "r");
-//         f = fopen("/home/knuthy/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
-//         f = fopen("/home/knuthy/stash/PR02R/PR02R.mtx", "r");
-//         f = fopen("/home/knuthy/stash/pores_3/pores_3.mtx", "r");
-//         f = fopen("/home/knuthy/stash/s3_sym.mtx", "r");
-//         f = fopen("/home/knuthy/stash/Huhs_DNA_CC.mtx", "r");
-         //f = fopen("/home/knuthy/stash/1970", "r");
+        //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
+         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
+        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+       //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/RM07R/RM07R.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/GT01R/GT01R.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/lhr34c/lhr34c.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/PR02R/PR02R.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/pores_3/pores_3.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/s3_sym.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/Huhs_DNA_CC.mtx", "r");
+//        f = fopen("/home/knuthy/work/stash/1970", "r");
         mm_read_banner(f, &mat_code);
         mm_read_mtx_crd_size(f, (int *)&obj.m, (int *)&obj.n, (int *)&obj.nz);
 
@@ -41,10 +46,14 @@ int main(int argc, char *argv[])
         obj.val = new double[obj.nz];
 
         obj.start_index = 1;
-        obj.icntl[9] = 0;
+        obj.icntl[9] = 2;
 
-        obj.nbparts = 5;
-        obj.partitioning_type = 2;
+        obj.nbparts = 16;
+
+        obj.partitioning_type = 1;
+        obj.nbrows = ArrayXi(obj.nbparts);
+        //obj.nbrows << 219, 218, 223, 224, 223;
+        obj.nbrows << 3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599;
 
         obj.parallel_cg = obj.nbparts < world.size() ? obj.nbparts : world.size();
 
@@ -62,7 +71,8 @@ int main(int argc, char *argv[])
             obj.bc(2);
 
             obj.block_size = 1;
-            obj.itmax = 3000;
+            obj.itmax = 1000;
+            obj.use_xf = false;
             obj.rhs = new double[obj.m_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++)
                 for(int i = 0; i < obj.m_l; i++)

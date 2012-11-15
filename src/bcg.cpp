@@ -26,7 +26,7 @@ void abcd::bcg()
     double *l_ptr;
 
     double lnrmBs = std::pow(b.norm(), 2);
-    double thresh = 1e-10;
+    double thresh = 1e-12;
 
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, std::plus<double>());
@@ -81,10 +81,15 @@ void abcd::bcg()
 
     double ti = MPI_Wtime();
 
+    if(inter_comm.rank() == inter_comm.size() - 1) {
+        cout << "ITERATION " << 0 << endl;
+    }
     rho = compute_rho(xk, b, thresh);
-    mrho = rho;
 
-    while((mrho > thresh) && (it < itmax)) {
+    while((rho > thresh) && (it < itmax)) {
+        if(inter_comm.rank() == inter_comm.size() - 1) {
+            cout << "ITERATION " << it + 1 << endl;
+        }
         it++;
 
         qp = sumProject(0e0, u, 1e0, p);
@@ -111,24 +116,14 @@ void abcd::bcg()
         gammak = gammak.triangularView<Eigen::Upper>();
         betak = betak.triangularView<Eigen::Upper>() * gammak.transpose() ;
 
-        //temp_ = gammak.block(0, 0, nrhs, nrhs);
-        //temp_ptr = temp_.data();
-        //pgamma_ptr = prod_gamma.data();
-        //dtrmm_(&left, &up, &notr, &notr, &nrhs, &nrhs, &alpha, temp_ptr,
-                //&nrhs, pgamma_ptr, &nrhs);
-
-        //double *betak_ptr = betak.data();
-        //double *gammak_ptr = gammak.data();
-        //dtrmm_(&right, &up, &tr, &notr, &s, &s, &alpha, gammak_ptr,
-                //&s, betak_ptr, &s);
         p = r + p * betak;
 
         rho = abcd::compute_rho(xk, b, thresh);
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
-        cout << "ITERATION " << it
-                << " rho = " << rho << endl;
+        //cout << "ITERATION " << it
+                //<< " rho = " << rho << endl;
     }
     if(inter_comm.rank() == inter_comm.size() - 1) {
         //cout << xk << endl;
@@ -144,7 +139,7 @@ double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
     R.setZero();
     int pos = 0;
     int ci;
-    double gnrmx;
+    double gnrmx, nrmXfmX;
     std::vector<double> vnrmx(inter_comm.size());
 
     for(int p = 0; p < parts.size(); p++) {
@@ -165,8 +160,9 @@ double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
     }
     R = u - R;
     //
-    double nrmR, nrmX;
-    abcd::get_nrmres(x, nrmR, nrmX);
+    double nrmR, nrmX, rho;
+    abcd::get_nrmres(x, nrmR, nrmX, nrmXfmX);
+    rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;
     //cout << "X -> " << nrmX << " " << x.col(0).norm() << endl;
     //cout << "R -> " << nrmR << endl;
@@ -175,7 +171,11 @@ double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
     //cout << "M -> " << nrmMtx << endl;
     //return R.col(0).norm() / (nrmA * x.col(0).norm() + u.col(0).norm());
     //cout<< R.col(0).norm() / (nrmA * x.col(0).norm() + nrmB) << endl;
-    return nrmR / (nrmMtx*nrmX + nrmB);
+    if(inter_comm.rank() == inter_comm.size() - 1) {
+        cout << "Rho = " << rho << endl;
+        if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
+    }
+    return rho;
 }
 
 void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
