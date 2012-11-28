@@ -245,9 +245,18 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, use_xf, 0);
 
     if(world.rank() == 0) {
+
         int r_pos = 0;
         // Build my part of the RHS
         int r = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
+
+        if(rhs==NULL){
+            rhs = new double[r * nrhs];
+            for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
+        } else {
+            cout << "HERE"<< endl;
+        }
+
         if(use_xf){
             xf = Eigen::MatrixXd(mtx.cols(), nrhs);
             for(int j = 0; j < nrhs; j++){
