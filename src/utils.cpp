@@ -69,6 +69,12 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
     return r;
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::get_nrmres
+ *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
+ * =====================================================================================
+ */
 void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
@@ -82,6 +88,7 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
     Eigen::MatrixXd loc_xfmx(rm, rn);
     loc_x.setZero();
     loc_r.setZero();
+    loc_xfmx.setZero();
 
     int pos = 0;
     for(int i = 0; i < rm; i++) {
