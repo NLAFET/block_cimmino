@@ -14,33 +14,48 @@ void abcd::partitionMatrix()
     nbrows_per_part = ceil(float(m)/float(nbparts));
 
     switch(partitioning_type){
-      case 1:
-        strow = ArrayXi(nbparts);
+        
+        /*-----------------------------------------------------------------------------
+         *  Uniform partitioning with a given nbrows
+         *-----------------------------------------------------------------------------*/
+        case 1:
+            strow = ArrayXi(nbparts);
 
-        for(unsigned k = 0; k < nbparts; k++) {
-            strow(k) = row_sum;
-            row_sum += nbrows(k);
-        }
-        break;
+            for(unsigned k = 0; k < nbparts; k++) {
+                strow(k) = row_sum;
+                row_sum += nbrows(k);
+            }
+            break;
 
-      case 2:
-        strow = ArrayXi(nbparts);
-        nbrows = ArrayXi(nbparts);
+        /*-----------------------------------------------------------------------------
+         *  Uniform partitioning with only nbparts as input (generates nbrows)
+         *-----------------------------------------------------------------------------*/
+        case 2:
+            strow = ArrayXi(nbparts);
+            nbrows = ArrayXi(nbparts);
 
-        nbrows.setConstant(nbrows_per_part);
+            nbrows.setConstant(nbrows_per_part);
 
-        nbrows(nbparts - 1) += m - nbrows.sum();
-        for(unsigned k = 0; k < nbparts; k++) {
-            strow(k) = row_sum;
-            row_sum += nbrows(k);
-        }
-        break;
+            nbrows(nbparts - 1) += m - nbrows.sum();
+            for(unsigned k = 0; k < nbparts; k++) {
+                strow(k) = row_sum;
+                row_sum += nbrows(k);
+            }
+            break;
+        /*-----------------------------------------------------------------------------
+         *  PaToH partitioning
+         *-----------------------------------------------------------------------------*/
+        //case 3:
+
     }
 
 }
 
 void abcd::analyseFrame()
 {
+
+    std::vector<Eigen::SparseMatrix<double, ColMajor> > loc_parts;
+    std::vector<int> ci_sizes;
     for(unsigned k = 0; k < nbparts; k++) {
         // Our k-th partition
         SparseMatrix<double, ColMajor> part = mtx.middleRows(strow[k], nbrows[k]);
@@ -55,8 +70,34 @@ void abcd::analyseFrame()
             j++;
         }
         column_index.push_back(ci);
+        ci_sizes.push_back(ci.size());
 
-        int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
-        parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
+        //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
+        //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
+        loc_parts.push_back(SparseMatrix<double, ColMajor>(part.middleCols(0, ci.size())));
     }
+
+    if(use_abcd){
+        abcd::augmentMatrix();
+    }
+
+    for(unsigned k = 0; k < nbparts; k++) {
+        int *last = std::unique(loc_parts[k].outerIndexPtr(),
+                loc_parts[k].outerIndexPtr() + loc_parts[k].outerSize() + 1);
+        parts.push_back(SparseMatrix<double, RowMajor>(loc_parts[k]));
+        //loc_parts[k] = NULL;
+    }
+
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::augmentMatrix
+ *  Description:  Augments the matrix and build the C part in [A C]
+ * =====================================================================================
+ */
+    void
+abcd::augmentMatrix (  )
+{
+
+}		/* -----  end of function abcd::augmentMatrix  ----- */

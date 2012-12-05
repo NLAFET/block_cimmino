@@ -132,7 +132,9 @@ void abcd::allocateMumpsSlaves()
         double top = 1, low = 0.90;
 
         for(int i = 0; i < inter_comm.size() && slaves_left > 0 ; i++) {
-            shares.push_back(((double)flops_s[i].first / (double) s) * nb_slaves);
+            shares.push_back(
+		    ((double)flops_s[i].first / (double) s) * nb_slaves
+            );
         }
 
         while(slaves_left > 0) {
@@ -141,9 +143,11 @@ void abcd::allocateMumpsSlaves()
                 if(shares[i] < 0) continue;
                 if((shares[i] - floor(shares[i])) >= low  &&
                         (shares[i] - floor(shares[i])) < top) {
-                    share_of_slaves = ceil(shares[i]) < slaves_left ? ceil(shares[i]) : slaves_left;
+		    share_of_slaves = ceil(shares[i]) < slaves_left ?
+                        ceil(shares[i]) : slaves_left;
                 } else {
-                    share_of_slaves = floor(shares[i]) < slaves_left ? floor(shares[i]) : slaves_left;
+                    share_of_slaves = floor(shares[i]) < slaves_left ?
+                        floor(shares[i]) : slaves_left;
                 }
                 slaves_for_me_t[i] += share_of_slaves;
                 slaves_left -= share_of_slaves;
@@ -157,7 +161,8 @@ void abcd::allocateMumpsSlaves()
         }
 
         int current_slave = inter_comm.size();
-        for(int your_master = 0 ; your_master < inter_comm.size(); your_master++) {
+        for(int your_master = 0 ; your_master < inter_comm.size();
+                your_master++) {
 
             for(int i = 0; i < slaves_for_me[your_master]; i++) {
 
@@ -172,8 +177,10 @@ void abcd::allocateMumpsSlaves()
                 current_slave++;
             }
         }
-        // Now that the slaves know who's their daddy, tell who are their brothers
-        for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); slave++) {
+        // Now that the slaves know who's their daddy,
+        //tell who are their brothers
+        for(std::vector<int>::iterator slave = my_slaves.begin();
+                slave != my_slaves.end(); slave++) {
             world.send(*slave, 12, my_slaves);
         }
 
@@ -272,7 +279,8 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
                 mumps.rhs[i + r_p * mumps.n] = 0;
             }
             int j = 0;
-            for(int i = pos + parts[k].cols(); i < pos + parts[k].cols() + parts[k].rows(); i++) {
+            for(int i = pos + parts[k].cols();
+                    i < pos + parts[k].cols() + parts[k].rows(); i++) {
                 mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
             }
         }
@@ -283,7 +291,11 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
+    double t = MPI_Wtime();
     dmumps_c(&mumps);
+    t = MPI_Wtime() - t;
+    cout << "[" << inter_comm.rank() << " ] Time spent in direct solver : "
+        << t << endl;
     Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, s);
         
 

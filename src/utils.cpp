@@ -120,10 +120,15 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
         pos += parts[p].rows();
     }
 
-    double loc_nrmxfmx ;
+    double loc_nrmxfmx;
     if(use_xf){
-        loc_xfmx = xf - x;
-        loc_nrmxfmx = loc_xfmx.lpNorm<Infinity>();
+        if(inter_comm.size()!=0) {
+            if(inter_comm.rank()==0)
+                cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
+        } else {
+            loc_xfmx = xf - x;
+            loc_nrmxfmx = loc_xfmx.lpNorm<Infinity>();
+        }
     }
 
     loc_r  = b - loc_r;
@@ -137,7 +142,8 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
     mpi::all_reduce(inter_comm, &nrmX, 1,  &nrm, std::plus<double>());
     nrmX = sqrt(nrm);
     if(use_xf){
-        mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());
+        if(inter_comm.size()==0)
+            mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());
         //nrmXfmX = loc_xfmx.norm();
     }
 }

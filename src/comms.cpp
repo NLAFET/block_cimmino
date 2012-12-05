@@ -93,11 +93,19 @@ void abcd::distributePartitions()
                         ++it1;
                     } else {
                         if(!(*it2 < *it1)) {
-                            inter1.push_back(it1 - group_column_index[i].begin());
-                            inter2.push_back(it2 - group_column_index[j].begin());
+                            inter1.push_back(
+				    it1 - group_column_index[i].begin()
+                            );
+                            inter2.push_back(
+				    it2 - group_column_index[j].begin()
+                            );
 
-                            inter[i].push_back(it1 - group_column_index[i].begin());
-                            inter[j].push_back(it1 - group_column_index[i].begin());
+                            inter[i].push_back(
+				    it1 - group_column_index[i].begin()
+                            );
+                            inter[j].push_back(
+				    it1 - group_column_index[i].begin()
+                            );
                         }
                         ++it2;
                     }
