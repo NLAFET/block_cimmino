@@ -99,7 +99,6 @@ abcd::abcd()
     block_size = 1;
     use_xk = false;
     use_xf = false;
-    use_abcd = false;
     rhs = NULL;
     for(int i = 0; i < 10; i++) icntl[i] = 0;
     for(int i = 0; i < 10; i++) dcntl[i] = 0;

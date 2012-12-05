@@ -177,7 +177,6 @@ public:
     std::map<int,int> glob_to_local;
     bool use_xk;
     bool use_xf;
-    bool use_abcd;
 
     /**
      * Contains the mutual interconnections between partitions
