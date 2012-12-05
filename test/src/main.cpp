@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
 
         /* read the file and its content */
         //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
+        f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
-        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
