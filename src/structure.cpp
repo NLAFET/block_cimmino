@@ -64,7 +64,7 @@ void abcd::analyseFrame()
 
 
     if(use_abcd){
-        abcd::augmentMatrix();
+        abcd::augmentMatrix(loc_parts);
     }
 
     for(unsigned k = 0; k < nbparts; k++) {
@@ -97,7 +97,31 @@ void abcd::analyseFrame()
  * =====================================================================================
  */
     void
-abcd::augmentMatrix (  )
+abcd::augmentMatrix ( std::vector<Eigen::SparseMatrix<double, ColMajor> > &loc_parts)
 {
+    /*
+     * Which augmentation to use:
+     */
+    if(icntl[10] == 0){
+        /* No augmentation */
+        return;
+    } else if (icntl[10] == 1){
+        /*
+         * C_ij/-I augmentation
+         */
+        
+        // build C_ij
+
+    } else if (icntl[10] == 2){
+        /*
+         * A_ij/-A_ji augmentation
+         */
+
+    } else if (icntl[10] == 3){
+        /*
+         * SVD augmentation
+         */
+
+    }
 
 }		/* -----  end of function abcd::augmentMatrix  ----- */

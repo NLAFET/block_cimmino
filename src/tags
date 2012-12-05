@@ -14001,7 +14001,7 @@ atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_defa
 atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_default_impl<Scalar, true>$/;"	s	namespace:Eigen::internal
 atan2_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_impl : atan2_default_impl<Scalar, NumTraits<Scalar>::IsInteger> {};$/;"	s	namespace:Eigen::internal	inherits:atan2_default_impl
 atan2_retval	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_retval$/;"	s	namespace:Eigen::internal
-augmentMatrix	structure.cpp	/^abcd::augmentMatrix (  )$/;"	f	class:abcd
+augmentMatrix	structure.cpp	/^abcd::augmentMatrix ( std::vector<Eigen::SparseMatrix<double, ColMajor> > &loc_parts)$/;"	f	class:abcd
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  const Vector3& axis() const { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:() const
 axis	../include/Eigen/src/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
