@@ -73,7 +73,7 @@ private:
     /*-----------------------------------------------------------------------------
      *  Build the augmented version of the matrix (ABCD)
      *-----------------------------------------------------------------------------*/
-    void augmentMatrix();
+    void augmentMatrix(std::vector<Eigen::SparseMatrix<double, ColMajor> > &loc_parts);
 
     // Communication stuffs
     void createInterComm();
