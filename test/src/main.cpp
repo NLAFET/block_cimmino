@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
 
         /* read the file and its content */
         //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
-        f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
@@ -50,16 +50,17 @@ int main(int argc, char *argv[])
 
         obj.start_index = 1;
         obj.icntl[9] = 2;
+        obj.icntl[10]= 1;
 
-        obj.nbparts = 5;
+        obj.nbparts = 16;
 
         obj.partitioning_type = 1;
         obj.nbrows = ArrayXi(obj.nbparts);
         //gre_1107
-        obj.nbrows << 219, 218, 223, 224, 223;
+        //obj.nbrows << 219, 218, 223, 224, 223;
         //
         //bayer01
-        //obj.nbrows << 3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599;
+        obj.nbrows << 3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599;
 
         /*sio2*/
         //obj.nbrows << 5117,5213,5200,5158,5192,5205,5145,5137,5136,5181,5181,5186,5245,5193,5249,5112,5203,5195,5141,5198,5140,5200,5146,5145,5146,5145,5212,5151,5206,5253;
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
             obj.bc(2);
 
             obj.block_size = 1;
-            obj.itmax = 1000;
+            obj.itmax = 10;
             // works only in sequential for the moment
             obj.use_xf = true;
             obj.rhs = new double[obj.m_l * obj.nrhs];

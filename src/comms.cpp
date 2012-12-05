@@ -261,12 +261,11 @@ void abcd::distributeRhs()
         if(rhs==NULL){
             rhs = new double[r * nrhs];
             for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
-        } else {
-            cout << "HERE"<< endl;
         }
 
         if(use_xf){
             xf = Eigen::MatrixXd(mtx.cols(), nrhs);
+            xf.setZero();
             for(int j = 0; j < nrhs; j++){
                 for(int i = 0; i < mtx.cols(); i++) {
                     xf(i, j) = rhs[i + j * m];
@@ -274,6 +273,17 @@ void abcd::distributeRhs()
             }
             nrmXf = xf.lpNorm<Infinity>();
             Eigen::MatrixXd B = mtx * xf;
+
+            // this is the augmented version!
+            if(icntl[10]!=0){
+                Eigen::MatrixXd xtf = xf;
+                Eigen::MatrixXd xtz(n-mtx.cols(), nrhs);
+                xtz.setZero();
+
+                xf.resize(n, nrhs);
+                xf << xtf,
+                   xtz;
+            }
 
             for(int j = 0; j < B.cols(); j++){
                 for(int i = 0; i < B.rows(); i++) {

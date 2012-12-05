@@ -7,6 +7,8 @@ void abcd::bcg()
     int s = std::max<int>(block_size, nrhs);
     if(s < 1) throw - 51;
 
+    cout << n << endl;
+    //exit(0);
     if(!use_xk) {
         xk = Eigen::MatrixXd(n, nrhs);
         xk.setZero();
