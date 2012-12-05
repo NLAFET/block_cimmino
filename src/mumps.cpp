@@ -294,7 +294,7 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     double t = MPI_Wtime();
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
-    cout << "[" << inter_comm.rank() << " ] Time spent in direct solver : "
+    cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
         << t << endl;
     Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, s);
         
