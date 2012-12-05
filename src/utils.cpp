@@ -122,7 +122,7 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
 
     double loc_nrmxfmx;
     if(use_xf){
-        if(inter_comm.size()!=0) {
+        if(inter_comm.size()>1) {
             if(inter_comm.rank()==0)
                 cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
         } else {
@@ -142,7 +142,7 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
     mpi::all_reduce(inter_comm, &nrmX, 1,  &nrm, std::plus<double>());
     nrmX = sqrt(nrm);
     if(use_xf){
-        if(inter_comm.size()==0)
+        if(inter_comm.size()==1)
             mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());
         //nrmXfmX = loc_xfmx.norm();
     }
