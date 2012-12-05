@@ -350,21 +350,6 @@
               <in>UmfPackSupport.h</in>
             </df>
           </df>
-          <in>Cholesky</in>
-          <in>Core</in>
-          <in>Dense</in>
-          <in>Eigenvalues</in>
-          <in>Geometry</in>
-          <in>Householder</in>
-          <in>IterativeLinearSolvers</in>
-          <in>Jacobi</in>
-          <in>LU</in>
-          <in>OrderingMethods</in>
-          <in>QR</in>
-          <in>SVD</in>
-          <in>Sparse</in>
-          <in>SparseCholesky</in>
-          <in>SparseCore</in>
         </df>
         <in>abcd.h</in>
         <in>mc77.h</in>

@@ -88,6 +88,7 @@ void abcd::bcg()
 
     while((rho > thresh) && (it < itmax)) {
         if(inter_comm.rank() == inter_comm.size() - 1) {
+            // a simple hack to clear the screen on unix systems
             cout << "ITERATION " << it + 1 << endl;
         }
         it++;

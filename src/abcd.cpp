@@ -98,6 +98,8 @@ abcd::abcd()
     start_index = 0;
     block_size = 1;
     use_xk = false;
+    use_xf = false;
+    use_abcd = false;
     rhs = NULL;
 }
 

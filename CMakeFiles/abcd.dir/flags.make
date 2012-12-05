@@ -3,7 +3,7 @@
 
 # compile CXX with /usr/bin/mpicxx
 # compile Fortran with /usr/bin/gfortran
-CXX_FLAGS = -g -I/home/knuthy/projects/abcd/include -I/include   
+CXX_FLAGS = -std=c++0x -g -I/home/knuthy/projects/abcd/include -I/include   
 
 CXX_DEFINES = 
 

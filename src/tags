@@ -13874,6 +13874,7 @@ analyseAugmentedSystems	../src/mumps.cpp	/^void abcd::analyseAugmentedSystems()$
 analyseAugmentedSystems	mumps.cpp	/^void abcd::analyseAugmentedSystems()$/;"	f	class:abcd
 analyseFrame	../include/abcd.h	/^    void analyseFrame();$/;"	p	class:abcd	access:private	signature:()
 analyseFrame	../src/structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd	signature:()
+analyseFrame	structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd
 analyzePattern	../include/Eigen/src/CholmodSupport/CholmodSupport.h	/^    void analyzePattern(const MatrixType& matrix)$/;"	f	class:Eigen::CholmodBase	access:public	signature:(const MatrixType& matrix)
 analyzePattern	../include/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h	/^    DiagonalPreconditioner& analyzePattern(const MatrixType& )$/;"	f	class:Eigen::DiagonalPreconditioner	access:public	signature:(const MatrixType& )
 analyzePattern	../include/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h	/^    IdentityPreconditioner& analyzePattern(const MatrixType& ) { return *this; }$/;"	f	class:Eigen::IdentityPreconditioner	access:public	signature:(const MatrixType& )
@@ -14000,6 +14001,7 @@ atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_defa
 atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_default_impl<Scalar, true>$/;"	s	namespace:Eigen::internal
 atan2_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_impl : atan2_default_impl<Scalar, NumTraits<Scalar>::IsInteger> {};$/;"	s	namespace:Eigen::internal	inherits:atan2_default_impl
 atan2_retval	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_retval$/;"	s	namespace:Eigen::internal
+augmentMatrix	structure.cpp	/^abcd::augmentMatrix (  )$/;"	f	class:abcd
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  const Vector3& axis() const { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:() const
 axis	../include/Eigen/src/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
@@ -15603,6 +15605,7 @@ initialize	../src/abcd.cpp	/^void abcd::initialize()$/;"	f	class:abcd	signature:
 initialize	abcd.cpp	/^void abcd::initialize()$/;"	f	class:abcd
 initializeCimmino	../include/abcd.h	/^    void initializeCimmino();$/;"	p	class:abcd	access:private	signature:()
 initializeCimmino	../src/cimmino.cpp	/^void abcd::initializeCimmino()$/;"	f	class:abcd	signature:()
+initializeCimmino	cimmino.cpp	/^void abcd::initializeCimmino()$/;"	f	class:abcd
 initializeMumps	../include/abcd.h	/^    void initializeMumps();$/;"	p	class:abcd	access:private	signature:()
 initializeMumps	../include/abcd.h	/^    void initializeMumps(bool local);$/;"	p	class:abcd	access:private	signature:(bool local)
 initializeMumps	../src/mumps.cpp	/^void abcd::initializeMumps()$/;"	f	class:abcd	signature:()
@@ -17762,6 +17765,7 @@ partial_lu_impl	../include/Eigen/src/LU/PartialPivLU.h	/^struct partial_lu_impl$
 partial_lu_inplace	../include/Eigen/src/LU/PartialPivLU.h	/^void partial_lu_inplace(MatrixType& lu, TranspositionType& row_transpositions, typename TranspositionType::Index& nb_transpositions)$/;"	f	namespace:Eigen::internal	signature:(MatrixType& lu, TranspositionType& row_transpositions, typename TranspositionType::Index& nb_transpositions)
 partitionMatrix	../include/abcd.h	/^    void partitionMatrix();$/;"	p	class:abcd	access:private	signature:()
 partitionMatrix	../src/structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd	signature:()
+partitionMatrix	structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd
 partitionWeights	../include/abcd.h	/^    void partitionWeights(std::vector<int> &, std::vector<int>, int);$/;"	p	class:abcd	access:private	signature:(std::vector<int> &, std::vector<int>, int)
 partitionWeights	../src/utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd	signature:(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 partitionWeights	utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd

@@ -69,6 +69,11 @@ private:
      * Compresses the partitions and analyses the interconnections between them
      */
     void analyseFrame();
+    
+    /*-----------------------------------------------------------------------------
+     *  Build the augmented version of the matrix (ABCD)
+     *-----------------------------------------------------------------------------*/
+    void augmentMatrix();
 
     // Communication stuffs
     void createInterComm();
@@ -172,6 +177,7 @@ public:
     std::map<int,int> glob_to_local;
     bool use_xk;
     bool use_xf;
+    bool use_abcd;
 
     /**
      * Contains the mutual interconnections between partitions
