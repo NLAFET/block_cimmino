@@ -87,101 +87,32 @@ CMakeFiles/abcd.dir/src/mmio.cpp.o.provides: CMakeFiles/abcd.dir/src/mmio.cpp.o.
 
 CMakeFiles/abcd.dir/src/mmio.cpp.o.provides.build: CMakeFiles/abcd.dir/src/mmio.cpp.o
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.o: CMakeFiles/abcd.dir/flags.make
-CMakeFiles/abcd.dir/src/preprocess.cpp.o: src/preprocess.cpp
+CMakeFiles/abcd.dir/src/abcd.cpp.o: CMakeFiles/abcd.dir/flags.make
+CMakeFiles/abcd.dir/src/abcd.cpp.o: src/abcd.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/preprocess.cpp.o"
-	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/preprocess.cpp.o -c /home/knuthy/projects/abcd/src/preprocess.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/abcd.cpp.o"
+	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/abcd.cpp.o -c /home/knuthy/projects/abcd/src/abcd.cpp
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/preprocess.cpp.i"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/preprocess.cpp > CMakeFiles/abcd.dir/src/preprocess.cpp.i
+CMakeFiles/abcd.dir/src/abcd.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/abcd.cpp.i"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/abcd.cpp > CMakeFiles/abcd.dir/src/abcd.cpp.i
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/preprocess.cpp.s"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/preprocess.cpp -o CMakeFiles/abcd.dir/src/preprocess.cpp.s
+CMakeFiles/abcd.dir/src/abcd.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/abcd.cpp.s"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/abcd.cpp -o CMakeFiles/abcd.dir/src/abcd.cpp.s
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires:
-.PHONY : CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
+CMakeFiles/abcd.dir/src/abcd.cpp.o.requires:
+.PHONY : CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides: CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
-	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides.build
-.PHONY : CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides
+CMakeFiles/abcd.dir/src/abcd.cpp.o.provides: CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
+	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/abcd.cpp.o.provides.build
+.PHONY : CMakeFiles/abcd.dir/src/abcd.cpp.o.provides
 
-CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides.build: CMakeFiles/abcd.dir/src/preprocess.cpp.o
-
-CMakeFiles/abcd.dir/src/comms.cpp.o: CMakeFiles/abcd.dir/flags.make
-CMakeFiles/abcd.dir/src/comms.cpp.o: src/comms.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/comms.cpp.o"
-	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/comms.cpp.o -c /home/knuthy/projects/abcd/src/comms.cpp
-
-CMakeFiles/abcd.dir/src/comms.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/comms.cpp.i"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/comms.cpp > CMakeFiles/abcd.dir/src/comms.cpp.i
-
-CMakeFiles/abcd.dir/src/comms.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/comms.cpp.s"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/comms.cpp -o CMakeFiles/abcd.dir/src/comms.cpp.s
-
-CMakeFiles/abcd.dir/src/comms.cpp.o.requires:
-.PHONY : CMakeFiles/abcd.dir/src/comms.cpp.o.requires
-
-CMakeFiles/abcd.dir/src/comms.cpp.o.provides: CMakeFiles/abcd.dir/src/comms.cpp.o.requires
-	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/comms.cpp.o.provides.build
-.PHONY : CMakeFiles/abcd.dir/src/comms.cpp.o.provides
-
-CMakeFiles/abcd.dir/src/comms.cpp.o.provides.build: CMakeFiles/abcd.dir/src/comms.cpp.o
-
-CMakeFiles/abcd.dir/src/mumps.cpp.o: CMakeFiles/abcd.dir/flags.make
-CMakeFiles/abcd.dir/src/mumps.cpp.o: src/mumps.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_5)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/mumps.cpp.o"
-	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/mumps.cpp.o -c /home/knuthy/projects/abcd/src/mumps.cpp
-
-CMakeFiles/abcd.dir/src/mumps.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/mumps.cpp.i"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/mumps.cpp > CMakeFiles/abcd.dir/src/mumps.cpp.i
-
-CMakeFiles/abcd.dir/src/mumps.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/mumps.cpp.s"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/mumps.cpp -o CMakeFiles/abcd.dir/src/mumps.cpp.s
-
-CMakeFiles/abcd.dir/src/mumps.cpp.o.requires:
-.PHONY : CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
-
-CMakeFiles/abcd.dir/src/mumps.cpp.o.provides: CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
-	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/mumps.cpp.o.provides.build
-.PHONY : CMakeFiles/abcd.dir/src/mumps.cpp.o.provides
-
-CMakeFiles/abcd.dir/src/mumps.cpp.o.provides.build: CMakeFiles/abcd.dir/src/mumps.cpp.o
-
-CMakeFiles/abcd.dir/src/utils.cpp.o: CMakeFiles/abcd.dir/flags.make
-CMakeFiles/abcd.dir/src/utils.cpp.o: src/utils.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_6)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/utils.cpp.o"
-	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/utils.cpp.o -c /home/knuthy/projects/abcd/src/utils.cpp
-
-CMakeFiles/abcd.dir/src/utils.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/utils.cpp.i"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/utils.cpp > CMakeFiles/abcd.dir/src/utils.cpp.i
-
-CMakeFiles/abcd.dir/src/utils.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/utils.cpp.s"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/utils.cpp -o CMakeFiles/abcd.dir/src/utils.cpp.s
-
-CMakeFiles/abcd.dir/src/utils.cpp.o.requires:
-.PHONY : CMakeFiles/abcd.dir/src/utils.cpp.o.requires
-
-CMakeFiles/abcd.dir/src/utils.cpp.o.provides: CMakeFiles/abcd.dir/src/utils.cpp.o.requires
-	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/utils.cpp.o.provides.build
-.PHONY : CMakeFiles/abcd.dir/src/utils.cpp.o.provides
-
-CMakeFiles/abcd.dir/src/utils.cpp.o.provides.build: CMakeFiles/abcd.dir/src/utils.cpp.o
+CMakeFiles/abcd.dir/src/abcd.cpp.o.provides.build: CMakeFiles/abcd.dir/src/abcd.cpp.o
 
 CMakeFiles/abcd.dir/src/bcg.cpp.o: CMakeFiles/abcd.dir/flags.make
 CMakeFiles/abcd.dir/src/bcg.cpp.o: src/bcg.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/bcg.cpp.o"
 	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/bcg.cpp.o -c /home/knuthy/projects/abcd/src/bcg.cpp
 
@@ -204,7 +135,7 @@ CMakeFiles/abcd.dir/src/bcg.cpp.o.provides.build: CMakeFiles/abcd.dir/src/bcg.cp
 
 CMakeFiles/abcd.dir/src/cimmino.cpp.o: CMakeFiles/abcd.dir/flags.make
 CMakeFiles/abcd.dir/src/cimmino.cpp.o: src/cimmino.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/cimmino.cpp.o"
 	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/cimmino.cpp.o -c /home/knuthy/projects/abcd/src/cimmino.cpp
 
@@ -225,32 +156,78 @@ CMakeFiles/abcd.dir/src/cimmino.cpp.o.provides: CMakeFiles/abcd.dir/src/cimmino.
 
 CMakeFiles/abcd.dir/src/cimmino.cpp.o.provides.build: CMakeFiles/abcd.dir/src/cimmino.cpp.o
 
-CMakeFiles/abcd.dir/src/abcd.cpp.o: CMakeFiles/abcd.dir/flags.make
-CMakeFiles/abcd.dir/src/abcd.cpp.o: src/abcd.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_9)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/abcd.cpp.o"
-	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/abcd.cpp.o -c /home/knuthy/projects/abcd/src/abcd.cpp
+CMakeFiles/abcd.dir/src/comms.cpp.o: CMakeFiles/abcd.dir/flags.make
+CMakeFiles/abcd.dir/src/comms.cpp.o: src/comms.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/comms.cpp.o"
+	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/comms.cpp.o -c /home/knuthy/projects/abcd/src/comms.cpp
 
-CMakeFiles/abcd.dir/src/abcd.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/abcd.cpp.i"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/abcd.cpp > CMakeFiles/abcd.dir/src/abcd.cpp.i
+CMakeFiles/abcd.dir/src/comms.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/comms.cpp.i"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/comms.cpp > CMakeFiles/abcd.dir/src/comms.cpp.i
 
-CMakeFiles/abcd.dir/src/abcd.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/abcd.cpp.s"
-	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/abcd.cpp -o CMakeFiles/abcd.dir/src/abcd.cpp.s
+CMakeFiles/abcd.dir/src/comms.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/comms.cpp.s"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/comms.cpp -o CMakeFiles/abcd.dir/src/comms.cpp.s
 
-CMakeFiles/abcd.dir/src/abcd.cpp.o.requires:
-.PHONY : CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
+CMakeFiles/abcd.dir/src/comms.cpp.o.requires:
+.PHONY : CMakeFiles/abcd.dir/src/comms.cpp.o.requires
 
-CMakeFiles/abcd.dir/src/abcd.cpp.o.provides: CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
-	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/abcd.cpp.o.provides.build
-.PHONY : CMakeFiles/abcd.dir/src/abcd.cpp.o.provides
+CMakeFiles/abcd.dir/src/comms.cpp.o.provides: CMakeFiles/abcd.dir/src/comms.cpp.o.requires
+	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/comms.cpp.o.provides.build
+.PHONY : CMakeFiles/abcd.dir/src/comms.cpp.o.provides
 
-CMakeFiles/abcd.dir/src/abcd.cpp.o.provides.build: CMakeFiles/abcd.dir/src/abcd.cpp.o
+CMakeFiles/abcd.dir/src/comms.cpp.o.provides.build: CMakeFiles/abcd.dir/src/comms.cpp.o
+
+CMakeFiles/abcd.dir/src/mumps.cpp.o: CMakeFiles/abcd.dir/flags.make
+CMakeFiles/abcd.dir/src/mumps.cpp.o: src/mumps.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/mumps.cpp.o"
+	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/mumps.cpp.o -c /home/knuthy/projects/abcd/src/mumps.cpp
+
+CMakeFiles/abcd.dir/src/mumps.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/mumps.cpp.i"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/mumps.cpp > CMakeFiles/abcd.dir/src/mumps.cpp.i
+
+CMakeFiles/abcd.dir/src/mumps.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/mumps.cpp.s"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/mumps.cpp -o CMakeFiles/abcd.dir/src/mumps.cpp.s
+
+CMakeFiles/abcd.dir/src/mumps.cpp.o.requires:
+.PHONY : CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
+
+CMakeFiles/abcd.dir/src/mumps.cpp.o.provides: CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
+	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/mumps.cpp.o.provides.build
+.PHONY : CMakeFiles/abcd.dir/src/mumps.cpp.o.provides
+
+CMakeFiles/abcd.dir/src/mumps.cpp.o.provides.build: CMakeFiles/abcd.dir/src/mumps.cpp.o
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.o: CMakeFiles/abcd.dir/flags.make
+CMakeFiles/abcd.dir/src/preprocess.cpp.o: src/preprocess.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_8)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/preprocess.cpp.o"
+	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/preprocess.cpp.o -c /home/knuthy/projects/abcd/src/preprocess.cpp
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/preprocess.cpp.i"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/preprocess.cpp > CMakeFiles/abcd.dir/src/preprocess.cpp.i
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/preprocess.cpp.s"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/preprocess.cpp -o CMakeFiles/abcd.dir/src/preprocess.cpp.s
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires:
+.PHONY : CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides: CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
+	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides.build
+.PHONY : CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides
+
+CMakeFiles/abcd.dir/src/preprocess.cpp.o.provides.build: CMakeFiles/abcd.dir/src/preprocess.cpp.o
 
 CMakeFiles/abcd.dir/src/structure.cpp.o: CMakeFiles/abcd.dir/flags.make
 CMakeFiles/abcd.dir/src/structure.cpp.o: src/structure.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/structure.cpp.o"
 	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/structure.cpp.o -c /home/knuthy/projects/abcd/src/structure.cpp
 
@@ -271,32 +248,55 @@ CMakeFiles/abcd.dir/src/structure.cpp.o.provides: CMakeFiles/abcd.dir/src/struct
 
 CMakeFiles/abcd.dir/src/structure.cpp.o.provides.build: CMakeFiles/abcd.dir/src/structure.cpp.o
 
+CMakeFiles/abcd.dir/src/utils.cpp.o: CMakeFiles/abcd.dir/flags.make
+CMakeFiles/abcd.dir/src/utils.cpp.o: src/utils.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/knuthy/projects/abcd/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/abcd.dir/src/utils.cpp.o"
+	/usr/bin/mpicxx   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/abcd.dir/src/utils.cpp.o -c /home/knuthy/projects/abcd/src/utils.cpp
+
+CMakeFiles/abcd.dir/src/utils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/abcd.dir/src/utils.cpp.i"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/knuthy/projects/abcd/src/utils.cpp > CMakeFiles/abcd.dir/src/utils.cpp.i
+
+CMakeFiles/abcd.dir/src/utils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/abcd.dir/src/utils.cpp.s"
+	/usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/knuthy/projects/abcd/src/utils.cpp -o CMakeFiles/abcd.dir/src/utils.cpp.s
+
+CMakeFiles/abcd.dir/src/utils.cpp.o.requires:
+.PHONY : CMakeFiles/abcd.dir/src/utils.cpp.o.requires
+
+CMakeFiles/abcd.dir/src/utils.cpp.o.provides: CMakeFiles/abcd.dir/src/utils.cpp.o.requires
+	$(MAKE) -f CMakeFiles/abcd.dir/build.make CMakeFiles/abcd.dir/src/utils.cpp.o.provides.build
+.PHONY : CMakeFiles/abcd.dir/src/utils.cpp.o.provides
+
+CMakeFiles/abcd.dir/src/utils.cpp.o.provides.build: CMakeFiles/abcd.dir/src/utils.cpp.o
+
 # Object files for target abcd
 abcd_OBJECTS = \
 "CMakeFiles/abcd.dir/src/mc77ad.f.o" \
 "CMakeFiles/abcd.dir/src/mmio.cpp.o" \
-"CMakeFiles/abcd.dir/src/preprocess.cpp.o" \
-"CMakeFiles/abcd.dir/src/comms.cpp.o" \
-"CMakeFiles/abcd.dir/src/mumps.cpp.o" \
-"CMakeFiles/abcd.dir/src/utils.cpp.o" \
+"CMakeFiles/abcd.dir/src/abcd.cpp.o" \
 "CMakeFiles/abcd.dir/src/bcg.cpp.o" \
 "CMakeFiles/abcd.dir/src/cimmino.cpp.o" \
-"CMakeFiles/abcd.dir/src/abcd.cpp.o" \
-"CMakeFiles/abcd.dir/src/structure.cpp.o"
+"CMakeFiles/abcd.dir/src/comms.cpp.o" \
+"CMakeFiles/abcd.dir/src/mumps.cpp.o" \
+"CMakeFiles/abcd.dir/src/preprocess.cpp.o" \
+"CMakeFiles/abcd.dir/src/structure.cpp.o" \
+"CMakeFiles/abcd.dir/src/utils.cpp.o"
 
 # External object files for target abcd
 abcd_EXTERNAL_OBJECTS =
 
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/mc77ad.f.o
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/mmio.cpp.o
-Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/preprocess.cpp.o
-Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/comms.cpp.o
-Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/mumps.cpp.o
-Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/utils.cpp.o
+Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/abcd.cpp.o
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/bcg.cpp.o
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/cimmino.cpp.o
-Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/abcd.cpp.o
+Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/comms.cpp.o
+Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/mumps.cpp.o
+Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/preprocess.cpp.o
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/structure.cpp.o
+Debug/lib/libabcd.a: CMakeFiles/abcd.dir/src/utils.cpp.o
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/build.make
 Debug/lib/libabcd.a: CMakeFiles/abcd.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library Debug/lib/libabcd.a"
@@ -309,14 +309,14 @@ CMakeFiles/abcd.dir/build: Debug/lib/libabcd.a
 
 CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/mc77ad.f.o.requires
 CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/mmio.cpp.o.requires
-CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
-CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/comms.cpp.o.requires
-CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
-CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/utils.cpp.o.requires
+CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
 CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/bcg.cpp.o.requires
 CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/cimmino.cpp.o.requires
-CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/abcd.cpp.o.requires
+CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/comms.cpp.o.requires
+CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/mumps.cpp.o.requires
+CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/preprocess.cpp.o.requires
 CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/structure.cpp.o.requires
+CMakeFiles/abcd.dir/requires: CMakeFiles/abcd.dir/src/utils.cpp.o.requires
 .PHONY : CMakeFiles/abcd.dir/requires
 
 CMakeFiles/abcd.dir/clean:

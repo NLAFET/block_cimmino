@@ -59,13 +59,21 @@ void abcd::analyseFrame()
     for(unsigned k = 0; k < nbparts; k++) {
         // Our k-th partition
         SparseMatrix<double, ColMajor> part = mtx.middleRows(strow[k], nbrows[k]);
+        loc_parts.push_back(part);
+    }
 
+
+    if(use_abcd){
+        abcd::augmentMatrix();
+    }
+
+    for(unsigned k = 0; k < nbparts; k++) {
         double t1, t2;
         // Build the column index of part
         std::vector<int> ci;
         int j = 0;
-        for(int i = 1; i <= part.outerSize(); i++) {
-            if(part.outerIndexPtr()[i] != part.outerIndexPtr()[i - 1])
+        for(int i = 1; i <= loc_parts[k].outerSize(); i++) {
+            if(loc_parts[k].outerIndexPtr()[i] != loc_parts[k].outerIndexPtr()[i - 1])
                 ci.push_back(j);
             j++;
         }
@@ -74,17 +82,9 @@ void abcd::analyseFrame()
 
         //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
         //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
-        loc_parts.push_back(SparseMatrix<double, ColMajor>(part.middleCols(0, ci.size())));
-    }
-
-    if(use_abcd){
-        abcd::augmentMatrix();
-    }
-
-    for(unsigned k = 0; k < nbparts; k++) {
         int *last = std::unique(loc_parts[k].outerIndexPtr(),
                 loc_parts[k].outerIndexPtr() + loc_parts[k].outerSize() + 1);
-        parts.push_back(SparseMatrix<double, RowMajor>(loc_parts[k]));
+        parts.push_back(SparseMatrix<double, RowMajor>(loc_parts[k].middleCols(0, ci.size())));
         //loc_parts[k] = NULL;
     }
 
