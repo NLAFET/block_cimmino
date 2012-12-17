@@ -20,9 +20,9 @@ int abcd::bc(int job)
     case 1:
         if(world.rank() == 0) {
             abcd::preprocess();
-            exit(0);
             abcd::partitionMatrix();
             abcd::analyseFrame();
+            exit(0);
         }
         world.barrier();
         break;

@@ -14858,7 +14858,7 @@ dgetf2	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetf2)(int *, int *, dou
 dgetrf	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetrf)(int *, int *, double *, int *, int *, int *);$/;"	p	signature:(int *, int *, double *, int *, int *, int *)
 dgetrs	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetrs)(char *, int *, int *, double *, int *, int *, double *, int *, int *);$/;"	p	signature:(char *, int *, int *, double *, int *, int *, double *, int *, int *)
 diagScaleMatrix	preprocess.cpp	/^abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)$/;"	f	class:abcd
-diagScaleRhs	preprocess.cpp	/^abcd::diagScaleRhs ( VECTOR_double &b, VECTOR_double drow )$/;"	f	class:abcd
+diagScaleRhs	preprocess.cpp	/^abcd::diagScaleRhs ( VECTOR_double &b)$/;"	f	class:abcd
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline Block<CoefficientsType,1,Dynamic> diagonal(Index i)$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:(Index i)
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline Block<CoefficientsType,1,SizeAtCompileTime> diagonal()$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:()
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline const Block<const CoefficientsType,1,Dynamic> diagonal(Index i) const$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:(Index i) const
@@ -19351,6 +19351,7 @@ squaredNorm	../include/Eigen/src/Eigen2Support/Geometry/Quaternion.h	/^  inline 
 squaredNorm	../include/Eigen/src/Geometry/Quaternion.h	/^  inline Scalar squaredNorm() const { return coeffs().squaredNorm(); }$/;"	f	class:Eigen::QuaternionBase	access:public	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseDot.h	/^SparseMatrixBase<Derived>::squaredNorm() const$/;"	f	class:Eigen::SparseMatrixBase	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    RealScalar squaredNorm() const;$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:() const
+squaredSum	utils.cpp	/^double squaredSum(VECTOR_double v){$/;"	f
 squeeze	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    void squeeze()$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:()
 srot	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srot)  (int *, float  *, int *, float  *, int *, float  *, float  *);$/;"	p	signature:(int *, float *, int *, float *, int *, float *, float *)
 srotg	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srotg) (float  *, float  *, float  *, float  *);$/;"	p	signature:(float *, float *, float *, float *)

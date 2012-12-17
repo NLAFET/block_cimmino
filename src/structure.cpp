@@ -19,7 +19,7 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with a given nbrows
          *-----------------------------------------------------------------------------*/
         case 1:
-            strow = ArrayXi(nbparts);
+            strow = VECTOR_int(nbparts);
 
             for(unsigned k = 0; k < nbparts; k++) {
                 strow(k) = row_sum;
@@ -31,12 +31,13 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with only nbparts as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
         case 2:
-            strow = ArrayXi(nbparts);
-            nbrows = ArrayXi(nbparts);
+            strow = VECTOR_int(nbparts);
+            nbrows = VECTOR_int(nbparts, nbrows_per_part);
 
-            nbrows.setConstant(nbrows_per_part);
+            nbrows(nbparts - 1) += m;
+            for (int i = 0; i < nbrows.size(); i++)
+                nbrows(nbparts - 1) -= nbrows(i);
 
-            nbrows(nbparts - 1) += m - nbrows.sum();
             for(unsigned k = 0; k < nbparts; k++) {
                 strow(k) = row_sum;
                 row_sum += nbrows(k);
@@ -54,39 +55,81 @@ void abcd::partitionMatrix()
 void abcd::analyseFrame()
 {
 
-    std::vector<Eigen::SparseMatrix<double, ColMajor> > loc_parts;
+    std::vector<CompCol_Mat_double > loc_parts;
     std::vector<int> ci_sizes;
+    int *ip, *jp;
+    double *vp;
+
+    int st_p = 0, ed_pt;
+    int sssm = 0;
+    CompRow_Mat_double part_r;
+    double t  = MPI_Wtime();
     for(unsigned k = 0; k < nbparts; k++) {
-        // Our k-th partition
-        SparseMatrix<double, ColMajor> part = mtx.middleRows(strow[k], nbrows[k]);
-        loc_parts.push_back(part);
-    }
+        int ind_st = A.row_ptr(strow[k]);
+        int ind_ed = A.row_ptr(strow[k] + nbrows[k]) - 1;
 
-
-    double t= MPI_Wtime();
-    abcd::augmentMatrix(loc_parts);
-    cout << "time to aug : " << MPI_Wtime() -t << endl;
-
-    for(unsigned k = 0; k < nbparts; k++) {
-        double t1, t2;
-        // Build the column index of part
-        std::vector<int> ci;
-        int j = 0;
-        for(int i = 1; i <= loc_parts[k].outerSize(); i++) {
-            if(loc_parts[k].outerIndexPtr()[i] != loc_parts[k].outerIndexPtr()[i - 1])
-                ci.push_back(j);
-            j++;
+        VECTOR_int rpt(nbrows[k]+1);
+        rpt = A.t_row()(MV_VecIndex(strow[k], strow[k]+nbrows[k]));
+        for(int i = 0; i <= nbrows[k]; i++){
+            rpt[i] -= A.row_ptr(strow[k]);
         }
-        column_index.push_back(ci);
-        ci_sizes.push_back(ci.size());
+        //ip = new int[nbrows[k]];
+        //jp = new int[A.row_ptr(strow[k] + nbrows[k]) - st_p];
+        //vp = new double[A.row_ptr(strow[k] + nbrows[k]) - st_p];
 
-        //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
-        //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
-        int *last = std::unique(loc_parts[k].outerIndexPtr(),
-                loc_parts[k].outerIndexPtr() + loc_parts[k].outerSize() + 1);
-        parts.push_back(SparseMatrix<double, RowMajor>(loc_parts[k].middleCols(0, ci.size())));
-        //loc_parts[k] = NULL;
+        //int j = 0;
+        //for(int i = strow[k]; i < strow[k] + nbrows[k]; i++){
+            //ip[j] = A.row_ptr(j);
+            //j++;
+        //}
+        //j = 0;
+        //for(int i = st_p; i < A.row_ptr(strow[k] + nbrows[k]) - st_p; i++){
+            //jp[j] = A.col_ind(i);
+            //vp[j] = A.val(i);
+            //j++;
+        //}
+
+        // Our k-th partition
+        part_r = CompRow_Mat_double (
+                nbrows[k], n, ind_ed - ind_st,
+                A.t_val()(MV_VecIndex(ind_st, ind_ed)),
+                rpt,
+                A.t_col()(MV_VecIndex(ind_st, ind_ed))
+                );
+
+        //cout << k << " ___" << endl;
+        //st_p += A.row_ptr(strow[k] + nbrows[k]);
+
+        //cout << k << "---" <<  ind_st << " " << ind_ed << endl;
+        //cout << CompCol_Mat_double(part_r) << endl;;
+        loc_parts.push_back(CompCol_Mat_double(part_r));
     }
+    cout << "time to part : " << MPI_Wtime() -t << endl;
+
+    //double t= MPI_Wtime();
+    //abcd::augmentMatrix(loc_parts);
+    //cout << "time to aug : " << MPI_Wtime() -t << endl;
+
+    //for(unsigned k = 0; k < nbparts; k++) {
+        //double t1, t2;
+        //// Build the column index of part
+        //std::vector<int> ci;
+        //int j = 0;
+        //for(int i = 1; i <= loc_parts[k].outerSize(); i++) {
+            //if(loc_parts[k].outerIndexPtr()[i] != loc_parts[k].outerIndexPtr()[i - 1])
+                //ci.push_back(j);
+            //j++;
+        //}
+        //column_index.push_back(ci);
+        //ci_sizes.push_back(ci.size());
+
+        ////int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
+        ////parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
+        //int *last = std::unique(loc_parts[k].outerIndexPtr(),
+                //loc_parts[k].outerIndexPtr() + loc_parts[k].outerSize() + 1);
+        //parts.push_back(SparseMatrix<double, RowMajor>(loc_parts[k].middleCols(0, ci.size())));
+        ////loc_parts[k] = NULL;
+    //}
 
 }
 
