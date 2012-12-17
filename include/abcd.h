@@ -66,7 +66,7 @@ private:
      */
     void scaleMatrix(int norm);
     void diagScaleMatrix(VECTOR_double , VECTOR_double );
-    void diagScaleRhs(VECTOR_double &, VECTOR_double);
+    void diagScaleRhs(VECTOR_double &);
     /**
      * Computes the norm of the matrix
      * @todo implement it!
@@ -182,8 +182,8 @@ public:
      */
     int partitioning_type;
     int nbparts; /// The number of partitions
-    ArrayXi strow; /// The starting row index of each partition
-    ArrayXi nbrows; /// The number of rows per partition
+    VECTOR_int strow; /// The starting row index of each partition
+    VECTOR_int nbrows; /// The number of rows per partition
     /// A reverse index of columns, contains the original index of each column for each partition
     std::vector<std::vector<int> > column_index;
     /// A merge of col_index vectors, determines non-null columns in all local partitions

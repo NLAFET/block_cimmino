@@ -171,3 +171,7 @@ bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<doub
 {
     return (L.cols() < R.cols());
 }
+
+double squaredSum(VECTOR_double v){
+    return 0;
+}
