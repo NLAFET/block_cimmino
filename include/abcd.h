@@ -31,6 +31,16 @@
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 
+/*
+ * A small hack to make Sparselib++ work with openmpi
+ * It's however, better to use it while compiling by putting:
+ * -D"COMPLEX=std::complex<double>"
+ */
+#define COMPLEX std::complex<double>
+#include "compcol_double.h"
+#include "comprow_double.h"
+#include "coord_double.h"
+
 using namespace Eigen;
 using namespace std;
 using namespace boost;
@@ -55,6 +65,8 @@ private:
      * @norm the norm at which the matrix is scaled
      */
     void scaleMatrix(int norm);
+    void diagScaleMatrix(VECTOR_double , VECTOR_double );
+    void diagScaleRhs(VECTOR_double &, VECTOR_double);
     /**
      * Computes the norm of the matrix
      * @todo implement it!
@@ -120,8 +132,8 @@ private:
     /*
      * Scaling information
      */
-    VectorXd drow_;
-    VectorXd dcol_;
+    VECTOR_double drow_;
+    VECTOR_double dcol_;
 
     /***************************************************************************
      * The matrix object itself
@@ -131,6 +143,8 @@ private:
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> b;
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xk;
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xf;
+
+    CompRow_Mat_double A;
 
 public:
     /***************************************************************************

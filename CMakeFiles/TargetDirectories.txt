@@ -1,2 +1,0 @@
-/home/knuthy/projects/abcd/CMakeFiles/abcd.dir
-/home/knuthy/projects/abcd/test/CMakeFiles/test_abcd.dir
