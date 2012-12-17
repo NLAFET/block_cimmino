@@ -85,7 +85,7 @@ private:
     /*-----------------------------------------------------------------------------
      *  Build the augmented version of the matrix (ABCD)
      *-----------------------------------------------------------------------------*/
-    void augmentMatrix(std::vector<Eigen::SparseMatrix<double, ColMajor> > &loc_parts);
+    void augmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
 
     // Communication stuffs
     void createInterComm();

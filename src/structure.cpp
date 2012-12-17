@@ -64,51 +64,37 @@ void abcd::analyseFrame()
     int sssm = 0;
     CompRow_Mat_double part_r;
     double t  = MPI_Wtime();
+
+    VECTOR_int ar = A.t_row();
+    VECTOR_int ac = A.t_col();
+    VECTOR_double av = A.t_val();
+    int ind_st, ind_ed, rsp;
     for(unsigned k = 0; k < nbparts; k++) {
-        int ind_st = A.row_ptr(strow[k]);
-        int ind_ed = A.row_ptr(strow[k] + nbrows[k]) - 1;
+        ind_st = A.row_ptr(strow[k]);
+        ind_ed = A.row_ptr(strow[k] + nbrows[k]) - 1;
+        rsp = ar(strow[k]);
 
         VECTOR_int rpt(nbrows[k]+1);
-        rpt = A.t_row()(MV_VecIndex(strow[k], strow[k]+nbrows[k]));
+        rpt = ar(MV_VecIndex(strow[k], strow[k]+nbrows[k]));
         for(int i = 0; i <= nbrows[k]; i++){
-            rpt[i] -= A.row_ptr(strow[k]);
+            rpt[i] -= rsp;
         }
-        //ip = new int[nbrows[k]];
-        //jp = new int[A.row_ptr(strow[k] + nbrows[k]) - st_p];
-        //vp = new double[A.row_ptr(strow[k] + nbrows[k]) - st_p];
-
-        //int j = 0;
-        //for(int i = strow[k]; i < strow[k] + nbrows[k]; i++){
-            //ip[j] = A.row_ptr(j);
-            //j++;
-        //}
-        //j = 0;
-        //for(int i = st_p; i < A.row_ptr(strow[k] + nbrows[k]) - st_p; i++){
-            //jp[j] = A.col_ind(i);
-            //vp[j] = A.val(i);
-            //j++;
-        //}
 
         // Our k-th partition
         part_r = CompRow_Mat_double (
                 nbrows[k], n, ind_ed - ind_st,
-                A.t_val()(MV_VecIndex(ind_st, ind_ed)),
+                av(MV_VecIndex(ind_st, ind_ed)),
                 rpt,
-                A.t_col()(MV_VecIndex(ind_st, ind_ed))
+                ac(MV_VecIndex(ind_st, ind_ed))
                 );
 
-        //cout << k << " ___" << endl;
-        //st_p += A.row_ptr(strow[k] + nbrows[k]);
-
-        //cout << k << "---" <<  ind_st << " " << ind_ed << endl;
-        //cout << CompCol_Mat_double(part_r) << endl;;
         loc_parts.push_back(CompCol_Mat_double(part_r));
     }
     cout << "time to part : " << MPI_Wtime() -t << endl;
 
-    //double t= MPI_Wtime();
-    //abcd::augmentMatrix(loc_parts);
-    //cout << "time to aug : " << MPI_Wtime() -t << endl;
+    double t= MPI_Wtime();
+    abcd::augmentMatrix(loc_parts);
+    cout << "time to aug : " << MPI_Wtime() -t << endl;
 
     //for(unsigned k = 0; k < nbparts; k++) {
         //double t1, t2;
@@ -140,7 +126,7 @@ void abcd::analyseFrame()
  * =====================================================================================
  */
     void
-abcd::augmentMatrix ( std::vector<Eigen::SparseMatrix<double, ColMajor> > &M)
+abcd::augmentMatrix ( std::vector<CompCol_Mat_double> > &M)
 {
     /*
      * Which augmentation to use:
