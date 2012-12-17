@@ -12,11 +12,8 @@ extern "C"
 void abcd::preprocess()
 {
     if(icntl[9] > 0) {
-        drow_ = VectorXd(m);
-        dcol_ = VectorXd(n);
-
-        drow_.setOnes();
-        dcol_.setOnes();
+        drow_ = VECTOR_double(m, double(1));
+        dcol_ = VECTOR_double(n, double(1));
     }
 
     if(icntl[9] == 1) {
@@ -25,26 +22,28 @@ void abcd::preprocess()
 
         abcd::scaleMatrix(0);
 
-        SparseMatrix<double> rmtx(m, m);
-
-        rmtx.reserve(VectorXi::Constant(m, 1));
-        for(int k = 0; k < m; k++) {
-            drow_(k) = sqrt(mtx.row(k).squaredNorm());
-            rmtx.insert(k, k) = 1 / drow_[k];
+        double rsum;
+        drow_ = VECTOR_double(m, double(0));
+        dcol_ = VECTOR_double(n, double(1));
+        for(int r = 0; r < m; r++) {
+            rsum = 0;
+            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                rsum += pow(A(r, A.col_ind(c)), 2);
+            }
+            drow_(r) = sqrt(rsum);
         }
-        mtx = rmtx * mtx;
-        drow_.setOnes();
-        dcol_.setOnes();
-        /* END Checking */
+        abcd::diagScaleMatrix(drow_, dcol_);
     }
 
 
     if(icntl[9] == 2) {
-        std::cout << "[-] Scaling with Norm 1 & 2" << std::endl;
-
+        std::cout << "[-] Scaling with Norm 1" << std::endl;
         abcd::scaleMatrix(1);
+
+        std::cout << "[-] Scaling with Norm 2" << std::endl;
         abcd::scaleMatrix(2);
     }
+    exit(0);
 
 }
 
@@ -56,11 +55,12 @@ void abcd::scaleMatrix(int norm)
     int mc77_icntl[10], mc77_info[10];
     double mc77_dcntl[10], mc77_rinfo[10];
 
-    SparseMatrix<double> rmtx(m, m);
-    SparseMatrix<double> cmtx(m, m);
-
-    rmtx.reserve(VectorXi::Constant(m, 1));
-    cmtx.reserve(VectorXi::Constant(m, 1));
+    //int *ir = new int[m];
+    //int *jr = new int[m];
+    //double *vr = new double[m];
+    //int *ic = new int[n];
+    //int *jc = new int[n];
+    //double *vc = new double[n];
 
     mc77id_(mc77_icntl, mc77_dcntl);
 
@@ -84,20 +84,23 @@ void abcd::scaleMatrix(int norm)
     dw = new double[ldw];
 
     // Increment indices to call fortran code
+    VECTOR_int ipt = A.t_row();
+    VECTOR_int jpt = A.t_col();
+    VECTOR_double vpt = A.t_val();
     for(int k = 0; k < n + 1 ; k++) {
-        mtx.outerIndexPtr()[k]++;
-        mtx.innerIndexPtr()[k]++;
+        ipt.t_vec()[k]++;
     }
-    for(int k = n + 1; k < nz ; k++) {
-        mtx.innerIndexPtr()[k]++;
+    for(int k = 0; k < nz ; k++) {
+        jpt.t_vec()[k]++;
     }
+
     if(norm < 0) throw - 12;
 
     mc77_icntl[9] = 0;
-    if(norm == 2) mc77_icntl[6] = 20;
+    //if(norm == 2) mc77_icntl[6] = 20;
 
     job = norm;
-    mc77ad_(&job, &m, &n, &nz, mtx.outerIndexPtr(), mtx.innerIndexPtr(), mtx.valuePtr(),
+    mc77ad_(&job, &m, &n, &nz, ipt.t_vec(), jpt.t_vec(), vpt.t_vec(),
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
     if(mc77_info[0] < 0) throw - 100 + mc77_info;
@@ -109,27 +112,69 @@ void abcd::scaleMatrix(int norm)
 
     // put them back to 0-based for C/C++
     for(int k = 0; k < n + 1 ; k++) {
-        mtx.outerIndexPtr()[k]--;
-        mtx.innerIndexPtr()[k]--;
+        ipt.t_vec()[k]--;
     }
-    for(int k = n + 1; k < nz ; k++) {
-        mtx.innerIndexPtr()[k]--;
+    for(int k = 0; k < nz ; k++) {
+        jpt.t_vec()[k]--;
     }
+
+    diagScaleMatrix(drow_, dcol_);
 
     // Scale the matrix
-    for(int k = 0; k < m; k++) {
-        cmtx.insert(k, k) = 1 / dw[k];
-        // save the scaling meanwhile
-        dcol_(k) *= 1 / dw[k];
-    }
+    //for(int k = 0; k < nz; k++) {
+        //int i = 
+        //ir[k] = k;
+        //jr[k] = k;
+        //vr[k] = 1/dw[k];
+        //// save the scaling meanwhile
+        //dcol_(k) *= 1 / dw[k];
+    //}
 
-    for(int k = 0; k < n; k++) {
-        rmtx.insert(k, k) = 1 / dw[k + m];
-        // save the scaling meanwhile
-        drow_(k) *= 1 / dw[k + m];
-    }
+    //for(int k = 0; k < n; k++) {
+        //ic[k] = k;
+        //jc[k] = k;
+        //vc[k] = 1/dw[k+m];
+        //// save the scaling meanwhile
+        //drow_(k) *= 1 / dw[k + m];
+    //}
+    //Coord_Mat_double rmtx(m, m, m, vr, ir, jr);
+    //Coord_Mat_double cmtx(m, m, m, vc, ic, jc);
 
-    mtx = rmtx * mtx * cmtx;
+    //mtx = rmtx * mtx * cmtx;
 
     delete iw, dw;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::diagscal
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)
+{
+    int c;
+    for ( int i = 0; i < m; i++ ) {
+        for ( int j = A.row_ptr(i); j < A.row_ptr(i+1); j++ ) {
+            A.set(i,A.col_ind(j)) = A(i,A.col_ind(j)) * 1/drow(i) * 1/dcol(A.col_ind(j));
+        }
+    }
+}		/* -----  end of function abcd::diagscal  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::scalRhs
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+abcd::diagScaleRhs ( VECTOR_double &b, VECTOR_double drow )
+{
+    for ( int i = 0; i < m; i++ ) {
+        b(i) = b(i)*drow(i);
+    }
+
+}		/* -----  end of function abcd::scalRhs  ----- */

@@ -14857,6 +14857,8 @@ dgesv	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgesv)(int *, int *, doubl
 dgetf2	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetf2)(int *, int *, double *, int *, int *, int *);$/;"	p	signature:(int *, int *, double *, int *, int *, int *)
 dgetrf	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetrf)(int *, int *, double *, int *, int *, int *);$/;"	p	signature:(int *, int *, double *, int *, int *, int *)
 dgetrs	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(dgetrs)(char *, int *, int *, double *, int *, int *, double *, int *, int *);$/;"	p	signature:(char *, int *, int *, double *, int *, int *, double *, int *, int *)
+diagScaleMatrix	preprocess.cpp	/^abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)$/;"	f	class:abcd
+diagScaleRhs	preprocess.cpp	/^abcd::diagScaleRhs ( VECTOR_double &b, VECTOR_double drow )$/;"	f	class:abcd
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline Block<CoefficientsType,1,Dynamic> diagonal(Index i)$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:(Index i)
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline Block<CoefficientsType,1,SizeAtCompileTime> diagonal()$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:()
 diagonal	../include/Eigen/src/Core/BandMatrix.h	/^    inline const Block<const CoefficientsType,1,Dynamic> diagonal(Index i) const$/;"	f	class:Eigen::internal::BandMatrixBase	access:public	signature:(Index i) const

@@ -22,7 +22,10 @@ int main(int argc, char *argv[])
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
         f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/b1_ss/b1_ss.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/SiO/SiO.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/LFAT5/LFAT5.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/RM07R/RM07R.mtx", "r");

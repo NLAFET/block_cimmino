@@ -20,6 +20,7 @@ int abcd::bc(int job)
     case 1:
         if(world.rank() == 0) {
             abcd::preprocess();
+            exit(0);
             abcd::partitionMatrix();
             abcd::analyseFrame();
         }
@@ -70,24 +71,38 @@ void abcd::initialize()
         throw - 1;
     }
 
+    Coord_Mat_double t_A;
 
-    mtx = SparseMatrix<double>(m, n);
     if(sym) {
-        for(unsigned k = 0; k < nz; ++k) {
-            elements.push_back(T(irn[k] - 1, jcn[k] - 1, val[k]));
-            if(irn[k] != jcn[k])
-                elements.push_back(T(jcn[k] - 1, irn[k] - 1, val[k]));
-        }
-    } else {
-        for(unsigned k = 0; k < nz; ++k) {
-            elements.push_back(T(irn[k] - 1, jcn[k] - 1, val[k]));
-        }
-    }
+        //over estimate nz
+        int     *t_irn = new int[2*nz];
+        int     *t_jcn = new int[2*nz];
+        double  *t_val = new double[2*nz];
+        int     t_nz = 0;
+        for(int k = 0; k < nz; ++k) {
+            irn[k]--; jcn[k]--;
 
-    // create our object
-    mtx.setFromTriplets(elements.begin(), elements.end());
-    mtx.makeCompressed();
-    nz = mtx.nonZeros();
+            t_irn[t_nz] = irn[k];
+            t_jcn[t_nz] = jcn[k];
+            t_val[t_nz] = val[k];
+            t_nz++;
+            if(irn[k] != jcn[k]){
+                t_irn[t_nz] = jcn[k];
+                t_jcn[t_nz] = irn[k];
+                t_val[t_nz] = val[k];
+                t_nz++;
+            }
+        }
+        nz = t_nz;
+        t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+    } else {
+        for(int i=0; i<nz; i++){
+            irn[i]--;
+            jcn[i]--;
+        }
+        t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+    }
+    A = CompRow_Mat_double(t_A);
 }
 
 

@@ -22,6 +22,7 @@ link_directories(
   ../${CMAKE_BUILD_TYPE}
   ${Boost_LIBRARY_DIRS}
   /usr/lib/openblas-base
+  $ENV{HOME}/deploy/lib
 #  ${MUMPS_DIR}/lib
 #  ${MPI_DIR}
 #  ${BLAS}
@@ -69,4 +70,8 @@ target_link_libraries(
 	
 	mpi_f77
   mpi_f90
+
+  sparse
+  spblas
+  mv
 )

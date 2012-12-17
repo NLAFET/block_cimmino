@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/home/knuthy/deploy/include/compcol_double.h
+vecdefs.h
+/home/knuthy/deploy/include/vecdefs.h
+
+/home/knuthy/deploy/include/comprow_double.h
+vecdefs.h
+/home/knuthy/deploy/include/vecdefs.h
+
+/home/knuthy/deploy/include/coord_double.h
+vecdefs.h
+/home/knuthy/deploy/include/vecdefs.h
+
+/home/knuthy/deploy/include/vecdefs.h
+
 /home/knuthy/projects/abcd/test/src/main.cpp
 iostream
 -
@@ -1243,6 +1257,12 @@ boost/numeric/ublas/matrix_sparse.hpp
 -
 boost/numeric/ublas/matrix_proxy.hpp
 -
+compcol_double.h
+include/compcol_double.h
+comprow_double.h
+include/comprow_double.h
+coord_double.h
+include/coord_double.h
 
 include/mmio.h
 
