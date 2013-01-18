@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_CXX_COMPILER mpicxx)
 set(CMAKE_C_COMPILER mpicc)
 set(CMAKE_FC_COMPILER mpif90)
-#SET(CMAKE_CXX_FLAGS "-std=c++0x")
+#SET(CMAKE_CXX_FLAGS "-std=c++11")
 
 project(abcd CXX C Fortran)
 

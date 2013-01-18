@@ -30,7 +30,7 @@ void abcd::distributePartitions()
         std::vector<int> nnz_parts;
         std::vector<int> groups;
         for(int k = 0; k < nbparts; k++) {
-            nnz_parts.push_back(parts[k].nonZeros());
+            nnz_parts.push_back(partitions[k].NumNonzeros());
         }
 
         abcd::partitionWeights(groups, nnz_parts, parallel_cg);
@@ -40,6 +40,7 @@ void abcd::distributePartitions()
             parts_id.push_back(i);
 
         for(int i = 1; i < parallel_cg ; i++) {
+            cout << "nothing to do here" << endl;
             // send to each CG-Master its starting and ending partitions ids
             std::vector<int> se;
             se.push_back(groups[i - 1]);
@@ -50,18 +51,19 @@ void abcd::distributePartitions()
             // send to each CG-Master the corresponding col_index and partitions
             for(int j = se[0] + 1; j <= se[1]; j++) {
                 std::vector<int> sh;
-                sh.push_back(parts[j].rows());
-                sh.push_back(parts[j].cols());
-                inter_comm.send(i, 1, parts[j].nonZeros());
+                sh.push_back(partitions[j].dim(0));
+                sh.push_back(partitions[j].dim(1));
+                inter_comm.send(i, 1, partitions[j].NumNonzeros());
                 inter_comm.send(i, 2, sh);
                 inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, parts[j].innerIndexPtr(), parts[j].nonZeros());
-                inter_comm.send(i, 4, parts[j].outerIndexPtr(), sh[0] + 1);
-                inter_comm.send(i, 5, parts[j].valuePtr(), parts[j].nonZeros());
+                inter_comm.send(i, 3, partitions[j].colind_.t_vec(), partitions[j].NumNonzeros());
+                inter_comm.send(i, 4, partitions[j].rowptr_.t_vec(), sh[0] + 1);
+                inter_comm.send(i, 5, partitions[j].val_.t_vec(), partitions[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
             }
         }
+        cout << "sent partitions" << endl;
 
         // Find the interconnections between the different CG_masters
         std::vector<std::vector<int> > group_column_index;
@@ -78,6 +80,8 @@ void abcd::distributePartitions()
             st = groups[i] + 1;
 
         }
+
+        cout << "Merge done" << endl;
 
         // Send those interconnections to the other masters
         std::map<int, std::vector<int> > inter;
@@ -121,6 +125,7 @@ void abcd::distributePartitions()
             }
         }
 
+
         for(int i = 1; i < parallel_cg; i++) {
             inter_comm.send(i, 7, -1);
             std::map<int, int> l_glob_to_local;
@@ -136,14 +141,16 @@ void abcd::distributePartitions()
 
         glob_to_local = l_glob_to_local;
 
+        cout << "sent interconnections to others" << endl;
+
 
         // Now that everybody got its partition, delete them from the master
-        parts.erase(parts.begin() + groups[0] + 1, parts.end());
+        partitions.erase(partitions.begin() + groups[0] + 1, partitions.end());
         column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
 
         m_l = m;
-        m = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
-        nz = std::accumulate(parts.begin(), parts.end(), 0, sum_nnz);
+        m = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        nz = std::accumulate(partitions.begin(), partitions.end(), 0, sum_nnz);
     } else {
         std::vector<int> se;
         inter_comm.recv(0, 0, se);
@@ -176,8 +183,8 @@ void abcd::distributePartitions()
             column_index.push_back(ci);
 
             // Create the matrix and push it in!
-            MappedSparseMatrix<double, RowMajor> mat(l_m, l_n, l_nz, l_irst, l_jcn, l_v);
-            parts.push_back(SparseMatrix<double, RowMajor>(mat.middleRows(0, l_m)));
+            CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
+            partitions.push_back(mat);
 
             sm += l_m;
             snz += l_nz;
@@ -196,25 +203,27 @@ void abcd::distributePartitions()
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
         nz = snz;
+        cout << "rececption finished" << endl;
     }
 
     // Create a merge of the column indices
     std::vector<int> merge_index;
-    for(int j = 0; j < parts.size(); j++) {
+    for(int j = 0; j < partitions.size(); j++) {
         std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
     }
     std::sort(merge_index.begin(), merge_index.end());
     std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
     merge_index.erase(last, merge_index.end());
 
-    // for each partition find a local column index for the previous merge
-    int indices[parts.size()];
-    for(int i = 0; i < parts.size(); i++) indices[i] = 0;
 
-    local_column_index = std::vector<std::vector<int> >(parts.size());
+    // for each partition find a local column index for the previous merge
+    int indices[partitions.size()];
+    for(int i = 0; i < partitions.size(); i++) indices[i] = 0;
+
+    local_column_index = std::vector<std::vector<int> >(partitions.size());
 
     for(int j = 0; j < merge_index.size(); j++) {
-        for(int i = 0; i < parts.size(); i++) {
+        for(int i = 0; i < partitions.size(); i++) {
             if(column_index[i][indices[i]] == merge_index[j] &&
                     indices[i] < column_index[i].size() ) {
 
@@ -227,8 +236,7 @@ void abcd::distributePartitions()
     n = merge_index.size();
 
     // Create a Communication map for ddot
-    comm_map = Eigen::VectorXi(n);
-    comm_map.setOnes();
+    comm_map.assign(n, 1);
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
         if(inter_comm.rank() > it->first) {
@@ -238,12 +246,12 @@ void abcd::distributePartitions()
         }
     }
     nrmA = 0;
-    for(int i=0; i<parts.size(); i++)
-        nrmA += parts[i].squaredNorm();
+    for(int i=0; i<partitions.size(); i++)
+        nrmA += squaredNorm(partitions[i]);
+
     mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, std::plus<double>());
     nrmA = sqrt(nrmA);
     nrmMtx = sqrt(nrmMtx);
-
 }
 
 void abcd::distributeRhs()
@@ -256,7 +264,7 @@ void abcd::distributeRhs()
 
         int r_pos = 0;
         // Build my part of the RHS
-        int r = std::accumulate(parts.begin(), parts.end(), 0, sum_rows);
+        int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
 
         if(rhs==NULL){
             rhs = new double[r * nrhs];

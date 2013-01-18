@@ -259,9 +259,10 @@ int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,
     loc_r.setZero();
 
     int pos = 0;
+    /*  A corriger */
     if(use_a) {
         for(int i = 0; i < n; i++) {
-            if(comm_map(i) == 1) {
+            if(comm_map[i] == 1) {
                 for(int j = 0; j < s; j++) {
                     loc_p(pos, j) = p(i, j);
                     loc_ap(pos, j) = ap(i, j);
@@ -271,7 +272,7 @@ int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,
         }
     } else {
         for(int i = 0; i < n; i++) {
-            if(comm_map(i) == 1) {
+            if(comm_map[i] == 1) {
                 for(int j = 0; j < s; j++) {
                     loc_p(pos, j) = p(i, j);
                 }

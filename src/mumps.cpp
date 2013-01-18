@@ -41,7 +41,7 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(14, 50);
     setMumpsIcntl(12, 2);
     setMumpsIcntl(6, 5);
-    setMumpsIcntl(7, 5);
+    setMumpsIcntl(7, 3);
     setMumpsIcntl(8, -2);
     setMumpsIcntl(27, 16);
 }
@@ -49,12 +49,13 @@ void abcd::initializeMumps(bool local)
 void abcd::createAugmentedSystems()
 {
     SparseMatrix<double, RowMajor> G;
+    
     m_n = 0;
     m_nz = 0;
     // for performance, compute total nnz and size of the matrix
-    for(int j = 0; j < parts.size(); j++) {
-        m_n += parts[j].cols() + parts[j].rows();
-        m_nz += parts[j].cols() + parts[j].nonZeros();
+    for(int j = 0; j < partitions.size(); j++) {
+        m_n += partitions[j].dim(0) + partitions[j].dim(1);
+        m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
     }
 
     // Allocate the data for mumps
@@ -69,31 +70,31 @@ void abcd::createAugmentedSystems()
     int j_pos = 1;
     int st = 0;
 
-    for(int p = 0; p < parts.size(); p++) {
+    for(int p = 0; p < partitions.size(); p++) {
 
         // fill the identity
-        for(int i = 0; i < parts[p].cols(); i++) {
+        for(int i = 0; i < partitions[p].dim(1); i++) {
             mumps.irn[st + i] = i_pos + i;
             mumps.jcn[st + i] = j_pos + i;
             mumps.a[st + i] = 1;
         }
 
         // we get down by nb_cols
-        i_pos += parts[p].cols();
+        i_pos += partitions[p].dim(1);
         // we added nb_cols elements
-        st += parts[p].cols();
+        st += partitions[p].dim(1);
 
-        for(int k = 0; k < parts[p].rows(); k++) {
-            for(int j = parts[p].outerIndexPtr()[k]; j < parts[p].outerIndexPtr()[k + 1]; j++) {
+        for(int k = 0; k < partitions[p].dim(0); k++) {
+            for(int j = partitions[p].row_ptr(k); j < partitions[p].row_ptr(k + 1); j++) {
                 mumps.irn[st] = i_pos + k;
-                mumps.jcn[st] = j_pos + parts[p].innerIndexPtr()[j];
-                mumps.a[st] = parts[p].valuePtr()[j];
+                mumps.jcn[st] = j_pos + partitions[p].col_ind(j);
+                mumps.a[st] = partitions[p].val(j);
                 st++;
             }
         }
 
-        i_pos += parts[p].rows();
-        j_pos += parts[p].cols() + parts[p].rows();
+        i_pos += partitions[p].dim(0);
+        j_pos += partitions[p].dim(1) + partitions[p].dim(0);
 
     }
 //     The data given to MUMPS

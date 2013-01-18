@@ -76,14 +76,11 @@ void abcd::scaleMatrix(int norm)
     dw = new double[ldw];
 
     // Increment indices to call fortran code
-    VECTOR_int ipt = A.t_row();
-    VECTOR_int jpt = A.t_col();
-    VECTOR_double vpt = A.t_val();
     for(int k = 0; k < n + 1 ; k++) {
-        ipt.t_vec()[k]++;
+        A.rowptr_.t_vec()[k]++;
     }
     for(int k = 0; k < nz ; k++) {
-        jpt.t_vec()[k]++;
+        A.colind_.t_vec()[k]++;
     }
 
     if(norm < 0) throw - 12;
@@ -92,7 +89,7 @@ void abcd::scaleMatrix(int norm)
     //if(norm == 2) mc77_icntl[6] = 20;
 
     job = norm;
-    mc77ad_(&job, &m, &n, &nz, ipt.t_vec(), jpt.t_vec(), vpt.t_vec(),
+    mc77ad_(&job, &m, &n, &nz, A.rowptr_.t_vec(), A.colind_.t_vec(), A.val_.t_vec(),
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
     if(mc77_info[0] < 0) throw - 100 + mc77_info;
@@ -104,10 +101,10 @@ void abcd::scaleMatrix(int norm)
 
     // put them back to 0-based for C/C++
     for(int k = 0; k < n + 1 ; k++) {
-        ipt.t_vec()[k]--;
+        A.rowptr_.t_vec()[k]--;
     }
     for(int k = 0; k < nz ; k++) {
-        jpt.t_vec()[k]--;
+        A.colind_.t_vec()[k]--;
     }
 
     VECTOR_double dc(m, double(1)), dr(n, double(1));
