@@ -115,7 +115,7 @@ private:
     std::vector<int> my_slaves;
     int my_master;
     Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
-    Eigen::VectorXi comm_map;
+    std::vector<int> comm_map;
 
     // MUMPS setters and getters
     inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
@@ -139,6 +139,7 @@ private:
      * The matrix object itself
     ***************************************************************************/
     Eigen::SparseMatrix<double, RowMajor> mtx;
+    std::vector<CompRow_Mat_double> partitions;
     std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> b;
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xk;
@@ -226,9 +227,12 @@ public:
 
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
-int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);
-int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);
-int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);
+int sum_nnz(int res, CompRow_Mat_double M);
+int sum_rows(int res, CompRow_Mat_double M);
+int sum_cols(int res, CompRow_Mat_double M);
 bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R);
+CompRow_Mat_double CSR_middleRows (VECTOR_int &, VECTOR_int &, VECTOR_double &, int st_row, int nb_rows, int nb_cols);
+CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows);
+double squaredNorm(CompRow_Mat_double &M);
 
 #endif // ABCD_HXX

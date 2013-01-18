@@ -48,7 +48,7 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
 
     int pos = 0;
     for(int i = 0; i < lm; i++) {
-        if(comm_map(i) == 1) {
+        if(comm_map[i] == 1) {
             for(int j = 0; j < ln; j++) {
                 loc_p(pos, j) = p(i, j);
             }
@@ -92,7 +92,7 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
 
     int pos = 0;
     for(int i = 0; i < rm; i++) {
-        if(comm_map(i) == 1) {
+        if(comm_map[i] == 1) {
             for(int j = 0; j < rn; j++) {
                 //@todo : this stands only when there is one rhs
                 nrmX += pow(x(i, j), 2);
@@ -155,23 +155,55 @@ bool ip_comp(const dipair &l, const dipair &r)
 }
 
 /// Sum nonzeros from parts
-int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)
+int sum_nnz(int res, CompRow_Mat_double M)
 {
-    return res += M.nonZeros();
+    return res += M.NumNonzeros();
 }
-int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)
+int sum_rows(int res, CompRow_Mat_double M)
 {
-    return res += M.rows();
+    return res += M.dim(0);
 }
-int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)
+int sum_cols(int res, CompRow_Mat_double M)
 {
-    return res += M.cols();
+    return res += M.dim(0);
 }
 bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
 {
     return (L.cols() < R.cols());
 }
 
-double squaredSum(VECTOR_double v){
-    return 0;
+double squaredNorm(CompRow_Mat_double &M)
+{
+    double sum = 0;
+    for (int i = 0; i < M.NumNonzeros(); i++){
+        double v = M.val(i);
+        sum += v*v;
+    }
+    return sum;
+}
+
+CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
+    int st_index, ed_index;
+
+    // starting index in JCN
+    st_index = M.row_ptr(st_row);
+    // last index in JCN
+    ed_index = M.row_ptr(st_row + nb_rows) - 1;
+
+    VECTOR_int sub_row_vect = M.row_ptr(MV_VecIndex(st_row, st_row + nb_rows));
+    int starting_point = M.row_ptr(st_row);
+
+    for(int i = 0; i <= nb_rows; i++){
+        sub_row_vect[i] -= starting_point;
+    }
+
+    return CompRow_Mat_double( nb_rows, M.dim(1), ed_index - st_index + 1,
+            M.val(MV_VecIndex(st_index, ed_index)),
+            sub_row_vect,
+            M.col_ind(MV_VecIndex(st_index, ed_index))
+            );
+}
+
+CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
+    return CompCol_Mat_double(CSR_middleRows(M, st_row, nb_rows));
 }

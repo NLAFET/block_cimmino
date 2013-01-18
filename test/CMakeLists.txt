@@ -7,6 +7,7 @@ SET(CMAKE_C_COMPILER mpicc)
 project(Test_abcd)
 
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
+FIND_PACKAGE(BLAS)
 #set(MUMPS_DIR /opt/MUMPS_4.10.0)
 #set(MPI_DIR /usr/lib/openmpi)
 #set(BLAS /opt/OpenBLAS)
@@ -23,15 +24,9 @@ link_directories(
   ${Boost_LIBRARY_DIRS}
   /usr/lib/openblas-base
   $ENV{HOME}/deploy/lib
-#  ${MUMPS_DIR}/lib
-#  ${MPI_DIR}
-#  ${BLAS}
-#  ${LAPACK}
-#  ${SLAPACK}
-#  ${BLACS}
-#  ${METIS}
-#  ${SCOTCH}/lib
-  )
+  /usr/lib64/
+)
+
 include_directories(../include ${Boost_INCLUDE_DIRS})
 
 add_executable(
@@ -45,31 +40,31 @@ target_link_libraries(
   abcd 
 	${Boost_LIBRARIES}
 	
-  lapack
+  reflapack
+
+  ${BLAS_LIBRARIES}
   
-  openblas
+  scalapack
   
-  scalapack-openmpi
+# blacsF77init
+# blacsCinit
+# blacs
+# blacsF77init
+# blacsCinit
   
-  blacsF77init-openmpi
-  blacsCinit-openmpi
-  blacs-openmpi
-  blacsF77init-openmpi
-  blacsCinit-openmpi
+# parmetis
   
-  parmetis
-  
-  metis
+# metis
   
   esmumps
   scotch
   scotcherr
   
-	dmumps
-	mumps_common
-	
-	mpi_f77
-  mpi_f90
+  dmumps
+  mumps_common
+
+# mpi_f77
+# mpi_f90
 
   sparse
   spblas

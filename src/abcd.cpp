@@ -8,6 +8,8 @@ int abcd::bc(int job)
 {
     mpi::communicator world;
 
+    double t;
+
     switch(job) {
 
     case -1:
@@ -22,7 +24,6 @@ int abcd::bc(int job)
             abcd::preprocess();
             abcd::partitionMatrix();
             abcd::analyseFrame();
-            exit(0);
         }
         world.barrier();
         break;
@@ -35,6 +36,7 @@ int abcd::bc(int job)
             abcd::distributePartitions();
         }
         abcd::initializeCimmino();
+            exit(0);
         if(instance_type == 0)
             cout << "[+] Launching MUMPS factorization" << endl;
         abcd::factorizeAugmentedSystems();
@@ -71,6 +73,7 @@ void abcd::initialize()
         throw - 1;
     }
 
+    double t = MPI_Wtime();
     Coord_Mat_double t_A;
 
     if(sym) {
@@ -103,6 +106,7 @@ void abcd::initialize()
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
     }
     A = CompRow_Mat_double(t_A);
+    cout << "splib : " << MPI_Wtime() - t << endl;
 }
 
 

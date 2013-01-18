@@ -359,6 +359,8 @@ COMPILER_VERSION_PATCH	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	
 COMPILER_VERSION_PATCH	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
 COMPILER_VERSION_TWEAK	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
 COMPILER_VERSION_TWEAK	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
+CSC_middleRows	utils.cpp	/^CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
+CSR_middleRows	utils.cpp	/^CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
 CanVectorizeInner	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeInner =    SameType$/;"	e	enum:Eigen::internal::traits::__anon87
 CanVectorizeInner	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeInner = internal::traits<CoeffBasedProduct>::CanVectorizeInner$/;"	e	enum:Eigen::CoeffBasedProduct::__anon88
 CanVectorizeLhs	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeLhs = (!LhsRowMajor) && (LhsFlags & PacketAccessBit)$/;"	e	enum:Eigen::internal::traits::__anon87
@@ -14001,6 +14003,7 @@ atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_defa
 atan2_default_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_default_impl<Scalar, true>$/;"	s	namespace:Eigen::internal
 atan2_impl	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_impl : atan2_default_impl<Scalar, NumTraits<Scalar>::IsInteger> {};$/;"	s	namespace:Eigen::internal	inherits:atan2_default_impl
 atan2_retval	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_retval$/;"	s	namespace:Eigen::internal
+augmentMatrix	structure.cpp	/^abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)$/;"	f	class:abcd
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  const Vector3& axis() const { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:() const
 axis	../include/Eigen/src/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
@@ -19350,7 +19353,7 @@ squaredNorm	../include/Eigen/src/Eigen2Support/Geometry/Quaternion.h	/^  inline 
 squaredNorm	../include/Eigen/src/Geometry/Quaternion.h	/^  inline Scalar squaredNorm() const { return coeffs().squaredNorm(); }$/;"	f	class:Eigen::QuaternionBase	access:public	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseDot.h	/^SparseMatrixBase<Derived>::squaredNorm() const$/;"	f	class:Eigen::SparseMatrixBase	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    RealScalar squaredNorm() const;$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:() const
-squaredSum	utils.cpp	/^double squaredSum(VECTOR_double v){$/;"	f
+squaredNorm	utils.cpp	/^double squaredNorm(CompRow_Mat_double &M)$/;"	f
 squeeze	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    void squeeze()$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:()
 srot	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srot)  (int *, float  *, int *, float  *, int *, float  *, float  *);$/;"	p	signature:(int *, float *, int *, float *, int *, float *, float *)
 srotg	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srotg) (float  *, float  *, float  *, float  *);$/;"	p	signature:(float *, float *, float *, float *)
@@ -19464,13 +19467,13 @@ sumProject	../src/mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eig
 sumProject	mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd
 sum_cols	../include/abcd.h	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_cols	../src/utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_cols	utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
+sum_cols	utils.cpp	/^int sum_cols(int res, CompRow_Mat_double M)$/;"	f
 sum_nnz	../include/abcd.h	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_nnz	../src/utils.cpp	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_nnz	utils.cpp	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
+sum_nnz	utils.cpp	/^int sum_nnz(int res, CompRow_Mat_double M)$/;"	f
 sum_rows	../include/abcd.h	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_rows	../src/utils.cpp	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_rows	utils.cpp	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f
+sum_rows	utils.cpp	/^int sum_rows(int res, CompRow_Mat_double M)$/;"	f
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^    void sumupDuplicates();$/;"	p	class:Eigen::SparseMatrix	access:public	signature:()
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^void SparseMatrix<Scalar,_Options,_Index>::sumupDuplicates()$/;"	f	class:Eigen::SparseMatrix	signature:()
 super	../include/Eigen/src/Core/BandMatrix.h	/^    inline const typename Base::template DiagonalIntReturnType<1>::Type super() const$/;"	f	class:Eigen::internal::TridiagonalMatrix	access:public	signature:() const
