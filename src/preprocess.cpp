@@ -16,7 +16,7 @@ void abcd::preprocess()
         dcol_ = VECTOR_double(n, double(1));
     }
 
-    if(icntl[9] == 1) {
+    if(icntl[9] >= 1) {
         ///TODO:Use logging
         std::cout << "[-] Scaling with Infinity" << std::endl;
 
@@ -30,9 +30,11 @@ void abcd::preprocess()
             for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
                 rsum += pow(A(r, A.col_ind(c)), 2);
             }
-            drow_(r) = sqrt(rsum);
+            drow_(r) = 1/sqrt(rsum);
         }
         abcd::diagScaleMatrix(drow_, dcol_);
+        drow_ = VECTOR_double(m, double(1));
+        dcol_ = VECTOR_double(n, double(1));
     }
 
 
@@ -42,6 +44,20 @@ void abcd::preprocess()
 
         std::cout << "[-] Scaling with Norm 2" << std::endl;
         abcd::scaleMatrix(2);
+
+        double rsum;
+        drow_ = VECTOR_double(m, double(0));
+        dcol_ = VECTOR_double(n, double(1));
+        for(int r = 0; r < m; r++) {
+            rsum = 0;
+            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                rsum += pow(A(r, A.col_ind(c)), 2);
+            }
+            drow_(r) = 1/sqrt(rsum);
+        }
+        abcd::diagScaleMatrix(drow_, dcol_);
+        drow_ = VECTOR_double(m, double(1));
+        dcol_ = VECTOR_double(n, double(1));
     }
 
 }
@@ -86,7 +102,7 @@ void abcd::scaleMatrix(int norm)
     if(norm < 0) throw - 12;
 
     mc77_icntl[9] = 0;
-    //if(norm == 2) mc77_icntl[6] = 20;
+    if(norm == 2) mc77_icntl[6] = 20;
 
     job = norm;
     mc77ad_(&job, &m, &n, &nz, A.rowptr_.t_vec(), A.colind_.t_vec(), A.val_.t_vec(),

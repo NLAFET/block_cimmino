@@ -119,8 +119,8 @@ abcd::abcd()
     use_xk = false;
     use_xf = false;
     rhs = NULL;
-    for(int i = 0; i < 10; i++) icntl[i] = 0;
-    for(int i = 0; i < 10; i++) dcntl[i] = 0;
+    for(int i = 0; i < 20; i++) icntl[i] = 0;
+    for(int i = 0; i < 20; i++) dcntl[i] = 0;
 }
 
 abcd::~abcd()

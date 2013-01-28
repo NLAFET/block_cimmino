@@ -26,6 +26,7 @@ file(
     source_files
     src/*.f
     src/*.cpp
+    src/sparsekit.f90
     include/*
 )
 
