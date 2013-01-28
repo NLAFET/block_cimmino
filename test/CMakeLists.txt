@@ -52,9 +52,8 @@ target_link_libraries(
 # blacsF77init
 # blacsCinit
   
-# parmetis
-  
-# metis
+  parmetis
+  metis
   
   esmumps
   scotch
@@ -69,4 +68,6 @@ target_link_libraries(
   sparse
   spblas
   mv
+  
+  csparse
 )

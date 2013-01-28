@@ -359,8 +359,8 @@ COMPILER_VERSION_PATCH	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	
 COMPILER_VERSION_PATCH	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
 COMPILER_VERSION_TWEAK	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
 COMPILER_VERSION_TWEAK	../build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
-CSC_middleRows	utils.cpp	/^CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
-CSR_middleRows	utils.cpp	/^CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
+CSC_middleRows	splib_utils.cpp	/^CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
+CSR_middleRows	splib_utils.cpp	/^CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {$/;"	f
 CanVectorizeInner	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeInner =    SameType$/;"	e	enum:Eigen::internal::traits::__anon87
 CanVectorizeInner	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeInner = internal::traits<CoeffBasedProduct>::CanVectorizeInner$/;"	e	enum:Eigen::CoeffBasedProduct::__anon88
 CanVectorizeLhs	../include/Eigen/src/Core/products/CoeffBasedProduct.h	/^      CanVectorizeLhs = (!LhsRowMajor) && (LhsFlags & PacketAccessBit)$/;"	e	enum:Eigen::internal::traits::__anon87
@@ -14427,7 +14427,7 @@ colwise	../include/Eigen/src/Core/VectorwiseOp.h	/^DenseBase<Derived>::colwise()
 comm_map	../include/abcd.h	/^    Eigen::VectorXi comm_map;$/;"	m	class:abcd	access:private
 comp_cols	../include/abcd.h	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R);$/;"	p	signature:(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
 comp_cols	../src/utils.cpp	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)$/;"	f	signature:(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
-comp_cols	utils.cpp	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)$/;"	f
+comp_cols	splib_utils.cpp	/^bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)$/;"	f
 complex_schur_reduce_to_hessenberg	../include/Eigen/src/Eigenvalues/ComplexSchur.h	/^struct complex_schur_reduce_to_hessenberg$/;"	s	namespace:Eigen::internal
 complex_schur_reduce_to_hessenberg	../include/Eigen/src/Eigenvalues/ComplexSchur.h	/^struct complex_schur_reduce_to_hessenberg<MatrixType, false>$/;"	s	namespace:Eigen::internal
 compute	../include/Eigen/src/Cholesky/LDLT.h	/^    LDLT& compute(const MatrixType& matrix);$/;"	p	class:Eigen::LDLT	access:public	signature:(const MatrixType& matrix)
@@ -14541,6 +14541,7 @@ compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct comput
 compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
 compute_rho	bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd
+concat_columns	splib_utils.cpp	/^concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols )$/;"	f
 conditionMatrix	../include/Eigen/src/Core/Select.h	/^    const ConditionMatrixType& conditionMatrix() const$/;"	f	class:Eigen::Select	access:public	signature:() const
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional <false, Then, Else> { typedef Else type; };$/;"	s	namespace:Eigen::internal
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional { typedef Then type; };$/;"	s	namespace:Eigen::internal
@@ -14696,10 +14697,14 @@ crotg	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(crotg) (float  *, float
 cs_tdfs	../include/Eigen/src/OrderingMethods/Amd.h	/^Index cs_tdfs(Index j, Index k, Index *head, const Index *next, Index *post, Index *stack)$/;"	f	namespace:Eigen::internal	signature:(Index j, Index k, Index *head, const Index *next, Index *post, Index *stack)
 cs_wclear	../include/Eigen/src/OrderingMethods/Amd.h	/^static int cs_wclear (Index mark, Index lemax, Index *w, Index n)$/;"	f	namespace:Eigen::internal	signature:(Index mark, Index lemax, Index *w, Index n)
 csbmv	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(csbmv)(char *, int *, int *, float  *, float  *, int *,$/;"	p	signature:(char *, int *, int *, float *, float *, int *, float *, int *, float *, float *, int *)
+csc_transpose	splib_utils.cpp	/^csc_transpose ( CompCol_Mat_double &M )$/;"	f
+csc_transpose	splib_utils.cpp	/^csc_transpose ( CompRow_Mat_double &M )$/;"	f
 cscal	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(cscal) (int *,  float  *, float  *, int *);$/;"	p	signature:(int *, float *, float *, int *)
 cspmv	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(cspmv) (char *, int *, float  *, float *,$/;"	p	signature:(char *, int *, float *, float *, float *, int *, float *, float *, int *)
 cspr	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(cspr) (char *, int *, float   *, float  *, int *,$/;"	p	signature:(char *, int *, float *, float *, int *, float *)
 cspr2	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(cspr2) (char *, int *, float   *,$/;"	p	signature:(char *, int *, float *, float *, int *, float *, int *, float *)
+csr_transpose	splib_utils.cpp	/^csr_transpose ( CompCol_Mat_double &M )$/;"	f
+csr_transpose	splib_utils.cpp	/^csr_transpose ( CompRow_Mat_double &M )$/;"	f
 csrot	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(csrot) (int *, float  *, int *, float  *, int *, float  *, float  *);$/;"	p	signature:(int *, float *, int *, float *, int *, float *, float *)
 csscal	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(csscal)(int *,  float  *, float  *, int *);$/;"	p	signature:(int *, float *, float *, int *)
 cswap	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(cswap) (int *, float  *, int *, float  *, int *);$/;"	p	signature:(int *, float *, int *, float *, int *)
@@ -15555,6 +15560,7 @@ indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indi
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::Map	access:public	signature:() const
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::Transpositions	access:public	signature:() const
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::TranspositionsWrapper	access:public	signature:() const
+infNorm	splib_utils.cpp	/^double infNorm(VECTOR_double &V){$/;"	f
 info	../include/Eigen/src/Cholesky/LDLT.h	/^    ComputationInfo info() const$/;"	f	class:Eigen::LDLT	access:public	signature:() const
 info	../include/Eigen/src/Cholesky/LLT.h	/^    ComputationInfo info() const$/;"	f	class:Eigen::LLT	access:public	signature:() const
 info	../include/Eigen/src/CholmodSupport/CholmodSupport.h	/^    ComputationInfo info() const$/;"	f	class:Eigen::CholmodBase	access:public	signature:() const
@@ -16804,6 +16810,8 @@ member_redux	../include/Eigen/src/Core/VectorwiseOp.h	/^struct member_redux {$/;
 merged	../include/Eigen/src/Geometry/AlignedBox.h	/^  inline AlignedBox merged(const AlignedBox& b) const$/;"	f	class:Eigen::AlignedBox	access:public	signature:(const AlignedBox& b) const
 meta_sqrt	../include/Eigen/src/Core/util/Meta.h	/^class meta_sqrt<Y, InfX, SupX, true> { public:  enum { ret = (SupX*SupX <= Y) ? SupX : InfX }; };$/;"	c	namespace:Eigen
 middle	../include/Eigen/src/Core/MathFunctions.h	/^  enum { middle = (lower + upper) \/ 2,$/;"	e	enum:Eigen::internal::floor_log2_selector::__anon263
+middleCol	splib_utils.cpp	/^VECTOR_double middleCol(CompCol_Mat_double &M, int col_num){$/;"	f
+middleCol	splib_utils.cpp	/^VECTOR_double middleCol(CompCol_Mat_double &M, int col_num, VECTOR_int &ind){$/;"	f
 middleCols	../include/Eigen/src/SparseCore/SparseBlock.h	/^SparseInnerVectorSet<Derived,Dynamic> SparseMatrixBase<Derived>::middleCols(Index start, Index size)$/;"	f	class:Eigen::SparseMatrixBase	signature:(Index start, Index size)
 middleCols	../include/Eigen/src/SparseCore/SparseBlock.h	/^const SparseInnerVectorSet<Derived,Dynamic> SparseMatrixBase<Derived>::middleCols(Index start, Index size) const$/;"	f	class:Eigen::SparseMatrixBase	signature:(Index start, Index size) const
 middleCols	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    SparseInnerVectorSet<Derived,Dynamic> middleCols(Index start, Index size);$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:(Index start, Index size)
@@ -18461,6 +18469,7 @@ resize	../include/Eigen/src/StlSupport/StdVector.h	/^  void resize(size_type new
 resizeLike	../include/Eigen/src/Core/PlainObjectBase.h	/^    EIGEN_STRONG_INLINE void resizeLike(const EigenBase<OtherDerived>& _other)$/;"	f	class:Eigen::PlainObjectBase	access:public	signature:(const EigenBase<OtherDerived>& _other)
 resizeNonZeros	../include/Eigen/src/SparseCore/SparseMatrix.h	/^    void resizeNonZeros(Index size)$/;"	f	class:Eigen::SparseMatrix	access:public	signature:(Index size)
 resizeNonZeros	../include/Eigen/src/SparseCore/SparseVector.h	/^    void resizeNonZeros(Index size) { m_data.resize(size); }$/;"	f	class:Eigen::SparseVector	access:public	signature:(Index size)
+resize_columns	splib_utils.cpp	/^resize_columns ( CompCol_Mat_double &M, int new_size )$/;"	f
 restart	../include/Eigen/src/SparseCore/AmbiVector.h	/^    void restart();$/;"	p	class:Eigen::internal::AmbiVector	access:public	signature:()
 restart	../include/Eigen/src/SparseCore/AmbiVector.h	/^void AmbiVector<_Scalar,_Index>::restart()$/;"	f	class:Eigen::internal::AmbiVector	signature:()
 result_of	../include/Eigen/src/Core/util/Meta.h	/^struct result_of<Func(ArgType)> {$/;"	s	namespace:Eigen::internal
@@ -19200,6 +19209,10 @@ smart_copy_helper	../include/Eigen/src/Core/util/Memory.h	/^template<typename T>
 smart_copy_helper	../include/Eigen/src/Core/util/Memory.h	/^template<typename T> struct smart_copy_helper<T,true> {$/;"	s	namespace:Eigen::internal
 smax	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smax)  (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 smin	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smin)  (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
+smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)$/;"	f
+smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B, double prune)$/;"	f
+smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)$/;"	f
+smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double prune)$/;"	f
 snorm	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(snorm)(char *, int *, int *, float  *, int *);$/;"	p	signature:(char *, int *, int *, float *, int *)
 snrm2	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(snrm2) (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 solve	../include/Eigen/src/Cholesky/LDLT.h	/^    bool solve(const MatrixBase<OtherDerived>& b, ResultType *result) const$/;"	f	class:Eigen::LDLT	access:public	signature:(const MatrixBase<OtherDerived>& b, ResultType *result) const
@@ -19353,7 +19366,9 @@ squaredNorm	../include/Eigen/src/Eigen2Support/Geometry/Quaternion.h	/^  inline 
 squaredNorm	../include/Eigen/src/Geometry/Quaternion.h	/^  inline Scalar squaredNorm() const { return coeffs().squaredNorm(); }$/;"	f	class:Eigen::QuaternionBase	access:public	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseDot.h	/^SparseMatrixBase<Derived>::squaredNorm() const$/;"	f	class:Eigen::SparseMatrixBase	signature:() const
 squaredNorm	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    RealScalar squaredNorm() const;$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:() const
-squaredNorm	utils.cpp	/^double squaredNorm(CompRow_Mat_double &M)$/;"	f
+squaredNorm	splib_utils.cpp	/^double squaredNorm(CompRow_Mat_double &M)$/;"	f
+squaredNorm	splib_utils.cpp	/^double squaredNorm(VECTOR_double &V){$/;"	f
+squaredNorm	splib_utils.cpp	/^double squaredNorm(VECTOR_double &V, VECTOR_int &I){$/;"	f
 squeeze	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    void squeeze()$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:()
 srot	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srot)  (int *, float  *, int *, float  *, int *, float  *, float  *);$/;"	p	signature:(int *, float *, int *, float *, int *, float *, float *)
 srotg	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(srotg) (float  *, float  *, float  *, float  *);$/;"	p	signature:(float *, float *, float *, float *)
@@ -19444,6 +19459,7 @@ subTo	../include/Eigen/src/Core/ProductBase.h	/^    inline void subTo(Dest& dst)
 subTo	../include/Eigen/src/Core/ProductBase.h	/^    inline void subTo(Dest& dst) const { scaleAndAddTo(dst,Scalar(-1)); }$/;"	f	class:Eigen::ProductBase	access:public	signature:(Dest& dst) const
 subVector	../include/Eigen/src/Core/VectorwiseOp.h	/^    SubVector subVector(Index i)$/;"	f	class:Eigen::VectorwiseOp	access:protected	signature:(Index i)
 subVectors	../include/Eigen/src/Core/VectorwiseOp.h	/^    Index subVectors() const$/;"	f	class:Eigen::VectorwiseOp	access:protected	signature:() const
+sub_matrix	splib_utils.cpp	/^sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )$/;"	f
 subcols	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    SparseInnerVectorSet<Derived,Dynamic> subcols(Index start, Index size);$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:(Index start, Index size)
 subcols	../include/Eigen/src/SparseCore/SparseMatrixBase.h	/^    const SparseInnerVectorSet<Derived,Dynamic> subcols(Index start, Index size) const;$/;"	p	class:Eigen::SparseMatrixBase	access:public	signature:(Index start, Index size) const
 subdiagonalEntryIsNeglegible	../include/Eigen/src/Eigenvalues/ComplexSchur.h	/^    bool subdiagonalEntryIsNeglegible(Index i);$/;"	p	class:Eigen::ComplexSchur	access:private	signature:(Index i)
@@ -19467,13 +19483,13 @@ sumProject	../src/mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eig
 sumProject	mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd
 sum_cols	../include/abcd.h	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_cols	../src/utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_cols	utils.cpp	/^int sum_cols(int res, CompRow_Mat_double M)$/;"	f
+sum_cols	splib_utils.cpp	/^int sum_cols(int res, CompRow_Mat_double M)$/;"	f
 sum_nnz	../include/abcd.h	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_nnz	../src/utils.cpp	/^int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_nnz	utils.cpp	/^int sum_nnz(int res, CompRow_Mat_double M)$/;"	f
+sum_nnz	splib_utils.cpp	/^int sum_nnz(int res, CompRow_Mat_double M)$/;"	f
 sum_rows	../include/abcd.h	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_rows	../src/utils.cpp	/^int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
-sum_rows	utils.cpp	/^int sum_rows(int res, CompRow_Mat_double M)$/;"	f
+sum_rows	splib_utils.cpp	/^int sum_rows(int res, CompRow_Mat_double M)$/;"	f
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^    void sumupDuplicates();$/;"	p	class:Eigen::SparseMatrix	access:public	signature:()
 sumupDuplicates	../include/Eigen/src/SparseCore/SparseMatrix.h	/^void SparseMatrix<Scalar,_Options,_Index>::sumupDuplicates()$/;"	f	class:Eigen::SparseMatrix	signature:()
 super	../include/Eigen/src/Core/BandMatrix.h	/^    inline const typename Base::template DiagonalIntReturnType<1>::Type super() const$/;"	f	class:Eigen::internal::TridiagonalMatrix	access:public	signature:() const

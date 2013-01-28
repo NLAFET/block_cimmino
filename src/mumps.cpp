@@ -41,7 +41,7 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(14, 50);
     setMumpsIcntl(12, 2);
     setMumpsIcntl(6, 5);
-    setMumpsIcntl(7, 3);
+    setMumpsIcntl(7, 5);
     setMumpsIcntl(8, -2);
     setMumpsIcntl(27, 16);
 }
@@ -197,6 +197,8 @@ void abcd::analyseAugmentedSystems()
     mumps.job = 1;
 
     double t = MPI_Wtime();
+    //cout << "mumps.n " << mumps.n << endl;
+    //cout << "mumps.nz " << mumps.nz << endl;
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
 

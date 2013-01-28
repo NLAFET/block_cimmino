@@ -41,6 +41,9 @@
 #include "comprow_double.h"
 #include "coord_double.h"
 
+#include "splib_utils.h"
+#include <cs.h>
+
 using namespace Eigen;
 using namespace std;
 using namespace boost;
@@ -215,8 +218,8 @@ public:
     mpi::communicator intra_comm; /// The communicator of local slaves
 
 
-    int icntl[10];
-    double dcntl[10];
+    int icntl[20];
+    double dcntl[20];
 
 
     int bc(int);
@@ -227,12 +230,5 @@ public:
 
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
-int sum_nnz(int res, CompRow_Mat_double M);
-int sum_rows(int res, CompRow_Mat_double M);
-int sum_cols(int res, CompRow_Mat_double M);
-bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R);
-CompRow_Mat_double CSR_middleRows (VECTOR_int &, VECTOR_int &, VECTOR_double &, int st_row, int nb_rows, int nb_cols);
-CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows);
-double squaredNorm(CompRow_Mat_double &M);
 
 #endif // ABCD_HXX
