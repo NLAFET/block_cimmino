@@ -289,72 +289,77 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 CompCol_Mat_double A_ij = sub_matrix(M[i], intersect);
                 CompCol_Mat_double A_ji = sub_matrix(M[j], intersect);
                 for(int k = 0; k < A_ji.NumNonzeros(); k++)
-                    A_ji.val(k) *= -1;
+                    A_ji.val(k) *= double(-1);
 
-                std::vector<int> selected_cols;
-                std::vector<double> frob_ij, mu;
-                double card_max = 0;
-                double frob_sum = 0;
-                double nu;
 
-                for (int k = 0; k < A_ij.dim(1); ++k){
-                    VECTOR_int A_ij_k_ind, A_ji_k_ind;
-                    VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
-                    VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
+                if(filter_c != 0) {
+                    std::vector<int> selected_cols;
+                    std::vector<double> frob_ij, mu;
+                    double card_max = 0;
+                    double frob_sum = 0;
+                    double nu;
 
-                    double card_current = A_ij_k_ind.size() * A_ji_k_ind.size();
+                    for (int k = 0; k < A_ij.dim(1); ++k){
+                        VECTOR_int A_ij_k_ind, A_ji_k_ind;
+                        VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
+                        VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
 
-                    // exploit the sparcity of the vectors!
-                    frob_ij.push_back(sqrt( squaredNorm(A_ij_k, A_ij_k_ind) * squaredNorm(A_ji_k, A_ji_k_ind)));
-                    frob_sum += frob_ij[k];
+                        double card_current = A_ij_k_ind.size() * A_ji_k_ind.size();
 
-                    card_max = card_max > card_current ? card_max : card_current;
+                        // exploit the sparcity of the vectors!
+                        frob_ij.push_back(sqrt( squaredNorm(A_ij_k, A_ij_k_ind) * squaredNorm(A_ji_k, A_ji_k_ind)));
+                        frob_sum += frob_ij[k];
+
+                        card_max = card_max > card_current ? card_max : card_current;
+                    }
+
+                    nu = (frob_sum / A_ij.dim(1)) / sqrt(card_max);
+
+                    for (int k = 0; k < A_ij.dim(1); ++k){
+                        VECTOR_int A_ij_k_ind, A_ji_k_ind;
+                        VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
+                        VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
+
+                        double inf_ij = infNorm(A_ij_k);
+                        double inf_ji = infNorm(A_ji_k);
+
+                        double p = 0, q = 0;
+                        for (int l = 0; l < A_ij_k_ind.size(); ++l){
+                            if (abs(A_ij_k(l)) >= nu/inf_ji) p++;
+                        }
+                        for (int l = 0; l < A_ji_k_ind.size(); ++l){
+                            if (abs(A_ji_k(l)) >= nu/inf_ij) q++;
+                        }
+
+                        p = ( p==0 ? A_ij_k_ind.size() : p );
+                        q = ( q==0 ? A_ji_k_ind.size() : q );
+
+                        double mu_ij_k = frob_ij[k] / sqrt(p*q);
+                        mu.push_back(mu_ij_k);
+
+                        if(mu_ij_k >= filter_c){
+                            selected_cols.push_back(k);
+                        }
+                    }
+
+                    if (selected_cols.size() == 0) continue;
+
+                    A_ij = sub_matrix(A_ij, selected_cols);
+                    A_ji = sub_matrix(A_ji, selected_cols);
                 }
 
-                nu = (frob_sum / A_ij.dim(1)) / sqrt(card_max);
-
-                for (int k = 0; k < A_ij.dim(1); ++k){
-                    VECTOR_int A_ij_k_ind, A_ji_k_ind;
-                    VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
-                    VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
-
-                    double inf_ij = infNorm(A_ij_k);
-                    double inf_ji = infNorm(A_ji_k);
-
-                    double p = 0, q = 0;
-                    for (int l = 0; l < A_ij_k_ind.size(); ++l){
-                        if (abs(A_ij_k(l)) >= nu/inf_ji) p++;
-                    }
-                    for (int l = 0; l < A_ji_k_ind.size(); ++l){
-                        if (abs(A_ji_k(l)) >= nu/inf_ij) q++;
-                    }
-
-                    p = ( p==0 ? A_ij_k_ind.size() : p );
-                    q = ( q==0 ? A_ji_k_ind.size() : q );
-
-                    double mu_ij_k = frob_ij[k] / sqrt(p*q);
-                    mu.push_back(mu_ij_k);
-
-                    if(mu_ij_k >= filter_c){
-                        selected_cols.push_back(k);
-                    }
-                }
-
-                if (selected_cols.size() == 0) continue;
-
-                A_ij = sub_matrix(A_ij, selected_cols);
-                A_ji = sub_matrix(A_ji, selected_cols);
 
                 stCols[i].push_back(nbcols);
                 stCols[j].push_back(nbcols);
                 C[i].push_back(A_ij);
                 C[j].push_back(A_ji);
 
-                nbcols += selected_cols.size();
+                nbcols += A_ij.dim(1);
             }
         }
 
         cout << "Size of C : " << nbcols - A.dim(1) << endl;
+
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
@@ -363,14 +368,11 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
             M[k] = resize_columns(M[k], nbcols);
         }
 
-
     } else if (icntl[10] == 3){
         /*
          * SVD augmentation
          */
 
     }
-
-    cout << smmtm(M[0], M[1]) << endl;
 
 }// [> -----  end of function abcd::augmentMatrix  ----- <]

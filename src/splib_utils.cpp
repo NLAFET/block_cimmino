@@ -199,13 +199,13 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
  *                C = A * B^T
  * =====================================================================================
  */
-CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double prune)
+CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)
 {
     CompRow_Mat_double BT = csr_transpose(B);
 
     int nzmax = A.dim(0) * B.dim(0);
 
-    VECTOR_int iw(BT.dim(1), 0);
+    VECTOR_int iw(A.dim(1), 0);
     std::map<int,int> jc, ic;
     std::map<int,double> c;
     ic[0] = 0;
@@ -225,7 +225,7 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double p
 
             for(kb = BT.row_ptr(j); kb < BT.row_ptr(j+1); kb++){
                 jcol = BT.col_ind(kb);
-                jpos = iw[jcol];
+                jpos = iw(jcol);
 
                 if(jpos == 0){
                     len = len + 1;
@@ -237,24 +237,23 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double p
                     iw[jcol] = len;
 
                     c[len - 1] = scal*BT.val(kb);
+                    jpos = len;
                 } else {
                     c[jpos - 1] = c[jpos - 1] + scal * BT.val(kb);
 
-                     //Auto prunining, test!
-                    if(abs(c[jpos -1]) <= prune){
+                     // //Auto prunining, test!
+                    if(c[jpos -1] == 0){
                         iw[jcol] = 0;
                         len--;
                     }
                 }
-
             }
 
         }
 
         for(k = ic[i]; k < len; k++){
-            iw[jc[k]] = 0;
+            iw(jc[k]) = 0;
         }
-        //cout << "h " << i << " " << A.dim(0) << endl;
 
         ic[i+1] = len;
     }
@@ -275,23 +274,11 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double p
 
 }
 
-CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)
-{
-    return smmtm(A, B, double(0));
-}
-
-CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B, double prune)
-{
-    CompRow_Mat_double Ar = A;
-    CompRow_Mat_double Br = B;
-    return smmtm(Ar, Br, prune);
-}
-
 CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)
 {
     CompRow_Mat_double Ar = A;
     CompRow_Mat_double Br = B;
-    return smmtm(Ar, Br, double(0));
+    return smmtm(Ar, Br);
 }
 
 
