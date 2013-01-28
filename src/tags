@@ -19210,9 +19210,7 @@ smart_copy_helper	../include/Eigen/src/Core/util/Memory.h	/^template<typename T>
 smax	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smax)  (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 smin	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smin)  (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)$/;"	f
-smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B, double prune)$/;"	f
 smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)$/;"	f
-smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double prune)$/;"	f
 snorm	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(snorm)(char *, int *, int *, float  *, int *);$/;"	p	signature:(char *, int *, int *, float *, int *)
 snrm2	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(snrm2) (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 solve	../include/Eigen/src/Cholesky/LDLT.h	/^    bool solve(const MatrixBase<OtherDerived>& b, ResultType *result) const$/;"	f	class:Eigen::LDLT	access:public	signature:(const MatrixBase<OtherDerived>& b, ResultType *result) const
