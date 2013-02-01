@@ -17,6 +17,7 @@
  */
 
 #include <abcd.h>
+#include <Eigen/src/misc/blas.h>
 
 //extern "C"
 //{
@@ -205,13 +206,12 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)
 
     int nzmax = A.dim(0) * B.dim(0);
 
-    VECTOR_int iw(A.dim(1), 0);
+    VECTOR_int iw(BT.dim(1), 0);
     std::map<int,int> jc, ic;
     std::map<int,double> c;
     ic[0] = 0;
 
     double scal;
-
     int i, ka, kb, j, k, jcol, jpos, len=0;
 
     if(A.dim(1) != BT.dim(0)) throw -980;
@@ -237,21 +237,23 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)
                     iw[jcol] = len;
 
                     c[len - 1] = scal*BT.val(kb);
-                    jpos = len;
+                    //cout << "->" << len << "\t" << c[len -1 ] << "\t" << jc[len -1] <<  endl;
                 } else {
                     c[jpos - 1] = c[jpos - 1] + scal * BT.val(kb);
+                    //cout << "--" << jpos << "\t" << c[jpos -1 ] << "\t" << jc[jpos -1] <<  endl;
 
-                     // //Auto prunining, test!
-                    if(c[jpos -1] == 0){
-                        iw[jcol] = 0;
-                        len--;
-                    }
+                    //cout << i+1 << " " << jcol+1 << "\t" << c[jpos -1 ] << endl;
                 }
             }
 
         }
-
-        for(k = ic[i]; k < len; k++){
+        int l = len;
+        for(k = ic[i]; k < l; k++){
+            if(c[k] == 0){
+                jc.erase(k);
+                c.erase(k);
+                len--;
+            }
             iw(jc[k]) = 0;
         }
 
@@ -266,8 +268,9 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)
         vv[i] = c[i];
     }
 
-    for(i = 0; i < A.dim(0) + 1; i++)
+    for(i = 0; i < A.dim(0) + 1; i++){
         vr[i] = ic[i];
+    }
 
     CompRow_Mat_double C(A.dim(0), BT.dim(1), len, vv, vr, vc);
     return C;
@@ -280,6 +283,72 @@ CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)
     CompRow_Mat_double Br = B;
     return smmtm(Ar, Br);
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  spmm
+ *  Description:  
+ * =====================================================================================
+ */
+    CompRow_Mat_double
+spmm ( CompRow_Mat_double &A, CompRow_Mat_double &B )
+{
+    CompRow_Mat_double BT = csr_transpose(B);
+
+    std::map<int,int> iw;
+    std::map<int,int> jc, ic;
+    std::map<int,double> c;
+    ic[0] = 0;
+
+    double scal;
+    int i, ka, kb, j, k, jcol, jpos, len=0;
+
+    for( i = 0; i < A.dim(0); i++){
+        for ( ka = A.row_ptr(i); ka < A.row_ptr(i+1); ka++){
+            scal = A.val(ka);
+            j = A.col_ind(ka);
+
+            for(kb = BT.row_ptr(j); kb < BT.row_ptr(j+1); kb++){
+                // i-th row from A x jcol-th column from B
+                jcol = BT.col_ind(kb);
+                if(iw.find(jcol)==iw.end()){
+                    // first time!
+                    jc[len] = jcol;
+                    c[len]  = scal*BT.val(kb);
+                    iw[jcol] = len;
+                    len++;
+                } else {
+                    c[iw[jcol]] += scal*BT.val(kb);
+
+                    if(c[iw[jcol]] == 0){
+                        c.erase(iw[jcol]);
+                        jc.erase(iw[jcol]);
+                        iw.erase(jcol);
+                        len--;
+                    }
+                }
+            }
+        }
+        iw.clear();
+        ic[i+1] = len;
+    }
+    VECTOR_int vc(len), vr(A.dim(0) + 1);
+    VECTOR_double vv(len);
+
+    for(i = 0; i < len; i++){
+        vc[i] = jc[i];
+        vv[i] = c[i];
+    }
+
+    for(i = 0; i < A.dim(0) + 1; i++){
+        vr[i] = ic[i];
+    }
+
+    CompRow_Mat_double C(A.dim(0), BT.dim(1), len, vv, vr, vc);
+
+    return C;
+}		/* -----  end of function spmm  ----- */
 
 
 /* 
@@ -422,3 +491,50 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
 
     return CompCol_Mat_double(A.dim(0), total_columns, total_nz, cv, cr, cc);
 }		/* -----  end of function concat_columns  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  smv
+ *  Description:  
+ * =====================================================================================
+ */
+    MV_ColMat_double 
+smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
+{
+    //std::vector<VECTOR_double> R;
+    MV_ColMat_double R(M.dim(0), V.dim(1));
+    for(int k = 0; k < V.dim(1); k++){
+        MV_Vector_double t = M*V(k);
+        //R.push_back( M*V[k] );
+        R.setCol(t, k);
+    }
+    return R;
+}		/* -----  end of function smdm  ----- */
+
+MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
+{
+    assert(L.dim(1) ==  R.dim(0));
+
+    MV_ColMat_double C(L.dim(0), R.dim(1));
+
+    int ierr = 0;
+    char no = 'N';
+    //char trans = 'T';
+    double alpha, beta;
+
+    alpha = 1;
+    beta  = 0;
+
+    double *l_ptr = L.ptr();
+    double *r_ptr = R.ptr();
+    double *c_ptr = C.ptr();
+
+    int rA = L.dim(0);
+    int cA = L.dim(1);
+    int rB = R.dim(0);
+    int cB = R.dim(1);
+
+    dgemm_(&no, &no, &rA, &cB, &cA, &alpha, l_ptr, &rA, r_ptr, &rB, &beta, c_ptr, &rA);
+    return R;
+}

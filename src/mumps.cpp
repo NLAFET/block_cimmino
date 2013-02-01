@@ -244,51 +244,53 @@ void abcd::factorizeAugmentedSystems()
     }
 }
 
-Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
+MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)
 {
     mpi::communicator world;
-    int s = X.cols();
+    int s = X.dim(1);
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
     int pos = 0;
     int b_pos = 0;
-    for(int k = 0; k < parts.size(); k++) {
-        Eigen::MatrixXd r(parts[k].rows(), s);
-        r.setZero();
-        Eigen::MatrixXd compressed_x(parts[k].cols(), s);
-        compressed_x.setZero();
+    for(int k = 0; k < partitions.size(); k++) {
+        MV_ColMat_double r(partitions[k].dim(0), s, 0);
+        MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
 
         int x_pos = 0;
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
             for(int j = 0; j < s; j++) {
-                assert(x_pos < compressed_x.rows());
-                assert(ci < X.rows());
+                assert(x_pos < compressed_x.dim(0));
+                assert(ci < X.dim(0));
                 compressed_x(x_pos, j) = X(ci, j);
             }
             x_pos++;
         }
 
         // avoid useless operations
-        if(beta != 0)
-            r = beta * parts[k] * compressed_x;
-        if(alpha != 0)
-            r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
+        if(beta != 0){
+            r = smv(partitions[k], compressed_x) * beta;
+        }
+        if(alpha != 0){
+            //r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
+            r = r + B(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1),
+                              MV_VecIndex(0, s -1)) * alpha;
+        }
         
-        b_pos += parts[k].rows();
+        b_pos += partitions[k].dim(0);
 
         for(int r_p = 0; r_p < s; r_p++) {
-            for(int i = pos; i < pos + parts[k].cols(); i++) {
+            for(int i = pos; i < pos + partitions[k].dim(1); i++) {
                 mumps.rhs[i + r_p * mumps.n] = 0;
             }
             int j = 0;
-            for(int i = pos + parts[k].cols();
-                    i < pos + parts[k].cols() + parts[k].rows(); i++) {
+            for(int i = pos + partitions[k].dim(1);
+                    i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
                 mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
             }
         }
 
-        pos += parts[k].cols() + parts[k].rows();
+        pos += partitions[k].dim(1) + partitions[k].dim(0);
 
     }
     mumps.nrhs = s;
@@ -299,14 +301,12 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
     t = MPI_Wtime() - t;
     cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
         << t << endl;
-    Eigen::Map<Eigen::MatrixXd> Sol(mumps.rhs, mumps.n, s);
-        
 
-    Eigen::MatrixXd Delta(X.rows(), X.cols());
-    Delta.setZero();
+    MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
+    MV_ColMat_double Delta(X.dim(0), X.dim(1), 0);
 
     int x_pos = 0;
-    for(int k = 0; k < parts.size(); k++) {
+    for(int k = 0; k < partitions.size(); k++) {
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
             for(int j = 0; j < s; j++) {
@@ -314,11 +314,10 @@ Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, E
             }
             x_pos++;
         }
-        x_pos += parts[k].rows();
+        x_pos += partitions[k].dim(0);
     }
     // Where the other Deltas are going to be summed
-    Eigen::MatrixXd Others(X.rows(), X.cols());
-    Others.setZero();
+    MV_ColMat_double Others(X.dim(0), X.dim(1), 0);
 
 
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {

@@ -8,6 +8,7 @@ project(Test_abcd)
 
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
 FIND_PACKAGE(BLAS)
+FIND_PACKAGE(LAPACK)
 #set(MUMPS_DIR /opt/MUMPS_4.10.0)
 #set(MPI_DIR /usr/lib/openmpi)
 #set(BLAS /opt/OpenBLAS)
@@ -36,38 +37,37 @@ add_executable(
 
 #Configuration de l'édition de liens
 target_link_libraries(
-	test_abcd
-  abcd 
-	${Boost_LIBRARIES}
-	
-  reflapack
+    test_abcd
+    abcd 
+    ${Boost_LIBRARIES}
+    ${LAPACK_LIBRARIES}
 
-  ${BLAS_LIBRARIES}
+    ${BLAS_LIBRARIES}
   
-  scalapack
-  
-# blacsF77init
-# blacsCinit
-# blacs
-# blacsF77init
-# blacsCinit
-  
-  parmetis
-  metis
-  
-  esmumps
-  scotch
-  scotcherr
-  
-  dmumps
-  mumps_common
+    scalapack
+    
+    # blacsF77init
+    # blacsCinit
+    # blacs
+    # blacsF77init
+    # blacsCinit
+    
+    parmetis
+    metis
+    
+    esmumps
+    scotch
+    scotcherr
+    
+    dmumps
+    mumps_common
 
-# mpi_f77
-# mpi_f90
+    # mpi_f77
+    # mpi_f90
 
-  sparse
-  spblas
-  mv
-  
-  csparse
+    sparse
+    spblas
+    mv
+    
+    csparse
 )

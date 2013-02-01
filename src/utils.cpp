@@ -75,20 +75,17 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
  *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
  * =====================================================================================
  */
-void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX)
+void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
-    int rn = x.cols();
-    int rm = x.rows();
+    int rn = x.dim(1);
+    int rm = x.dim(0);
     nrmX = 0;
     nrmR = 0;
 
-    Eigen::MatrixXd loc_x(rm, rn);
-    Eigen::MatrixXd loc_r(m, rn);
-    Eigen::MatrixXd loc_xfmx(rm, rn);
-    loc_x.setZero();
-    loc_r.setZero();
-    loc_xfmx.setZero();
+    MV_ColMat_double loc_x(rm, rn, 0);
+    MV_ColMat_double loc_r(m, rn, 0);
+    MV_ColMat_double loc_xfmx(rm, rn, 0);
 
     int pos = 0;
     for(int i = 0; i < rm; i++) {
@@ -102,10 +99,9 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
     }
 
     pos = 0;
-    for(int p = 0; p < parts.size(); p++) {
-        Eigen::VectorXd compressed_x(parts[p].cols());
-        for(int j = 0; j < x.cols(); j++) {
-            compressed_x.setZero();
+    for(int p = 0; p < partitions.size(); p++) {
+        for(int j = 0; j < x.dim(1); j++) {
+            VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
             for(int i = 0; i < local_column_index[p].size(); i++) {
@@ -113,11 +109,14 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
                 compressed_x(x_pos) = x(ci, j);
                 x_pos++;
             }
-            loc_r.col(j).segment(pos, parts[p].rows()) = parts[p] * compressed_x;
-        }
-        //nrmX += compressed_x.squaredNorm();
+            VECTOR_double vj(loc_r.dim(0));
+            vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
+            loc_r.setCol(vj, j);
 
-        pos += parts[p].rows();
+            nrmX += compressed_x.squaredSum();
+        }
+
+        pos += partitions[p].dim(0);
     }
 
     double loc_nrmxfmx;
@@ -126,16 +125,15 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
             if(inter_comm.rank()==0)
                 cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
         } else {
-            loc_xfmx = xf - x;
-            loc_nrmxfmx = loc_xfmx.lpNorm<Infinity>();
+            loc_xfmx = Xf - x;
+            loc_nrmxfmx = loc_xfmx.infNorm();
         }
     }
 
-    loc_r  = b - loc_r;
+    loc_r  = B - loc_r;
     //nrmX = x.squaredNorm();
 
-    double loc_nrm = loc_r.squaredNorm();
-    //double loc_nrm = loc_r.lpNorm<Infinity>();
+    double loc_nrm = loc_r.squaredSum();
     double nrm;
     mpi::all_reduce(inter_comm, &loc_nrm, 1,  &nrm, std::plus<double>());
     nrmR = sqrt(nrm);

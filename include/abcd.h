@@ -40,9 +40,9 @@
 #include "compcol_double.h"
 #include "comprow_double.h"
 #include "coord_double.h"
+#include "mvm.h"
 
 #include "splib_utils.h"
-#include <cs.h>
 
 using namespace Eigen;
 using namespace std;
@@ -98,11 +98,11 @@ private:
     void initializeCimmino();
     void distributeRhs();
     void bcg();
-    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
-    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
+    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
+    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
     void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
-    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);
+    double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U, double thresh);
     std::vector<double> normres;
 
     // MUMPS
@@ -117,7 +117,8 @@ private:
     void factorizeAugmentedSystems();
     std::vector<int> my_slaves;
     int my_master;
-    Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
+    //Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
+    MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
     std::vector<int> comm_map;
 
     // MUMPS setters and getters
@@ -129,7 +130,7 @@ private:
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
     Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);
-    void get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX);
+    void get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX);
 
 
     /*
@@ -148,6 +149,11 @@ private:
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xk;
     Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xf;
 
+    MV_ColMat_double Xk;
+
+    MV_ColMat_double Xf;
+    MV_ColMat_double B;
+
     CompRow_Mat_double A;
 
 public:
@@ -158,7 +164,7 @@ public:
     int n;
     int nz;
     int nrhs;
-    int m_l, nz_l;
+    int n_l, m_l, nz_l;
 
 
     /***************************************************************************

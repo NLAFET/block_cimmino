@@ -78,12 +78,11 @@ void abcd::analyseFrame()
     t= MPI_Wtime();
     abcd::augmentMatrix(loc_parts);
     cout << "time to aug : " << MPI_Wtime() -t << endl;
-    exit(0);
 
+    column_index.clear();
     for(unsigned k = 0; k < nbparts; k++) {
         double t1, t2;
         // Build the column index of part
-        column_index.clear();
         std::vector<int> ci;
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
@@ -152,7 +151,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 {
                     CompRow_Mat_double A_ij = CompRow_Mat_double(sub_matrix(M[i], intersect));
                     CompRow_Mat_double A_ji = CompRow_Mat_double(sub_matrix(M[j], intersect));
-                    C_ij = smmtm(A_ij, A_ji);
+                    C_ij = spmm(A_ij, A_ji);
                 }
 
                 if(C_ij.NumNonzeros() == 0) continue;
