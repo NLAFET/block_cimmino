@@ -14540,7 +14540,7 @@ compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct comput
 compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct compute_inverse_size4<Architecture::SSE, float, MatrixType, ResultType>$/;"	s	namespace:Eigen::internal
 compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
-compute_rho	bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd
+compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)$/;"	f	class:abcd
 concat_columns	splib_utils.cpp	/^concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols )$/;"	f
 conditionMatrix	../include/Eigen/src/Core/Select.h	/^    const ConditionMatrixType& conditionMatrix() const$/;"	f	class:Eigen::Select	access:public	signature:() const
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional <false, Then, Else> { typedef Else type; };$/;"	s	namespace:Eigen::internal
@@ -15384,6 +15384,7 @@ gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class
 gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class gebp_traits<RealScalar, std::complex<RealScalar>, false, _ConjRhs >$/;"	c	namespace:Eigen::internal
 gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class gebp_traits<std::complex<RealScalar>, RealScalar, _ConjLhs, false>$/;"	c	namespace:Eigen::internal
 gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class gebp_traits<std::complex<RealScalar>, std::complex<RealScalar>, _ConjLhs, _ConjRhs >$/;"	c	namespace:Eigen::internal
+gemmColMat	splib_utils.cpp	/^MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)$/;"	f
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    gemm_blocking_space(DenseIndex \/*rows*\/, DenseIndex \/*cols*\/, DenseIndex \/*depth*\/)$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:(DenseIndex , DenseIndex , DenseIndex )
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    gemm_blocking_space(DenseIndex rows, DenseIndex cols, DenseIndex depth)$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:(DenseIndex rows, DenseIndex cols, DenseIndex depth)
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^class gemm_blocking_space<StorageOrder,_LhsScalar,_RhsScalar,MaxRows, MaxCols, MaxDepth, KcFactor, false>$/;"	c	namespace:Eigen::internal	inherits:level3_blocking
@@ -15428,7 +15429,7 @@ getU	../include/Eigen/src/Cholesky/LLT.h	/^  static inline MatrixU getU(const Ma
 getU	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^  static inline MatrixU getU(const MatrixType& m) { return m.adjoint(); }$/;"	f	struct:Eigen::internal::traits	access:public	signature:(const MatrixType& m)
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename From,typename To> struct get_factor {$/;"	s	namespace:Eigen::internal
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename Scalar> struct get_factor<Scalar,typename NumTraits<Scalar>::Real> {$/;"	s	namespace:Eigen::internal
-get_nrmres	utils.cpp	/^void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
+get_nrmres	utils.cpp	/^void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
 glob_to_local	../include/abcd.h	/^    std::map<int,int> glob_to_local;$/;"	m	class:abcd	access:public
 global_math_functions_filtering_base	../include/Eigen/src/Core/MathFunctions.h	/^struct global_math_functions_filtering_base$/;"	s	namespace:Eigen::internal
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
@@ -15441,8 +15442,8 @@ gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eig
 gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a)
 gqr	../src/bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
 gqr	../src/bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, Eigen::SparseMatrix<double> g, int s, bool use_a)
-gqr	bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd
-gqr	bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd
+gqr	bcg.cpp	/^int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)$/;"	f	class:abcd
+gqr	bcg.cpp	/^int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,$/;"	f	class:abcd
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLDLT	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLLT	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
 grabMatrix	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    void grabMatrix(const MatrixType& matrix, ColSpMatrix& out)$/;"	f	class:Eigen::PastixLU	access:protected	signature:(const MatrixType& matrix, ColSpMatrix& out)
@@ -19211,6 +19212,7 @@ smax	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smax)  (int *, float  *,
 smin	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(smin)  (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)$/;"	f
 smmtm	splib_utils.cpp	/^CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B)$/;"	f
+smv	splib_utils.cpp	/^smv ( CompRow_Mat_double &M, MV_ColMat_double &V )$/;"	f
 snorm	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(snorm)(char *, int *, int *, float  *, int *);$/;"	p	signature:(char *, int *, int *, float *, int *)
 snrm2	../include/Eigen/src/misc/blas.h	/^float  BLASFUNC(snrm2) (int *, float  *, int *);$/;"	p	signature:(int *, float *, int *)
 solve	../include/Eigen/src/Cholesky/LDLT.h	/^    bool solve(const MatrixBase<OtherDerived>& b, ResultType *result) const$/;"	f	class:Eigen::LDLT	access:public	signature:(const MatrixBase<OtherDerived>& b, ResultType *result) const
@@ -19334,6 +19336,7 @@ sparse_time_dense_product_impl	../include/Eigen/src/SparseCore/SparseDenseProduc
 sparse_time_dense_product_impl	../include/Eigen/src/SparseCore/SparseDenseProduct.h	/^struct sparse_time_dense_product_impl<SparseLhsType,DenseRhsType,DenseResType, RowMajor, true>$/;"	s	namespace:Eigen::internal
 splitOffTwoRows	../include/Eigen/src/Eigenvalues/RealSchur.h	/^    void splitOffTwoRows(Index iu, bool computeU, Scalar exshift);$/;"	p	class:Eigen::RealSchur	access:private	signature:(Index iu, bool computeU, Scalar exshift)
 splitOffTwoRows	../include/Eigen/src/Eigenvalues/RealSchur.h	/^inline void RealSchur<MatrixType>::splitOffTwoRows(Index iu, bool computeU, Scalar exshift)$/;"	f	class:Eigen::RealSchur	signature:(Index iu, bool computeU, Scalar exshift)
+spmm	splib_utils.cpp	/^spmm ( CompRow_Mat_double &A, CompRow_Mat_double &B )$/;"	f
 spotf2	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(spotf2)(char *, int *, float  *, int *, int *);$/;"	p	signature:(char *, int *, float *, int *, int *)
 spotrf	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(spotrf)(char *, int *, float  *, int *, int *);$/;"	p	signature:(char *, int *, float *, int *, int *)
 spotri	../include/Eigen/src/misc/blas.h	/^int BLASFUNC(spotri)(char *, int *, float  *, int *, int *);$/;"	p	signature:(char *, int *, float *, int *, int *)
@@ -19478,7 +19481,7 @@ sum	../include/Eigen/src/SparseCore/SparseRedux.h	/^SparseVector<_Scalar,_Option
 sum	../include/Eigen/src/SparseCore/SparseVector.h	/^    Scalar sum() const;$/;"	p	class:Eigen::SparseVector	access:public	signature:() const
 sumProject	../include/abcd.h	/^    Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);$/;"	p	class:abcd	access:private	signature:(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
 sumProject	../src/mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd	signature:(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)
-sumProject	mumps.cpp	/^Eigen::MatrixXd abcd::sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X)$/;"	f	class:abcd
+sumProject	mumps.cpp	/^MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)$/;"	f	class:abcd
 sum_cols	../include/abcd.h	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M);$/;"	p	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_cols	../src/utils.cpp	/^int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)$/;"	f	signature:(int res, Eigen::SparseMatrix<double, RowMajor> M)
 sum_cols	splib_utils.cpp	/^int sum_cols(int res, CompRow_Mat_double M)$/;"	f

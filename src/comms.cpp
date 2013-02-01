@@ -144,11 +144,14 @@ void abcd::distributePartitions()
         cout << "sent interconnections to others" << endl;
 
 
-        // Now that everybody got its partition, delete them from the master
-        partitions.erase(partitions.begin() + groups[0] + 1, partitions.end());
-        column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
+        if(groups[0] + 1 < nbparts){
+            // Now that everybody got its partition, delete them from the master
+            partitions.erase(partitions.begin() + groups[0] + 1, partitions.end());
+            column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
+        }
 
         m_l = m;
+        n_l = n;
         m = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
         nz = std::accumulate(partitions.begin(), partitions.end(), 0, sum_nnz);
     } else {
@@ -205,6 +208,7 @@ void abcd::distributePartitions()
         nz = snz;
         cout << "rececption finished" << endl;
     }
+
 
     // Create a merge of the column indices
     std::vector<int> merge_index;
@@ -272,38 +276,46 @@ void abcd::distributeRhs()
         }
 
         if(use_xf){
-            xf = Eigen::MatrixXd(mtx.cols(), nrhs);
-            xf.setZero();
+
+            nrmXf = 0;
+
+            Xf = MV_ColMat_double(n_l, nrhs);
+
             for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < mtx.cols(); i++) {
-                    xf(i, j) = rhs[i + j * m];
+                VECTOR_double xf_col(n_l);
+                for(int i = 0; i < n_l; i++) {
+                    xf_col[i] = rhs[i + j * n_l];
+                    if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                 }
+                Xf.setCol(xf_col, j);
             }
-            nrmXf = xf.lpNorm<Infinity>();
-            Eigen::MatrixXd B = mtx * xf;
+
+            B = smv(A, Xf);
+            //
 
             // this is the augmented version!
-            if(icntl[10]!=0){
-                Eigen::MatrixXd xtf = xf;
-                Eigen::MatrixXd xtz(n-mtx.cols(), nrhs);
-                xtz.setZero();
+            // ??? B should not change !
+            //if(icntl[10]!=0){
+                //for(int j = 0; j < B.size(); j++){
+                    //VECTOR_double t(r, 0);
+                    //t(MV_VecIndex(0, r-1)) = B[j](MV_VecIndex());
+                    //B[j] = t;
+                //}
+            //}
 
-                xf.resize(n, nrhs);
-                xf << xtf,
-                   xtz;
-            }
-
-            for(int j = 0; j < B.cols(); j++){
-                for(int i = 0; i < B.rows(); i++) {
-                    rhs[i + j * B.rows()] = B(i, j);
+            // for each rhs j
+            for(int j = 0; j < B.dim(1); j++){
+                for(int i = 0; i < B.dim(0); i++) {
+                    rhs[i + j * B.dim(0)] = B(i,j);
                 }
             }
-        }
+        } else {
 
-        b = Eigen::MatrixXd(r, nrhs);
-        for(int j = 0; j < nrhs; j++){
-            for(int i = 0; i < r; i++) {
-                b(i, j) = rhs[i + j * m];
+            B = MV_ColMat_double(m, nrhs);
+            for(int j = 0; j < nrhs; j++){
+                VECTOR_double t(rhs+j*m, r);
+                B.setCol(t, j);
+                //B.push_back(t);
             }
         }
 
@@ -325,23 +337,23 @@ void abcd::distributeRhs()
         inter_comm.send(0, 16, m);
         inter_comm.recv(0, 17, nrhs);
 
-        b = Eigen::MatrixXd(m, nrhs);
-        b.setZero();
+        //b = Eigen::MatrixXd(m, nrhs);
+        //b.setZero();
 
-        rhs = new double[m * nrhs];
+        int size_rhs = m*nrhs;
+        rhs = new double[size_rhs];
         for(int i = 0; i < m * nrhs; i++) rhs[i] = 0;
 
+        B = MV_ColMat_double(m, nrhs);
         for(int j = 0; j < nrhs; j++) {
 
             inter_comm.recv(0, 18, rhs + j * m, m);
 
-            for(int i = 0; i < m; i++) {
-                b(i, j) = rhs[i + j * m];
-            }
+            VECTOR_double t(rhs+j*m, m);
+            B.setCol(t, j);
 
         }
     }
-    
     // and distribute max iterations
     mpi::broadcast(inter_comm, itmax, 0);
 }

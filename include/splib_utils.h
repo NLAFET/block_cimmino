@@ -14,9 +14,12 @@ CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B, double p
 CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B, double prune);
 CompRow_Mat_double smmtm (CompRow_Mat_double &A, CompRow_Mat_double &B);
 CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B);
+CompRow_Mat_double spmm (CompRow_Mat_double &A, CompRow_Mat_double &B);
 CompCol_Mat_double csc_transpose ( CompCol_Mat_double &M );
 CompCol_Mat_double csc_transpose ( CompRow_Mat_double &M );
 CompRow_Mat_double csr_transpose ( CompCol_Mat_double &M );
 CompRow_Mat_double csr_transpose ( CompRow_Mat_double &M );
 CompCol_Mat_double resize_columns ( CompCol_Mat_double &M, int new_size );
 CompCol_Mat_double concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols );
+MV_ColMat_double smv ( CompRow_Mat_double &M, MV_ColMat_double &V );
+MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R);
