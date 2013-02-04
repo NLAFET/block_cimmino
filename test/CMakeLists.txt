@@ -24,7 +24,8 @@ link_directories(
   ../${CMAKE_BUILD_TYPE}
   ${Boost_LIBRARY_DIRS}
   /usr/lib/openblas-base
-  $ENV{HOME}/deploy/lib
+  $ENV{HOME}/projects/sparselib_1_7/lib
+  #$ENV{HOME}/deploy/lib
   /usr/lib64/
 )
 
@@ -68,6 +69,4 @@ target_link_libraries(
     sparse
     spblas
     mv
-    
-    csparse
 )

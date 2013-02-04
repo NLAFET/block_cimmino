@@ -46,7 +46,16 @@ bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<doub
 double infNorm(VECTOR_double &V){
     double max = 0;
     for (int i = 0; i < V.size(); i++){
-        if(abs(V(i)) > max) max = abs(V(i));
+        if(abs(V(i)) >= max) max = abs(V(i));
+    }
+    return max;
+}
+
+double infNorm(MV_ColMat_double &V){
+    double max = 0;
+    double *v_ptr = V.ptr();
+    for (int i = 0; i < V.dim(0)*V.dim(1); i++){
+        if(abs(v_ptr[i]) >= max) max = abs(v_ptr[i]);
     }
     return max;
 }
@@ -536,5 +545,13 @@ MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
     int cB = R.dim(1);
 
     dgemm_(&no, &no, &rA, &cB, &cA, &alpha, l_ptr, &rA, r_ptr, &rB, &beta, c_ptr, &rA);
+    return C;
+}
+
+MV_ColMat_double upperMat(MV_ColMat_double &M){
+    MV_ColMat_double R = M;
+    for(int i = 0; i < M.dim(0); i++)
+        for(int j = 0; j < i; j++)
+            R(i,j) = 0;
     return R;
 }

@@ -70,6 +70,10 @@ void abcd::scaleMatrix(int norm)
     int mc77_icntl[10], mc77_info[10];
     double mc77_dcntl[10], mc77_rinfo[10];
 
+    int *a_rp = A.rowptr_ptr();
+    int *a_cp = A.colind_ptr();
+    double *a_vp = A.val_ptr();
+
     mc77id_(mc77_icntl, mc77_dcntl);
 
     if(mc77_icntl[4] == 0)
@@ -93,10 +97,10 @@ void abcd::scaleMatrix(int norm)
 
     // Increment indices to call fortran code
     for(int k = 0; k < n + 1 ; k++) {
-        A.rowptr_.t_vec()[k]++;
+        a_rp[k]++;
     }
     for(int k = 0; k < nz ; k++) {
-        A.colind_.t_vec()[k]++;
+        a_cp[k]++;
     }
 
     if(norm < 0) throw - 12;
@@ -105,7 +109,7 @@ void abcd::scaleMatrix(int norm)
     if(norm == 2) mc77_icntl[6] = 20;
 
     job = norm;
-    mc77ad_(&job, &m, &n, &nz, A.rowptr_.t_vec(), A.colind_.t_vec(), A.val_.t_vec(),
+    mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
     if(mc77_info[0] < 0) throw - 100 + mc77_info;
@@ -117,10 +121,10 @@ void abcd::scaleMatrix(int norm)
 
     // put them back to 0-based for C/C++
     for(int k = 0; k < n + 1 ; k++) {
-        A.rowptr_.t_vec()[k]--;
+        a_rp[k]--;
     }
     for(int k = 0; k < nz ; k++) {
-        A.colind_.t_vec()[k]--;
+        a_cp[k]--;
     }
 
     VECTOR_double dc(m, double(1)), dr(n, double(1));

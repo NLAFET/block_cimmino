@@ -97,7 +97,7 @@ void abcd::analyseFrame()
         //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
         VECTOR_int col_vect = loc_parts[k].t_col();
         //cout << col_vect << endl;
-        int *last = std::unique(col_vect.t_vec(), col_vect.t_vec() + loc_parts[k].dim(1) + 1);
+        int *last = std::unique(col_vect.ptr(), col_vect.ptr() + loc_parts[k].dim(1) + 1);
 
         partitions.push_back( 
                 CompRow_Mat_double( 
@@ -214,8 +214,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                 int n_cij_before = C_ij.dim(1);
 
-                int *last = std::unique(C_ij.colptr_.t_vec(),
-                        C_ij.colptr_.t_vec() + C_ij.dim(1) + 1);
+                int *last = std::unique(C_ij.colptr_ptr(),
+                        C_ij.colptr_ptr() + C_ij.dim(1) + 1);
 
 
                 C_ij = CompCol_Mat_double(C_ij.dim(0), ci.size(), C_ij.NumNonzeros(),

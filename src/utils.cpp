@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include <Eigen/src/misc/blas.h>
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
@@ -30,41 +31,31 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
     }
 }
 ///DDOT
-Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
+double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 {
-    int ln = p.cols();
-    int lm = p.rows();
-    int rn = ap.cols();
-    int rm = ap.rows();
+    int lm = p.size();
+    int rm = ap.size();
     if(lm != rm) throw - 800;
 
-    Eigen::MatrixXd loc_p(lm, ln);
-    Eigen::MatrixXd loc_ap(rm, rn);
-    Eigen::MatrixXd loc_r(ln, rn);
-    Eigen::MatrixXd r(ln, rn);
-    loc_ap.setZero();
-    loc_p.setZero();
-    loc_r.setZero();
+    VECTOR_double loc_p(lm, 0);
+    VECTOR_double loc_ap(rm, 0);
+    double loc_r, r;
 
     int pos = 0;
     for(int i = 0; i < lm; i++) {
         if(comm_map[i] == 1) {
-            for(int j = 0; j < ln; j++) {
-                loc_p(pos, j) = p(i, j);
-            }
-            for(int j = 0; j < rn; j++) {
-                loc_ap(pos, j) = ap(i, j);
-            }
+            loc_p(pos) = p(i);
+            loc_ap(pos) = ap(i);
             pos++;
         }
     }
 
     // R = P'AP
-    loc_r = loc_p.transpose() * loc_ap;
+    for(int i = 0; i < lm; i++){
+        loc_r += loc_p(i) * loc_ap(i);
+    }
 
-    const double *l_r_ptr = loc_r.data();
-    double *r_ptr = r.data();
-    mpi::all_reduce(inter_comm, l_r_ptr, ln * rn,  r_ptr, std::plus<double>());
+    mpi::all_reduce(inter_comm, loc_r, r, std::plus<double>());
 
     return r;
 }
@@ -75,7 +66,7 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
  *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
  * =====================================================================================
  */
-void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX)
+void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
     int rn = x.dim(1);
@@ -109,11 +100,19 @@ void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nr
                 compressed_x(x_pos) = x(ci, j);
                 x_pos++;
             }
-            VECTOR_double vj(loc_r.dim(0));
+            VECTOR_double vj = loc_r(j);
             vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
             loc_r.setCol(vj, j);
 
-            nrmX += compressed_x.squaredSum();
+            //loc_r.col(j).segment(pos, parts[p].rows()) = parts[p] * compressed_x;
+            //
+            //MV_ColMat_double mj(vj.size(), 1, 0);
+            //mj.setCol(vj, 0);
+            //cout << mj.dim(0) << endl;
+            //cout << loc_r(MV_VecIndex(pos, pos + partitions[p].dim(0) -1), MV_VecIndex(j, j)).dim(0) << endl;
+            //loc_r(MV_VecIndex(pos, pos + partitions[p].dim(0) -1), MV_VecIndex(j, j)) = mj;
+
+            //nrmX += compressed_x.squaredSum();
         }
 
         pos += partitions[p].dim(0);
@@ -126,19 +125,21 @@ void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nr
                 cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
         } else {
             loc_xfmx = Xf - x;
-            loc_nrmxfmx = loc_xfmx.infNorm();
+            loc_nrmxfmx = infNorm(loc_xfmx);
         }
     }
 
     loc_r  = B - loc_r;
-    //nrmX = x.squaredNorm();
 
     double loc_nrm = loc_r.squaredSum();
     double nrm;
-    mpi::all_reduce(inter_comm, &loc_nrm, 1,  &nrm, std::plus<double>());
+
+    nrm = mpi::all_reduce(inter_comm, loc_nrm, std::plus<double>());
     nrmR = sqrt(nrm);
-    mpi::all_reduce(inter_comm, &nrmX, 1,  &nrm, std::plus<double>());
+
+    nrm = mpi::all_reduce(inter_comm, nrmX, std::plus<double>());
     nrmX = sqrt(nrm);
+
     if(use_xf){
         if(inter_comm.size()==1)
             mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());

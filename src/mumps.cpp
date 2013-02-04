@@ -133,9 +133,7 @@ void abcd::allocateMumpsSlaves()
         double top = 1, low = 0.90;
 
         for(int i = 0; i < inter_comm.size() && slaves_left > 0 ; i++) {
-            shares.push_back(
-		    ((double)flops_s[i].first / (double) s) * nb_slaves
-            );
+            shares.push_back( ((double)flops_s[i].first / (double) s) * nb_slaves);
         }
 
         while(slaves_left > 0) {
@@ -144,11 +142,9 @@ void abcd::allocateMumpsSlaves()
                 if(shares[i] < 0) continue;
                 if((shares[i] - floor(shares[i])) >= low  &&
                         (shares[i] - floor(shares[i])) < top) {
-		    share_of_slaves = ceil(shares[i]) < slaves_left ?
-                        ceil(shares[i]) : slaves_left;
+                    share_of_slaves = ceil(shares[i]) < slaves_left ?  ceil(shares[i]) : slaves_left;
                 } else {
-                    share_of_slaves = floor(shares[i]) < slaves_left ?
-                        floor(shares[i]) : slaves_left;
+                    share_of_slaves = floor(shares[i]) < slaves_left ?  floor(shares[i]) : slaves_left;
                 }
                 slaves_for_me_t[i] += share_of_slaves;
                 slaves_left -= share_of_slaves;
@@ -162,8 +158,7 @@ void abcd::allocateMumpsSlaves()
         }
 
         int current_slave = inter_comm.size();
-        for(int your_master = 0 ; your_master < inter_comm.size();
-                your_master++) {
+        for(int your_master = 0 ; your_master < inter_comm.size(); your_master++) {
 
             for(int i = 0; i < slaves_for_me[your_master]; i++) {
 
@@ -178,10 +173,8 @@ void abcd::allocateMumpsSlaves()
                 current_slave++;
             }
         }
-        // Now that the slaves know who's their daddy,
-        //tell who are their brothers
-        for(std::vector<int>::iterator slave = my_slaves.begin();
-                slave != my_slaves.end(); slave++) {
+        // Now that the slaves know who's their daddy, tell who are their brothers
+        for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); slave++) {
             world.send(*slave, 12, my_slaves);
         }
 
@@ -260,8 +253,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
             for(int j = 0; j < s; j++) {
-                assert(x_pos < compressed_x.dim(0));
-                assert(ci < X.dim(0));
+                //assert(x_pos < compressed_x.dim(0));
+                //assert(ci < X.dim(0));
                 compressed_x(x_pos, j) = X(ci, j);
             }
             x_pos++;
@@ -272,9 +265,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             r = smv(partitions[k], compressed_x) * beta;
         }
         if(alpha != 0){
-            //r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
             r = r + B(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1),
                               MV_VecIndex(0, s -1)) * alpha;
+            //r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
         }
         
         b_pos += partitions[k].dim(0);
@@ -284,8 +277,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
                 mumps.rhs[i + r_p * mumps.n] = 0;
             }
             int j = 0;
-            for(int i = pos + partitions[k].dim(1);
-                    i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
                 mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
             }
         }
@@ -319,55 +311,32 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     // Where the other Deltas are going to be summed
     MV_ColMat_double Others(X.dim(0), X.dim(1), 0);
 
-
-    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin(); it != col_interconnections.end(); it++) {
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
 
         // Prepare the data to be sent
-        std::vector<double> itc, otc;
+        std::vector<double> itc;
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 itc.push_back(Delta(*i, j));
             }
         }
-
-        // EVEN -> ODD && ODD -> EVEN
-        if(inter_comm.rank() % 2 == 0) {
-            if(it->first % 2 != 0) {
-                inter_comm.send(it->first, 31, itc);
-                inter_comm.recv(it->first, 32, otc);
-            } else { // EVEN -> EVEN
-                if(it->first > inter_comm.rank()) {
-                    inter_comm.send(it->first, 33, itc);
-                    inter_comm.recv(it->first, 34, otc);
-                } else {
-                    int z;
-                    inter_comm.recv(it->first, 33, otc);
-                    inter_comm.send(it->first, 34, itc);
-                }
-            }
-        } else {
-            if(it->first % 2 == 0) {
-                inter_comm.recv(it->first, 31, otc);
-                inter_comm.send(it->first, 32, itc);
-            } else { // ODD -> ODD
-                if(it->first > inter_comm.rank()) {
-                    inter_comm.send(it->first, 33, itc);
-                    inter_comm.recv(it->first, 34, otc);
-                } else {
-                    inter_comm.recv(it->first, 33, otc);
-                    inter_comm.send(it->first, 34, itc);
-                }
-            }
-        }
+        inter_comm.isend(it->first, 31, itc);
+    }
+    int received = 0;
+    while(received != col_interconnections.size()) {
+        std::vector<double> otc;
+        mpi::status st = inter_comm.recv(mpi::any_source, 31, otc);
 
         // Uncompress data and sum it inside Others
         int p = 0;
-        for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+        for(int j = 0; j < nrhs; j++) {
+            for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
+                    i != col_interconnections[st.source()].end(); i++) {
                 Others(*i, j) += otc[p++];
             }
         }
-
+        received++;
     }
 
     // Now sum the data to Delta
@@ -375,5 +344,25 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     return Delta;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::waitForSolve
+ *  Description:  
+ * =====================================================================================
+ */
+    void
+abcd::waitForSolve()
+{
+    bool stay_alive = true;
+    do{
+        mpi::broadcast(intra_comm, stay_alive, 0);
+        if(!stay_alive) break;
+        mumps.job = 3;
+        dmumps_c(&mumps);
+    }while(true);
+
+}		/* -----  end of function abcd::waitForSolve()  ----- */
 
 

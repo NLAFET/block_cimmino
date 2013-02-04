@@ -47,7 +47,8 @@ int abcd::bc(int job)
             inter_comm.barrier();
             abcd::distributeRhs();
             abcd::bcg();
-        exit(0);
+        } else {
+            abcd::waitForSolve();
         }
         world.barrier();
         break;
