@@ -100,8 +100,8 @@ private:
     void bcg();
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);
-    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U, double thresh);
     std::vector<double> normres;
 
@@ -119,6 +119,7 @@ private:
     int my_master;
     //Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
     MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
+    void waitForSolve();
     std::vector<int> comm_map;
 
     // MUMPS setters and getters
@@ -129,8 +130,8 @@ private:
 
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
-    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);
-    void get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX);
+    double ddot(VECTOR_double &p, VECTOR_double &ap);
+    void get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX);
 
 
     /*

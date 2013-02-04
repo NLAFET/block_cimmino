@@ -56,9 +56,9 @@ void abcd::distributePartitions()
                 inter_comm.send(i, 1, partitions[j].NumNonzeros());
                 inter_comm.send(i, 2, sh);
                 inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, partitions[j].colind_.t_vec(), partitions[j].NumNonzeros());
-                inter_comm.send(i, 4, partitions[j].rowptr_.t_vec(), sh[0] + 1);
-                inter_comm.send(i, 5, partitions[j].val_.t_vec(), partitions[j].NumNonzeros());
+                inter_comm.send(i, 3, partitions[j].colind_ptr(), partitions[j].NumNonzeros());
+                inter_comm.send(i, 4, partitions[j].rowptr_ptr(), sh[0] + 1);
+                inter_comm.send(i, 5, partitions[j].val_ptr(), partitions[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
             }

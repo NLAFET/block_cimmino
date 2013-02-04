@@ -14788,7 +14788,7 @@ dcopy	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(dcopy) (int *, double *
 ddot	../include/Eigen/src/misc/blas.h	/^double BLASFUNC(ddot)  (int *, double *, int *, double *, int *);$/;"	p	signature:(int *, double *, int *, double *, int *)
 ddot	../include/abcd.h	/^    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
 ddot	../src/utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
-ddot	utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd
+ddot	utils.cpp	/^double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)$/;"	f	class:abcd
 deallocate	../include/Eigen/src/Core/util/Memory.h	/^    void deallocate( pointer p, size_type \/*num*\/ )$/;"	f	class:Eigen::aligned_allocator	access:public	signature:( pointer p, size_type )
 debug	../include/Eigen/src/Core/Assign.h	/^  static void debug()$/;"	f	struct:Eigen::internal::assign_traits	access:public	signature:()
 debug	../include/Eigen/src/Core/GeneralProduct.h	/^  static void debug()$/;"	f	struct:Eigen::internal::product_type	access:public	signature:()
@@ -15429,15 +15429,15 @@ getU	../include/Eigen/src/Cholesky/LLT.h	/^  static inline MatrixU getU(const Ma
 getU	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^  static inline MatrixU getU(const MatrixType& m) { return m.adjoint(); }$/;"	f	struct:Eigen::internal::traits	access:public	signature:(const MatrixType& m)
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename From,typename To> struct get_factor {$/;"	s	namespace:Eigen::internal
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename Scalar> struct get_factor<Scalar,typename NumTraits<Scalar>::Real> {$/;"	s	namespace:Eigen::internal
-get_nrmres	utils.cpp	/^void abcd::get_nrmres(MV_ColMat_double x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
+get_nrmres	utils.cpp	/^void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
 glob_to_local	../include/abcd.h	/^    std::map<int,int> glob_to_local;$/;"	m	class:abcd	access:public
 global_math_functions_filtering_base	../include/Eigen/src/Core/MathFunctions.h	/^struct global_math_functions_filtering_base$/;"	s	namespace:Eigen::internal
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a)
 gmgs	../src/bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
 gmgs	../src/bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, Eigen::SparseMatrix<double> g, int s, bool use_a)
-gmgs	bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd
-gmgs	bcg.cpp	/^void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,$/;"	f	class:abcd
+gmgs	bcg.cpp	/^void abcd::gmgs(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)$/;"	f	class:abcd
+gmgs	bcg.cpp	/^void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,$/;"	f	class:abcd
 gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
 gqr	../include/abcd.h	/^    int gqr(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, int s, bool use_a)
 gqr	../src/bcg.cpp	/^int abcd::gqr(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)$/;"	f	class:abcd	signature:(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
@@ -15561,6 +15561,7 @@ indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indi
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::Map	access:public	signature:() const
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::Transpositions	access:public	signature:() const
 indices	../include/Eigen/src/Core/Transpositions.h	/^    const IndicesType& indices() const { return m_indices; }$/;"	f	class:Eigen::TranspositionsWrapper	access:public	signature:() const
+infNorm	splib_utils.cpp	/^double infNorm(MV_ColMat_double &V){$/;"	f
 infNorm	splib_utils.cpp	/^double infNorm(VECTOR_double &V){$/;"	f
 info	../include/Eigen/src/Cholesky/LDLT.h	/^    ComputationInfo info() const$/;"	f	class:Eigen::LDLT	access:public	signature:() const
 info	../include/Eigen/src/Cholesky/LLT.h	/^    ComputationInfo info() const$/;"	f	class:Eigen::LLT	access:public	signature:() const
@@ -19954,6 +19955,7 @@ unpacket_traits	../include/Eigen/src/Core/arch/SSE/PacketMath.h	/^template<> str
 update	../include/Eigen/src/Cholesky/LDLT.h	/^  static EIGEN_STRONG_INLINE bool update(MatrixType& mat, TranspositionType& transpositions, Workspace& tmp, WType& w, typename MatrixType::RealScalar sigma=1)$/;"	f	struct:Eigen::internal::ldlt_inplace	access:public	signature:(MatrixType& mat, TranspositionType& transpositions, Workspace& tmp, WType& w, typename MatrixType::RealScalar sigma=1)
 update	../include/Eigen/src/Cholesky/LDLT.h	/^  static bool update(MatrixType& mat, const TranspositionType& transpositions, Workspace& tmp, const WType& w, typename MatrixType::RealScalar sigma=1)$/;"	f	struct:Eigen::internal::ldlt_inplace	access:public	signature:(MatrixType& mat, const TranspositionType& transpositions, Workspace& tmp, const WType& w, typename MatrixType::RealScalar sigma=1)
 updateInPlace	../include/Eigen/src/Cholesky/LDLT.h	/^  static bool updateInPlace(MatrixType& mat, MatrixBase<WDerived>& w, typename MatrixType::RealScalar sigma=1)$/;"	f	struct:Eigen::internal::ldlt_inplace	access:public	signature:(MatrixType& mat, MatrixBase<WDerived>& w, typename MatrixType::RealScalar sigma=1)
+upperMat	splib_utils.cpp	/^MV_ColMat_double upperMat(MV_ColMat_double &M){$/;"	f
 use_xk	../include/abcd.h	/^    bool use_xk;$/;"	m	class:abcd	access:private
 users	../include/Eigen/src/Core/products/Parallelizer.h	/^  int volatile users;$/;"	m	struct:Eigen::internal::GemmParallelInfo	access:public
 v	../include/Eigen/src/Core/arch/AltiVec/Complex.h	/^  Packet4f  v;$/;"	m	struct:Eigen::internal::Packet2cf	access:public
@@ -20080,6 +20082,7 @@ w	../include/Eigen/src/Eigen2Support/Geometry/Quaternion.h	/^  inline Scalar w()
 w	../include/Eigen/src/Eigen2Support/Geometry/Quaternion.h	/^  inline Scalar& w() { return m_coeffs.coeffRef(3); }$/;"	f	class:Eigen::Quaternion	access:public	signature:()
 w	../include/Eigen/src/Geometry/Quaternion.h	/^  inline Scalar w() const { return this->derived().coeffs().coeff(3); }$/;"	f	class:Eigen::QuaternionBase	access:public	signature:() const
 w	../include/Eigen/src/Geometry/Quaternion.h	/^  inline Scalar& w() { return this->derived().coeffs().coeffRef(3); }$/;"	f	class:Eigen::QuaternionBase	access:public	signature:()
+waitForSolve	mumps.cpp	/^abcd::waitForSolve()$/;"	f	class:abcd
 workaround_msvc_stl_support	../include/Eigen/src/StlSupport/details.h	/^    inline workaround_msvc_stl_support() : T() {}$/;"	f	struct:Eigen::internal::workaround_msvc_stl_support	access:public	signature:()
 workaround_msvc_stl_support	../include/Eigen/src/StlSupport/details.h	/^    inline workaround_msvc_stl_support(const T& other) : T(other) {}$/;"	f	struct:Eigen::internal::workaround_msvc_stl_support	access:public	signature:(const T& other)
 workaround_msvc_stl_support	../include/Eigen/src/StlSupport/details.h	/^  template<typename T> struct workaround_msvc_stl_support : public T$/;"	s	namespace:Eigen::internal	inherits:T

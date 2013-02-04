@@ -3,6 +3,7 @@
 
 void abcd::bcg()
 {
+    mpi::communicator world;
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
     if(s < 1) throw - 51;
@@ -26,7 +27,7 @@ void abcd::bcg()
 
 
 
-    //double *qp_ptr = qp.data();
+    double *qp_ptr = qp.ptr();
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
@@ -44,6 +45,7 @@ void abcd::bcg()
     char tr = 'T';
     char notr = 'N';
     double alpha = 1;
+    bool stay_alive = true;
 
     // **************************************************
     // ITERATION k = 0                                 *
@@ -54,13 +56,16 @@ void abcd::bcg()
         u.setCol(vt, k);
     }
 
+    mpi::broadcast(intra_comm, stay_alive, 0);
+
     if(use_xk) {
         MV_ColMat_double sp = sumProject(1e0, B, -1e0, Xk);
         r.setCols(sp, 0, 1);
     } else {
-        MV_ColMat_double sp = sumProject(-1e0, B, 0, Xk);
+        MV_ColMat_double sp = sumProject(1e0, B, 0, Xk);
         r.setCols(sp, 0, 1);
     }
+
     
     if(s > nrhs) {
         double *rdata = new double[n * (s - nrhs)];
@@ -68,7 +73,6 @@ void abcd::bcg()
         srand((unsigned)time(0)); 
         for(int i=0; i< n*(s-nrhs); i++){ 
             rdata[i] = (rand()%n)+1; 
-            cout << rdata[i] << endl;
         }
 
         MV_ColMat_double RR(rdata, n, s-nrhs);
@@ -78,7 +82,7 @@ void abcd::bcg()
     // orthogonalize
     // r = r*gamma^-1
     if(gqr(r, r, gammak, s, false) != 0){
-        //gmgs(r, r, gammak, s, false);
+        gmgs(r, r, gammak, s, false);
     }
 
     p = r;
@@ -103,11 +107,15 @@ void abcd::bcg()
         }
         it++;
 
-        qp = sumProject(0e0, u, 1e0, p);
-        if(gqr(p, qp, betak, s, true) != 0){
-            //gmgs(p, qp, betak, s, true);
-        }
+        stay_alive = true;
+        mpi::broadcast(intra_comm, stay_alive, 0);
 
+        qp = sumProject(0e0, B, 1e0, p);
+
+
+        if(gqr(p, qp, betak, s, true) != 0){
+            gmgs(p, qp, betak, s, true);
+        }
         lambdak = e1;
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr,
@@ -115,31 +123,48 @@ void abcd::bcg()
 
         lambdak = gemmColMat(lambdak, prod_gamma);
 
-        /*
-        xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
+
+        MV_ColMat_double pl = gemmColMat(p, lambdak);
+
+        Xk(MV_VecIndex(), MV_VecIndex(0, nrhs -1)) += pl(MV_VecIndex(), MV_VecIndex(0, nrhs-1));
+        //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
+        
 
         // R = R - QP * B^-T
-        dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr,
-               &s, qp_ptr, &n);
+        dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 
         if(gqr(r, r, gammak, s, false) != 0)
             gmgs(r, r, gammak, s, false);
 
-        prod_gamma = gammak.block(0, 0, nrhs, nrhs).triangularView<Eigen::Upper>() * prod_gamma;
-        gammak = gammak.triangularView<Eigen::Upper>();
-        betak = betak.triangularView<Eigen::Upper>() * gammak.transpose() ;
+        MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+        gu = MV_ColMat_double(upperMat(gu));
 
-        p = r + p * betak;
+        prod_gamma = gemmColMat(gu, prod_gamma);
+        gammak = upperMat(gammak);
+        MV_ColMat_double bu = upperMat(betak);
 
-        rho = abcd::compute_rho(xk, b, thresh);
+        //MV_ColMat_double gt = gammak.transpose();
+        //cout << bu.dim(1) << " " << gt.dim(1) << endl;
+
+        //betak = gemmColMat(bu, gt);
+        //@TODO change to gammak.transpose()
+        betak = gemmColMat(bu, gammak);
+
+        p = r + gemmColMat(p, betak);
+
+        rho = abcd::compute_rho(Xk, B, thresh);
         normres.push_back(rho);
+        /*
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
         //cout << "ITERATION " << it
                 //<< " rho = " << rho << endl;
         */
     }
+    stay_alive = false;
+    mpi::broadcast(intra_comm, stay_alive, 0);
+
     if(inter_comm.rank() == inter_comm.size() - 1) {
         //cout << xk << endl;
         cout << "TIME : " << MPI_Wtime() - ti << endl;
@@ -179,6 +204,8 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //
     double nrmR, nrmX, rho;
     abcd::get_nrmres(x, nrmR, nrmX, nrmXfmX);
+    //if(inter_comm.rank() != 0)
+        //cout << nrmR << " " << nrmMtx << " " << nrmX << " " << nrmB << endl;
     rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;
     //cout << "X -> " << nrmX << " " << x.col(0).norm() << endl;
@@ -195,15 +222,23 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     return rho;
 }
 
-void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r, int s, bool use_a)
+void abcd::gmgs(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)
 {
-    Eigen::SparseMatrix<double> g(ap.rows(), ap.rows());
-    g.reserve(ap.rows());
-    for(int i = 0; i < ap.rows(); i++)
-        g.insert(i, i) = 1;
-    g.makeCompressed();
 
-    abcd::gmgs(p, ap, r, g, s, use_a);
+    int *gr = new int[AP.dim(0)];
+    int *gc = new int[AP.dim(0) + 1];
+    double *gv = new double[AP.dim(0)];
+
+    for(int i = 0; i < AP.dim(0); i++){
+        gr[i] = i;
+        gc[i] = i;
+        gv[i] = 1;
+    }
+    gc[AP.dim(0)] = AP.dim(0);
+
+    CompCol_Mat_double G(AP.dim(0), AP.dim(0), AP.dim(0), gv, gr, gc);
+
+    abcd::gmgs(P, AP, R, G, s, use_a);
 }
 
 int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)
@@ -227,14 +262,16 @@ int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, in
 /** Generalized modifed Gram-Schmidt
  *
  */
-void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,
-                Eigen::SparseMatrix<double> g, int s, bool use_a)
+void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
+                CompCol_Mat_double g, int s, bool use_a)
 {
-    r.setZero();
+    r = MV_ColMat_double(s, s, 0);
 
     // OK!! we have our R here, lets have some fun :)
     for(int k = 0; k < s; k++) {
-        r.block(k, k, 1, 1) = abcd::ddot(p.col(k), ap.col(k));
+        VECTOR_double p_k = p(k);
+        VECTOR_double ap_k = ap(k);
+        r(k, k) = abcd::ddot(p_k, ap_k);
 
         // if it's negative, make it positive
         if(r(k, k) < r(0,0)*1e-16) {
@@ -251,20 +288,37 @@ void abcd::gmgs(Eigen::MatrixXd &p, Eigen::MatrixXd &ap, Eigen::MatrixXd &r,
         }
         // if all is fine, do an sqrt:
         r(k, k) = sqrt(r(k, k));
-        p.col(k)  = p.col(k) / r(k, k);
-        if(use_a)
-            ap.col(k) = ap.col(k) / r(k, k);
+        p_k = p_k / r(k, k);
+        p.setCol(p_k, k);
+        if(use_a){
+            ap_k = ap_k / r(k, k);
+            ap.setCol(ap_k, k);
+        }
 
         if(k < s - 1) {
-            r.block(k, k + 1, 1, s - (k + 1)) = abcd::ddot(p.col(k), ap.block(0, k + 1, n, s - (k + 1)));
+            for(int j = k + 1; j < s - k + 1; j++){
+                ap_k = ap(j);
+                p_k = p(k);
+                r(k, j) = abcd::ddot(p_k, ap_k);
+                VECTOR_double tcol = p(k);
+                p_k = p_k - tcol * r(k, j);
+                p.setCol(p_k, j);
 
-            Eigen::MatrixXd tcol = p.col(k);
-            p.block(0, k + 1, n, s - (k + 1))   -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
-
-            if(use_a) {
-                tcol = ap.col(k);
-                ap.block(0, k + 1, n, s - (k + 1))  -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
+                if(use_a) {
+                    tcol = ap(k);
+                    ap_k = ap_k - tcol * r(k, j);
+                    ap.setCol(ap_k, j);
+                }
             }
+            //r.block(k, k + 1, 1, s - (k + 1)) = abcd::ddot(p_k, ap.block(0, k + 1, n, s - (k + 1)));
+
+            //Eigen::MatrixXd tcol = p.col(k);
+            //p.block(0, k + 1, n, s - (k + 1))   -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
+
+            //if(use_a) {
+                //tcol = ap.col(k);
+                //ap.block(0, k + 1, n, s - (k + 1))  -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
+            //}
         }
     }
 }
@@ -324,11 +378,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     char up = 'U';
     char right = 'R';
 
-    //VECTOR_double vlr = loc_r.data();
-    //double *l_r_ptr = vlr.t_vec();
-
-    //VECTOR_double vr = r.data();
-    //double *r_ptr = vr.t_vec();
     double *r_ptr = r.ptr();
     mpi::all_reduce(inter_comm, l_r_ptr, s * s,  r_ptr, std::plus<double>());
 
@@ -340,12 +389,12 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         cout << "PROBLEM IN GQR " << ierr << endl;
         return ierr;
     }
+    p_ptr = p.ptr();
+    ap_ptr = ap.ptr();
 
     dtrsm_(&right, &up, &no, &no, &n, &s, &alpha, r_ptr, &s, p_ptr, &n);
-    p = MV_ColMat_double(p_ptr, p.dim(0), p.dim(1));
     if(use_a){
         dtrsm_(&right, &up, &no, &no, &n, &s, &alpha, r_ptr, &s, ap_ptr, &n);
-        ap = MV_ColMat_double(ap_ptr, ap.dim(0), ap.dim(1));
     }
     //r = MV_ColMat_double(r_ptr, r.dim(0), r.dim(1));
 

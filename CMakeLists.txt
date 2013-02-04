@@ -18,7 +18,9 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
 include_directories(
   include
   ${Boost_INCLUDE_DIRS}
-  $ENV{HOME}/deploy/include/
+  #$ENV{HOME}/deploy/include/
+  $ENV{HOME}/projects/sparselib_1_7/include/
+  $ENV{HOME}/projects/sparselib_1_7/mv/include/
 )
 
 file(
