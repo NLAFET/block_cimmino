@@ -197,18 +197,18 @@ void abcd::analyseAugmentedSystems()
 
     if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
 
-    if(instance_type == 0) {
-        double flop = getMumpsRinfo(1);
-        int prec = cout.precision();
-        cout.precision(2);
-        cout << string(32, '-') << endl
-             << "| MUMPS ANALYSIS on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             << string(32, '-') << endl
-             << "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
-             << "| Time:           " << setw(6) << t << " sec |" << endl
-             << string(32, '-') << endl;
-        cout.precision(prec);
-    }
+    //if(instance_type == 0) {
+        //double flop = getMumpsRinfo(1);
+        //int prec = cout.precision();
+        //cout.precision(2);
+        //cout << string(32, '-') << endl
+             //<< "| MUMPS ANALYSIS on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             //<< string(32, '-') << endl
+             //<< "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
+             //<< "| Time:           " << setw(6) << t << " sec |" << endl
+             //<< string(32, '-') << endl;
+        //cout.precision(prec);
+    //}
 }
 
 
@@ -223,18 +223,18 @@ void abcd::factorizeAugmentedSystems()
 
     if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
 
-    if(instance_type == 0) {
-        double flop = getMumpsRinfo(1);
-        int prec = cout.precision();
-        cout.precision(2);
-        cout << string(32, '-') << endl
-             << "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             << string(32, '-') << endl
-             << "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
-             << "| Time:           " << setw(6) << t << " sec |" << endl
-             << string(32, '-') << endl;
-        cout.precision(prec);
-    }
+    //if(instance_type == 0) {
+        //double flop = getMumpsRinfo(1);
+        //int prec = cout.precision();
+        //cout.precision(2);
+        //cout << string(32, '-') << endl
+             //<< "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             //<< string(32, '-') << endl
+             //<< "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
+             //<< "| Time:           " << setw(6) << t << " sec |" << endl
+             //<< string(32, '-') << endl;
+        //cout.precision(prec);
+    //}
 }
 
 MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)
@@ -291,8 +291,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     double t = MPI_Wtime();
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
-    cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
-        << t << endl;
+    //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
+        //<< t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
     MV_ColMat_double Delta(X.dim(0), X.dim(1), 0);
@@ -308,35 +308,46 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         }
         x_pos += partitions[k].dim(0);
     }
+
     // Where the other Deltas are going to be summed
     MV_ColMat_double Others(X.dim(0), X.dim(1), 0);
+
+    std::map<int, std::vector<double> > itc;
+    std::map<int, std::vector<double> > otc;
+    std::vector<mpi::status> sts;
+    mpi::request reqs[2*col_interconnections.size()];
+    int id_to = 0;
 
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
 
         // Prepare the data to be sent
-        std::vector<double> itc;
+        //
+        //create it if does not exist
+        itc[it->first];
+        int kp = 0;
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                itc.push_back(Delta(*i, j));
+                itc[it->first].push_back(Delta(*i, j));
+                kp++;
             }
         }
-        inter_comm.isend(it->first, 31, itc);
-    }
-    int received = 0;
-    while(received != col_interconnections.size()) {
-        std::vector<double> otc;
-        mpi::status st = inter_comm.recv(mpi::any_source, 31, otc);
 
-        // Uncompress data and sum it inside Others
+        otc[it->first];
+        reqs[id_to++] = inter_comm.irecv(it->first, 31, otc[it->first]);
+        reqs[id_to++] = inter_comm.isend(it->first, 31, itc[it->first]);
+    }
+    mpi::wait_all(reqs, reqs + id_to);
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
         int p = 0;
-        for(int j = 0; j < nrhs; j++) {
-            for(std::vector<int>::iterator i = col_interconnections[st.source()].begin();
-                    i != col_interconnections[st.source()].end(); i++) {
-                Others(*i, j) += otc[p++];
+        for(int j = 0; j < s; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                Others(*i, j) += otc[it->first][p];
+                p++;
             }
         }
-        received++;
+
     }
 
     // Now sum the data to Delta

@@ -6,9 +6,9 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[]) 
 {
-    mpi::environment env;
+    mpi::environment env(argc, argv);
     mpi::communicator world;
 
     // This should be done only by the master
@@ -21,14 +21,15 @@ int main(int argc, char *argv[])
         //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
-        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        //f = fopen("/home/mzenadi/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/b1_ss/b1_ss.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO/SiO.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/LFAT5/LFAT5.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/RM07R/RM07R.mtx", "r");
+        //f = fopen("/home/mzenadi/work/stash/RM07R/RM07R_pr.mtx", "r");
+        f = fopen("/home/mzenadi/work/stash/tpll01a_raff6_meca_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/GT01R/GT01R.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/lhr34c/lhr34c.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
@@ -51,27 +52,30 @@ int main(int argc, char *argv[])
         obj.jcn = new int[obj.nz];
         obj.val = new double[obj.nz];
 
-        obj.start_index = 1;
         obj.icntl[9] = 2;
-        obj.icntl[10]= 1;
-        obj.dcntl[10]= 0.2;
+        //obj.icntl[10]= 2;
+        //obj.dcntl[10]= 0.1;
 
 
-        /*
-        obj.nbparts = 5;
+        obj.nbparts = 50;
         obj.partitioning_type = 2;
-        */
 
-        obj.partitioning_type = 1;
+        //obj.partitioning_type = 1;
         //obj.nbrows = VECTOR_int(obj.nbparts);
-        //gre_1107
+        /*gre_1107*/
         //int nr[] = {219, 218, 223, 224, 223};
         //
-        //bayer01
-        int nr[] = {3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599};
-        //
-        obj.nbparts = (int)(sizeof(nr)/sizeof(int));
-        obj.nbrows = VECTOR_int(nr, obj.nbparts);
+        /*bayer01*/
+        //int nr[] = {3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623,
+            //3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599};
+        ////
+        /* lpmeca*/
+        //int nr[] = {4456,4432,4432,4396,4394,4396,4396,4406,4404,
+            //4382,4382,4410,4410,4360,4396,4416,4414,4416,4416,4416,
+            //4414,4416,4394,4394,4394,4392,4394,4392,4392,4394};
+
+        //obj.nbparts = (int)(sizeof(nr)/sizeof(int));
+        //obj.nbrows = VECTOR_int(nr, obj.nbparts);
 
         /*sio2*/
         //obj.nbrows << 5117,5213,5200,5158,5192,5205,5145,5137,5136,5181,5181,5186,5245,5193,5249,5112,5203,5195,5141,5198,5140,5200,5146,5145,5146,5145,5212,5151,5206,5253;
@@ -97,7 +101,7 @@ int main(int argc, char *argv[])
 
             obj.block_size = 1;
             obj.nrhs = 1;
-            obj.itmax = 1;
+            obj.itmax = 50;
             // works only in sequential for the moment
             obj.use_xf = false;
             obj.rhs = new double[obj.n_l * obj.nrhs];

@@ -26,7 +26,6 @@ void abcd::bcg()
     MV_ColMat_double e1(s, nrhs, 0);
 
 
-
     double *qp_ptr = qp.ptr();
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
@@ -51,10 +50,10 @@ void abcd::bcg()
     // ITERATION k = 0                                 *
     // **************************************************
 
-    for(int k = 0; k < B.dim(1); k++){
-        VECTOR_double vt = B(k);
-        u.setCol(vt, k);
-    }
+    //for(int k = 0; k < B.dim(1); k++){
+        //VECTOR_double vt = B(k);
+        //u.setCol(vt, k);
+    //}
 
     mpi::broadcast(intra_comm, stay_alive, 0);
 
@@ -85,8 +84,10 @@ void abcd::bcg()
         gmgs(r, r, gammak, s, false);
     }
 
+
     p = r;
     prod_gamma = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+
 
     int it = 0;
     double rho = 1;
@@ -134,8 +135,12 @@ void abcd::bcg()
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 
+        double tc = MPI_Wtime();
         if(gqr(r, r, gammak, s, false) != 0)
             gmgs(r, r, gammak, s, false);
+
+        if(inter_comm.rank() == 0)
+            cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
 
         MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
         gu = MV_ColMat_double(upperMat(gu));
@@ -165,7 +170,7 @@ void abcd::bcg()
     stay_alive = false;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
-    if(inter_comm.rank() == inter_comm.size() - 1) {
+    if(inter_comm.rank() == 0) {
         //cout << xk << endl;
         cout << "TIME : " << MPI_Wtime() - ti << endl;
     }
@@ -215,7 +220,7 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //cout << "M -> " << nrmMtx << endl;
     //return R.col(0).norm() / (nrmA * x.col(0).norm() + u.col(0).norm());
     //cout<< R.col(0).norm() / (nrmA * x.col(0).norm() + nrmB) << endl;
-    if(inter_comm.rank() == inter_comm.size() - 1) {
+    if(inter_comm.rank() == 0) {
         cout << "Rho = " << rho << endl;
         if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
     }
@@ -343,9 +348,9 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
             }
         }
     } else {
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i < p.dim(0); i++) {
             if(comm_map[i] == 1) {
-                for(int j = 0; j < s; j++) {
+                for(int j = 0; j < p.dim(1); j++) {
                     loc_p(pos, j) = p(i, j);
                 }
                 pos++;
@@ -364,14 +369,20 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     double *ap_ptr = loc_ap.ptr();
     double *l_r_ptr = loc_r.ptr();
 
+
     // R = P'AP
     if(use_a){
+        int lda_p = loc_p.lda();
+        int lda_ap = loc_ap.lda();
+        int loc_n = ap.dim(0);
 
-        dgemm_(&trans, &no, &s, &s, &n, &alpha, p_ptr, &n, ap_ptr, &n, &beta, l_r_ptr, &s);
+        dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, ap_ptr, &lda_ap, &beta, l_r_ptr, &s);
         //loc_r = MV_ColMat_double(r_ptr, s, s);
     } else{
+        int lda_p = loc_p.lda();
+        int loc_n = p.dim(0);
 
-        dgemm_(&trans, &no, &s, &s, &n, &alpha, p_ptr, &n, p_ptr, &n, &beta, l_r_ptr, &s);
+        dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, p_ptr, &lda_p, &beta, l_r_ptr, &s);
         //loc_r = MV_ColMat_double(r_ptr, s, s);
     }
 
@@ -379,7 +390,12 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     char right = 'R';
 
     double *r_ptr = r.ptr();
+    int rsz = s* s;
+    //double tt = MPI_Wtime();
+    //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
+    //mpi::broadcast(inter_comm, r_ptr, rsz , 0);
     mpi::all_reduce(inter_comm, l_r_ptr, s * s,  r_ptr, std::plus<double>());
+    //cout << "sub time " << MPI_Wtime() - tt << endl;
 
     // P = PR^-1    <=> P^T = R^-T P^T
     dpotrf_(&up, &s, r_ptr, &s, &ierr);

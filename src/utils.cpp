@@ -103,16 +103,6 @@ void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &n
             VECTOR_double vj = loc_r(j);
             vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
             loc_r.setCol(vj, j);
-
-            //loc_r.col(j).segment(pos, parts[p].rows()) = parts[p] * compressed_x;
-            //
-            //MV_ColMat_double mj(vj.size(), 1, 0);
-            //mj.setCol(vj, 0);
-            //cout << mj.dim(0) << endl;
-            //cout << loc_r(MV_VecIndex(pos, pos + partitions[p].dim(0) -1), MV_VecIndex(j, j)).dim(0) << endl;
-            //loc_r(MV_VecIndex(pos, pos + partitions[p].dim(0) -1), MV_VecIndex(j, j)) = mj;
-
-            //nrmX += compressed_x.squaredSum();
         }
 
         pos += partitions[p].dim(0);
@@ -132,13 +122,13 @@ void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &n
     loc_r  = B - loc_r;
 
     double loc_nrm = loc_r.squaredSum();
-    double nrm;
 
-    nrm = mpi::all_reduce(inter_comm, loc_nrm, std::plus<double>());
-    nrmR = sqrt(nrm);
+    double nrms[2] = {loc_nrm, nrmX};
+    double nrms_out[2];
+    mpi::all_reduce(inter_comm, nrms, 2, nrms_out, std::plus<double>());
 
-    nrm = mpi::all_reduce(inter_comm, nrmX, std::plus<double>());
-    nrmX = sqrt(nrm);
+    nrmR = sqrt(nrms_out[0]);
+    nrmX = sqrt(nrms_out[1]);
 
     if(use_xf){
         if(inter_comm.size()==1)

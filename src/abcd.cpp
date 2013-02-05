@@ -36,7 +36,7 @@ int abcd::bc(int job)
             abcd::distributePartitions();
         }
         abcd::initializeCimmino();
-        if(instance_type == 0)
+        if(inter_comm.rank() == 0)
             cout << "[+] Launching MUMPS factorization" << endl;
         abcd::factorizeAugmentedSystems();
         world.barrier();
