@@ -40,7 +40,6 @@ void abcd::distributePartitions()
             parts_id.push_back(i);
 
         for(int i = 1; i < parallel_cg ; i++) {
-            cout << "nothing to do here" << endl;
             // send to each CG-Master its starting and ending partitions ids
             std::vector<int> se;
             se.push_back(groups[i - 1]);
@@ -206,7 +205,6 @@ void abcd::distributePartitions()
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
         nz = snz;
-        cout << "rececption finished" << endl;
     }
 
 
