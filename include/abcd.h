@@ -19,10 +19,6 @@
 
 #include "dmumps_c.h"
 
-#include <Eigen/Sparse>
-#include <Eigen/LU>
-#include <Eigen/Dense>
-
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 
@@ -44,7 +40,6 @@
 
 #include "splib_utils.h"
 
-using namespace Eigen;
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
@@ -97,13 +92,16 @@ private:
     // Cimmino
     void initializeCimmino();
     void distributeRhs();
-    void bcg();
+    void bcg(MV_ColMat_double &b);
+    void solveABCD(MV_ColMat_double &b);
+    Coord_Mat_double buildS();
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U, double thresh);
     std::vector<double> normres;
+    int size_c;
 
     // MUMPS
     int m_n;
@@ -117,7 +115,6 @@ private:
     void factorizeAugmentedSystems();
     std::vector<int> my_slaves;
     int my_master;
-    //Eigen::MatrixXd sumProject(double alpha, Eigen::MatrixXd B, double beta, Eigen::MatrixXd X);
     MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
     void waitForSolve();
     std::vector<int> comm_map;
@@ -143,13 +140,8 @@ private:
     /***************************************************************************
      * The matrix object itself
     ***************************************************************************/
-    Eigen::SparseMatrix<double, RowMajor> mtx;
+    Coord_Mat_double S;
     std::vector<CompRow_Mat_double> partitions;
-    std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;
-    Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> b;
-    Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xk;
-    Eigen::Matrix<double,Dynamic, Dynamic, ColMajor> xf;
-
     MV_ColMat_double Xk;
 
     MV_ColMat_double Xf;
@@ -166,6 +158,7 @@ public:
     int nz;
     int nrhs;
     int n_l, m_l, nz_l;
+    int n_o, m_o, nz_o;
 
 
     /***************************************************************************
