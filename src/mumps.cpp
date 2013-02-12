@@ -31,6 +31,7 @@ void abcd::initializeMumps(bool local)
     mumps.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
 
     dmumps_c(&mumps);
+    //cout << world.rank() << " << >> " << getMumpsInfo(1) << endl;
     if(getMumpsInfo(1) != 0) throw - 100 + getMumpsInfo(1);
 
     setMumpsIcntl(1, -1);
@@ -110,20 +111,20 @@ void abcd::allocateMumpsSlaves()
     mpi::communicator world;
 
     if(instance_type == 0) {
-        std::vector<int> flops(inter_comm.size());
-        std::vector<dipair> flops_s;
+        std::vector<long> flops(inter_comm.size());
+        std::vector<std::pair<long, int> > flops_s;
         std::vector<int> slaves_for_me(inter_comm.size());
         std::vector<int> slaves_for_me_t(inter_comm.size());
-        mpi::all_gather(inter_comm, (int) getMumpsRinfo(1), flops);
+        mpi::all_gather(inter_comm, (long) getMumpsRinfo(1), flops);
 
+        long s = 0;
         for(int idx = 0; idx < inter_comm.size(); idx++) {
-            flops_s.push_back(dipair(flops[idx], idx));
+            flops_s.push_back(std::pair<long,int>(flops[idx], idx));
+            s+=flops[idx];
         }
 
         std::sort(flops_s.begin(), flops_s.end(), ip_comp);
 
-
-        int s = std::accumulate(flops.begin(), flops.end(), 0);
         std::vector<double> shares;
         int nb_slaves = world.size() - inter_comm.size();
         int slaves_left = nb_slaves;
@@ -187,25 +188,29 @@ void abcd::analyseAugmentedSystems()
     mumps.job = 1;
 
     double t = MPI_Wtime();
-    //cout << "mumps.n " << mumps.n << endl;
-    //cout << "mumps.nz " << mumps.nz << endl;
+    //cout << inter_comm.rank() <<  "mumps.n " << mumps.n << endl;
+    //if(inter_comm.rank() == 15){
+        //cout << "mumps.n " << mumps.n << endl;
+        //cout << "mumps.nz " << mumps.nz << endl;
+        //exit(0);
+    //}
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
 
     if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
 
-    //if(instance_type == 0) {
-        //double flop = getMumpsRinfo(1);
-        //int prec = cout.precision();
-        //cout.precision(2);
-        //cout << string(32, '-') << endl
-             //<< "| MUMPS ANALYSIS on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             //<< string(32, '-') << endl
-             //<< "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
-             //<< "| Time:           " << setw(6) << t << " sec |" << endl
-             //<< string(32, '-') << endl;
-        //cout.precision(prec);
-    //}
+    if(instance_type == 0 && verbose == true) {
+        double flop = getMumpsRinfo(1);
+        int prec = cout.precision();
+        cout.precision(2);
+        cout << string(32, '-') << endl
+             << "| MUMPS ANALYSIS on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             << string(32, '-') << endl
+             << "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
+             << "| Time:           " << setw(6) << t << " sec |" << endl
+             << string(32, '-') << endl;
+        cout.precision(prec);
+    }
 }
 
 
@@ -215,23 +220,31 @@ void abcd::factorizeAugmentedSystems()
     mumps.job = 2;
 
     double t = MPI_Wtime();
+    //if(world.rank() == 0){
+        //setMumpsIcntl(1, 6);
+        //setMumpsIcntl(2, 6);
+        //setMumpsIcntl(3, 6);
+    //}
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
 
     if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
 
-    //if(instance_type == 0) {
-        //double flop = getMumpsRinfo(1);
-        //int prec = cout.precision();
-        //cout.precision(2);
-        //cout << string(32, '-') << endl
-             //<< "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             //<< string(32, '-') << endl
-             //<< "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
-             //<< "| Time:           " << setw(6) << t << " sec |" << endl
-             //<< string(32, '-') << endl;
-        //cout.precision(prec);
-    //}
+
+    if(instance_type == 0 && verbose == true) {
+        double flop = getMumpsRinfoG(3);
+        int prec = cout.precision();
+        cout.precision(2);
+        cout << string(32, '-') << endl
+             << "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             << string(32, '-') << endl
+             << "| N             : " << setw(12) << mumps.n << " |" << endl
+             << "| NZ            : " << setw(12) << mumps.nz << " |" << endl
+             << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
+             << "| Time          : " << setw(6) << t << " sec |" << endl
+             << string(32, '-') << endl;
+        cout.precision(prec);
+    }
 }
 
 MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)

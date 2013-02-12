@@ -21,8 +21,8 @@ void abcd::initializeCimmino()
  *             myfile.close();
  *         }
  */
-        if(inter_comm.rank() == 0)
-            cout << "[+] Launching MUMPS analysis" << endl;
+        if(inter_comm.rank() == 0 && instance_type == 0)
+            cout << "[+] Launching Initial MUMPS analysis" << endl;
         analyseAugmentedSystems();
         
         sym_perm = new int[mumps.n];
@@ -40,14 +40,13 @@ void abcd::initializeCimmino()
     world.barrier();
     initializeMumps();
     setMumpsIcntl(7,1);
-    
 
     if(instance_type == 0) {
         createAugmentedSystems();
         mumps.perm_in = sym_perm;
     }
     
-    if(inter_comm.rank() == 0)
+    if(inter_comm.rank() == 0 && instance_type == 0)
         cout << "[+] Launching MUMPS analysis" << endl;
     abcd::analyseAugmentedSystems();
 

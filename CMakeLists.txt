@@ -7,13 +7,13 @@ set(CMAKE_FC_COMPILER mpif90)
 
 project(abcd CXX C Fortran)
 
-find_package (Boost COMPONENTS mpi serialization unit_test_framework REQUIRED)
+include(abcdCmake.in)
+
+find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
 #set(CMAKE_BUILD_TYPE "Debug")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
-
-include(abcdCmake.in)
 
 #add_definitions(-DCOMPLEX="std::complex<double>")
 
@@ -22,6 +22,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
   ${SPARSELIB_DIR}/include
   ${MV_DIR}/include
+  ${MUMPS_INCLUDE_DIR}
   )
 
 file(

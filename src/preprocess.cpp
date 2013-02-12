@@ -22,6 +22,7 @@ void abcd::preprocess()
 
         abcd::scaleMatrix(0);
 
+        ///BUG: This takes too much time!
         double rsum;
         drow_ = VECTOR_double(m, double(0));
         dcol_ = VECTOR_double(n, double(1));

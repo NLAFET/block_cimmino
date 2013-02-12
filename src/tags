@@ -14540,7 +14540,7 @@ compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct comput
 compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct compute_inverse_size4<Architecture::SSE, float, MatrixType, ResultType>$/;"	s	namespace:Eigen::internal
 compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
-compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)$/;"	f	class:abcd
+compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thresh)$/;"	f	class:abcd
 concat_columns	splib_utils.cpp	/^concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols )$/;"	f
 conditionMatrix	../include/Eigen/src/Core/Select.h	/^    const ConditionMatrixType& conditionMatrix() const$/;"	f	class:Eigen::Select	access:public	signature:() const
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional <false, Then, Else> { typedef Else type; };$/;"	s	namespace:Eigen::internal
