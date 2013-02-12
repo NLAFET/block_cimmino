@@ -74,7 +74,6 @@ void abcd::analyseFrame()
         column_index.push_back(ci);
     }
     //
-
     t= MPI_Wtime();
     abcd::augmentMatrix(loc_parts);
     cout << "time to aug : " << MPI_Wtime() -t << endl;
@@ -259,6 +258,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
         }
         cout << "Size of C : " << nbcols - A.dim(1) << endl;
+        size_c = nbcols - A.dim(1);
+        n = nbcols;
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
@@ -358,6 +359,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         }
 
         cout << "Size of C : " << nbcols - A.dim(1) << endl;
+        size_c = nbcols - A.dim(1);
+        n = nbcols;
 
 
         // Augment the matrices

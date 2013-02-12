@@ -1,5 +1,4 @@
 #include <abcd.h>
-#include <Eigen/src/Geometry/Translation.h>
 void abcd::initializeMumps()
 {
     initializeMumps(false);
@@ -48,8 +47,6 @@ void abcd::initializeMumps(bool local)
 
 void abcd::createAugmentedSystems()
 {
-    SparseMatrix<double, RowMajor> G;
-    
     m_n = 0;
     m_nz = 0;
     // for performance, compute total nnz and size of the matrix

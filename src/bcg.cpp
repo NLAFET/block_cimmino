@@ -1,7 +1,7 @@
 #include <abcd.h>
 #include <Eigen/src/misc/blas.h>
 
-void abcd::bcg()
+void abcd::bcg(MV_ColMat_double &b)
 {
     mpi::communicator world;
     // s is the block size of the current run
@@ -15,7 +15,6 @@ void abcd::bcg()
         //xk.setZero();
     }
 
-    MV_ColMat_double u(B.dim(0), s, 0);
     MV_ColMat_double p(n, s, 0);
     MV_ColMat_double qp(n, s, 0);
     MV_ColMat_double r(n, s, 0);
@@ -30,7 +29,7 @@ void abcd::bcg()
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
-    double lnrmBs = B.squaredSum();
+    double lnrmBs = b.squaredSum();
     double thresh = 1e-12;
 
     // Sync B norm :
@@ -58,10 +57,10 @@ void abcd::bcg()
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(use_xk) {
-        MV_ColMat_double sp = sumProject(1e0, B, -1e0, Xk);
+        MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
         r.setCols(sp, 0, 1);
     } else {
-        MV_ColMat_double sp = sumProject(1e0, B, 0, Xk);
+        MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, 1);
     }
 
@@ -96,22 +95,22 @@ void abcd::bcg()
 
     double ti = MPI_Wtime();
 
-    if(inter_comm.rank() == inter_comm.size() - 1) {
-        cout << "ITERATION " << 0 << endl;
-    }
-    rho = compute_rho(Xk, B, thresh);
+    //if(inter_comm.rank() == inter_comm.size() - 1) {
+        //cout << "ITERATION " << 0 << endl;
+    //}
+    rho = compute_rho(Xk, b, thresh);
 
     while((rho > thresh) && (it < itmax)) {
-        if(inter_comm.rank() == inter_comm.size() - 1) {
-            // a simple hack to clear the screen on unix systems
-            cout << "ITERATION " << it + 1 << " Rho = " << rho << endl;
-        }
+        //if(inter_comm.rank() == inter_comm.size() - 1) {
+            //// a simple hack to clear the screen on unix systems
+            //cout << "ITERATION " << it + 1 << " Rho = " << rho << endl;
+        //}
         it++;
 
         stay_alive = true;
         mpi::broadcast(intra_comm, stay_alive, 0);
 
-        qp = sumProject(0e0, B, 1e0, p);
+        qp = sumProject(0e0, b, 1e0, p);
 
 
         if(gqr(p, qp, betak, s, true) != 0){
@@ -139,8 +138,8 @@ void abcd::bcg()
         if(gqr(r, r, gammak, s, false) != 0)
             gmgs(r, r, gammak, s, false);
 
-        if(inter_comm.rank() == 0)
-            cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
+        //if(inter_comm.rank() == 0)
+            //cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
 
         MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
         gu = MV_ColMat_double(upperMat(gu));
@@ -158,7 +157,7 @@ void abcd::bcg()
 
         p = r + gemmColMat(p, betak);
 
-        rho = abcd::compute_rho(Xk, B, thresh);
+        rho = abcd::compute_rho(Xk, b, thresh);
         normres.push_back(rho);
         /*
         //mpi::all_gather(inter_comm, rho, grho);
@@ -172,7 +171,7 @@ void abcd::bcg()
 
     if(inter_comm.rank() == 0) {
         //cout << xk << endl;
-        cout << "TIME : " << MPI_Wtime() - ti << endl;
+        cout << "TIME : " << MPI_Wtime() - ti << "\t Rho :" << rho << endl;
     }
 }
 
@@ -220,10 +219,10 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //cout << "M -> " << nrmMtx << endl;
     //return R.col(0).norm() / (nrmA * x.col(0).norm() + u.col(0).norm());
     //cout<< R.col(0).norm() / (nrmA * x.col(0).norm() + nrmB) << endl;
-    if(inter_comm.rank() == 0) {
-        cout << "Rho = " << rho << endl;
-        if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
-    }
+    //if(inter_comm.rank() == 0) {
+        //cout << "Rho = " << rho << endl;
+        //if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
+    //}
     return rho;
 }
 

@@ -38,10 +38,10 @@ int sum_cols(int res, CompRow_Mat_double M)
 {
     return res += M.dim(0);
 }
-bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
-{
-    return (L.cols() < R.cols());
-}
+//bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
+//{
+    //return (L.cols() < R.cols());
+//}
 
 double infNorm(VECTOR_double &V){
     double max = 0;
