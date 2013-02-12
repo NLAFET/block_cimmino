@@ -1,4 +1,4 @@
-set(BOOST_ROOT $ENV{HOME}/scratch/opt/boost_1_52_0/stage/lib)
+set(BOOST_ROOT $ENV{HOME}/scratch/opt/boost_1_52_0)
 
 set(SPARSELIB_DIR $ENV{HOME}/scratch/projects/sparselib_1_7)
 set(MV_DIR $ENV{HOME}/scratch/projects/sparselib_1_7/mv)
@@ -7,6 +7,8 @@ set(MKL_DIR /opt/intel/mkl/lib/intel64/)
 set(METIS_DIR /usr/lib)
 set(SCOTCH_DIR /opt/pt-scotch-5.1.12-gnu/lib/)
 set(MUMPS_DIR $ENV{HOME}/scratch/opt/mumps/intel/)
+set(MUMPS_INCLUDE_DIR $ENV{HOME}/scratch/opt/mumps/intel/)
+set(MUMPS_LIBRARY_DIR $ENV{HOME}/scratch/opt/mumps/intel/)
 set(MPI_DIR /opt/openmpi-1.6.3-gnu/lib/)
 
 #----DO NOT CHANGE FROM HERE UNLESS YOU KNOW WHAT YOU ARE DOING----
@@ -14,7 +16,7 @@ set(LIB_DIRS    ${MKL_DIR}
                 ${SPARSELIB_DIR}/lib
                 ${METIS_DIR}
                 ${SCOTCH_DIR}
-                ${MUMPS_DIR}
+                ${MUMPS_LIBRARY_DIR}
                 ${MPI_DIR}
 )
 set(LIBS
