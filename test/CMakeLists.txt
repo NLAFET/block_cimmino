@@ -27,7 +27,7 @@ link_directories(
   #$ENV{HOME}/usr/lib/
   $ENV{HOME}/scratch/projects/sparselib_1_7/lib
   $ENV{HOME}/scratch/opt/mumps/intel/
-  /opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/
+  /opt/intel/mkl/lib/intel64/
   /opt/pt-scotch-5.1.12-gnu/lib/
   $ENV{HOME}/scratch/opt/boost_1_52_0/stage/lib
 )
@@ -51,14 +51,16 @@ target_link_libraries(
     mkl_blacs_openmpi_lp64
     mkl_intel_lp64
     mkl_gf_lp64 
-    mkl_gnu_thread
+    #mkl_gnu_thread
+    mkl_sequential
     mkl_core 
-    pthread
+    #pthread
     mkl_blacs_lp64
-    mkl_gnu_thread
+    mkl_sequential
+    #mkl_gnu_thread
     mkl_core
-    pthread
-    pthread
+    #pthread
+    #pthread
 
   
     esmumps

@@ -4,7 +4,8 @@
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 {
-    int mean = std::accumulate(weights.begin(), weights.end(), 0) / nb_parts;
+    int total_size = std::accumulate(weights.begin(), weights.end(), 0);
+    int mean = total_size / nb_parts;
     int cum = 0;
     int precum = 0;
 
@@ -12,8 +13,8 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
         precum = cum;
         cum += weights[c];
 
-        if(cum >= mean) {
-            if((mean - precum) > (cum - mean)) {
+        if(cum > mean) {
+            if((mean - precum) > 1.5*(cum - mean)) {
                 parts.push_back(c);
                 cum = 0;
             } else {

@@ -19,6 +19,7 @@ void abcd::createInterComm()
         instance_type = 0;
     else
         instance_type = 1;
+
 }
 
 /// Distribute the partitions over CG processes
