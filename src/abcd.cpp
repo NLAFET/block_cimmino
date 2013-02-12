@@ -7,12 +7,6 @@ int abcd::bc(int job)
 {
     mpi::communicator world;
 
-<<<<<<< HEAD
-    double t;
-        int i10 = 1;
-
-=======
->>>>>>> cad3265b81fe2121cf1896971a0ac014df1341b7
     switch(job) {
 
     case -1:
@@ -144,11 +138,8 @@ abcd::abcd()
     use_xk = false;
     use_xf = false;
     rhs = NULL;
-<<<<<<< HEAD
     size_c = 0;
-=======
     verbose = false;
->>>>>>> cad3265b81fe2121cf1896971a0ac014df1341b7
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
 }
