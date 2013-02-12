@@ -1,6 +1,5 @@
 #include <abcd.h>
 
-using namespace Eigen;
 using namespace std;
 
 /// The gateway function that launches all other options
@@ -9,12 +8,16 @@ int abcd::bc(int job)
     mpi::communicator world;
 
     double t;
+        int i10 = 1;
 
     switch(job) {
 
     case -1:
         if(world.rank() == 0) {
             abcd::initialize();
+            n_o = n;
+            m_o = m;
+            nz_o = nz;
         }
         world.barrier();
         break;
@@ -25,12 +28,23 @@ int abcd::bc(int job)
             abcd::partitionMatrix();
             abcd::analyseFrame();
         }
+
         world.barrier();
         break;
 
     case 2:
         // Create the group of CG instances
         abcd::createInterComm();
+
+        if(instance_type == 0) {
+            // some data on augmented system
+            mpi::broadcast(inter_comm, m_o, 0);
+            mpi::broadcast(inter_comm, n_o, 0);
+            mpi::broadcast(inter_comm, nz_o, 0);
+            mpi::broadcast(inter_comm, icntl[10], 0);
+            if( icntl[10] != 0 )
+                mpi::broadcast(inter_comm, size_c, 0);
+        }
 
         if(instance_type == 0) {
             abcd::distributePartitions();
@@ -46,7 +60,11 @@ int abcd::bc(int job)
         if(instance_type == 0) {
             inter_comm.barrier();
             abcd::distributeRhs();
-            abcd::bcg();
+            if(icntl[10] == 0){
+                abcd::bcg(B);
+            } else{
+                abcd::solveABCD(B);
+            }
         } else {
             abcd::waitForSolve();
         }
@@ -63,8 +81,6 @@ int abcd::bc(int job)
 /// Creates and intializes the matrix object
 void abcd::initialize()
 {
-    typedef Eigen::Triplet<double> T;
-    std::vector<T> elements;
 
     // Check that the matrix data is present
     if(irn == 0 ||
@@ -121,6 +137,7 @@ abcd::abcd()
     use_xk = false;
     use_xf = false;
     rhs = NULL;
+    size_c = 0;
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
 }

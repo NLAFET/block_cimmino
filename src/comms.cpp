@@ -133,12 +133,12 @@ void abcd::distributePartitions()
             }
         }
 
-        std::map<int, int> l_glob_to_local;
-        for(int j = 0; j < group_column_index[0].size(); j++) {
-            l_glob_to_local[group_column_index[0][j]] = j;
-        }
+        //std::map<int, int> l_glob_to_local;
+        //for(int j = 0; j < group_column_index[0].size(); j++) {
+            //l_glob_to_local[group_column_index[0][j]] = j;
+        //}
 
-        glob_to_local = l_glob_to_local;
+        //glob_to_local = l_glob_to_local;
 
         cout << "sent interconnections to others" << endl;
 
@@ -206,7 +206,8 @@ void abcd::distributePartitions()
         m = sm;
         nz = snz;
     }
-
+    mpi::broadcast(inter_comm, m_l, 0);
+    mpi::broadcast(inter_comm, n_l, 0);
 
     // Create a merge of the column indices
     std::vector<int> merge_index;
@@ -217,6 +218,9 @@ void abcd::distributePartitions()
     std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
     merge_index.erase(last, merge_index.end());
 
+    for(int j = 0; j < merge_index.size(); j++) {
+        glob_to_local[merge_index[j]] = j;
+    }
 
     // for each partition find a local column index for the previous merge
     int indices[partitions.size()];
