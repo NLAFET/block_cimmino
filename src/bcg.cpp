@@ -64,7 +64,6 @@ void abcd::bcg(MV_ColMat_double &b)
         r.setCols(sp, 0, 1);
     }
 
-    
     if(s > nrhs) {
         double *rdata = new double[n * (s - nrhs)];
 
@@ -85,7 +84,10 @@ void abcd::bcg(MV_ColMat_double &b)
 
 
     p = r;
-    prod_gamma = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+    for(int i = 0; i < nrhs; i++)
+        for(int j = i; j < nrhs; j++)
+            prod_gamma(i,j) = gammak(i,j);
+    //prod_gamma(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1)) = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
 
 
     int it = 0;
@@ -121,6 +123,7 @@ void abcd::bcg(MV_ColMat_double &b)
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr,
                &s, l_ptr, &n);
 
+
         lambdak = gemmColMat(lambdak, prod_gamma);
 
 
@@ -128,19 +131,16 @@ void abcd::bcg(MV_ColMat_double &b)
 
         Xk(MV_VecIndex(), MV_VecIndex(0, nrhs -1)) += pl(MV_VecIndex(), MV_VecIndex(0, nrhs-1));
         //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
-        
 
         // R = R - QP * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 
-        double tc = MPI_Wtime();
         if(gqr(r, r, gammak, s, false) != 0)
             gmgs(r, r, gammak, s, false);
 
         //if(inter_comm.rank() == 0)
             //cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
-
         MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
         gu = MV_ColMat_double(upperMat(gu));
 
@@ -159,26 +159,32 @@ void abcd::bcg(MV_ColMat_double &b)
 
         rho = abcd::compute_rho(Xk, b, thresh);
         normres.push_back(rho);
-        /*
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
-        //cout << "ITERATION " << it
-                //<< " rho = " << rho << endl;
-        */
+        if(world.rank() == 0){
+            //cout << "ITERATION " << it << " rho = " << rho << endl;
+            cout << ". " << flush; 
+        }
     }
     stay_alive = false;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(inter_comm.rank() == 0) {
-        //cout << xk << endl;
-        cout << "TIME : " << MPI_Wtime() - ti << "\t Rho :" << rho << endl;
+        cout << endl;
+        cout << "BCG Rho: " << rho << endl;
+        cout << "BCG Iterations : " << it << endl;
+        cout << "BCG TIME : " << MPI_Wtime() - ti << endl;
+        cout << endl;
     }
 }
 
-double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
+double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thresh)
 {
     //double nrmX = x.norm();
-    int s = x.dim(1);
+    //int s = x.dim(1);
+    int s = 1;
+    MV_ColMat_double x = xx(MV_VecIndex(), MV_VecIndex(0,0));
+    MV_ColMat_double u = uu(MV_VecIndex(), MV_VecIndex(0,0));
     MV_ColMat_double R(m, s, 0);
     int pos = 0;
     int ci;
