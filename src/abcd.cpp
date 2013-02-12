@@ -8,8 +8,6 @@ int abcd::bc(int job)
 {
     mpi::communicator world;
 
-    double t;
-
     switch(job) {
 
     case -1:
@@ -36,13 +34,16 @@ int abcd::bc(int job)
             abcd::distributePartitions();
         }
         abcd::initializeCimmino();
-        if(inter_comm.rank() == 0)
+        if(inter_comm.rank() == 0 && instance_type == 0){
             cout << "[+] Launching MUMPS factorization" << endl;
+        }
         abcd::factorizeAugmentedSystems();
-        world.barrier();
         break;
 
     case 3:
+        if(inter_comm.rank() == 0 && instance_type == 0){
+            cout << "[+] Launching Solve" << endl;
+        }
         if(instance_type == 0) {
             inter_comm.barrier();
             abcd::distributeRhs();
@@ -57,6 +58,7 @@ int abcd::bc(int job)
         // Wrong job id
         return -1;
     }
+
     return 0;
 }
 
@@ -121,6 +123,7 @@ abcd::abcd()
     use_xk = false;
     use_xf = false;
     rhs = NULL;
+    verbose = false;
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
 }

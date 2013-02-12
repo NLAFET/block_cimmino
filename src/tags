@@ -19,7 +19,7 @@ abcd::col_interconnections	../include/abcd.h	/^    std::map<int,std::vector<int>
 abcd::column_index	../include/abcd.h	/^    std::vector<std::vector<int> > column_index;$/;"	m	class:abcd	access:public
 abcd::comm_map	../include/abcd.h	/^    Eigen::VectorXi comm_map;$/;"	m	class:abcd	access:private
 abcd::computeNorms	../include/abcd.h	/^    void computeNorms();$/;"	p	class:abcd	access:private	signature:()
-abcd::compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &x, MV_C/
+abcd::compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &xx, MV_/
 abcd::compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 abcd::compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
 abcd::createAugmentedSystems	../include/abcd.h	/^    void createAugmentedSystems();$/;"	p	class:abcd	access:private	signature:()
@@ -2089,8 +2089,6 @@ DiagonalVectorType	../include/Eigen/src/Core/DiagonalMatrix.h	/^    typedef type
 DiagonalVectorType	../include/Eigen/src/Core/DiagonalMatrix.h	/^    typedef typename internal::traits<DiagonalMatrix>::DiagonalVectorType DiagonalVectorType;$/;"	t	class:Eigen::DiagonalMatrix	access:public
 DiagonalWrapper	../include/Eigen/src/Core/DiagonalMatrix.h	/^class DiagonalWrapper$/;"	c	namespace:Eigen	inherits:DiagonalBase,internal::no_assignment_operator
 DiagonalWrapper	../include/Eigen/src/Core/DiagonalMatrix.h	/^    inline DiagonalWrapper(DiagonalVectorType& diagonal) : m_diagonal(diagonal) {}$/;"	f	class:Eigen::DiagonalWrapper	access:public	signature:(DiagonalVectorType& diagonal)
-diagScaleMatrix	preprocess.cpp	/^abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)$/;"	f	class:abcd
-diagScaleRhs	preprocess.cpp	/^abcd::diagScaleRhs ( VECTOR_double &b)$/;"	f	class:abcd
 DiagSizeAtCompileTime	../include/Eigen/src/SVD/JacobiSVD.h	/^      DiagSizeAtCompileTime = EIGEN_SIZE_MIN_PREFER_DYNAMIC(RowsAtCompileTime,ColsAtCompileTime),$/;"	e	enum:Eigen::JacobiSVD::__anon419
 DiagVectorType	../include/Eigen/src/SVD/UpperBidiagonalization.h	/^    typedef Matrix<Scalar, ColsAtCompileTime, 1> DiagVectorType;$/;"	t	class:Eigen::internal::UpperBidiagonalization	access:public
 difference_type	../include/Eigen/src/Core/util/Memory.h	/^    typedef std::ptrdiff_t difference_type;$/;"	t	class:Eigen::aligned_allocator	access:public
@@ -16786,7 +16784,6 @@ prefetch	../include/Eigen/src/Core/arch/SSE/PacketMath.h	/^template<> EIGEN_STRO
 prefetch	../include/Eigen/src/Core/arch/SSE/PacketMath.h	/^template<> EIGEN_STRONG_INLINE void prefetch<int>(const int*       addr) { _mm_prefetch((const char*)(addr), _MM_HINT_T0); }$/;"	f	namespace:Eigen::internal	signature:(const int* addr)
 prefetch	../include/Eigen/src/Core/GenericPacketMath.h	/^template<typename Scalar> inline void prefetch(const Scalar* addr)$/;"	f	namespace:Eigen::internal	signature:(const Scalar* addr)
 preprocess	../include/abcd.h	/^    void preprocess();$/;"	p	class:abcd	access:private	signature:()
-preprocess	preprocess.cpp	/^void abcd::preprocess()$/;"	f	class:abcd
 preprocess	../src/preprocess.cpp	/^void abcd::preprocess()$/;"	f	class:abcd	signature:()
 prerotate	../include/Eigen/src/Eigen2Support/Geometry/Transform.h	/^  inline Transform& prerotate(const RotationType& rotation);$/;"	p	class:Eigen::Transform	access:public	signature:(const RotationType& rotation)
 prerotate	../include/Eigen/src/Eigen2Support/Geometry/Transform.h	/^Transform<Scalar,Dim>::prerotate(const RotationType& rotation)$/;"	f	class:Eigen::Transform	signature:(const RotationType& rotation)
@@ -18308,7 +18305,6 @@ scale	../include/Eigen/src/Geometry/Transform.h	/^  inline Transform& scale(cons
 scale	../include/Eigen/src/Geometry/Transform.h	/^  inline Transform& scale(Scalar s);$/;"	p	class:Eigen::Transform	access:public	signature:(Scalar s)
 scale	../include/Eigen/src/Geometry/Transform.h	/^Transform<Scalar,Dim,Mode,Options>::scale(const MatrixBase<OtherDerived> &other)$/;"	f	class:Eigen::Transform	signature:(const MatrixBase<OtherDerived> &other)
 scaleMatrix	../include/abcd.h	/^    void scaleMatrix(int norm);$/;"	p	class:abcd	access:private	signature:(int norm)
-scaleMatrix	preprocess.cpp	/^void abcd::scaleMatrix(int norm)$/;"	f	class:abcd
 scaleMatrix	../src/preprocess.cpp	/^void abcd::scaleMatrix(int norm)$/;"	f	class:abcd	signature:(int norm)
 Scaling2d	../include/Eigen/src/Eigen2Support/Geometry/All.h	106;"	d
 Scaling2d	../include/Eigen/src/Eigen2Support/Geometry/All.h	51;"	d
