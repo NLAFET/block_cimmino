@@ -14540,7 +14540,7 @@ compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct comput
 compute_inverse_size4	../include/Eigen/src/LU/arch/Inverse_SSE.h	/^struct compute_inverse_size4<Architecture::SSE, float, MatrixType, ResultType>$/;"	s	namespace:Eigen::internal
 compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd X, Eigen::MatrixXd U, double thresh)
 compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
-compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thresh)$/;"	f	class:abcd
+compute_rho	bcg.cpp	/^double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)$/;"	f	class:abcd
 concat_columns	splib_utils.cpp	/^concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols )$/;"	f
 conditionMatrix	../include/Eigen/src/Core/Select.h	/^    const ConditionMatrixType& conditionMatrix() const$/;"	f	class:Eigen::Select	access:public	signature:() const
 conditional	../include/Eigen/src/Core/util/Meta.h	/^struct conditional <false, Then, Else> { typedef Else type; };$/;"	s	namespace:Eigen::internal
@@ -14788,6 +14788,7 @@ dcopy	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(dcopy) (int *, double *
 ddot	../include/Eigen/src/misc/blas.h	/^double BLASFUNC(ddot)  (int *, double *, int *, double *, int *);$/;"	p	signature:(int *, double *, int *, double *, int *)
 ddot	../include/abcd.h	/^    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
 ddot	../src/utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
+ddot	utils.cpp	/^double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)$/;"	f	class:abcd
 deallocate	../include/Eigen/src/Core/util/Memory.h	/^    void deallocate( pointer p, size_type \/*num*\/ )$/;"	f	class:Eigen::aligned_allocator	access:public	signature:( pointer p, size_type )
 debug	../include/Eigen/src/Core/Assign.h	/^  static void debug()$/;"	f	struct:Eigen::internal::assign_traits	access:public	signature:()
 debug	../include/Eigen/src/Core/GeneralProduct.h	/^  static void debug()$/;"	f	struct:Eigen::internal::product_type	access:public	signature:()
@@ -15384,6 +15385,7 @@ gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class
 gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class gebp_traits<std::complex<RealScalar>, RealScalar, _ConjLhs, false>$/;"	c	namespace:Eigen::internal
 gebp_traits	../include/Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^class gebp_traits<std::complex<RealScalar>, std::complex<RealScalar>, _ConjLhs, _ConjRhs >$/;"	c	namespace:Eigen::internal
 gemmColMat	splib_utils.cpp	/^MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)$/;"	f
+gemmColMat	splib_utils.cpp	/^MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool transL, bool transR)$/;"	f
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    gemm_blocking_space(DenseIndex \/*rows*\/, DenseIndex \/*cols*\/, DenseIndex \/*depth*\/)$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:(DenseIndex , DenseIndex , DenseIndex )
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^    gemm_blocking_space(DenseIndex rows, DenseIndex cols, DenseIndex depth)$/;"	f	class:Eigen::internal::gemm_blocking_space	access:public	signature:(DenseIndex rows, DenseIndex cols, DenseIndex depth)
 gemm_blocking_space	../include/Eigen/src/Core/products/GeneralMatrixMatrix.h	/^class gemm_blocking_space<StorageOrder,_LhsScalar,_RhsScalar,MaxRows, MaxCols, MaxDepth, KcFactor, false>$/;"	c	namespace:Eigen::internal	inherits:level3_blocking
@@ -15428,6 +15430,7 @@ getU	../include/Eigen/src/Cholesky/LLT.h	/^  static inline MatrixU getU(const Ma
 getU	../include/Eigen/src/SparseCholesky/SimplicialCholesky.h	/^  static inline MatrixU getU(const MatrixType& m) { return m.adjoint(); }$/;"	f	struct:Eigen::internal::traits	access:public	signature:(const MatrixType& m)
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename From,typename To> struct get_factor {$/;"	s	namespace:Eigen::internal
 get_factor	../include/Eigen/src/Core/util/BlasUtil.h	/^template<typename Scalar> struct get_factor<Scalar,typename NumTraits<Scalar>::Real> {$/;"	s	namespace:Eigen::internal
+get_nrmres	utils.cpp	/^void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX)$/;"	f	class:abcd
 glob_to_local	../include/abcd.h	/^    std::map<int,int> glob_to_local;$/;"	m	class:abcd	access:public
 global_math_functions_filtering_base	../include/Eigen/src/Core/MathFunctions.h	/^struct global_math_functions_filtering_base$/;"	s	namespace:Eigen::internal
 gmgs	../include/abcd.h	/^    void gmgs(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd &P, Eigen::MatrixXd &AP, Eigen::MatrixXd &R, Eigen::SparseMatrix<double> G, int s, bool use_a)
@@ -15916,6 +15919,7 @@ inverse_impl	../include/Eigen/src/LU/Inverse.h	/^  inverse_impl(const MatrixType
 inverse_impl	../include/Eigen/src/LU/Inverse.h	/^struct inverse_impl : public ReturnByValue<inverse_impl<MatrixType> >$/;"	s	namespace:Eigen::internal	inherits:ReturnByValue
 ip_comp	../include/abcd.h	/^bool ip_comp(const dipair &, const dipair &);$/;"	p	signature:(const dipair &, const dipair &)
 ip_comp	../src/utils.cpp	/^bool ip_comp(const dipair &l, const dipair &r)$/;"	f	signature:(const dipair &l, const dipair &r)
+ip_comp	utils.cpp	/^bool ip_comp(const dipair &l, const dipair &r)$/;"	f
 iparm	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    Array<Index,IPARM_SIZE,1>& iparm()$/;"	f	class:Eigen::PastixBase	access:public	signature:()
 iparm	../include/Eigen/src/PaStiXSupport/PaStiXSupport.h	/^    int& iparm(int idxparam)$/;"	f	class:Eigen::PastixBase	access:public	signature:(int idxparam)
 iqamax	../include/Eigen/src/misc/blas.h	/^int    BLASFUNC(iqamax)(int *, double *, int *);$/;"	p	signature:(int *, double *, int *)
@@ -17778,6 +17782,7 @@ partitionMatrix	../src/structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:
 partitionMatrix	structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd
 partitionWeights	../include/abcd.h	/^    void partitionWeights(std::vector<int> &, std::vector<int>, int);$/;"	p	class:abcd	access:private	signature:(std::vector<int> &, std::vector<int>, int)
 partitionWeights	../src/utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd	signature:(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
+partitionWeights	utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd
 partitioning_type	../include/abcd.h	/^    int partitioning_type;$/;"	m	class:abcd	access:public
 parts	../include/abcd.h	/^    std::vector<Eigen::SparseMatrix<double, RowMajor> > parts;$/;"	m	class:abcd	access:private
 parts_id	../include/abcd.h	/^    std::vector<int> parts_id;$/;"	m	class:abcd	access:public

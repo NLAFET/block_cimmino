@@ -11,9 +11,12 @@ void abcd::bcg(MV_ColMat_double &b)
     //exit(0);
     if(!use_xk) {
         Xk = MV_ColMat_double(n, nrhs, 0);
-        //xk = Eigen::MatrixXd(n, nrhs);
-        //xk.setZero();
     }
+
+
+    // temporary solution
+    MV_ColMat_double u(m, nrhs, 0);
+    u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
 
     MV_ColMat_double p(n, s, 0);
     MV_ColMat_double qp(n, s, 0);
@@ -57,37 +60,31 @@ void abcd::bcg(MV_ColMat_double &b)
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(use_xk) {
-        MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
-        r.setCols(sp, 0, 1);
+        MV_ColMat_double sp = sumProject(1e0, u, -1e0, Xk);
+        r.setCols(sp, 0, nrhs);
+        if(block_size > nrhs) {
+            sp = b(MV_VecIndex(0, b.dim(0)-1),MV_VecIndex(nrhs, block_size - 1));
+            r.setCols(sp, nrhs, block_size -nrhs);
+        }
     } else {
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
-        r.setCols(sp, 0, 1);
+        r.setCols(sp, 0, s);
+        //if(block_size > nrhs) {
+            //sp = b(MV_VecIndex(0,b.dim(0)-1),MV_VecIndex(nrhs, block_size - 1));
+            //r.setCols(sp, nrhs, block_size -nrhs);
+        //}
     }
-
-    if(s > nrhs) {
-        double *rdata = new double[n * (s - nrhs)];
-
-        srand((unsigned)time(0)); 
-        for(int i=0; i< n*(s-nrhs); i++){ 
-            rdata[i] = (rand()%n)+1; 
-        }
-
-        MV_ColMat_double RR(rdata, n, s-nrhs);
-        r.setCols(RR, nrhs, s-nrhs);
-    }
-
     // orthogonalize
     // r = r*gamma^-1
     if(gqr(r, r, gammak, s, false) != 0){
         gmgs(r, r, gammak, s, false);
     }
 
-
     p = r;
-    for(int i = 0; i < nrhs; i++)
-        for(int j = i; j < nrhs; j++)
-            prod_gamma(i,j) = gammak(i,j);
-    //prod_gamma(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1)) = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+    {
+        MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+        prod_gamma = MV_ColMat_double(upperMat(gu));
+    }
 
 
     int it = 0;
@@ -100,7 +97,7 @@ void abcd::bcg(MV_ColMat_double &b)
     //if(inter_comm.rank() == inter_comm.size() - 1) {
         //cout << "ITERATION " << 0 << endl;
     //}
-    rho = compute_rho(Xk, b, thresh);
+    rho = compute_rho(Xk, u, thresh);
 
     while((rho > thresh) && (it < itmax)) {
         //if(inter_comm.rank() == inter_comm.size() - 1) {
@@ -114,14 +111,13 @@ void abcd::bcg(MV_ColMat_double &b)
 
         qp = sumProject(0e0, b, 1e0, p);
 
-
         if(gqr(p, qp, betak, s, true) != 0){
             gmgs(p, qp, betak, s, true);
         }
+
         lambdak = e1;
 
-        dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr,
-               &s, l_ptr, &n);
+        dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
 
 
         lambdak = gemmColMat(lambdak, prod_gamma);
@@ -129,7 +125,9 @@ void abcd::bcg(MV_ColMat_double &b)
 
         MV_ColMat_double pl = gemmColMat(p, lambdak);
 
-        Xk(MV_VecIndex(), MV_VecIndex(0, nrhs -1)) += pl(MV_VecIndex(), MV_VecIndex(0, nrhs-1));
+
+        Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
+            pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
         //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
 
         // R = R - QP * B^-T
@@ -148,22 +146,22 @@ void abcd::bcg(MV_ColMat_double &b)
         gammak = upperMat(gammak);
         MV_ColMat_double bu = upperMat(betak);
 
+
         //MV_ColMat_double gt = gammak.transpose();
         //cout << bu.dim(1) << " " << gt.dim(1) << endl;
 
-        //betak = gemmColMat(bu, gt);
-        //@TODO change to gammak.transpose()
-        betak = gemmColMat(bu, gammak);
+        // bu * gammak^T
+        betak = gemmColMat(bu, gammak, false, true);
 
         p = r + gemmColMat(p, betak);
 
-        rho = abcd::compute_rho(Xk, b, thresh);
+        rho = abcd::compute_rho(Xk, u, thresh);
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
         if(world.rank() == 0){
-            //cout << "ITERATION " << it << " rho = " << rho << endl;
-            cout << ". " << flush; 
+            cout << "ITERATION " << it << " rho = " << rho << endl;
+            //cout << ". " << flush; 
         }
     }
     stay_alive = false;
@@ -178,13 +176,10 @@ void abcd::bcg(MV_ColMat_double &b)
     }
 }
 
-double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thresh)
+double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
 {
     //double nrmX = x.norm();
-    //int s = x.dim(1);
-    int s = 1;
-    MV_ColMat_double x = xx(MV_VecIndex(), MV_VecIndex(0,0));
-    MV_ColMat_double u = uu(MV_VecIndex(), MV_VecIndex(0,0));
+    int s = x.dim(1);
     MV_ColMat_double R(m, s, 0);
     int pos = 0;
     int ci;
@@ -193,7 +188,7 @@ double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thre
 
     for(int p = 0; p < partitions.size(); p++) {
         VECTOR_double compressed_x(partitions[p].dim(1));
-        for(int j = 0; j < x.dim(1); j++) {
+        for(int j = 0; j < s; j++) {
             compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
@@ -229,6 +224,7 @@ double abcd::compute_rho(MV_ColMat_double &xx, MV_ColMat_double &uu, double thre
         //cout << "Rho = " << rho << endl;
         //if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
     //}
+    if(use_xf) cout << "Fwd: " << nrmXfmX/nrmXf << endl;
     return rho;
 }
 
@@ -306,7 +302,7 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         }
 
         if(k < s - 1) {
-            for(int j = k + 1; j < s - k + 1; j++){
+            for(int j = k + 1; j < s - k; j++){
                 ap_k = ap(j);
                 p_k = p(k);
                 r(k, j) = abcd::ddot(p_k, ap_k);
@@ -396,6 +392,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
     double *r_ptr = r.ptr();
     int rsz = s* s;
+
     //double tt = MPI_Wtime();
     //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
     //mpi::broadcast(inter_comm, r_ptr, rsz , 0);

@@ -267,6 +267,9 @@ void abcd::distributeRhs()
 
     mpi::broadcast(inter_comm, use_xf, 0);
 
+    if(block_size < nrhs) block_size = nrhs;
+    mpi::broadcast(inter_comm, block_size, 0);
+
     if(world.rank() == 0) {
 
         int r_pos = 0;
@@ -313,16 +316,33 @@ void abcd::distributeRhs()
                 }
             }
         } else {
+            B = MV_ColMat_double(m_l, block_size);
 
-            B = MV_ColMat_double(m, nrhs);
             for(int j = 0; j < nrhs; j++){
-                VECTOR_double t(rhs+j*m, r);
+                VECTOR_double t(rhs+j*m_l, m_l);
                 B.setCol(t, j);
                 //B.push_back(t);
             }
+
+            if(block_size > nrhs) {
+                double *rdata = new double[m_l * (block_size - nrhs)];
+
+                srand((unsigned)time(0)); 
+                for(int i=0; i< m_l*(block_size-nrhs); i++){ 
+                    rdata[i] = ((rand()%10)+1)/10; 
+                    //rdata[i] = 2;
+                }
+
+                MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
+                B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
+                    RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
+            }
+
         }
 
         r_pos += r;
+
+        double *b_ptr = B.ptr();
 
         // for other masters except me!
         for(int k = 1; k < parallel_cg; k++) {
@@ -330,11 +350,22 @@ void abcd::distributeRhs()
             int rows_for_k;
             inter_comm.recv(k, 16, rows_for_k);
             inter_comm.send(k, 17, nrhs);
-            for(int j = 0; j < nrhs; j++) {
-                inter_comm.send(k, 18, rhs + r_pos + j * m, rows_for_k);
+            for(int j = 0; j < block_size; j++) {
+                inter_comm.send(k, 18, b_ptr + r_pos + j * m_l, rows_for_k);
             }
 
             r_pos += rows_for_k;
+        }
+        //@BUG:duplicate, solve it!
+        if(!use_xf){
+            B = MV_ColMat_double(m, block_size);
+
+            for(int j = 0; j < nrhs; j++){
+                VECTOR_double t(rhs+j*m, m);
+                B.setCol(t, j);
+                //B.push_back(t);
+            }
+
         }
     } else {
         inter_comm.send(0, 16, m);
@@ -343,18 +374,16 @@ void abcd::distributeRhs()
         //b = Eigen::MatrixXd(m, nrhs);
         //b.setZero();
 
-        int size_rhs = m*nrhs;
+        int size_rhs = m*block_size;
         rhs = new double[size_rhs];
-        for(int i = 0; i < m * nrhs; i++) rhs[i] = 0;
+        for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
 
-        B = MV_ColMat_double(m, nrhs);
-        for(int j = 0; j < nrhs; j++) {
+        B = MV_ColMat_double(m, block_size);
+        for(int j = 0; j < block_size; j++) {
 
             inter_comm.recv(0, 18, rhs + j * m, m);
-
             VECTOR_double t(rhs+j*m, m);
             B.setCol(t, j);
-
         }
     }
     // and distribute max iterations

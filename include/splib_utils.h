@@ -24,4 +24,5 @@ CompCol_Mat_double resize_columns ( CompCol_Mat_double &M, int new_size );
 CompCol_Mat_double concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols );
 MV_ColMat_double smv ( CompRow_Mat_double &M, MV_ColMat_double &V );
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R);
+MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool transL, bool transR);
 MV_ColMat_double upperMat(MV_ColMat_double &M);
