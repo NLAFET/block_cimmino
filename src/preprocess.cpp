@@ -33,7 +33,6 @@ void abcd::preprocess()
             }
             drow_(r) = 1/sqrt(rsum);
         }
-        cout << drow_(0) << endl;
         abcd::diagScaleMatrix(drow_, dcol_);
         drow_ = VECTOR_double(m, double(1));
         dcol_ = VECTOR_double(n, double(1));

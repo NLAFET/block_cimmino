@@ -250,7 +250,11 @@ void abcd::factorizeAugmentedSystems()
 MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)
 {
     mpi::communicator world;
-    int s = X.dim(1);
+    //int s = X.dim(1);
+    if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
+
+    int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
+
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
     int pos = 0;
@@ -259,25 +263,27 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         MV_ColMat_double r(partitions[k].dim(0), s, 0);
         MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
 
-        int x_pos = 0;
-        for(int i = 0; i < local_column_index[k].size(); i++) {
-            int ci = local_column_index[k][i];
-            for(int j = 0; j < s; j++) {
-                //assert(x_pos < compressed_x.dim(0));
-                //assert(ci < X.dim(0));
-                compressed_x(x_pos, j) = X(ci, j);
-            }
-            x_pos++;
-        }
-
         // avoid useless operations
         if(beta != 0){
+            int x_pos = 0;
+            for(int i = 0; i < local_column_index[k].size(); i++) {
+                int ci = local_column_index[k][i];
+                for(int j = 0; j < s; j++) {
+                    //assert(x_pos < compressed_x.dim(0));
+                    //assert(ci < X.dim(0));
+                    compressed_x(x_pos, j) = X(ci, j);
+                }
+                x_pos++;
+            }
+
             r = smv(partitions[k], compressed_x) * beta;
         }
+
+
         if(alpha != 0){
-            r = r + B(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1),
-                              MV_VecIndex(0, s -1)) * alpha;
-            //r = r + alpha * B.block(b_pos, 0, parts[k].rows(), s);
+            MV_ColMat_double rr(partitions[k].dim(0), s);
+            rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
+            r = r + rr * alpha;
         }
         
         b_pos += partitions[k].dim(0);
@@ -295,6 +301,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         pos += partitions[k].dim(1) + partitions[k].dim(0);
 
     }
+
     mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
@@ -305,7 +312,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         //<< t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-    MV_ColMat_double Delta(X.dim(0), X.dim(1), 0);
+    MV_ColMat_double Delta(X.dim(0), s, 0);
 
     int x_pos = 0;
     for(int k = 0; k < partitions.size(); k++) {
@@ -319,8 +326,10 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         x_pos += partitions[k].dim(0);
     }
 
+
     // Where the other Deltas are going to be summed
-    MV_ColMat_double Others(X.dim(0), X.dim(1), 0);
+    MV_ColMat_double Others(X.dim(0), s, 0);
+
 
     std::map<int, std::vector<double> > itc;
     std::map<int, std::vector<double> > otc;
@@ -359,9 +368,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         }
 
     }
-
     // Now sum the data to Delta
     Delta += Others;
+
 
     return Delta;
 }

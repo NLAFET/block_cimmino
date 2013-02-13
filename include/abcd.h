@@ -147,6 +147,7 @@ private:
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;
+    MV_ColMat_double RRand;
 
     CompRow_Mat_double A;
 

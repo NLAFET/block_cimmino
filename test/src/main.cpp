@@ -21,17 +21,17 @@ int main(int argc, char* argv[])
         //f = fopen("/home/mzenadi/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/RM07R/RM07R_pr.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/tpll01a_raff6_meca_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
+        //
+        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
-        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/b1_ss/b1_ss.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/SiO/SiO.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/LFAT5/LFAT5.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
-        //f = fopen("/home/mzenadi/work/stash/RM07R/RM07R_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/tpll01a_raff6_meca_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/GT01R/GT01R.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/lhr34c/lhr34c.mtx", "r");
@@ -60,24 +60,23 @@ int main(int argc, char* argv[])
         //obj.dcntl[10]= 0.1;
 
 
-        //obj.nbparts = 32;
-        //obj.partitioning_type = 2;
+        obj.nbparts = 16;
+        obj.partitioning_type = 2;
 
-        obj.partitioning_type = 1;
+        //obj.partitioning_type = 1;
         /*gre_1107*/
         //int nr[] = {219, 218, 223, 224, 223};
         //
         /*bayer01*/
-        int nr[] = {3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623,
-            3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599};
+        //int nr[] = {3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599};
         ////
         /*RM07R*/
         //int nr[] = {12803,12745,12850,12668,12667,12667,12667,12720,12723,12725,
                   //12721,12796,12648,12722,12723,12723,12723,12723,12723,12723,12723,12723,
                   //12793,12653,12723,12723,12785,12785,12661,12660};
 
-        obj.nbparts = (int)(sizeof(nr)/sizeof(int));
-        obj.nbrows = VECTOR_int(nr, obj.nbparts);
+        //obj.nbparts = (int)(sizeof(nr)/sizeof(int));
+        //obj.nbrows = VECTOR_int(nr, obj.nbparts);
 
         /*sio2*/
         //obj.nbrows << 5117,5213,5200,5158,5192,5205,5145,5137,5136,5181,5181,5186,5245,5193,5249,5112,5203,5195,5141,5198,5140,5200,5146,5145,5146,5145,5212,5151,5206,5253;
@@ -105,13 +104,14 @@ int main(int argc, char* argv[])
 
             obj.block_size = 1;
             obj.nrhs = 1;
-            obj.itmax = 5000;
+            obj.itmax = 50;
             // works only in sequential for the moment
-            obj.use_xf = false;
+            obj.use_xf = true;
             obj.rhs = new double[obj.n_l * obj.nrhs];
             for(int j = 0; j < obj.nrhs; j++){
                 for(int i = 0; i < obj.n_l; i++){
-                    obj.rhs[i + j * obj.n_l] = j+1;
+                    //obj.rhs[i + j * obj.n_l] = j+1;
+                    obj.rhs[i + j * obj.n_l] = ((rand()%10)+j+1)/10; 
                 }
             }
 

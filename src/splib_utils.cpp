@@ -523,6 +523,11 @@ smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
 
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
 {
+    return gemmColMat(L, R, false, false);
+}
+
+MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool transL, bool transR)
+{
     assert(L.dim(1) ==  R.dim(0));
 
     MV_ColMat_double C(L.dim(0), R.dim(1));
@@ -530,6 +535,8 @@ MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
     int ierr = 0;
     char no = 'N';
     //char trans = 'T';
+    char tL = transL ? 'T' : 'N';
+    char tR = transR ? 'T' : 'N';
     double alpha, beta;
 
     alpha = 1;
@@ -544,7 +551,7 @@ MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
     int rB = R.dim(0);
     int cB = R.dim(1);
 
-    dgemm_(&no, &no, &rA, &cB, &cA, &alpha, l_ptr, &rA, r_ptr, &rB, &beta, c_ptr, &rA);
+    dgemm_(&tL, &tR, &rA, &cB, &cA, &alpha, l_ptr, &rA, r_ptr, &rB, &beta, c_ptr, &rA);
     return C;
 }
 
