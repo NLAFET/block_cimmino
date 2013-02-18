@@ -7,6 +7,8 @@ void abcd::initializeCimmino()
     int *sym_perm;
     
     if(instance_type == 0) {
+        if(inter_comm.rank() == 0 && instance_type == 0)
+            cout << "[+] Initializing MUMPS" << endl;
         initializeMumps(true);
         createAugmentedSystems();
 /*         if(world.rank() == 0) {
@@ -39,11 +41,12 @@ void abcd::initializeCimmino()
 
     world.barrier();
     initializeMumps();
-    setMumpsIcntl(7,1);
+    //setMumpsIcntl(7,1);
+    //setMumpsIcntl(28,2);
 
     if(instance_type == 0) {
         createAugmentedSystems();
-        mumps.perm_in = sym_perm;
+        //mumps.perm_in = sym_perm;
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)

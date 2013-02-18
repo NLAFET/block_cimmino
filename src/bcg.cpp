@@ -13,7 +13,6 @@ void abcd::bcg(MV_ColMat_double &b)
         Xk = MV_ColMat_double(n, nrhs, 0);
     }
 
-
     // temporary solution
     MV_ColMat_double u(m, nrhs, 0);
     u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
@@ -47,6 +46,7 @@ void abcd::bcg(MV_ColMat_double &b)
     char notr = 'N';
     double alpha = 1;
     bool stay_alive = true;
+
 
     // **************************************************
     // ITERATION k = 0                                 *
@@ -213,7 +213,7 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
         //cout << nrmR << " " << nrmMtx << " " << nrmX << " " << nrmB << endl;
     rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;
-    //cout << "X -> " << nrmX << " " << x.col(0).norm() << endl;
+    //cout << "X -> " << nrmX << endl;
     //cout << "R -> " << nrmR << endl;
     //cout << "B -> " << nrmB << endl;
     //cout << "A -> " << nrmA << endl;
@@ -224,7 +224,7 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
         //cout << "Rho = " << rho << endl;
         //if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
     //}
-    if(use_xf) cout << "Fwd: " << nrmXfmX/nrmXf << endl;
+    //if(use_xf) cout << "Fwd: " << nrmXfmX/nrmXf << endl;
     return rho;
 }
 
