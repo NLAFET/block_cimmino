@@ -277,8 +277,16 @@ void abcd::distributeRhs()
         int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
 
         if(rhs==NULL){
-            rhs = new double[r * nrhs];
-            for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
+            //rhs = new double[r * nrhs];
+            //for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
+            rhs = new double[n_l * nrhs];
+
+            //for(int j = 0; j < obj.nrhs; j++){
+                //for(int i = 0; i < obj.n_l; i++){
+                    ////obj.rhs[i + j * obj.n_l] = j+1;
+                    //obj.rhs[i + j * obj.n_l] = ((rand()%10)+j+1)/10; 
+                //}
+            //}
         }
 
         if(use_xf){
@@ -318,11 +326,32 @@ void abcd::distributeRhs()
         } else {
             B = MV_ColMat_double(m_l, block_size);
 
+            Xf = MV_ColMat_double(n_l, nrhs);
             for(int j = 0; j < nrhs; j++){
-                VECTOR_double t(rhs+j*m_l, m_l);
-                B.setCol(t, j);
-                //B.push_back(t);
+                for(int i = 0; i < n_l; i++){
+                    rhs[i + j * n_l] = j+1;
+                    //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
+                }
             }
+
+            for(int j = 0; j < nrhs; j++){
+                VECTOR_double xf_col(n_l);
+                for(int i = 0; i < n_l; i++) {
+                    xf_col[i] = rhs[i + j * n_l];
+                    if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
+                }
+                Xf.setCol(xf_col, j);
+            }
+
+            MV_ColMat_double BB = smv(A, Xf);
+
+            for(int j = 0; j < nrhs; j++){
+                //VECTOR_double t(rhs+j*m_l, m_l);
+                //B.setCol(t, j);
+                //B.push_back(t);
+                B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
+            }
+            cout << "E"<< endl;
 
             if(block_size > nrhs) {
                 double *rdata = new double[m_l * (block_size - nrhs)];
@@ -340,6 +369,7 @@ void abcd::distributeRhs()
 
         }
 
+        cout << "HEY" << endl;
         r_pos += r;
 
         double *b_ptr = B.ptr();
@@ -367,6 +397,7 @@ void abcd::distributeRhs()
             }
 
         }
+        cout << "HO" << endl;
     } else {
         inter_comm.send(0, 16, m);
         inter_comm.recv(0, 17, nrhs);
@@ -389,25 +420,3 @@ void abcd::distributeRhs()
     // and distribute max iterations
     mpi::broadcast(inter_comm, itmax, 0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,7 @@
 #include <abcd.h>
+#include <iostream>
+#include <fstream>
+
 void abcd::initializeMumps()
 {
     initializeMumps(false);
@@ -25,24 +28,33 @@ void abcd::initializeMumps(bool local)
         intra_comm = mpi::communicator(world, grp);
     }
 
-    mumps.sym = 2;
+    mumps.sym = 0;
     mumps.par = 1;
     mumps.job = -1;
     mumps.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
 
     dmumps_c(&mumps);
     //cout << world.rank() << " << >> " << getMumpsInfo(1) << endl;
-    if(getMumpsInfo(1) != 0) throw - 100 + getMumpsInfo(1);
+    if(getMumpsInfo(1) != 0) throw getMumpsInfo(1);
 
     setMumpsIcntl(1, -1);
     setMumpsIcntl(2, -1);
     setMumpsIcntl(3, -1);
 
-    setMumpsIcntl(14, 50);
+    //if(inter_comm.rank() == 6){ 
+        //strcpy(mumps.write_problem, "/scratch/mzenadi/pb6.mtx");
+        //setMumpsIcntl(1, 6);
+        //setMumpsIcntl(2, 6);
+        //setMumpsIcntl(3, 6);
+    //}
+
+
+    setMumpsIcntl(6, 4);
+    setMumpsIcntl(7, 3);
+    setMumpsIcntl(8, 77);
+    setMumpsIcntl(11, 1);
     setMumpsIcntl(12, 2);
-    setMumpsIcntl(6, 5);
-    setMumpsIcntl(7, 5);
-    setMumpsIcntl(8, -2);
+    setMumpsIcntl(14, 50);
     setMumpsIcntl(27, 16);
 }
 
@@ -53,7 +65,8 @@ void abcd::createAugmentedSystems()
     // for performance, compute total nnz and size of the matrix
     for(int j = 0; j < partitions.size(); j++) {
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
-        m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
+        //m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
+        m_nz += partitions[j].dim(1) + 2 * partitions[j].NumNonzeros();
     }
 
     // Allocate the data for mumps
@@ -86,6 +99,11 @@ void abcd::createAugmentedSystems()
             for(int j = partitions[p].row_ptr(k); j < partitions[p].row_ptr(k + 1); j++) {
                 mumps.irn[st] = i_pos + k;
                 mumps.jcn[st] = j_pos + partitions[p].col_ind(j);
+                mumps.a[st] = partitions[p].val(j);
+
+                st++;
+                mumps.jcn[st] = i_pos + k;
+                mumps.irn[st] = j_pos + partitions[p].col_ind(j);
                 mumps.a[st] = partitions[p].val(j);
                 st++;
             }
@@ -194,10 +212,29 @@ void abcd::analyseAugmentedSystems()
         //cout << "mumps.nz " << mumps.nz << endl;
         //exit(0);
     //}
+    //if(inter_comm.rank() == 3){
+        //setMumpsIcntl(4, 2);
+        //setMumpsIcntl(1, 6);
+        //setMumpsIcntl(2, 6);
+        //setMumpsIcntl(3, 6);
+    //}
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
+    //cout << inter_comm.rank() << " " << partitions[0].dim(0) << " " << partitions[0].dim(1)  << " "
+        //<< mumps.n << " " << mumps.nz << " " << partitions[0].NumNonzeros() << " "
+        //<< mumps.write_problem << endl;
+    //inter_comm.barrier();
+    //exit(0);
 
-    if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
+    if(getMumpsInfo(1) != 0){
+        //cout << string(32, '-') << endl
+             //<< "| MUMPS ANALYSIS FAILED on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             //<< string(32, '-') << endl
+             //<< "| info(1)       : " << setw(6) << getMumpsInfo(1) << string(4, ' ') << " |" << endl
+             //<< "| info(2)       : " << setw(6) << getMumpsInfo(2) << string(4, ' ') << " |" << endl
+             //<< string(32, '-') << endl;
+        throw 100 * getMumpsInfo(1) - getMumpsInfo(2);
+    }
 
     if(instance_type == 0 && verbose == true) {
         double flop = getMumpsRinfo(1);
@@ -220,7 +257,8 @@ void abcd::factorizeAugmentedSystems()
     mumps.job = 2;
 
     double t = MPI_Wtime();
-    //if(world.rank() == 0){
+    //if(inter_comm.rank() == 3){
+        //setMumpsIcntl(4, 2);
         //setMumpsIcntl(1, 6);
         //setMumpsIcntl(2, 6);
         //setMumpsIcntl(3, 6);
@@ -228,7 +266,22 @@ void abcd::factorizeAugmentedSystems()
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
 
-    if(getMumpsInfo(1) != 0) throw - 10000 + 100 * getMumpsInfo(1) - getMumpsInfo(2);
+    if(getMumpsInfo(1) != 0){
+        //ofstream myfile;
+        //myfile.open ("/scratch/mzenadi/aug_sm.mtx", ios::out);
+        //myfile << mumps.n << " " << mumps.n << " " << mumps.nz << "\n";
+        //for(int i = 0; i < mumps.nz; i++){
+            //myfile << mumps.irn[i] << " " << mumps.jcn[i] << " " << mumps.a[i] << "\n";
+        //}
+        //myfile.close();
+        //cout << string(32, '-') << endl
+             //<< "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             //<< string(32, '-') << endl
+             //<< "| info(1)       : " << setw(6) << getMumpsInfo(1) << string(4, ' ') << " |" << endl
+             //<< "| info(2)       : " << setw(6) << getMumpsInfo(2) << string(4, ' ') << " |" << endl
+             //<< string(32, '-') << endl;
+        throw 100 * getMumpsInfo(1) - getMumpsInfo(2);
+    }
 
 
     if(instance_type == 0 && verbose == true) {

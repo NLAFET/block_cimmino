@@ -51,6 +51,10 @@ int abcd::bc(int job)
             cout << "[+] Launching MUMPS factorization" << endl;
         }
         abcd::factorizeAugmentedSystems();
+        if(instance_type == 0){
+            cout << "[-] "<<inter_comm.rank() << " finished factorization" << endl;
+        }
+        inter_comm.barrier();
         break;
 
     case 3:
