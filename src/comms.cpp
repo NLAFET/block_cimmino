@@ -326,18 +326,18 @@ void abcd::distributeRhs()
         } else {
             B = MV_ColMat_double(m_l, block_size);
 
-            Xf = MV_ColMat_double(n_l, nrhs);
+            Xf = MV_ColMat_double(A.dim(1), nrhs);
             for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < n_l; i++){
-                    rhs[i + j * n_l] = j+1;
+                for(int i = 0; i < A.dim(1); i++){
+                    rhs[i + j * A.dim(1)] = j+1;
                     //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
                 }
             }
 
             for(int j = 0; j < nrhs; j++){
-                VECTOR_double xf_col(n_l);
-                for(int i = 0; i < n_l; i++) {
-                    xf_col[i] = rhs[i + j * n_l];
+                VECTOR_double xf_col(A.dim(1));
+                for(int i = 0; i < A.dim(1); i++) {
+                    xf_col[i] = rhs[i + j * A.dim(1)];
                     if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                 }
                 Xf.setCol(xf_col, j);
@@ -351,7 +351,6 @@ void abcd::distributeRhs()
                 //B.push_back(t);
                 B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
             }
-            cout << "E"<< endl;
 
             if(block_size > nrhs) {
                 double *rdata = new double[m_l * (block_size - nrhs)];
@@ -369,7 +368,6 @@ void abcd::distributeRhs()
 
         }
 
-        cout << "HEY" << endl;
         r_pos += r;
 
         double *b_ptr = B.ptr();
@@ -397,7 +395,6 @@ void abcd::distributeRhs()
             }
 
         }
-        cout << "HO" << endl;
     } else {
         inter_comm.send(0, 16, m);
         inter_comm.recv(0, 17, nrhs);
