@@ -27,16 +27,16 @@ void abcd::bcg(MV_ColMat_double &b)
     MV_ColMat_double e1(s, nrhs, 0);
 
 
+    double thresh = 1e-11;
+
     double *qp_ptr = qp.ptr();
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
-    double lnrmBs = b.squaredSum();
-    double thresh = 1e-11;
-
+    double lnrmBs = infNorm(b);
     // Sync B norm :
-    mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, std::plus<double>());
-    nrmB = sqrt(nrmB);
+    mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
+    //nrmB = sqrt(nrmB);
 
     for(int k =0; k < e1.dim(1); k++) e1(0,k) = 1;
     char up = 'U';
@@ -61,7 +61,7 @@ void abcd::bcg(MV_ColMat_double &b)
 
     if(use_xk) {
         MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
-        r.setCols(sp, 0, nrhs);
+        r.setCols(sp, 0, s);
     } else {
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, s);
@@ -89,7 +89,7 @@ void abcd::bcg(MV_ColMat_double &b)
     //if(inter_comm.rank() == inter_comm.size() - 1) {
         //cout << "ITERATION " << 0 << endl;
     //}
-    //rho = compute_rho(Xk, u, thresh);
+    rho = compute_rho(Xk, u, thresh);
 
     while((rho > thresh) && (it < itmax)) {
         //if(inter_comm.rank() == inter_comm.size() - 1) {
@@ -201,7 +201,7 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //
     double nrmR, nrmX, rho;
     abcd::get_nrmres(x, nrmR, nrmX, nrmXfmX);
-    //if(inter_comm.rank() != 0)
+    //if(inter_comm.rank() == 0)
         //cout << nrmR << " " << nrmMtx << " " << nrmX << " " << nrmB << endl;
     rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;

@@ -61,7 +61,7 @@ abcd::buildS (  )
 
     use_xk = true;
     //
-    for( int i = 0; i < 2; i++){
+    for( int i = 0; i < 1; i++){
 
         // set xk = [0 I] 
         Xk = MV_ColMat_double(n, 1, 0);
