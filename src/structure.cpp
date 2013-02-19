@@ -313,7 +313,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         card_max = card_max > card_current ? card_max : card_current;
                     }
 
-                    nu = (frob_sum / A_ij.dim(1)) / sqrt(card_max);
+                    nu = (frob_sum / frob_ij.size()) / sqrt(card_max);
 
                     for (int k = 0; k < A_ij.dim(1); ++k){
                         VECTOR_int A_ij_k_ind, A_ji_k_ind;
@@ -325,10 +325,10 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                         double p = 0, q = 0;
                         for (int l = 0; l < A_ij_k_ind.size(); ++l){
-                            if (abs(A_ij_k(l)) >= nu/inf_ji) p++;
+                            if (abs(A_ij_k(A_ij_k_ind(l))) >= nu/inf_ji) p++;
                         }
                         for (int l = 0; l < A_ji_k_ind.size(); ++l){
-                            if (abs(A_ji_k(l)) >= nu/inf_ij) q++;
+                            if (abs(A_ji_k(A_ji_k_ind(l))) >= nu/inf_ij) q++;
                         }
 
                         p = ( p==0 ? A_ij_k_ind.size() : p );
