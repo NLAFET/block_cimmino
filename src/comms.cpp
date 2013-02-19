@@ -252,6 +252,8 @@ void abcd::distributePartitions()
             }
         }
     }
+    /*
+     * ||A||_F
     nrmA = 0;
     for(int i=0; i<partitions.size(); i++)
         nrmA += squaredNorm(partitions[i]);
@@ -259,6 +261,22 @@ void abcd::distributePartitions()
     mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, std::plus<double>());
     nrmA = sqrt(nrmA);
     nrmMtx = sqrt(nrmMtx);
+    */
+
+    /* ||A||_inf */
+    nrmA = 0;
+    for(int i=0; i<partitions.size(); i++){
+        for(int j=0; j<partitions[i].NumNonzeros(); j++){
+            double cur = abs(partitions[i].val(j));
+            if(cur > nrmA){
+                nrmA = cur;
+            }
+        }
+    }
+
+    mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
+    //nrmA = sqrt(nrmA);
+    //nrmMtx = sqrt(nrmMtx);
 }
 
 void abcd::distributeRhs()

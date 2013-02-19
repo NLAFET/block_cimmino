@@ -87,7 +87,8 @@ void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &n
     for(int i = 0; i < rm; i++) {
         if(comm_map[i] == 1) {
             for(int j = 0; j < rn; j++) {
-                nrmXV(j) += pow(x(i, j), 2);
+                double cur = abs(x(i, j));
+                nrmXV(j) += cur;
             }
             pos++;
         }
@@ -126,19 +127,22 @@ void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &n
     loc_r  = B - loc_r;
 
     for(int j = 0; j<rn ; j++){
-        double loc_nrm = loc_r(j).squaredSum();
+        VECTOR_double loc_r_j = loc_r(j);
+        double loc_nrm = infNorm(loc_r_j);
 
-        double nrms[2] = {loc_nrm, nrmXV[j]};
-        double nrms_out[2];
-        mpi::all_reduce(inter_comm, nrms, 2, nrms_out, std::plus<double>());
+        //double nrms[2] = {loc_nrm, nrmXV[j]};
+        //double nrms_out[2];
 
-        double temp_nrmR = sqrt(nrms_out[0]);
-        double temp_nrmX = sqrt(nrms_out[1]);
+        mpi::all_reduce(inter_comm, &loc_nrm, 1, &nrmR, mpi::maximum<double>());
+        mpi::all_reduce(inter_comm, &nrmXV[j], 1, &nrmX, std::plus<double>());
 
-        if (nrmR < temp_nrmR){
-            nrmR = temp_nrmR;
-            nrmX = temp_nrmX;
-        }
+        //double temp_nrmR = sqrt(nrms_out[0]);
+        //double temp_nrmX = sqrt(nrms_out[1]);
+
+        //nrmR = nrmR < temp_nrmR ? temp_nrmR : sqrt(nrmR);
+        //nrmX = nrmX < temp_nrmX ? temp_nrmX : sqrt(nrmX);
+        //nrmR = nrms_out[0];
+        //nrmX = nrms_out[1];
     }
 
     if(use_xf){
