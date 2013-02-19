@@ -8,6 +8,8 @@ abcd::analyseAugmentedSystems	../include/abcd.h	/^    void analyseAugmentedSyste
 abcd::analyseAugmentedSystems	../src/mumps.cpp	/^void abcd::analyseAugmentedSystems()$/;"	f	class:abcd	signature:()
 abcd::analyseFrame	../include/abcd.h	/^    void analyseFrame();$/;"	p	class:abcd	access:private	signature:()
 abcd::analyseFrame	../src/structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd	signature:()
+abcd::analyseFrame	structure.cpp	/^void abcd::analyseFrame()$/
+abcd::augmentMatrix	structure.cpp	/^abcd::augmentMatrix ( std::vector<CompCol_Mat_doub/
 abcd::bcg	../include/abcd.h	/^    void bcg();$/;"	p	class:abcd	access:private	signature:()
 abcd::bcg	../src/bcg.cpp	/^void abcd::bcg()$/;"	f	class:abcd	signature:()
 abcd::bc	../include/abcd.h	/^    int bc(int);$/;"	p	class:abcd	access:public	signature:(int)
@@ -22,17 +24,14 @@ abcd::compute_rho	../include/abcd.h	/^    double compute_rho(Eigen::MatrixXd X, 
 abcd::compute_rho	../src/bcg.cpp	/^double abcd::compute_rho(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)$/;"	f	class:abcd	signature:(Eigen::MatrixXd x, Eigen::MatrixXd u, double thresh)
 abcd::createAugmentedSystems	../include/abcd.h	/^    void createAugmentedSystems();$/;"	p	class:abcd	access:private	signature:()
 abcd::createAugmentedSystems	../src/mumps.cpp	/^void abcd::createAugmentedSystems()$/;"	f	class:abcd	signature:()
-abcd::createInterComm	comms.cpp	/^void abcd::createInterComm()$/
 abcd::createInterComm	../include/abcd.h	/^    void createInterComm();$/;"	p	class:abcd	access:private	signature:()
 abcd::createInterComm	../src/comms.cpp	/^void abcd::createInterComm()$/;"	f	class:abcd	signature:()
 abcd::dcntl	../include/abcd.h	/^    double dcntl[10];$/;"	m	class:abcd	access:public
 abcd::dcol_	../include/abcd.h	/^    VectorXd dcol_;$/;"	m	class:abcd	access:private
 abcd::ddot	../include/abcd.h	/^    Eigen::MatrixXd ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap);$/;"	p	class:abcd	access:private	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
 abcd::ddot	../src/utils.cpp	/^Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)$/;"	f	class:abcd	signature:(Eigen::MatrixXd p, Eigen::MatrixXd ap)
-abcd::distributePartitions	comms.cpp	/^void abcd::distributePartitions()$/
 abcd::distributePartitions	../include/abcd.h	/^    void distributePartitions();$/;"	p	class:abcd	access:private	signature:()
 abcd::distributePartitions	../src/comms.cpp	/^void abcd::distributePartitions()$/;"	f	class:abcd	signature:()
-abcd::distributeRhs	comms.cpp	/^void abcd::distributeRhs()$/
 abcd::distributeRhs	../include/abcd.h	/^    void distributeRhs();$/;"	p	class:abcd	access:private	signature:()
 abcd::distributeRhs	../src/comms.cpp	/^void abcd::distributeRhs()$/;"	f	class:abcd	signature:()
 abcd::drow_	../include/abcd.h	/^    VectorXd drow_;$/;"	m	class:abcd	access:private
@@ -89,6 +88,7 @@ abcd::parallel_cg	../include/abcd.h	/^    int parallel_cg; \/\/\/ The number of 
 abcd::partitioning_type	../include/abcd.h	/^    int partitioning_type;$/;"	m	class:abcd	access:public
 abcd::partitionMatrix	../include/abcd.h	/^    void partitionMatrix();$/;"	p	class:abcd	access:private	signature:()
 abcd::partitionMatrix	../src/structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd	signature:()
+abcd::partitionMatrix	structure.cpp	/^void abcd::partitionMatrix()$/
 abcd::partitionWeights	../include/abcd.h	/^    void partitionWeights(std::vector<int> &, std::vector<int>, int);$/;"	p	class:abcd	access:private	signature:(std::vector<int> &, std::vector<int>, int)
 abcd::partitionWeights	../src/utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd	signature:(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 abcd::parts_id	../include/abcd.h	/^    std::vector<int> parts_id;$/;"	m	class:abcd	access:public
@@ -302,7 +302,6 @@ analyseAugmentedSystems	../include/abcd.h	/^    void analyseAugmentedSystems();$
 analyseAugmentedSystems	../src/mumps.cpp	/^void abcd::analyseAugmentedSystems()$/;"	f	class:abcd	signature:()
 analyseFrame	../include/abcd.h	/^    void analyseFrame();$/;"	p	class:abcd	access:private	signature:()
 analyseFrame	../src/structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd	signature:()
-analyseFrame	structure.cpp	/^void abcd::analyseFrame()$/;"	f	class:abcd
 analyzePattern	../include/Eigen/src/CholmodSupport/CholmodSupport.h	/^    void analyzePattern(const MatrixType& matrix)$/;"	f	class:Eigen::CholmodBase	access:public	signature:(const MatrixType& matrix)
 analyzePattern	../include/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h	/^    DiagonalPreconditioner& analyzePattern(const MatrixType& )$/;"	f	class:Eigen::DiagonalPreconditioner	access:public	signature:(const MatrixType& )
 analyzePattern	../include/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h	/^    IdentityPreconditioner& analyzePattern(const MatrixType& ) { return *this; }$/;"	f	class:Eigen::IdentityPreconditioner	access:public	signature:(const MatrixType& )
@@ -485,7 +484,6 @@ atan2_retval	../include/Eigen/src/Core/MathFunctions.h	/^struct atan2_retval$/;"
 at	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    inline Scalar at(Index key, Scalar defaultValue = Scalar(0)) const$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:(Index key, Scalar defaultValue = Scalar(0)) const
 atInRange	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    inline Scalar atInRange(size_t start, size_t end, Index key, Scalar defaultValue = Scalar(0)) const$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:(size_t start, size_t end, Index key, Scalar defaultValue = Scalar(0)) const
 atWithInsertion	../include/Eigen/src/SparseCore/CompressedStorage.h	/^    inline Scalar& atWithInsertion(Index key, Scalar defaultValue = Scalar(0))$/;"	f	class:Eigen::internal::CompressedStorage	access:public	signature:(Index key, Scalar defaultValue = Scalar(0))
-augmentMatrix	structure.cpp	/^abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)$/;"	f	class:abcd
 AutoAlign	../include/Eigen/src/Core/util/Constants.h	/^  AutoAlign = 0,$/;"	e	enum:Eigen::__anon212
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  const Vector3& axis() const { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:() const
 axis	../include/Eigen/src/Eigen2Support/Geometry/AngleAxis.h	/^  Vector3& axis() { return m_axis; }$/;"	f	class:Eigen::AngleAxis	access:public	signature:()
@@ -16391,7 +16389,6 @@ part	../include/Eigen/src/Core/TriangularMatrix.h	/^typename internal::eigen2_pa
 partitioning_type	../include/abcd.h	/^    int partitioning_type;$/;"	m	class:abcd	access:public
 partitionMatrix	../include/abcd.h	/^    void partitionMatrix();$/;"	p	class:abcd	access:private	signature:()
 partitionMatrix	../src/structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd	signature:()
-partitionMatrix	structure.cpp	/^void abcd::partitionMatrix()$/;"	f	class:abcd
 partitionWeights	../include/abcd.h	/^    void partitionWeights(std::vector<int> &, std::vector<int>, int);$/;"	p	class:abcd	access:private	signature:(std::vector<int> &, std::vector<int>, int)
 partitionWeights	../src/utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd	signature:(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 partitionWeights	utils.cpp	/^void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)$/;"	f	class:abcd
