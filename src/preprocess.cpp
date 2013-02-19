@@ -23,19 +23,19 @@ void abcd::preprocess()
         abcd::scaleMatrix(0);
 
         ///BUG: This takes too much time!
-        double rsum;
-        drow_ = VECTOR_double(m, double(0));
-        dcol_ = VECTOR_double(n, double(1));
-        for(int r = 0; r < m; r++) {
-            rsum = 0;
-            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
-                rsum += pow(A(r, A.col_ind(c)), 2);
-            }
-            drow_(r) = 1/sqrt(rsum);
-        }
-        abcd::diagScaleMatrix(drow_, dcol_);
-        drow_ = VECTOR_double(m, double(1));
-        dcol_ = VECTOR_double(n, double(1));
+        //double rsum;
+        //drow_ = VECTOR_double(m, double(0));
+        //dcol_ = VECTOR_double(n, double(1));
+        //for(int r = 0; r < m; r++) {
+            //rsum = 0;
+            //for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                //rsum += pow(A(r, A.col_ind(c)), 2);
+            //}
+            //drow_(r) = 1/sqrt(rsum);
+        //}
+        //abcd::diagScaleMatrix(drow_, dcol_);
+        //drow_ = VECTOR_double(m, double(1));
+        //dcol_ = VECTOR_double(n, double(1));
 
     }
 
@@ -114,6 +114,7 @@ void abcd::scaleMatrix(int norm)
     mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
+
     if(mc77_info[0] < 0) throw - 100 + mc77_info;
 
     if(norm == 0)
@@ -132,17 +133,16 @@ void abcd::scaleMatrix(int norm)
     VECTOR_double dc(m, double(1)), dr(n, double(1));
     // Scale the matrix
     for(int k = 0; k < n; k++) {
-        dc(k) = 1 / dw[k];
+        dc(k) = double(1) / dw[k];
         dcol_(k) *= 1 / dw[k];
     }
 
     for(int k = 0; k < m; k++) {
-        dr(k) = 1 / dw[k + n];
+        dr(k) = double(1) / dw[k + n];
         drow_(k) *= 1 / dw[k + n];
     }
 
     diagScaleMatrix(dr, dc);
-
 
     delete iw, dw;
 }
@@ -158,9 +158,10 @@ void abcd::scaleMatrix(int norm)
 abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)
 {
     int c;
-    for ( int i = 0; i < m; i++ ) {
+    for ( int i = 0; i < A.dim(0); i++ ) {
         for ( int j = A.row_ptr(i); j < A.row_ptr(i+1); j++ ) {
-            A.set(i,A.col_ind(j)) = A(i,A.col_ind(j)) * drow(i) * dcol(A.col_ind(j));
+            //A.set(i,A.col_ind(j)) = A(i,A.col_ind(j)) * drow(i) * dcol(A.col_ind(j));
+            A.val(j) *= drow(i) * dcol(A.col_ind(j));
         }
     }
 }		/* -----  end of function abcd::diagscal  ----- */
