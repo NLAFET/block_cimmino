@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
         /* read the file and its content */
         //f = fopen("/home/mzenadi/work/stash/gre_1107/gre_1107_pr.mtx", "r");
-        f = fopen("/home/mzenadi/work/stash/bayer01/bayer01_pr.mtx", "r");
+        //f = fopen("/home/mzenadi/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/RM07R/RM07R_pr.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/rajat21/rajat21.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/Ga41As41H72/Ga41As41H72.mtx", "r");
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         //f = fopen("/home/mzenadi/work/stash/Flan_1565/Flan_1565.mtx", "r");
         //f = fopen("/home/mzenadi/work/stash/CoupCons3D/CoupCons3D.mtx", "r");
         //
-        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
+        f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
         //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
         obj.val = new double[obj.nz];
 
         obj.icntl[9] = 2;
-        obj.icntl[10]= 1;
+        obj.icntl[10]= 2;
         obj.dcntl[10]= 0.1;
 
 

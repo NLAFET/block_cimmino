@@ -50,7 +50,7 @@ void abcd::initializeMumps(bool local)
 
 
     setMumpsIcntl(6, 4);
-    setMumpsIcntl(7, 3);
+    setMumpsIcntl(7, 5);
     setMumpsIcntl(8, 77);
     setMumpsIcntl(11, 1);
     setMumpsIcntl(12, 2);

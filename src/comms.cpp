@@ -416,4 +416,5 @@ void abcd::distributeRhs()
     }
     // and distribute max iterations
     mpi::broadcast(inter_comm, itmax, 0);
+    mpi::broadcast(inter_comm, dcntl[10], 0);
 }
