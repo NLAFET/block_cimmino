@@ -511,6 +511,7 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
     MV_ColMat_double 
 smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
 {
+    assert(M.dim(1) == V.dim(0));
     //std::vector<VECTOR_double> R;
     MV_ColMat_double R(M.dim(0), V.dim(1));
     for(int k = 0; k < V.dim(1); k++){
@@ -520,6 +521,32 @@ smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
     }
     return R;
 }		/* -----  end of function smdm  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  spsmv
+ *  Description:  
+ * =====================================================================================
+ */
+    MV_ColMat_double
+spsmv ( CompRow_Mat_double &M, std::vector<int> &col_ind, MV_ColMat_double &V )
+{
+    assert(M.dim(1) == col_ind.size());
+    MV_ColMat_double V_(M.dim(1), V.dim(1));
+    for(int j = 0; j < V_.dim(1); j++){
+        for(int i = 0; i < V_.dim(0); i++){
+            V_(i,j) = V(col_ind[i], j);
+        }
+    }
+
+    MV_ColMat_double R(M.dim(0), V.dim(1));
+    for(int k = 0; k < V.dim(1); k++){
+        MV_Vector_double t = M*V_(k);
+        R.setCol(t, k);
+    }
+    return R;
+}		/* -----  end of function spsmv  ----- */
 
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
 {

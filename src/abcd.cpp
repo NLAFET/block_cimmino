@@ -64,11 +64,11 @@ int abcd::bc(int job)
         if(instance_type == 0) {
             inter_comm.barrier();
             abcd::distributeRhs();
-            //if(icntl[10] == 0){
+            if(icntl[10] == 0){
                 abcd::bcg(B);
-            //} else{
-                //abcd::solveABCD(B);
-            //}
+            } else{
+                abcd::solveABCD(B);
+            }
         } else {
             abcd::waitForSolve();
         }

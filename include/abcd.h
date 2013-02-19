@@ -21,11 +21,9 @@
 
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
-
 #include <boost/progress.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_sparse.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/range/adaptors.hpp>
+#include <boost/range/algorithm.hpp>
 
 /*
  * A small hack to make Sparselib++ work with openmpi
@@ -43,7 +41,7 @@
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
-using namespace ublas;
+using namespace boost::adaptors;
 
 class abcd
 {
@@ -234,5 +232,6 @@ public:
 
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
+template <class K, class V> std::vector<K> get_keys(std::map<K,V> my_map);
 
 #endif // ABCD_HXX

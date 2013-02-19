@@ -154,4 +154,11 @@ bool ip_comp(const dipair &l, const dipair &r)
     return l.first > r.first;
 }
 
-
+template <class K, class V>
+std::vector<K> get_keys(std::map<K,V> my_map){
+    std::vector<K> keys;
+    for(typename std::map<K,V>::iterator it = my_map.begin(); it != my_map.end(); it++){
+        keys.push_back(it->first);
+    }
+    return keys;
+}

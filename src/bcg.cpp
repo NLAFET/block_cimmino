@@ -32,7 +32,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double *l_ptr = lambdak.ptr();
 
     double lnrmBs = b.squaredSum();
-    double thresh = 1e-12;
+    double thresh = 1e-11;
 
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, std::plus<double>());
@@ -60,19 +60,11 @@ void abcd::bcg(MV_ColMat_double &b)
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(use_xk) {
-        MV_ColMat_double sp = sumProject(1e0, u, -1e0, Xk);
+        MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
         r.setCols(sp, 0, nrhs);
-        if(block_size > nrhs) {
-            sp = b(MV_VecIndex(0, b.dim(0)-1),MV_VecIndex(nrhs, block_size - 1));
-            r.setCols(sp, nrhs, block_size -nrhs);
-        }
     } else {
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, s);
-        //if(block_size > nrhs) {
-            //sp = b(MV_VecIndex(0,b.dim(0)-1),MV_VecIndex(nrhs, block_size - 1));
-            //r.setCols(sp, nrhs, block_size -nrhs);
-        //}
     }
     // orthogonalize
     // r = r*gamma^-1
@@ -97,7 +89,7 @@ void abcd::bcg(MV_ColMat_double &b)
     //if(inter_comm.rank() == inter_comm.size() - 1) {
         //cout << "ITERATION " << 0 << endl;
     //}
-    rho = compute_rho(Xk, u, thresh);
+    //rho = compute_rho(Xk, u, thresh);
 
     while((rho > thresh) && (it < itmax)) {
         //if(inter_comm.rank() == inter_comm.size() - 1) {
@@ -159,7 +151,7 @@ void abcd::bcg(MV_ColMat_double &b)
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
-        if(world.rank() == 0){
+        if(world.rank() == 0 ){
             cout << "ITERATION " << it << " rho = " << rho << endl;
             //cout << ". " << flush; 
         }
