@@ -377,7 +377,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
-        if(icntl[11] != 1) return;
+        if(icntl[11] != 0) return;
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
@@ -480,7 +480,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
-        if(icntl[11] != 1) return;
+        if(icntl[11] != 0) return;
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
