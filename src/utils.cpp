@@ -1,5 +1,9 @@
 #include <abcd.h>
 #include <Eigen/src/misc/blas.h>
+#include <boost/lambda/lambda.hpp>
+#include <boost/lambda/bind.hpp>
+
+using namespace boost::lambda;
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
@@ -171,4 +175,42 @@ double or_bin(double &a, double &b){
     if(a!=0) return a;
     else if(b!=0) return b;
     else return 0;
+}
+
+void setVal(int *lst, int sz, int ival) {
+        int i;
+        for (i=0;i < sz; i++) lst[i] = ival;
+}
+
+vector<int> sort_indexes(const int *v, const int nb_el) {
+
+    typedef std::pair<int,int> pair_type;
+    std::vector< std::pair<int,int> > vp;
+
+    for(int i = 0; i < nb_el; i++)
+        vp.push_back( std::make_pair<int,int>(v[i], i) );
+
+
+    // sort indexes based on comparing values in v
+    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+
+    std::vector<int> idx(vp.size());
+    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    return idx;
+}
+
+template <typename T>
+vector<int> sort_indexes(const vector<T> &v) {
+
+    typedef std::pair<T,int> pair_type;
+    std::vector< std::pair<T,int> > vp;
+    for(int i = 0; i < v.size(); i++)
+        vp.push_back( std::make_pair<T,int>(v[i], i) );
+
+    // sort indexes based on comparing values in v
+    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+
+    std::vector<int> idx;
+    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    return idx;
 }

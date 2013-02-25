@@ -21,8 +21,8 @@ int abcd::bc(int job)
 
     case 1:
         if(world.rank() == 0) {
-            abcd::preprocess();
             abcd::partitionMatrix();
+            abcd::preprocess();
             abcd::analyseFrame();
         }
 
@@ -64,7 +64,7 @@ int abcd::bc(int job)
         if(instance_type == 0) {
             inter_comm.barrier();
             abcd::distributeRhs();
-            if(icntl[10] == 0){
+            if(icntl[10] == 0 || icntl[12] != 0){
                 abcd::bcg(B);
             } else{
                 abcd::solveABCD(B);

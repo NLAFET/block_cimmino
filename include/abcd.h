@@ -14,6 +14,7 @@
 #include <vector>
 #include <cstdio>
 #include <algorithm>
+#include <string>
 #include "mmio.h"
 #include "mpi.h"
 
@@ -161,6 +162,8 @@ public:
     int n_l, m_l, nz_l;
     int n_o, m_o, nz_o;
 
+    std::string write_problem;
+
 
     /***************************************************************************
      * Temporary data about the matrix
@@ -235,5 +238,8 @@ typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
 template <class K, class V> std::vector<K> get_keys(std::map<K,V> my_map);
 double or_bin(double &a, double &b);
+void setVal(int *lst, int sz, int ival);
+vector<int> sort_indexes(const int *v, const int nb_el);
+template <typename T> vector<int> sort_indexes(const vector<T> &v);
 
 #endif // ABCD_HXX
