@@ -14,6 +14,8 @@ find_package (Boost COMPONENTS mpi serialization REQUIRED)
 # the library
 #set(CMAKE_BUILD_TYPE "Debug")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
+set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
+set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
 #add_definitions(-DCOMPLEX="std::complex<double>")
 

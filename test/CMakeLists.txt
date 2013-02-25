@@ -11,10 +11,14 @@ set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
 
 find_package (Boost COMPONENTS mpi REQUIRED)
 
+message(STATUS "ABCD_PROJECT_DIR=${ABCD_PROJECT_DIR}")
+message(STATUS "ABCD_PROJECT_BINARY_DIR=${ABCD_PROJECT_BINARY_DIR}")
+
 link_directories(
-  ../${CMAKE_BUILD_TYPE}
-  ${Boost_LIBRARY_DIRS}
-  ${LIB_DIRS}
+    ${ABCD_PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
+    ${ABCD_PROJECT_DIR}/lib
+    ${Boost_LIBRARY_DIRS}
+    ${LIB_DIRS}
 )
 
 include_directories(../include ${Boost_INCLUDE_DIRS})
@@ -28,6 +32,7 @@ add_executable(
 target_link_libraries(
     test_abcd
     abcd 
+    patoh
     ${Boost_LIBRARIES}
     ${LIBS}
 )
