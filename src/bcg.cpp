@@ -56,7 +56,6 @@ void abcd::bcg(MV_ColMat_double &b)
         //VECTOR_double vt = B(k);
         //u.setCol(vt, k);
     //}
-
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(use_xk) {
@@ -98,10 +97,9 @@ void abcd::bcg(MV_ColMat_double &b)
         //}
         it++;
 
-        stay_alive = true;
-        mpi::broadcast(intra_comm, stay_alive, 0);
-
         qp = sumProject(0e0, b, 1e0, p);
+        //if(inter_comm.rank() == 0)
+            //cout << qp << endl;
 
         if(gqr(p, qp, betak, s, true) != 0){
             gmgs(p, qp, betak, s, true);
@@ -151,13 +149,12 @@ void abcd::bcg(MV_ColMat_double &b)
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
-        if(world.rank() == 0 ){
+        if(world.rank() == 0 && verbose){
             cout << "ITERATION " << it << " rho = " << rho << endl;
+            cout << endl;
             //cout << ". " << flush; 
         }
     }
-    stay_alive = false;
-    mpi::broadcast(intra_comm, stay_alive, 0);
 
     if(inter_comm.rank() == 0) {
         cout << endl;
@@ -388,6 +385,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     //double tt = MPI_Wtime();
     //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
     //mpi::broadcast(inter_comm, r_ptr, rsz , 0);
+    
     mpi::all_reduce(inter_comm, l_r_ptr, s * s,  r_ptr, std::plus<double>());
     //cout << "sub time " << MPI_Wtime() - tt << endl;
 
@@ -396,7 +394,9 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
 //     For the moment if there is an error, just crash!
     if(ierr != 0){
-        cout << "PROBLEM IN GQR " << ierr << endl;
+        cout << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
+        cout << r << endl;
+        exit(0);
         return ierr;
     }
     p_ptr = p.ptr();

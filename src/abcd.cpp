@@ -51,9 +51,9 @@ int abcd::bc(int job)
             cout << "[+] Launching MUMPS factorization" << endl;
         }
         abcd::factorizeAugmentedSystems();
-        if(instance_type == 0){
-            cout << "[-] "<<inter_comm.rank() << " finished factorization" << endl;
-        }
+        //if(instance_type == 0){
+            //cout << "[-] "<<inter_comm.rank() << " finished factorization" << endl;
+        //}
         inter_comm.barrier();
         break;
 
@@ -69,6 +69,10 @@ int abcd::bc(int job)
             } else{
                 abcd::solveABCD(B);
             }
+
+            bool stay_alive = false;
+            mpi::broadcast(intra_comm, stay_alive, 0);
+
         } else {
             abcd::waitForSolve();
         }

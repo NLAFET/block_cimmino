@@ -166,3 +166,9 @@ std::vector<K> get_keys(std::map<K,V> my_map){
     }
     return keys;
 }
+
+double or_bin(double &a, double &b){
+    if(a!=0) return a;
+    else if(b!=0) return b;
+    else return 0;
+}
