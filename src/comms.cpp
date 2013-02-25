@@ -402,16 +402,12 @@ void abcd::distributeRhs()
 
             r_pos += rows_for_k;
         }
-        //@BUG:duplicate, solve it!
+
         if(!use_xf){
-            B = MV_ColMat_double(m, block_size);
-
-            for(int j = 0; j < nrhs; j++){
-                VECTOR_double t(rhs+j*m, m);
-                B.setCol(t, j);
-                //B.push_back(t);
-            }
-
+            MV_ColMat_double BB(m, block_size, 0);
+            BB = B(MV_VecIndex(0, m-1), MV_VecIndex(0,block_size-1));
+            B = MV_ColMat_double(m, block_size, 0);
+            B = BB;
         }
     } else {
         inter_comm.send(0, 16, m);

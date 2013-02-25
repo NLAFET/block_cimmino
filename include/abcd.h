@@ -114,6 +114,7 @@ private:
     std::vector<int> my_slaves;
     int my_master;
     MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
+    MV_ColMat_double coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part);
     void waitForSolve();
     std::vector<int> comm_map;
 
@@ -233,5 +234,6 @@ public:
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
 template <class K, class V> std::vector<K> get_keys(std::map<K,V> my_map);
+double or_bin(double &a, double &b);
 
 #endif // ABCD_HXX
