@@ -1,6 +1,10 @@
 #include <abcd.h>
 #include <iostream>
 #include <fstream>
+#include <patoh.h>
+#include <boost/lambda/lambda.hpp>
+
+using namespace boost::lambda;
 
 ///@TODO Add the case of manual partitioning
 void abcd::partitionMatrix()
@@ -13,7 +17,7 @@ void abcd::partitionMatrix()
     if(nbparts < parallel_cg)
         throw - 101;
 
-    nbrows_per_part = ceil(float(m)/float(nbparts));
+    nbrows_per_part = ceil(float(m_o)/float(nbparts));
 
     switch(partitioning_type){
         
@@ -36,7 +40,7 @@ void abcd::partitionMatrix()
             strow = VECTOR_int(nbparts);
             nbrows = VECTOR_int(nbparts, nbrows_per_part);
 
-            nbrows(nbparts - 1) = m - (nbparts - 1) * nbrows_per_part;
+            nbrows(nbparts - 1) = m_o - (nbparts - 1) * nbrows_per_part;
 
             for(unsigned k = 0; k < nbparts; k++) {
                 strow(k) = row_sum;
@@ -46,8 +50,104 @@ void abcd::partitionMatrix()
         /*-----------------------------------------------------------------------------
          *  PaToH partitioning
          *-----------------------------------------------------------------------------*/
-        //case 3:
+        case 3:
+            PaToH_Parameters args;
+            int _c, _n, _nconst, _imba, _ne, *cwghts, *nwghts, *xpins, *pins, *partvec,
+                cut, *partweights, ret;
+            char cutdef[] = "CUT";
 
+            CompCol_Mat_double t_A = A;
+
+            PaToH_Initialize_Parameters(&args, PATOH_CONPART, PATOH_SUGPARAM_DEFAULT);
+            args._k = nbparts;
+            _c = m_o;
+            _n = n_o;
+            _nconst = 1;
+            _imba   = 0.03;
+            _ne     = nz_o;
+
+            //xpins   = t_A.colptr_ptr();
+            //pins    = t_A.rowind_ptr();
+            xpins   = new int[_n + 1];
+            pins    = new int[nz_o];
+
+            for(int i = 0; i <= _n; i++){
+                xpins[i] = t_A.col_ptr(i);
+            }
+            for(int i = 0; i < _ne; i++){
+                pins[i] = t_A.row_ind(i);
+            }
+
+            cwghts  = new int[_c*_nconst];
+            //using boost lambdas
+            for_each(cwghts, cwghts + _c, _1 = 1);
+
+            nwghts  = NULL;
+
+            if( ret = PaToH_Alloc(&args, _c, _n, _nconst, cwghts, nwghts, xpins, pins) ){
+                cerr << "Error : PaToH Allocation problem : " << ret << endl;
+                throw -102;
+            }
+
+            args.final_imbal    = _imba;
+            args.init_imbal     = _imba * 2.0;
+            args.seed           = 0;
+
+            partvec     = new int[_c];
+            partweights = new int[args._k * _nconst];
+
+            PaToH_Part(&args, _c, _n, _nconst, 0, cwghts, nwghts,
+                            xpins, pins, NULL, partvec, partweights, &cut);
+
+            std::vector<int> row_perm = sort_indexes(partvec, _c);
+
+            // Permutation
+            int *iro = A.rowptr_ptr();
+            int *jco = A.colind_ptr();
+            double *valo = A.val_ptr();
+
+            int *ir = new int[m_o + 1];
+            int *jc = new int[nz_o];
+            double *val = new double[nz_o];
+
+            int sr = 0;
+            for(int i = 0; i < m_o; i++){
+                int cur = row_perm[i];
+                ir[i] = sr;
+                for(int j = 0; j < iro[cur+1] - iro[cur]; j++){
+                    jc[ir[i] + j] = jco[iro[cur] + j];
+                    val[ir[i] + j] = valo[iro[cur] + j];
+                }
+                sr += iro[cur + 1] - iro[cur];
+            }
+            ir[m_o] = nz_o;
+
+
+            A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
+
+            if(write_problem.length() != 0) {
+                ofstream f;
+                f.open(write_problem.c_str());
+                f << "%%MatrixMarket matrix coordinate real general\n";
+                f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
+                for(int i = 0; i < m_o; i++){
+                    for(int j = ir[i]; j< ir[i + 1]; j++){
+                        f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+                    }
+                }
+                f.close();
+            }
+
+            nbrows = VECTOR_int(partweights, nbparts);
+            strow = VECTOR_int(nbparts);
+
+            for(unsigned k = 0; k < nbparts; k++) {
+                strow(k) = row_sum;
+                row_sum += nbrows(k);
+            }
+
+            cout << "Done partitioning" << endl;
+            break;
     }
 
 }
@@ -75,6 +175,22 @@ void abcd::analyseFrame()
     }
     //
     t= MPI_Wtime();
+
+    if(icntl[11] == 1) exit(0);
+    if(icntl[11] == 2){
+        double f = 0;
+        size_c = 1;
+        cout << endl;
+        while(size_c > 0 && f < 0.9){
+            dcntl[10] = f;
+            cout << "filter value : " << fixed << setprecision(3) << f << " gives : ";
+            abcd::augmentMatrix(loc_parts);
+            cout << endl << endl;
+            f+=25.0/1000;
+        }
+        exit(0);
+    }
+
     abcd::augmentMatrix(loc_parts);
     cout << "time to aug : " << MPI_Wtime() -t << endl;
 
@@ -261,6 +377,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
+        if(icntl[11] != 1) return;
+
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
             // now augment each partition!
@@ -362,6 +480,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
+        if(icntl[11] != 1) return;
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
