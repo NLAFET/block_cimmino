@@ -2,3 +2,4 @@
 build
 \.*
 abcdCmake.in
+src/tags
