@@ -71,7 +71,7 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
  *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
  * =====================================================================================
  */
-void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX)
+void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
     int rn = x.dim(1);
@@ -128,7 +128,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &n
         }
     }
 
-    loc_r  = B - loc_r;
+    loc_r  = b - loc_r;
 
     for(int j = 0; j<rn ; j++){
         VECTOR_double loc_r_j = loc_r(j);
