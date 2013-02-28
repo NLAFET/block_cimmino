@@ -82,11 +82,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
     mu.n = S.dim(0);
 
     // parallel analysis if the S is large enough
-    if(mu.n >= 200) {
-        mu.icntl[28 - 1] =  2;
-    }
-    mu.icntl[8  - 1] =  77;
-    mu.icntl[7  - 1] =  6;
+    //if(mu.n >= 200) {
+        //mu.icntl[28 - 1] =  2;
+    //}
+    mu.icntl[8  - 1] =  7;
+    mu.icntl[7  - 1] =  5;
 
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
@@ -326,8 +326,6 @@ abcd::buildS (  )
 
         setMumpsIcntl(27, 64);
         MV_ColMat_double sp = Xk - simpleProject(0e0, b, 1e0, Xk, size_c);
-        cout << sp(0) << endl;
-        exit(0); 
 
         for( int j = 0; j < my_cols.size(); j++){
             int i = my_cols[j];
