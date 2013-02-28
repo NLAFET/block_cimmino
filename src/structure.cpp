@@ -63,7 +63,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 0.03;
+            _imba   = 0.1;
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -91,7 +91,7 @@ void abcd::partitionMatrix()
 
             args.final_imbal    = _imba;
             args.init_imbal     = _imba * 2.0;
-            args.seed           = 0;
+            args.seed           = 1;
 
             partvec     = new int[_c];
             partweights = new int[args._k * _nconst];

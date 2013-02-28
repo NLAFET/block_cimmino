@@ -115,7 +115,8 @@ private:
     std::vector<int> my_slaves;
     int my_master;
     MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
-    MV_ColMat_double coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part);
+    MV_ColMat_double coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int my_bro);
+    MV_ColMat_double simpleProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part);
     void waitForSolve();
     std::vector<int> comm_map;
 
@@ -210,6 +211,7 @@ public:
 
     int block_size;
     int itmax;
+    double threshold;
 
     bool verbose;
 

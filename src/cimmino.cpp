@@ -41,7 +41,10 @@ void abcd::initializeCimmino()
 
     world.barrier();
     initializeMumps();
+    //ordering given
     //setMumpsIcntl(7,1);
+    //setMumpsIcntl(6,5);
+    //setMumpsIcntl(8,-2);
     //setMumpsIcntl(28,2);
 
     if(instance_type == 0) {
