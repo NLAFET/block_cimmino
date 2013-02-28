@@ -82,10 +82,10 @@ void abcd::bcg(MV_ColMat_double &b)
 
     double ti = MPI_Wtime();
 
-    //if(inter_comm.rank() == inter_comm.size() - 1) {
-        //cout << "ITERATION " << 0 << endl;
-    //}
     rho = compute_rho(Xk, u, thresh);
+    if(inter_comm.rank() == inter_comm.size() - 1) {
+        cout << "ITERATION " << 0 << " rho = " << rho << endl;
+    }
 
     while((rho > thresh) && (it < itmax)) {
         //if(inter_comm.rank() == inter_comm.size() - 1) {
@@ -95,8 +95,6 @@ void abcd::bcg(MV_ColMat_double &b)
         it++;
 
         qp = sumProject(0e0, b, 1e0, p);
-        //if(inter_comm.rank() == 0)
-            //cout << qp << endl;
 
         if(gqr(p, qp, betak, s, true) != 0){
             gmgs(p, qp, betak, s, true);
@@ -170,32 +168,32 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     int pos = 0;
     int ci;
     double gnrmx, nrmXfmX;
-    std::vector<double> vnrmx(inter_comm.size());
+    //std::vector<double> vnrmx(inter_comm.size());
 
-    for(int p = 0; p < partitions.size(); p++) {
-        VECTOR_double compressed_x(partitions[p].dim(1));
-        for(int j = 0; j < s; j++) {
-            compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
+    //for(int p = 0; p < partitions.size(); p++) {
+        //VECTOR_double compressed_x(partitions[p].dim(1));
+        //for(int j = 0; j < s; j++) {
+            //compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
-            int x_pos = 0;
-            for(int i = 0; i < local_column_index[p].size(); i++) {
-                int ci = local_column_index[p][i];
-                compressed_x(x_pos) = x(ci, j);
-                x_pos++;
-            }
-            //R.col(j).segment(pos, partitions[p].dim(0)) = partitions[p] * compressed_x;
-            VECTOR_double vj(R.dim(0));
-            vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
-            R.setCol(vj, j);
-        }
+            //int x_pos = 0;
+            //for(int i = 0; i < local_column_index[p].size(); i++) {
+                //int ci = local_column_index[p][i];
+                //compressed_x(x_pos) = x(ci, j);
+                //x_pos++;
+            //}
+            ////R.col(j).segment(pos, partitions[p].dim(0)) = partitions[p] * compressed_x;
+            //VECTOR_double vj(R.dim(0));
+            //vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
+            //R.setCol(vj, j);
+        //}
 
-        pos += partitions[p].dim(0);
-    }
-    R = u - R;
+        //pos += partitions[p].dim(0);
+    //}
+    //R = u - R;
     //
     double nrmR, nrmX, rho;
-    abcd::get_nrmres(x, nrmR, nrmX, nrmXfmX);
-    //if(inter_comm.rank() == 0)
+    abcd::get_nrmres(x, u, nrmR, nrmX, nrmXfmX);
+    //if(inter_comm.rank() == 0 && verbose)
         //cout << nrmR << " " << nrmMtx << " " << nrmX << " " << nrmB << endl;
     rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;
@@ -259,18 +257,22 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 {
     r = MV_ColMat_double(s, s, 0);
 
+
     // OK!! we have our R here, lets have some fun :)
     for(int k = 0; k < s; k++) {
         VECTOR_double p_k = p(k);
         VECTOR_double ap_k = ap(k);
         r(k, k) = abcd::ddot(p_k, ap_k);
+        cout << r << endl;
+        cout << ap_k << endl;
+        cout << p_k << endl;
 
-        // if it's negative, make it positive
-        if(r(k, k) < r(0,0)*1e-16) {
+        if(abs(r(k, k)) < abs(r(0,0))*1e-16) {
             r(k, k) = 1;
             cout << "PROBLEM IN GMGS : FOUND AN EXT. SMALL ELMENT " <<  r(k, k) << " postion " << k << endl;
         }
-        if(r(k, k) < 0) {
+        // if it's negative, make it positive
+        if(abs(r(k, k)) < 0) {
             r(k, k) = abs(r(k, k));
             cout << "PROBLEM IN GMGS : FOUND A NEGATIVE ELMENT " << r(k, k) << " postion " << k << endl;
         }
@@ -356,7 +358,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     double *ap_ptr = loc_ap.ptr();
     double *l_r_ptr = loc_r.ptr();
 
-
     // R = P'AP
     if(use_a){
         int lda_p = loc_p.lda();
@@ -364,6 +365,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         int loc_n = ap.dim(0);
 
         dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, ap_ptr, &lda_ap, &beta, l_r_ptr, &s);
+
         //loc_r = MV_ColMat_double(r_ptr, s, s);
     } else{
         int lda_p = loc_p.lda();
@@ -373,14 +375,19 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         //loc_r = MV_ColMat_double(r_ptr, s, s);
     }
 
+
     char up = 'U';
     char right = 'R';
 
     double *r_ptr = r.ptr();
     int rsz = s* s;
 
-    // TEST!
-    if(abs(l_r_ptr[0]) < 1e-16 ) l_r_ptr[0] = 0;
+    // AVOID PROBLEMS : TEST :
+     //TEST!
+    if(abs(l_r_ptr[0]) < 1e-16 && l_r_ptr[0] < 0){
+        cout << "Magic applied in GQR : " << l_r_ptr[0] << endl;
+        l_r_ptr[0] = abs(l_r_ptr[0]);
+    }
 
     //double tt = MPI_Wtime();
     //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
@@ -396,7 +403,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     if(ierr != 0){
         cout << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
         cout << r << endl;
-        exit(0);
+        //exit(0);
         return ierr;
     }
     p_ptr = p.ptr();
