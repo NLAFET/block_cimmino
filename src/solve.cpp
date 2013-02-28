@@ -34,6 +34,14 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     double t;
 
+    // if not created yet, do it!
+    t = MPI_Wtime();
+    if( S.dim(0) == 0 ){
+        S = abcd::buildS();
+    }
+    inter_comm.barrier(); //useless!
+    if(inter_comm.rank() == 0) cout << "Time to build S : " << MPI_Wtime() - t << endl;
+
     MV_ColMat_double w;
     if(inter_comm.rank() == 0)
         cout << " [->] Computing w = A^+b" << endl;
@@ -46,14 +54,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
         w = Xk; 
     }
     if(inter_comm.rank() == 0) cout << "Time to compute w = A^+ b : " << MPI_Wtime() - t << endl;
-
-    // if not created yet, do it!
-    t = MPI_Wtime();
-    if( S.dim(0) == 0 ){
-        S = abcd::buildS();
-    }
-    inter_comm.barrier(); //useless!
-    if(inter_comm.rank() == 0) cout << "Time to build S : " << MPI_Wtime() - t << endl;
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
@@ -72,7 +72,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        ////strcpy(mu.write_problem, "/scratch/mzenadi/ss.mtx");
+        //strcpy(mu.write_problem, "/tmp/chiante.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -82,11 +82,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
     mu.n = S.dim(0);
 
     // parallel analysis if the S is large enough
-    //if(mu.n >= 1000) {
-        //mu.icntl[28 - 1] =  2;
-    //}
-    mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
+    if(mu.n >= 200) {
+        mu.icntl[28 - 1] =  2;
+    }
+    mu.icntl[8  - 1] =  77;
+    mu.icntl[7  - 1] =  6;
 
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
@@ -142,7 +142,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
             f(it->first - n_o, 0) = -1 * w(it->second, 0);
         }
     }
-
     {
         double *f_ptr = f.ptr();
         MV_ColMat_double ff(size_c, 1, 0);
@@ -156,13 +155,23 @@ abcd::solveABCD ( MV_ColMat_double &b )
         mu.rhs = f.ptr();
         mu.nrhs = 1;
     }
-    if(inter_comm.rank() == 0)
-        cout << " [->] Solving Sz = f" << endl;
+
+    if(inter_comm.rank() == 0){
+        cout << "*----------------------------------*" << endl;
+        cout << "| [->] Solving Sz = f               |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
+
     mu.job = 3;
     dmumps_c(&mu);
 
-    if(inter_comm.rank() == 0)
-        cout << " [->] Computing zz = (I - P) z" << endl;
+
+    if(inter_comm.rank() == 0){
+        cout << "*----------------------------------*" << endl;
+        cout << "|                               T   |" << endl;
+        cout << "| [->] Computing zz = (I - P) Y   z |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
 
     // broadcast f to other cpus, where f is the new z
     double *f_ptr = f.ptr();
@@ -171,7 +180,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     mpi::broadcast(inter_comm, f_ptr, size_c, 0);
 
     Xk = MV_ColMat_double(n, 1, 0);
-    MV_ColMat_double z_b(m, 1, 0); 
+    MV_ColMat_double zrhs(m, 1, 0); 
     for( int i = 0; i < size_c; i++){
 
         std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
@@ -183,37 +192,35 @@ abcd::solveABCD ( MV_ColMat_double &b )
         }
     }
 
+
     f = MV_ColMat_double(n, 1, 0);
 
     if(dcntl[10] == 0){
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
-        //verbose = true;
-        use_xk = true;
+        use_xk = false;
+        //itmax = 2;
 
         if(!use_xk){
             int st = 0;
             for(int p = 0; p < partitions.size(); p++){
-                z_b(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                        MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
+                //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+                        //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
+                MV_ColMat_double sp =  spsmv(partitions[p], local_column_index[p], Xk);
+                int pos = 0;
+                for(int k = st; k < st + partitions[p].dim(0); k++){
+                    zrhs(k, 0) = sp(pos, 0);
+                    pos++;
+                }
                 st += partitions[p].dim(0);
             }
 
-            f = Xk;
+            for(int i = 0; i < f.dim(0); i++)
+                f(i, 0) = Xk(i, 0);
         }
-        //verbose = true;
 
-        bcg(z_b);
-        //for(int l = 0; l < 300; l++) Xk = Xk - sumProject(0e0, z_b, 1e0, Xk);
-
-        //double rho = 1;
-        //int mxit = 500;
-        //while (rho > threshold && mxit > 0) {
-            //Xk = Xk - sumProject(0e0, z_b, 1e0, Xk);
-            //rho = compute_rho(Xk, z_b, threshold);
-            //--mxit;
-        //}
+        bcg(zrhs);
 
         if(use_xk)
             f = Xk;
@@ -228,15 +235,15 @@ abcd::solveABCD ( MV_ColMat_double &b )
     f = w + f;
 
     if(inter_comm.rank()==0){
-        z_b = MV_ColMat_double(m, 1, 0);
+        zrhs = MV_ColMat_double(m, 1, 0);
         int st = 0;
         for(int p = 0; p < partitions.size(); p++){
-            z_b(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+            zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
                     MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
             st += partitions[p].dim(0);
         }
-        z_b = z_b - b;
-        cout << "||Ax - b||_2 = " << sqrt(z_b.squaredSum()) << endl;
+        zrhs = zrhs - b;
+        cout << "||Ax - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
     }
 
 
@@ -319,6 +326,8 @@ abcd::buildS (  )
 
         setMumpsIcntl(27, 64);
         MV_ColMat_double sp = Xk - simpleProject(0e0, b, 1e0, Xk, size_c);
+        cout << sp(0) << endl;
+        exit(0); 
 
         for( int j = 0; j < my_cols.size(); j++){
             int i = my_cols[j];
@@ -338,30 +347,29 @@ abcd::buildS (  )
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
 
-        for( int j = 0; j < my_cols.size(); j++){
-            int i = my_cols[j];
-        //for( int i = 0; i < size_c; i++){
+        //for( int j = 0; j < my_cols.size(); j++){
+            //int i = my_cols[j];
+        for( int i = 0; i < size_c; i++){
         //
             int my_bro = -1;
             if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
 
-            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-                    it != col_interconnections.end(); it++) {
-                int k = it->second.size() - 1;
-                while( k > -1 && my_bro == -1){
-                    if(it->second[k] == glob_to_local[n_o + i]){
-                        my_bro = it->first;
-                    }
-                    k--;
-                }
-            }
+            //for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                    //it != col_interconnections.end(); it++) {
+                //int k = it->second.size() - 1;
+                //while( k > -1 && my_bro == -1){
+                    //if(it->second[k] == glob_to_local[n_o + i]){
+                        //my_bro = it->first;
+                    //}
+                    //k--;
+                //}
+            //}
 
 
             // set xk = [0 I] 
             block_size = 1;
             Xk = MV_ColMat_double(n, 1, 0);
-            MV_ColMat_double b(m, 1, 1); 
-
+            MV_ColMat_double b(m, 1, 0); 
 
             std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
             if(iti!=glob_to_local.end()){
@@ -370,32 +378,34 @@ abcd::buildS (  )
                 //int st = 0;
                 //for(int p = 0; p < partitions.size(); p++){
                     //MV_ColMat_double sp = spsmv(partitions[p], local_column_index[p], Xk);
+                    //int pos = 0;
                     //for(int k = st; k < st + partitions[p].dim(0); k++){
-                        //b(k, 0) = sp(k, 0);
+                        //b(k, 0) = sp(pos, 0);
+                        //pos++;
                     //}
                     //st += partitions[p].dim(0);
                 //}
             }
+            //MV_ColMat_double sp = Xk - coupleSumProject(0e0, b, 1e0, Xk, my_bro);
 
-            MV_ColMat_double sp = Xk - coupleSumProject(0e0, b, 1e0, Xk, my_bro);
-
-            use_xk = false;
+            //itmax = 3;
+            use_xk = true;
             //verbose = true;
             //threshold = 1e-8;
-            //itmax = 20;
-            //bcg(b);
+            bcg(b);
 
             for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-                if(it->first >= n_o){
-                    if(inter_comm.rank() > my_bro) continue;
-                    //vv(it->first - n_o) = sp(it->second, 0);
+
+                if(it->first >= n_o && comm_map[it->second] == 1){
+                    //if(inter_comm.rank() > my_bro) continue;
+
+                    //cout << "Comm map : " << it->first << " " << comm_map[it->first] << endl;
                     vc.push_back(i);
                     vr.push_back(it->first - n_o);
                     vv.push_back(Xk(it->second,0));
                 }
             }
         }
-        //exit(0);
     }
     if(vv.size() == 0) {
         vc.push_back(0);

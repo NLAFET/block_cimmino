@@ -224,13 +224,13 @@ void abcd::distributePartitions()
     }
 
     // for each partition find a local column index for the previous merge
-    int indices[partitions.size()];
-    for(int i = 0; i < partitions.size(); i++) indices[i] = 0;
+    std::vector<int> indices(partitions.size(), 0);
 
     local_column_index = std::vector<std::vector<int> >(partitions.size());
 
-    for(int j = 0; j < merge_index.size(); j++) {
-        for(int i = 0; i < partitions.size(); i++) {
+    for(int i = 0; i < partitions.size(); i++) {
+        for(int j = 0; j < merge_index.size(); j++) {
+            if(indices[i] >= column_index[i].size()) continue;
             if(column_index[i][indices[i]] == merge_index[j] &&
                     indices[i] < column_index[i].size() ) {
 
@@ -246,6 +246,7 @@ void abcd::distributePartitions()
     comm_map.assign(n, 1);
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
+        // if I share data with it->first and I'm after him, let him compute!
         if(inter_comm.rank() > it->first) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 if(comm_map[*i] == 1) comm_map[*i] = -1;
@@ -351,6 +352,8 @@ void abcd::distributeRhs()
                     //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
                 }
             }
+
+            nrmXf = 0;
 
             for(int j = 0; j < nrhs; j++){
                 VECTOR_double xf_col(A.dim(1));

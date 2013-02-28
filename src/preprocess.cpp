@@ -144,7 +144,6 @@ void abcd::scaleMatrix(int norm)
 
     diagScaleMatrix(dr, dc);
 
-    delete iw, dw;
 }
 
 
