@@ -27,7 +27,7 @@ void abcd::bcg(MV_ColMat_double &b)
     MV_ColMat_double e1(s, nrhs, 0);
 
 
-    double thresh = 1e-11;
+    double thresh = threshold;
 
     double *qp_ptr = qp.ptr();
     double *betak_ptr = betak.ptr();
@@ -45,7 +45,6 @@ void abcd::bcg(MV_ColMat_double &b)
     char tr = 'T';
     char notr = 'N';
     double alpha = 1;
-    bool stay_alive = true;
 
 
     // **************************************************
@@ -56,8 +55,6 @@ void abcd::bcg(MV_ColMat_double &b)
         //VECTOR_double vt = B(k);
         //u.setCol(vt, k);
     //}
-    mpi::broadcast(intra_comm, stay_alive, 0);
-
     if(use_xk) {
         MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
         r.setCols(sp, 0, s);
@@ -381,6 +378,9 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
     double *r_ptr = r.ptr();
     int rsz = s* s;
+
+    // TEST!
+    if(abs(l_r_ptr[0]) < 1e-16 ) l_r_ptr[0] = 0;
 
     //double tt = MPI_Wtime();
     //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);

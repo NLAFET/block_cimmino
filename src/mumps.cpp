@@ -39,7 +39,7 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(2, -1);
     setMumpsIcntl(3, -1);
 
-    //if(inter_comm.rank() == 6){ 
+    //if(inter_comm.rank() == 0){ 
         //strcpy(mumps.write_problem, "/scratch/mzenadi/pb6.mtx");
         //setMumpsIcntl(1, 6);
         //setMumpsIcntl(2, 6);
@@ -47,13 +47,12 @@ void abcd::initializeMumps(bool local)
     //}
 
 
-    setMumpsIcntl(6, 4);
+    setMumpsIcntl(6, 5);
     setMumpsIcntl(7, 5);
-    setMumpsIcntl(8, 77);
-    setMumpsIcntl(11, 1);
-    setMumpsIcntl(12, 2);
+    setMumpsIcntl(8, -2);
+    //setMumpsIcntl(11, 1);
+    //setMumpsIcntl(12, 2);
     setMumpsIcntl(14, 50);
-    setMumpsIcntl(27, 16);
 }
 
 void abcd::createAugmentedSystems()
@@ -303,7 +302,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     mumps.rhs = new double[mumps.n * s];
     int pos = 0;
     int b_pos = 0;
-    MV_ColMat_double Delta(X.dim(0), s, 0);
+    MV_ColMat_double Delta(n, s, 0);
 
     if(beta != 0 || alpha != 0){
         for(int k = 0; k < partitions.size(); k++) {
@@ -357,9 +356,11 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             mumps.nrhs = s;
             mumps.lrhs = mumps.n;
             mumps.job = 3;
+
             double t = MPI_Wtime();
             dmumps_c(&mumps);
             t = MPI_Wtime() - t;
+
             //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
                 //<< t << endl;
 
@@ -381,7 +382,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
 
     // Where the other Deltas are going to be summed
-    MV_ColMat_double Others(X.dim(0), s, 0);
+    MV_ColMat_double Others(n, s, 0);
 
 
     std::map<int, std::vector<double> > itc;
@@ -450,12 +451,12 @@ abcd::waitForSolve()
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  abcd::coupleSumProject
- *  Description:  Computes sumproject for only two partitions without waiting
+ *         Name:  abcd::simpleProject
+ *  Description:  Computes sumproject for only one partition without waiting
  *  for interconnections with others
  * =====================================================================================
  */
-MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part)
+MV_ColMat_double abcd::simpleProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part)
 {
     //int s = X.dim(1);
     if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
@@ -508,29 +509,176 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 
     }
 
+    bool stay_alive = true;
+    mpi::broadcast(intra_comm, stay_alive, 0);
+
     mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
+
     //double t = MPI_Wtime();
     dmumps_c(&mumps);
     //t = MPI_Wtime() - t;
+
     //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
         //<< t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-    MV_ColMat_double Delta(X.dim(0), s, 0);
+    MV_ColMat_double Delta(n, s, 0);
 
     int x_pos = 0;
     for(int k = 0; k < partitions.size(); k++) {
         for(int i = 0; i < local_column_index[k].size(); i++) {
             int ci = local_column_index[k][i];
             for(int j = 0; j < s; j++) {
-                Delta(ci, j) = Delta(ci, j) + Sol(x_pos, j) ;
+                Delta(ci, j) = Sol(x_pos, j) ;
             }
             x_pos++;
         }
         x_pos += partitions[k].dim(0);
     }
+
+    return Delta;
+}
+
+MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int my_bro)
+{
+    mpi::communicator world;
+    //int s = X.dim(1);
+    if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
+
+    int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
+
+    // Build the mumps rhs
+    mumps.rhs = new double[mumps.n * s];
+    int pos = 0;
+    int b_pos = 0;
+    MV_ColMat_double Delta(n, s, 0);
+
+    if(beta != 0 || alpha != 0){
+        for(int k = 0; k < partitions.size(); k++) {
+            MV_ColMat_double r(partitions[k].dim(0), s, 0);
+            MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
+
+            // avoid useless operations
+            if(beta != 0){
+                int x_pos = 0;
+                for(int i = 0; i < local_column_index[k].size(); i++) {
+                    int ci = local_column_index[k][i];
+                    for(int j = 0; j < s; j++) {
+                        //assert(x_pos < compressed_x.dim(0));
+                        //assert(ci < X.dim(0));
+                        compressed_x(x_pos, j) = X(ci, j);
+                    }
+                    x_pos++;
+                }
+
+                r = smv(partitions[k], compressed_x) * beta;
+            }
+
+
+            if(alpha != 0){
+                MV_ColMat_double rr(partitions[k].dim(0), s);
+                rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
+                r = r + rr * alpha;
+            }
+            
+            b_pos += partitions[k].dim(0);
+
+            for(int r_p = 0; r_p < s; r_p++) {
+                for(int i = pos; i < pos + partitions[k].dim(1); i++) {
+                    mumps.rhs[i + r_p * mumps.n] = 0;
+                }
+                int j = 0;
+                for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                    mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
+                }
+            }
+
+            pos += partitions[k].dim(1) + partitions[k].dim(0);
+
+        }
+
+        if(infNorm(X) != 0 || infNorm(Rhs) != 0){
+
+            bool stay_alive = true;
+            mpi::broadcast(intra_comm, stay_alive, 0);
+
+            mumps.nrhs = s;
+            mumps.lrhs = mumps.n;
+            mumps.job = 3;
+
+            double t = MPI_Wtime();
+            dmumps_c(&mumps);
+            t = MPI_Wtime() - t;
+
+            //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
+                //<< t << endl;
+
+            MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
+
+            int x_pos = 0;
+            for(int k = 0; k < partitions.size(); k++) {
+                for(int i = 0; i < local_column_index[k].size(); i++) {
+                    int ci = local_column_index[k][i];
+                    for(int j = 0; j < s; j++) {
+                        Delta(ci, j) = Delta(ci, j) + Sol(x_pos, j) ;
+                    }
+                    x_pos++;
+                }
+                x_pos += partitions[k].dim(0);
+            }
+        }
+    }
+
+
+    // Where the other Deltas are going to be summed
+    MV_ColMat_double Others(n, s, 0);
+
+
+    std::map<int, std::vector<double> > itc;
+    std::map<int, std::vector<double> > otc;
+    std::vector<mpi::status> sts;
+    mpi::request reqs[2*col_interconnections.size()];
+    int id_to = 0;
+
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
+
+        if(it->first != my_bro) continue;
+        // Prepare the data to be sent
+        //
+        //create it if does not exist
+        itc[it->first];
+        int kp = 0;
+        for(int j = 0; j < s; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                itc[it->first].push_back(Delta(*i, j));
+                kp++;
+            }
+        }
+
+        otc[it->first];
+        reqs[id_to++] = inter_comm.irecv(it->first, 31, otc[it->first]);
+        reqs[id_to++] = inter_comm.isend(it->first, 31, itc[it->first]);
+    }
+
+    mpi::wait_all(reqs, reqs + id_to);
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
+
+        if(it->first != my_bro) continue;
+        int p = 0;
+        for(int j = 0; j < s; j++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                Others(*i, j) += otc[it->first][p];
+                p++;
+            }
+        }
+
+    }
+    // Now sum the data to Delta
+    Delta += Others;
 
     return Delta;
 }

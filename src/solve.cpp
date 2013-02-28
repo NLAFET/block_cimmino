@@ -31,15 +31,34 @@
     void
 abcd::solveABCD ( MV_ColMat_double &b )
 {
+
+    double t;
+
+    MV_ColMat_double w;
+    if(inter_comm.rank() == 0)
+        cout << " [->] Computing w = A^+b" << endl;
+
+    t = MPI_Wtime();
+    if(dcntl[10] == 0){
+        w = sumProject(1e0, b, 0e0, Xk);
+    } else {
+        bcg(b);
+        w = Xk; 
+    }
+    if(inter_comm.rank() == 0) cout << "Time to compute w = A^+ b : " << MPI_Wtime() - t << endl;
+
     // if not created yet, do it!
+    t = MPI_Wtime();
     if( S.dim(0) == 0 ){
         S = abcd::buildS();
     }
-
+    inter_comm.barrier(); //useless!
+    if(inter_comm.rank() == 0) cout << "Time to build S : " << MPI_Wtime() - t << endl;
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
+    t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
     mu.sym = 0;
     mu.par = 1;
@@ -52,17 +71,23 @@ abcd::solveABCD ( MV_ColMat_double &b )
     mu.icntl[1] = -1;
     mu.icntl[2] = -1;
 
-    if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/scratch/mzenadi/ss.mtx");
+    //if(inter_comm.rank() == 0){ 
+        ////strcpy(mu.write_problem, "/scratch/mzenadi/ss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
-        mu.icntl[3] = 2;
-    }
-
-    mu.icntl[7]= 7;
+        //mu.icntl[3] = 2;
+    //}
 
     mu.n = S.dim(0);
+
+    // parallel analysis if the S is large enough
+    //if(mu.n >= 1000) {
+        //mu.icntl[28 - 1] =  2;
+    //}
+    mu.icntl[8  - 1] =  7;
+    mu.icntl[7  - 1] =  5;
+
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
         mu.irn= S.rowind_ptr();
@@ -73,8 +98,9 @@ abcd::solveABCD ( MV_ColMat_double &b )
             mu.jcn[i]++;
         }
     } else {
-        mu.icntl[17]= 3;
+        mu.icntl[18 - 1]= 3;
         mu.nz_loc = S.NumNonzeros();
+
         mu.irn_loc = S.rowind_ptr();
         mu.jcn_loc = S.colind_ptr();
         mu.a_loc = S.val_ptr();
@@ -83,8 +109,20 @@ abcd::solveABCD ( MV_ColMat_double &b )
             mu.jcn_loc[i]++;
         }
     }
-    mu.job = 4;
+    t = MPI_Wtime();
+
+    mu.job = 1;
     dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0) cout << "Time to Analyse S : " << MPI_Wtime() - t << endl;
+
+    t = MPI_Wtime();
+
+    mu.job = 2;
+    dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0) cout << "Time to Factorize S : " << MPI_Wtime() - t << endl;
+
     if(mu.info[0] < 0) {
         cout << mu.info[0] << endl;
         exit(0); 
@@ -93,23 +131,10 @@ abcd::solveABCD ( MV_ColMat_double &b )
      *  END MUMPS part
      *-----------------------------------------------------------------------------*/
 
-    MV_ColMat_double w;
     if(inter_comm.rank() == 0)
-        cout << "[->] Computing w = A^+b" << endl;
+        cout << " [->] Setting f = - Y w" << endl;
 
-    if(dcntl[10] == 0){
-        bool stay_alive = true;
-        mpi::broadcast(intra_comm, stay_alive, 0);
-        w = sumProject(1e0, b, 0e0, Xk);
-
-    } else {
-        bcg(b);
-        w = Xk; 
-    }
-
-    if(inter_comm.rank() == 0)
-        cout << "[->] Setting f = - Y w" << endl;
-
+    t = MPI_Wtime();
     MV_ColMat_double f(size_c, 1, 0);
     for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
@@ -125,18 +150,19 @@ abcd::solveABCD ( MV_ColMat_double &b )
         mpi::reduce(inter_comm, f_ptr, size_c, f_o, or_bin, 0);
         f = ff;
     }
+    if(inter_comm.rank() == 0) cout << "Time to centralize f : " << MPI_Wtime() - t << endl;
 
     if(inter_comm.rank() == 0){
         mu.rhs = f.ptr();
         mu.nrhs = 1;
     }
     if(inter_comm.rank() == 0)
-        cout << "[->] Solving Sz = f" << endl;
+        cout << " [->] Solving Sz = f" << endl;
     mu.job = 3;
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0)
-        cout << "[->] Computing zz = (I - P) z" << endl;
+        cout << " [->] Computing zz = (I - P) z" << endl;
 
     // broadcast f to other cpus, where f is the new z
     double *f_ptr = f.ptr();
@@ -160,8 +186,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
     f = MV_ColMat_double(n, 1, 0);
 
     if(dcntl[10] == 0){
-        bool stay_alive = true;
-        mpi::broadcast(intra_comm, stay_alive, 0);
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
@@ -178,8 +202,18 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
             f = Xk;
         }
+        //verbose = true;
 
         bcg(z_b);
+        //for(int l = 0; l < 300; l++) Xk = Xk - sumProject(0e0, z_b, 1e0, Xk);
+
+        //double rho = 1;
+        //int mxit = 500;
+        //while (rho > threshold && mxit > 0) {
+            //Xk = Xk - sumProject(0e0, z_b, 1e0, Xk);
+            //rho = compute_rho(Xk, z_b, threshold);
+            //--mxit;
+        //}
 
         if(use_xk)
             f = Xk;
@@ -193,18 +227,17 @@ abcd::solveABCD ( MV_ColMat_double &b )
     // the final solution (distributed)
     f = w + f;
 
-    //if(inter_comm.rank()==0){
-        //z_b = MV_ColMat_double(m, 1, 0);
-        //cout << b.infNorm() << endl;
-        //int st = 0;
-        //for(int p = 0; p < partitions.size(); p++){
-            //z_b(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                    //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
-            //st += partitions[p].dim(0);
-        //}
-        //z_b = z_b - b;
-        //cout << z_b << endl;
-    //}
+    if(inter_comm.rank()==0){
+        z_b = MV_ColMat_double(m, 1, 0);
+        int st = 0;
+        for(int p = 0; p < partitions.size(); p++){
+            z_b(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+                    MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
+            st += partitions[p].dim(0);
+        }
+        z_b = z_b - b;
+        cout << "||Ax - b||_2 = " << sqrt(z_b.squaredSum()) << endl;
+    }
 
 
     // centralize the solution to the master
@@ -248,9 +281,8 @@ abcd::buildS (  )
     //MV_ColMat_double S(size_c, size_c, 0);
     std::vector<int> sr, sc;
     std::vector<double> sv;
-    bool stay_alive = true;
     if(inter_comm.rank() == 0)
-        cout << " [-] Building S" << endl;
+        cout << " [->] Building S" << endl;
 
 
     //glob_to_local[n_o + 1]; // just in case it does not exist.
@@ -266,79 +298,111 @@ abcd::buildS (  )
 
     std::vector<int> vc, vr;
     std::vector<double> vv;
-    //
-    //cout << inter_comm.rank() << " getting in" << endl;
-    for( int i = 0; i < size_c; i++){
-        //if(inter_comm.rank() == 0) cout << "Column : " << i << endl;
 
-        // set xk = [0 I] 
-        Xk = MV_ColMat_double(n, 1, 0);
-        // Retrieve all keys
-        //cout << inter_comm.rank() << " " << indices[0] << " " << indices.back() << " " << n_o + i << endl;
-        std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
+    std::vector<int> my_cols;
 
-        if(iti!=glob_to_local.end()){
-            Xk(glob_to_local[n_o + i], 0) = 1;
+
+    if(dcntl[10] == 0){
+        for( int i = 0; i < size_c; i++){
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
+            if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
 
-        MV_ColMat_double b(m, 1, 0); 
+        Xk = MV_ColMat_double(n, my_cols.size(), 0);
 
+        MV_ColMat_double b(m, 1); 
 
-        if(dcntl[10] == 0){
-            if(iti!=glob_to_local.end()){
-                mpi::broadcast(intra_comm, stay_alive, 0);
-                MV_ColMat_double sp = Xk - coupleSumProject(0e0, b, 1e0, Xk, size_c);
+        for( int j = 0; j < my_cols.size(); j++){
+            int i = my_cols[j];
+            Xk(glob_to_local[n_o + i], j) = 1;
+        }
 
-                //VECTOR_double vv(size_c, 0);
-                for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        setMumpsIcntl(27, 64);
+        MV_ColMat_double sp = Xk - simpleProject(0e0, b, 1e0, Xk, size_c);
 
-                    if(it->first >= n_o){
-                        //vv(it->first - n_o) = sp(it->second, 0);
-                        vc.push_back(i);
-                        vr.push_back(it->first - n_o);
-                        vv.push_back(sp(it->second,0));
-                    }
+        for( int j = 0; j < my_cols.size(); j++){
+            int i = my_cols[j];
+            for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+                if(it->first >= n_o){
+                    //vv(it->first - n_o) = sp(it->second, 0);
+                    vc.push_back(i);
+                    vr.push_back(it->first - n_o);
+                    vv.push_back(sp(it->second,j));
                 }
-                //S.setCol(vv, i);
-            } else continue;
-        } else {
+            }
+        }
 
-            //solve with b = 0; and xk_0 = xk
-            //if(iti!=glob_to_local.end()){
+    } else {
+        for( int i = 0; i < size_c; i++){
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
+            if(iti!=glob_to_local.end()) my_cols.push_back(i);
+        }
+
+        for( int j = 0; j < my_cols.size(); j++){
+            int i = my_cols[j];
+        //for( int i = 0; i < size_c; i++){
+        //
+            int my_bro = -1;
+            if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
+
+            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                    it != col_interconnections.end(); it++) {
+                int k = it->second.size() - 1;
+                while( k > -1 && my_bro == -1){
+                    if(it->second[k] == glob_to_local[n_o + i]){
+                        my_bro = it->first;
+                    }
+                    k--;
+                }
+            }
+
+
+            // set xk = [0 I] 
+            block_size = 1;
+            Xk = MV_ColMat_double(n, 1, 0);
+            MV_ColMat_double b(m, 1, 1); 
+
+
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
+            if(iti!=glob_to_local.end()){
+                Xk(glob_to_local[n_o + i], 0) = 1;
+
                 //int st = 0;
                 //for(int p = 0; p < partitions.size(); p++){
-                        //b(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                                //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
+                    //MV_ColMat_double sp = spsmv(partitions[p], local_column_index[p], Xk);
+                    //for(int k = st; k < st + partitions[p].dim(0); k++){
+                        //b(k, 0) = sp(k, 0);
+                    //}
                     //st += partitions[p].dim(0);
                 //}
-            //}
-            use_xk = true;
+            }
+
+            MV_ColMat_double sp = Xk - coupleSumProject(0e0, b, 1e0, Xk, my_bro);
+
+            use_xk = false;
             //verbose = true;
-            bcg(b);
+            //threshold = 1e-8;
+            //itmax = 20;
+            //bcg(b);
+
+            for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+                if(it->first >= n_o){
+                    if(inter_comm.rank() > my_bro) continue;
+                    //vv(it->first - n_o) = sp(it->second, 0);
+                    vc.push_back(i);
+                    vr.push_back(it->first - n_o);
+                    vv.push_back(Xk(it->second,0));
+                }
+            }
         }
         //exit(0);
-
-        //if(inter_comm.rank() == 0){
-            //VECTOR_double xx(size_c, 0);
-            //for(int k = 0; k < partitions.size(); k++) {
-                //for( int j = 0; j < size_c; j++){
-                    //if(glob_to_local[n_o+j]!=0){
-                        ////cout << n_o + j << " "  << glob_to_local[n_o + j] << " " <<Xk(glob_to_local[n_o + j], 0) << endl;
-                    //}
-                //}
-                ////exit(0);
-            //}
-        //}
     }
-    //cout << inter_comm.rank() << " getting out" << endl;
-    //{
-        //double *s_ptr = S.ptr();
-        //MV_ColMat_double SS(size_c, size_c, 0);
-        //double *s_o = SS.ptr();
-        //mpi::reduce(inter_comm, s_ptr, size_c*size_c, s_o, std::plus<double>(), 0);
-        //S = SS;
-    //}
-    //
+    if(vv.size() == 0) {
+        vc.push_back(0);
+        vr.push_back(0);
+        vv.push_back(0.0);
+    }
+
     int *ii = new int[vv.size()];
     int *jj = new int[vv.size()];
     double *val = new double[vv.size()];

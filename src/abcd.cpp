@@ -38,7 +38,7 @@ int abcd::bc(int job)
             mpi::broadcast(inter_comm, m_o, 0);
             mpi::broadcast(inter_comm, n_o, 0);
             mpi::broadcast(inter_comm, nz_o, 0);
-            mpi::broadcast(inter_comm, icntl[10], 0);
+            mpi::broadcast(inter_comm, icntl, 0);
             if( icntl[10] != 0 )
                 mpi::broadcast(inter_comm, size_c, 0);
         }
@@ -54,15 +54,19 @@ int abcd::bc(int job)
         //if(instance_type == 0){
             //cout << "[-] "<<inter_comm.rank() << " finished factorization" << endl;
         //}
-        inter_comm.barrier();
+        //inter_comm.barrier();
         break;
 
     case 3:
+        if(instance_type == 0) inter_comm.barrier();
         if(inter_comm.rank() == 0 && instance_type == 0){
             cout << "[+] Launching Solve" << endl;
         }
         if(instance_type == 0) {
-            inter_comm.barrier();
+            if(size_c == 0 && inter_comm.rank() == 0){
+                cout << "Size of S is 0, therefore launching bcg" << endl;
+                icntl[10] = 0;
+            }
             abcd::distributeRhs();
             if(icntl[10] == 0 || icntl[12] != 0){
                 abcd::bcg(B);

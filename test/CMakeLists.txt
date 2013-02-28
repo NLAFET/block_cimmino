@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 SET(CMAKE_CXX_COMPILER mpic++)
 SET(CMAKE_C_COMPILER mpicc)
-SET(CMAKE_CXX_FLAGS "-fopenmp")
+#SET(CMAKE_CXX_FLAGS "-fopenmp")
 
 #Configuration du projet
 project(Test_abcd)
