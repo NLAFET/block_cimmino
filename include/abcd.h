@@ -130,7 +130,7 @@ private:
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
     double ddot(VECTOR_double &p, VECTOR_double &ap);
-    void get_nrmres(MV_ColMat_double &x, double &nrmR, double &nrmX, double &nrmXfmX);
+    void get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX);
 
 
     /*

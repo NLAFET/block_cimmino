@@ -83,7 +83,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double ti = MPI_Wtime();
 
     rho = compute_rho(Xk, u, thresh);
-    if(inter_comm.rank() == inter_comm.size() - 1) {
+    if(inter_comm.rank() == 0 && verbose) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
 
@@ -382,12 +382,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     double *r_ptr = r.ptr();
     int rsz = s* s;
 
-    // AVOID PROBLEMS : TEST :
-     //TEST!
-    if(abs(l_r_ptr[0]) < 1e-16 && l_r_ptr[0] < 0){
-        cout << "Magic applied in GQR : " << l_r_ptr[0] << endl;
-        l_r_ptr[0] = abs(l_r_ptr[0]);
-    }
 
     //double tt = MPI_Wtime();
     //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
@@ -395,6 +389,13 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     
     mpi::all_reduce(inter_comm, l_r_ptr, s * s,  r_ptr, std::plus<double>());
     //cout << "sub time " << MPI_Wtime() - tt << endl;
+    //
+    // AVOID PROBLEMS : TEST :
+     //TEST!
+    if(abs(r_ptr[0]) < 1e-16 && r_ptr[0] < -1e-16){
+        cout << "Magic applied in GQR : " << r_ptr[0] << endl;
+        r_ptr[0] = abs(r_ptr[0]);
+    }
 
     // P = PR^-1    <=> P^T = R^-T P^T
     dpotrf_(&up, &s, r_ptr, &s, &ierr);
