@@ -302,9 +302,9 @@ CompRow_Mat_double smmtm (CompCol_Mat_double &A, CompCol_Mat_double &B)
  * =====================================================================================
  */
     CompRow_Mat_double
-spmm ( CompRow_Mat_double &A, CompRow_Mat_double &B )
+spmm ( CompRow_Mat_double &A, CompRow_Mat_double &BT )
 {
-    CompRow_Mat_double BT = csr_transpose(B);
+    //CompRow_Mat_double BT = csr_transpose(B);
 
     std::map<int,int> iw;
     std::map<int,int> jc, ic;
@@ -370,16 +370,9 @@ spmm ( CompRow_Mat_double &A, CompRow_Mat_double &B )
     CompCol_Mat_double
 csc_transpose ( CompCol_Mat_double &M )
 {
-    VECTOR_int vr(M.dim(1) + 1);
-    VECTOR_int vc(M.NumNonzeros());
-    VECTOR_double vv(M.NumNonzeros());
+    CompRow_Mat_double Mt = csr_transpose(M);
+    return CompCol_Mat_double(Mt);
 
-    vr() = M.col_ptr(MV_VecIndex());
-    vc() = M.row_ind(MV_VecIndex());
-    vv() = M.val(MV_VecIndex());
-
-
-    return CompCol_Mat_double(CompRow_Mat_double(M.dim(1), M.dim(0), M.NumNonzeros(), vv, vr, vc));
 }		/* -----  end of function csc_transpose  ----- */
     CompCol_Mat_double
 csc_transpose ( CompRow_Mat_double &M )
@@ -533,7 +526,6 @@ smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
     MV_ColMat_double
 spsmv ( CompRow_Mat_double &M, std::vector<int> &col_ind, MV_ColMat_double &V )
 {
-    assert(M.dim(1) == col_ind.size());
     MV_ColMat_double V_(M.dim(1), V.dim(1));
     for(int j = 0; j < V_.dim(1); j++){
         for(int i = 0; i < V_.dim(0); i++){

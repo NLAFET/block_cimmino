@@ -456,44 +456,30 @@ abcd::waitForSolve()
  *  for interconnections with others
  * =====================================================================================
  */
-MV_ColMat_double abcd::simpleProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int part)
+MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
 {
-    //int s = X.dim(1);
-    if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
-
-    int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
+    int s = X.dim(1);
 
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
     int pos = 0;
-    int b_pos = 0;
     for(int k = 0; k < partitions.size(); k++) {
         MV_ColMat_double r(partitions[k].dim(0), s, 0);
         MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
 
-        // avoid useless operations
-        if(beta != 0){
-            int x_pos = 0;
-            for(int i = 0; i < local_column_index[k].size(); i++) {
-                int ci = local_column_index[k][i];
-                for(int j = 0; j < s; j++) {
-                    //assert(x_pos < compressed_x.dim(0));
-                    //assert(ci < X.dim(0));
-                    compressed_x(x_pos, j) = X(ci, j);
-                }
-                x_pos++;
+        int x_pos = 0;
+        for(int i = 0; i < local_column_index[k].size(); i++) {
+            int ci = local_column_index[k][i];
+            for(int j = 0; j < s; j++) {
+                //assert(x_pos < compressed_x.dim(0));
+                //assert(ci < X.dim(0));
+                compressed_x(x_pos, j) = X(ci, j);
             }
-
-            r = smv(partitions[k], compressed_x) * beta;
+            x_pos++;
         }
 
-        if(alpha != 0){
-            MV_ColMat_double rr(partitions[k].dim(0), s);
-            rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
-            r = r + rr * alpha;
-        }
+        r = smv(partitions[k], compressed_x);
         
-        b_pos += partitions[k].dim(0);
 
         for(int r_p = 0; r_p < s; r_p++) {
             for(int i = pos; i < pos + partitions[k].dim(1); i++) {
@@ -516,12 +502,7 @@ MV_ColMat_double abcd::simpleProject(double alpha, MV_ColMat_double &Rhs, double
     mumps.lrhs = mumps.n;
     mumps.job = 3;
 
-    //double t = MPI_Wtime();
     dmumps_c(&mumps);
-    //t = MPI_Wtime() - t;
-
-    //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
-        //<< t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
     MV_ColMat_double Delta(n, s, 0);
@@ -679,6 +660,84 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
     }
     // Now sum the data to Delta
     Delta += Others;
+
+    return Delta;
+}
+
+MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
+{
+    int s = mycols.size();
+    // Build the mumps rhs
+    mumps.rhs = new double[mumps.n * s];
+    int pos = 0;
+
+    CompCol_Mat_double YT;
+    {
+        VECTOR_int yr(mycols.size());
+        VECTOR_int yc(n + 1, 0);
+        VECTOR_double yv(mycols.size());
+        int c;
+        for(int i = 0; i < mycols.size(); i++){
+            c = mycols[i];
+            yr[i] = i;
+            yc[glob_to_local[n_o + c]] = i + 1;
+            yv[i] = 1;
+        }
+        yc[n] = mycols.size();
+
+        YT = CompCol_Mat_double(s, n, s, yv.ptr(), yr.ptr(), yc.ptr());
+    }
+
+    for(int k = 0; k < partitions.size(); k++) {
+        CompCol_Mat_double r;
+
+        //CompRow_Mat_double Ys(sub_matrix(YT, local_column_index[k]));
+        CompRow_Mat_double Y = csr_transpose(YT);
+
+        r = spmm(partitions[k], Y);
+
+        for(int r_p = 0; r_p < s; r_p++) {
+            for(int i = pos; i < pos + partitions[k].dim(1); i++) {
+                mumps.rhs[i + r_p * mumps.n] = 0;
+            }
+            int j = 0;
+            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
+            }
+        }
+
+        pos += partitions[k].dim(1) + partitions[k].dim(0);
+
+    }
+
+    bool stay_alive = true;
+    mpi::broadcast(intra_comm, stay_alive, 0);
+
+    mumps.nrhs = s;
+    mumps.lrhs = mumps.n;
+    mumps.job = 3;
+
+    dmumps_c(&mumps);
+
+    MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
+    MV_ColMat_double Delta(n, s, 0);
+
+    int x_pos = 0;
+    for(int k = 0; k < partitions.size(); k++) {
+        for(int i = 0; i < local_column_index[k].size(); i++) {
+            int ci = local_column_index[k][i];
+            for(int j = 0; j < s; j++) {
+                Delta(ci, j) = -1 * Sol(x_pos, j) ;
+            }
+            x_pos++;
+        }
+        x_pos += partitions[k].dim(0);
+    }
+
+    for(int i = 0; i < mycols.size(); i++){
+        int c = mycols[i];
+        Delta(glob_to_local[n_o + c],i) = 1 + Delta(glob_to_local[n_o + c],i);
+    }
 
     return Delta;
 }
