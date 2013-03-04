@@ -87,6 +87,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     //}
     mu.icntl[8  - 1] =  7;
     mu.icntl[7  - 1] =  5;
+    mu.icntl[14 - 1] =  50;
 
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
@@ -292,17 +293,6 @@ abcd::buildS (  )
         cout << " [->] Building S" << endl;
 
 
-    //glob_to_local[n_o + 1]; // just in case it does not exist.
-
-    //std::vector<int> indices;
-    //boost::copy(glob_to_local | map_keys, std::back_inserter(indices));
-
-#ifndef NO_USE_XK
-    bool use_xk_t = use_xk;
-    use_xk = true;
-#endif
-
-
     std::vector<int> vc, vr;
     std::vector<double> vv;
 
@@ -315,24 +305,23 @@ abcd::buildS (  )
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
 
-        Xk = MV_ColMat_double(n, my_cols.size(), 0);
+        //Xk = MV_ColMat_double(n, my_cols.size(), 0);
 
-        MV_ColMat_double b(m, 1); 
-
-        for( int j = 0; j < my_cols.size(); j++){
-            int i = my_cols[j];
-            Xk(glob_to_local[n_o + i], j) = 1;
-        }
+        //for( int j = 0; j < my_cols.size(); j++){
+            //int c = my_cols[j];
+            //Xk(glob_to_local[n_o + c], j) = 1;
+        //}
 
         setMumpsIcntl(27, 64);
-        MV_ColMat_double sp = Xk - simpleProject(0e0, b, 1e0, Xk, size_c);
+        //MV_ColMat_double sp = Xk - simpleProject(Xk);
+        MV_ColMat_double sp = spSimpleProject(my_cols);
 
         for( int j = 0; j < my_cols.size(); j++){
-            int i = my_cols[j];
+            int c = my_cols[j];
             for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
                 if(it->first >= n_o){
                     //vv(it->first - n_o) = sp(it->second, 0);
-                    vc.push_back(i);
+                    vc.push_back(c);
                     vr.push_back(it->first - n_o);
                     vv.push_back(sp(it->second,j));
                 }

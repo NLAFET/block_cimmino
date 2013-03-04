@@ -266,7 +266,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 {
                     CompRow_Mat_double A_ij = CompRow_Mat_double(sub_matrix(M[i], intersect));
                     CompRow_Mat_double A_ji = CompRow_Mat_double(sub_matrix(M[j], intersect));
-                    C_ij = spmm(A_ij, A_ji);
+                    CompRow_Mat_double A_jiT = csr_transpose(A_ji);
+                    C_ij = spmm(A_ij, A_jiT);
                 }
 
                 if(C_ij.NumNonzeros() == 0) continue;
