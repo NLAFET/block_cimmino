@@ -86,7 +86,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
+    mu.icntl[7  - 1] =  2;
     mu.icntl[14 - 1] =  50;
 
     if(inter_comm.size() == 1){ 
