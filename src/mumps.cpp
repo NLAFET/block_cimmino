@@ -688,36 +688,59 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         YT = CompCol_Mat_double(s, n, s, yv.ptr(), yr.ptr(), yc.ptr());
     }
 
-    for(int k = 0; k < partitions.size(); k++) {
-        CompCol_Mat_double r;
+    std::vector<CompCol_Mat_double> r;
 
-        //CompRow_Mat_double Ys(sub_matrix(YT, local_column_index[k]));
+    for(int k = 0; k < partitions.size(); k++) {
         CompRow_Mat_double Y = csr_transpose(YT);
 
-        r = spmm(partitions[k], Y);
+        r.push_back( spmm(partitions[k], Y) );
+    }
 
-        for(int r_p = 0; r_p < s; r_p++) {
-            for(int i = pos; i < pos + partitions[k].dim(1); i++) {
-                mumps.rhs[i + r_p * mumps.n] = 0;
-            }
+    std::vector<int> rr, rc;
+    std::vector<double> rv;
+
+    rc.push_back(0);
+    int rcc = 0;
+    for(int r_p = 0; r_p < s; r_p++) {
+        int cnz = 0;
+        for(int k = 0; k < partitions.size(); k++) {
             int j = 0;
             for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                mumps.rhs[i + r_p * mumps.n] = r(j++, r_p);
+                rr.push_back( i );
+                rv.push_back( r[k](j++, r_p) );
             }
+            pos += partitions[k].dim(1) + partitions[k].dim(0);
+            cnz += j;
         }
-
-        pos += partitions[k].dim(1) + partitions[k].dim(0);
-
+        rcc += cnz;
+        rc.push_back( rcc );
     }
 
     bool stay_alive = true;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
     mumps.nrhs = s;
-    mumps.lrhs = mumps.n;
+    mumps.nz_rhs = rv.size();
+    mumps.rhs_sparse = new double[mumps.nz_rhs];
+    mumps.irhs_sparse = new int[mumps.nz_rhs];
+    mumps.irhs_ptr = new int[mumps.nrhs + 1];
+
+    for(int i = 0; i < mumps.nz_rhs; i++){
+        mumps.rhs_sparse[i] = rv[i];
+        mumps.irhs_sparse[i] = rr[i];
+    }
+    for(int i = 0; i < mumps.nrhs + 1; i++){
+        mumps.irhs_ptr[i] = rc[i];
+    }
+
+    mumps.icntl[20 - 1] = 1;
+
+    //mumps.lrhs = mumps.n;
     mumps.job = 3;
 
     dmumps_c(&mumps);
+
+    mumps.icntl[20 - 1] = 0;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
     MV_ColMat_double Delta(n, s, 0);
