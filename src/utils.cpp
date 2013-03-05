@@ -13,6 +13,13 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
     int cum = 0;
     int precum = 0;
 
+    if(nb_parts == weights.size()){
+        for(int i = 0; i < weights.size(); i++){
+            parts.push_back(i); 
+        }
+        return;
+    }
+
     for(int c = 0; c < weights.size(); c++) {
         precum = cum;
         cum += weights[c];
