@@ -58,12 +58,15 @@ void abcd::partitionMatrix()
 
             CompCol_Mat_double t_A = A;
 
+            double t = MPI_Wtime();
+            cout << "[-] launching PaToH" << endl;
+
             PaToH_Initialize_Parameters(&args, PATOH_CONPART, PATOH_SUGPARAM_DEFAULT);
             args._k = nbparts;
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 0.1;
+            _imba   = 2;
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -121,22 +124,23 @@ void abcd::partitionMatrix()
                 sr += iro[cur + 1] - iro[cur];
             }
             ir[m_o] = nz_o;
-
+            cout << "    Done with PaToH, time : " << MPI_Wtime() - t << endl;
+            t = MPI_Wtime();
 
             A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
 
-            if(write_problem.length() != 0) {
-                ofstream f;
-                f.open(write_problem.c_str());
-                f << "%%MatrixMarket matrix coordinate real general\n";
-                f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
-                for(int i = 0; i < m_o; i++){
-                    for(int j = ir[i]; j< ir[i + 1]; j++){
-                        f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
-                    }
-                }
-                f.close();
-            }
+            //if(write_problem.length() != 0) {
+                //ofstream f;
+                //f.open(write_problem.c_str());
+                //f << "%%MatrixMarket matrix coordinate real general\n";
+                //f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
+                //for(int i = 0; i < m_o; i++){
+                    //for(int j = ir[i]; j< ir[i + 1]; j++){
+                        //f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+                    //}
+                //}
+                //f.close();
+            //}
 
             nbrows = VECTOR_int(partweights, nbparts);
             strow = VECTOR_int(nbparts);
@@ -146,7 +150,7 @@ void abcd::partitionMatrix()
                 row_sum += nbrows(k);
             }
 
-            cout << "Done partitioning" << endl;
+            cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
             break;
     }
 
@@ -160,6 +164,8 @@ void abcd::analyseFrame()
 
 
     double t  = MPI_Wtime();
+
+    cout << "[+] Creating partitions"<< endl;
     for(unsigned k = 0; k < nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         loc_parts.push_back(part);
@@ -192,7 +198,7 @@ void abcd::analyseFrame()
     }
 
     abcd::augmentMatrix(loc_parts);
-    cout << "time to aug : " << MPI_Wtime() -t << endl;
+    if(icntl[10] != 0) cout << "   time to aug : " << MPI_Wtime() -t << endl;
 
     column_index.clear();
     for(unsigned k = 0; k < nbparts; k++) {
@@ -222,7 +228,7 @@ void abcd::analyseFrame()
                     )
                 );
     }
-    cout << "time to part : " << MPI_Wtime() -t << endl;
+    cout << "    Done, time to part [includes augmentation] : " << MPI_Wtime() -t << endl;
 
 }
 

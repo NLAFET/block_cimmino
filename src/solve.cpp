@@ -33,15 +33,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
 {
 
     double t;
-
-    // if not created yet, do it!
-    t = MPI_Wtime();
-    if( S.dim(0) == 0 ){
-        S = abcd::buildS();
-    }
-    inter_comm.barrier(); //useless!
-    if(inter_comm.rank() == 0) cout << "Time to build S : " << MPI_Wtime() - t << endl;
-
     MV_ColMat_double w;
     if(inter_comm.rank() == 0)
         cout << " [->] Computing w = A^+b" << endl;
@@ -54,6 +45,19 @@ abcd::solveABCD ( MV_ColMat_double &b )
         w = Xk; 
     }
     if(inter_comm.rank() == 0) cout << "Time to compute w = A^+ b : " << MPI_Wtime() - t << endl;
+
+    // if not created yet, do it!
+    t = MPI_Wtime();
+    if( S.dim(0) == 0 ){
+        S = abcd::buildS();
+    }
+    inter_comm.barrier(); //useless! used for timing
+    if(inter_comm.rank() == 0) cout << "Time to build S : " << MPI_Wtime() - t << endl;
+
+    //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
+    //inter_comm.barrier();
+    //exit(0);
+
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
@@ -318,14 +322,20 @@ abcd::buildS (  )
 
         for( int j = 0; j < my_cols.size(); j++){
             int c = my_cols[j];
-            for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-                if(it->first >= n_o){
-                    //vv(it->first - n_o) = sp(it->second, 0);
-                    vc.push_back(c);
-                    vr.push_back(it->first - n_o);
-                    vv.push_back(sp(it->second,j));
-                }
+            for( int i = 0; i < size_c; i++){
+                vc.push_back(c);
+                vr.push_back(i);
+                vv.push_back(sp(i, j));
             }
+            //int c = my_cols[j];
+            //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+                //if(it->first >= n_o){
+                    ////vv(it->first - n_o) = sp(it->second, 0);
+                    //vc.push_back(c);
+                    //vr.push_back(it->first - n_o);
+                    //vv.push_back(sp(it->second,j));
+                //}
+            //}
         }
 
     } else {
