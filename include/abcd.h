@@ -39,6 +39,10 @@
 
 #include "splib_utils.h"
 
+/* Some macros*/
+#define IRANK inter_comm.rank()
+#define IBARRIER inter_comm.barrier()
+
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;

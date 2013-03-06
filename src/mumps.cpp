@@ -666,91 +666,137 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
+    bool dense_rhs = true;
+    dense_rhs = false;
+
     int s = mycols.size();
     // Build the mumps rhs
-    mumps.rhs = new double[mumps.n * s];
-    int pos = 0;
+    MV_ColMat_double mumps_rhs(mumps.n, s);
+    mumps.rhs = mumps_rhs.ptr();
+    CompCol_Mat_double mumps_comp_rhs;
 
-    CompCol_Mat_double YT;
+    CompRow_Mat_double Y;
     {
-        VECTOR_int yr(mycols.size());
-        VECTOR_int yc(n + 1, 0);
+        VECTOR_int yr(mycols.size(), 0);
+        VECTOR_int yc(mycols.size());
         VECTOR_double yv(mycols.size());
         int c;
+        int pr = glob_to_local[n_o + mycols[0]] + 1; // where it should start
         for(int i = 0; i < mycols.size(); i++){
             c = mycols[i];
-            yr[i] = i;
-            yc[glob_to_local[n_o + c]] = i + 1;
+            yr[i] = glob_to_local[n_o + c];
+            yc[i] = i;
             yv[i] = 1;
-        }
-        yc[n] = mycols.size();
 
-        YT = CompCol_Mat_double(s, n, s, yv.ptr(), yr.ptr(), yc.ptr());
+            pr++;
+        }
+
+        Coord_Mat_double Yt(n, s, s, yv.ptr(), yr.ptr(), yc.ptr());
+        Y = CompRow_Mat_double(Yt);
     }
 
     std::vector<CompCol_Mat_double> r;
 
     for(int k = 0; k < partitions.size(); k++) {
-        CompRow_Mat_double Y = csr_transpose(YT);
 
         r.push_back( spmm(partitions[k], Y) );
     }
 
-    std::vector<int> rr, rc;
-    std::vector<double> rv;
+    if(dense_rhs){
+        // dense mumps rhs
+        mumps.icntl[20 - 1] = 0;
 
-    rc.push_back(0);
-    int rcc = 0;
-    for(int r_p = 0; r_p < s; r_p++) {
-        int cnz = 0;
-        for(int k = 0; k < partitions.size(); k++) {
-            int j = 0;
-            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                rr.push_back( i );
-                rv.push_back( r[k](j++, r_p) );
+
+        for(int r_p = 0; r_p < s; r_p++) {
+
+            int pos = 0;
+            for(int k = 0; k < partitions.size(); k++) {
+                for(int i = pos; i < pos + partitions[k].dim(1); i++) {
+                    mumps_rhs(i, r_p) = 0;
+                }
+                int j = 0;
+                for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                    mumps_rhs(i, r_p) = r[k](j, r_p);
+                    j++;
+                }
+                pos += partitions[k].dim(1) + partitions[k].dim(0);
             }
-            pos += partitions[k].dim(1) + partitions[k].dim(0);
-            cnz += j;
         }
-        rcc += cnz;
-        rc.push_back( rcc );
+    } else {
+        // sparse mumps rhs
+        mumps.icntl[20 - 1] = 1;
+
+        {
+            std::vector<int> rr, rc;
+            std::vector<double> rv;
+
+            for(int r_p = 0; r_p < s; r_p++) {
+
+                int pos = 0;
+                for(int k = 0; k < partitions.size(); k++) {
+                    // no need to put zeros before!
+                    //
+                    int j = 0;
+                    for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                        if(r[k](j, r_p) != 0){
+                            rr.push_back( i );
+                            rc.push_back( r_p);
+                            rv.push_back( r[k](j, r_p) );
+                        }
+                        j++;
+                    }
+                    pos += partitions[k].dim(1) + partitions[k].dim(0);
+                }
+                //rc.push_back( rcc );
+            }
+            //for(int i = 0; i < rv.size(); i++)
+                //if(IRANK == 1) cout << i << "----> " << rv[i] << " " << rr[i] << " " << rc[i]<< endl;
+            int *ri = new int[rv.size()];
+            int *rj = new int[rv.size()];
+            double *rval = new double[rv.size()];
+
+
+            for(int i = 0; i < rv.size(); i++){
+                ri[i] = rr[i];
+                rj[i] = rc[i];
+                rval[i] = rv[i];
+            }
+
+            Coord_Mat_double temp_comp_rhs(mumps.n, s, rv.size(), rval, ri, rj);
+            mumps_comp_rhs = CompCol_Mat_double(temp_comp_rhs);
+        }
+
+        mumps.nz_rhs        = mumps_comp_rhs.NumNonzeros();
+        mumps.nrhs          = s;
+        mumps.rhs_sparse    = mumps_comp_rhs.val_ptr();
+        mumps.irhs_sparse   = mumps_comp_rhs.rowind_ptr();
+        mumps.irhs_ptr      = mumps_comp_rhs.colptr_ptr();
+
+        for(int i = 0; i < mumps.nz_rhs; i++) mumps.irhs_sparse[i]++;
+        for(int i = 0; i < mumps.nrhs + 1; i++) mumps.irhs_ptr[i]++;
+
     }
 
     bool stay_alive = true;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
+
     mumps.nrhs = s;
-    mumps.nz_rhs = rv.size();
-    mumps.rhs_sparse = new double[mumps.nz_rhs];
-    mumps.irhs_sparse = new int[mumps.nz_rhs];
-    mumps.irhs_ptr = new int[mumps.nrhs + 1];
-
-    for(int i = 0; i < mumps.nz_rhs; i++){
-        mumps.rhs_sparse[i] = rv[i];
-        mumps.irhs_sparse[i] = rr[i];
-    }
-    for(int i = 0; i < mumps.nrhs + 1; i++){
-        mumps.irhs_ptr[i] = rc[i];
-    }
-
-    mumps.icntl[20 - 1] = 1;
-
-    //mumps.lrhs = mumps.n;
+    mumps.lrhs = mumps.n;
     mumps.job = 3;
 
     dmumps_c(&mumps);
 
-    mumps.icntl[20 - 1] = 0;
 
-    MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-    MV_ColMat_double Delta(n, s, 0);
+    MV_ColMat_double Delta(size_c, s, 0);
 
-    int x_pos = 0;
+    int x_pos = n - mycols.size();
+
     for(int k = 0; k < partitions.size(); k++) {
-        for(int i = 0; i < local_column_index[k].size(); i++) {
-            int ci = local_column_index[k][i];
+        for(int i = 0; i < mycols.size(); i++) {
+            int c = mycols[i];
             for(int j = 0; j < s; j++) {
-                Delta(ci, j) = -1 * Sol(x_pos, j) ;
+                Delta(c, j) = Delta(c, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
             }
             x_pos++;
         }
@@ -759,8 +805,11 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     for(int i = 0; i < mycols.size(); i++){
         int c = mycols[i];
-        Delta(glob_to_local[n_o + c],i) = 1 + Delta(glob_to_local[n_o + c],i);
+        Delta(c,i) = 1 + Delta(c,i);
     }
+
+    // disable sparse mumps rhs
+    mumps.icntl[20 - 1] = 0;
 
     return Delta;
 }
