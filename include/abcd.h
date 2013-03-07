@@ -205,6 +205,7 @@ public:
     /// A merge of col_index vectors, determines non-null columns in all local partitions
     std::vector<std::vector<int> > local_column_index;
     std::map<int,int> glob_to_local;
+    std::vector<std::map<int,int> > glob_to_part;
     bool use_xk;
     bool use_xf;
 

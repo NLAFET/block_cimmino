@@ -667,7 +667,7 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
     bool dense_rhs = true;
-    dense_rhs = false;
+    //dense_rhs = false;
 
     int s = mycols.size();
     // Build the mumps rhs
@@ -675,32 +675,40 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     mumps.rhs = mumps_rhs.ptr();
     CompCol_Mat_double mumps_comp_rhs;
 
-    CompRow_Mat_double Y;
-    {
-        VECTOR_int yr(mycols.size(), 0);
-        VECTOR_int yc(mycols.size());
-        VECTOR_double yv(mycols.size());
-        int c;
-        int pr = glob_to_local[n_o + mycols[0]] + 1; // where it should start
-        for(int i = 0; i < mycols.size(); i++){
-            c = mycols[i];
-            yr[i] = glob_to_local[n_o + c];
-            yc[i] = i;
-            yv[i] = 1;
+    std::vector<int> rr;
+    std::vector<double> rv;
 
-            pr++;
-        }
-
-        Coord_Mat_double Yt(n, s, s, yv.ptr(), yr.ptr(), yc.ptr());
-        Y = CompRow_Mat_double(Yt);
-    }
-
-    std::vector<CompCol_Mat_double> r;
+    std::vector<CompRow_Mat_double> r;
+    std::vector<int> loc_cols;
 
     for(int k = 0; k < partitions.size(); k++) {
 
+        CompRow_Mat_double Y;
+
+        VECTOR_int yr(mycols.size(), 0);
+        VECTOR_int yc(mycols.size(), 0);
+        VECTOR_double yv(mycols.size(), 0);
+        int c;
+
+        int ct = 0;
+        for(int i = 0; i < mycols.size(); i++){
+            c = mycols[i];
+            if(glob_to_part[k].find(n_o + c) != glob_to_part[k].end()){
+                yr[ct] = glob_to_part[k][n_o + c];
+                yc[ct] = i;
+                yv[ct] = 1;
+                ct++;
+            }
+        }
+        loc_cols.push_back(ct);
+
+        Coord_Mat_double Yt(partitions[k].dim(1), s, ct, yv.ptr(), yr.ptr(), yc.ptr());
+
+        Y = CompRow_Mat_double(Yt);
+
         r.push_back( spmm(partitions[k], Y) );
     }
+
 
     if(dense_rhs){
         // dense mumps rhs
@@ -727,11 +735,11 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         mumps.icntl[20 - 1] = 1;
 
         {
-            std::vector<int> rr, rc;
-            std::vector<double> rv;
+            mumps.irhs_ptr      = new int[s + 1];
 
+            int cnz = 1;
             for(int r_p = 0; r_p < s; r_p++) {
-
+                mumps.irhs_ptr[r_p] = cnz;
                 int pos = 0;
                 for(int k = 0; k < partitions.size(); k++) {
                     // no need to put zeros before!
@@ -739,49 +747,31 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                     int j = 0;
                     for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
                         if(r[k](j, r_p) != 0){
-                            rr.push_back( i );
-                            rc.push_back( r_p);
-                            rv.push_back( r[k](j, r_p) );
+                            rr.push_back(i+1);
+                            rv.push_back(r[k](j, r_p));
+                            cnz++;
                         }
                         j++;
                     }
                     pos += partitions[k].dim(1) + partitions[k].dim(0);
                 }
-                //rc.push_back( rcc );
             }
-            //for(int i = 0; i < rv.size(); i++)
-                //if(IRANK == 1) cout << i << "----> " << rv[i] << " " << rr[i] << " " << rc[i]<< endl;
-            int *ri = new int[rv.size()];
-            int *rj = new int[rv.size()];
-            double *rval = new double[rv.size()];
+            mumps.irhs_ptr[s] = cnz;
+
+            mumps.nz_rhs        = cnz - 1;
+            mumps.nrhs          = s;
+
+            mumps.rhs_sparse    = &rv[0];
+            mumps.irhs_sparse   = &rr[0];
 
 
-            for(int i = 0; i < rv.size(); i++){
-                ri[i] = rr[i];
-                rj[i] = rc[i];
-                rval[i] = rv[i];
-            }
-
-            Coord_Mat_double temp_comp_rhs(mumps.n, s, rv.size(), rval, ri, rj);
-            mumps_comp_rhs = CompCol_Mat_double(temp_comp_rhs);
         }
-
-        mumps.nz_rhs        = mumps_comp_rhs.NumNonzeros();
-        mumps.nrhs          = s;
-        mumps.rhs_sparse    = mumps_comp_rhs.val_ptr();
-        mumps.irhs_sparse   = mumps_comp_rhs.rowind_ptr();
-        mumps.irhs_ptr      = mumps_comp_rhs.colptr_ptr();
-
-        for(int i = 0; i < mumps.nz_rhs; i++) mumps.irhs_sparse[i]++;
-        for(int i = 0; i < mumps.nrhs + 1; i++) mumps.irhs_ptr[i]++;
 
     }
 
     bool stay_alive = true;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
-
-    mumps.nrhs = s;
     mumps.lrhs = mumps.n;
     mumps.job = 3;
 
@@ -790,9 +780,10 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     MV_ColMat_double Delta(size_c, s, 0);
 
-    int x_pos = n - mycols.size();
+    int x_pos = 0;
 
     for(int k = 0; k < partitions.size(); k++) {
+        x_pos += partitions[k].dim(1) - loc_cols[k];
         for(int i = 0; i < mycols.size(); i++) {
             int c = mycols[i];
             for(int j = 0; j < s; j++) {
@@ -800,6 +791,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             }
             x_pos++;
         }
+
         x_pos += partitions[k].dim(0);
     }
 

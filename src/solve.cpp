@@ -90,8 +90,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  2;
-    mu.icntl[14 - 1] =  50;
+    mu.icntl[7  - 1] =  5;
+    mu.icntl[14 - 1] =  70;
 
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
@@ -309,15 +309,8 @@ abcd::buildS (  )
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
 
-        //Xk = MV_ColMat_double(n, my_cols.size(), 0);
-
-        //for( int j = 0; j < my_cols.size(); j++){
-            //int c = my_cols[j];
-            //Xk(glob_to_local[n_o + c], j) = 1;
-        //}
 
         setMumpsIcntl(27, 64);
-        //MV_ColMat_double sp = Xk - simpleProject(Xk);
         MV_ColMat_double sp = spSimpleProject(my_cols);
 
         for( int j = 0; j < my_cols.size(); j++){
@@ -327,15 +320,6 @@ abcd::buildS (  )
                 vr.push_back(i);
                 vv.push_back(sp(i, j));
             }
-            //int c = my_cols[j];
-            //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-                //if(it->first >= n_o){
-                    ////vv(it->first - n_o) = sp(it->second, 0);
-                    //vc.push_back(c);
-                    //vr.push_back(it->first - n_o);
-                    //vv.push_back(sp(it->second,j));
-                //}
-            //}
         }
 
     } else {
@@ -390,6 +374,7 @@ abcd::buildS (  )
             //verbose = true;
             //threshold = 1e-8;
             bcg(b);
+            use_xk = false;
 
             for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
