@@ -223,6 +223,14 @@ void abcd::distributePartitions()
         glob_to_local[merge_index[j]] = j;
     }
 
+    for(int k = 0; k < partitions.size(); k++) {
+        std::map<int, int> gt;
+        for(int j = 0; j < column_index[k].size(); j++) {
+            gt[column_index[k][j]] = j;
+        }
+        glob_to_part.push_back(gt);
+    }
+
     // for each partition find a local column index for the previous merge
     std::vector<int> indices(partitions.size(), 0);
 
