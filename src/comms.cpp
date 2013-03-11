@@ -225,9 +225,12 @@ void abcd::distributePartitions()
 
     for(int k = 0; k < partitions.size(); k++) {
         std::map<int, int> gt;
+        std::map<int, int> ptg;
         for(int j = 0; j < column_index[k].size(); j++) {
             gt[column_index[k][j]] = j;
+            ptg[j] = column_index[k][j];
         }
+        part_to_glob.push_back(ptg);
         glob_to_part.push_back(gt);
     }
 

@@ -299,7 +299,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
 
     // Build the mumps rhs
-    mumps.rhs = new double[mumps.n * s];
+    MV_ColMat_double mumps_rhs(mumps.n, s);
+    mumps.rhs = mumps_rhs.ptr();
+    //mumps.rhs = new double[mumps.n * s];
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
@@ -671,15 +673,16 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     int s = mycols.size();
     // Build the mumps rhs
-    MV_ColMat_double mumps_rhs(mumps.n, s);
+    MV_ColMat_double mumps_rhs(mumps.n, s, 0);
     mumps.rhs = mumps_rhs.ptr();
+
     CompCol_Mat_double mumps_comp_rhs;
 
     std::vector<int> rr;
     std::vector<double> rv;
 
     std::vector<CompRow_Mat_double> r;
-    std::vector<int> loc_cols;
+    std::vector<std::vector<int> > loc_cols(partitions.size());
 
     for(int k = 0; k < partitions.size(); k++) {
 
@@ -697,10 +700,12 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                 yr[ct] = glob_to_part[k][n_o + c];
                 yc[ct] = i;
                 yv[ct] = 1;
+
+                loc_cols[k].push_back(yr[ct]);
+
                 ct++;
             }
         }
-        loc_cols.push_back(ct);
 
         Coord_Mat_double Yt(partitions[k].dim(1), s, ct, yv.ptr(), yr.ptr(), yc.ptr());
 
@@ -714,11 +719,9 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         // dense mumps rhs
         mumps.icntl[20 - 1] = 0;
 
-
-        for(int r_p = 0; r_p < s; r_p++) {
-
-            int pos = 0;
-            for(int k = 0; k < partitions.size(); k++) {
+        int pos = 0;
+        for(int k = 0; k < partitions.size(); k++) {
+            for(int r_p = 0; r_p < s; r_p++) {
                 for(int i = pos; i < pos + partitions[k].dim(1); i++) {
                     mumps_rhs(i, r_p) = 0;
                 }
@@ -727,8 +730,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                     mumps_rhs(i, r_p) = r[k](j, r_p);
                     j++;
                 }
-                pos += partitions[k].dim(1) + partitions[k].dim(0);
             }
+            pos += partitions[k].dim(1) + partitions[k].dim(0);
         }
     } else {
         // sparse mumps rhs
@@ -759,7 +762,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             mumps.irhs_ptr[s] = cnz;
 
             mumps.nz_rhs        = cnz - 1;
-            mumps.nrhs          = s;
 
             mumps.rhs_sparse    = &rv[0];
             mumps.irhs_sparse   = &rr[0];
@@ -772,8 +774,10 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     bool stay_alive = true;
     mpi::broadcast(intra_comm, stay_alive, 0);
 
-    mumps.lrhs = mumps.n;
-    mumps.job = 3;
+    mumps.nrhs          = s;
+    mumps.lrhs          = mumps.n;
+    mumps.job           = 3;
+
 
     dmumps_c(&mumps);
 
@@ -782,21 +786,28 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     int x_pos = 0;
 
     for(int k = 0; k < partitions.size(); k++) {
-        x_pos += partitions[k].dim(1) - loc_cols[k];
-        for(int i = 0; i < mycols.size(); i++) {
-            int c = mycols[i];
+        int start_c = glob_to_part[k][stC[k]];
+        x_pos += glob_to_part[k][stC[k]];
+
+        for(int i = start_c; i < column_index[k].size(); i++){
+
+            int ci = local_column_index[k][i] - n_o;
+
             for(int j = 0; j < s; j++) {
-                Delta(c, j) = Delta(c, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
+                Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
             }
+
             x_pos++;
         }
 
-        x_pos += partitions[k].dim(0);
-    }
+        for(int j = 0; j < loc_cols[k].size(); j++) {
+            int c = loc_cols[k][j];
+            c = part_to_glob[k][c] - n_o;
 
-    for(int i = 0; i < mycols.size(); i++){
-        int c = mycols[i];
-        Delta(c,i) = 1 + Delta(c,i);
+            Delta(c, j) = 0.5 + Delta(c,j);
+        }
+
+        x_pos += partitions[k].dim(0);
     }
 
     // disable sparse mumps rhs
