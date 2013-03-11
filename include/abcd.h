@@ -99,6 +99,7 @@ private:
     void bcg(MV_ColMat_double &b);
     void solveABCD(MV_ColMat_double &b);
     Coord_Mat_double buildS();
+    MV_ColMat_double prodSv(MV_ColMat_double &);
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
@@ -207,6 +208,8 @@ public:
     std::vector<std::vector<int> > local_column_index;
     std::map<int,int> glob_to_local;
     std::vector<std::map<int,int> > glob_to_part;
+    std::vector<std::map<int,int> > part_to_glob;
+    std::vector<int> stC;
     bool use_xk;
     bool use_xf;
 

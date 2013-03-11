@@ -492,6 +492,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
             // now augment each partition!
+            stC.push_back(stCols[k][0]);
             M[k] = concat_columns(M[k], C[k], stCols[k]);
             M[k] = resize_columns(M[k], nbcols);
         }
