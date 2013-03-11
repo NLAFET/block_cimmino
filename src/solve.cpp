@@ -309,18 +309,35 @@ abcd::buildS (  )
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
 
+        std::vector<int>::iterator pos = my_cols.begin();
+        std::vector<int>::iterator end_pos;
 
-        setMumpsIcntl(27, 64);
-        MV_ColMat_double sp = spSimpleProject(my_cols);
+        int share = 512;
+        while(pos != my_cols.end()){
+            if(pos + share < my_cols.end()) end_pos = pos + share;
+            else end_pos = my_cols.end();
 
-        for( int j = 0; j < my_cols.size(); j++){
-            int c = my_cols[j];
-            for( int i = 0; i < size_c; i++){
-                vc.push_back(c);
-                vr.push_back(i);
-                vv.push_back(sp(i, j));
+            std::vector<int> cur_cols;
+
+            std::copy(pos, end_pos, std::back_inserter(cur_cols));
+
+            int mumps_share = share > 32 ? share/2 : 16;
+            setMumpsIcntl(27, mumps_share);
+            MV_ColMat_double sp = spSimpleProject(cur_cols);
+
+            for( int j = 0; j < cur_cols.size(); j++){
+                int c = cur_cols[j];
+                for( int i = 0; i < size_c; i++){
+                    if(sp(i,j)!=0){
+                        vc.push_back(c);
+                        vr.push_back(i);
+                        vv.push_back(sp(i, j));
+                    }
+                }
             }
+            pos = end_pos;
         }
+
 
     } else {
         for( int i = 0; i < size_c; i++){

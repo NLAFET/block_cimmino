@@ -777,7 +777,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     dmumps_c(&mumps);
 
-
     MV_ColMat_double Delta(size_c, s, 0);
 
     int x_pos = 0;
