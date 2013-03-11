@@ -182,30 +182,23 @@ abcd::prodSv ( MV_ColMat_double &V )
     MV_ColMat_double R(V.dim(0), V.dim(1), 0);
 
     std::map<int,int>::iterator iti;
-    for(int i = 0; i < V.dim(0); i++){
-        iti = glob_to_local.find(n_o + i);
+    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
-        if(iti != glob_to_local.end()){
-
-            for(int j = 0; j < V.dim(1); j++){
-                W(glob_to_local[n_o + i] , j) = V(i, j);
-            }
+        if(it->first >= n_o){
+            for(int j = 0; j < V.dim(1); j++) W(it->second , j) = V(it->first - n_o, j);
 
         }
     }
 
     W = W - sumProject(0e0, b, 1e0, W);
 
-    for(int i = 0; i < V.dim(0); i++){
-        iti = glob_to_local.find(n_o + i);
+    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
-        if(iti != glob_to_local.end()){
-
-            for(int j = 0; j < V.dim(1); j++){
-               R(i, j) = W(glob_to_local[n_o + i] , j);
-            }
+        if(it->first >= n_o){
+            for(int j = 0; j < V.dim(1); j++) R(it->first - n_o, j) = W(it->second , j);
 
         }
     }
+
     return R;
 }		/* -----  end of function abcd::prodSv  ----- */

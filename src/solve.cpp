@@ -34,8 +34,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     double t;
     MV_ColMat_double w;
-    if(inter_comm.rank() == 0)
-        cout << " [->] Computing w = A^+b" << endl;
+    if(inter_comm.rank() == 0){
+        cout << "*----------------------------------*" << endl;
+        cout << "| [->] Computing w = A^+b          |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
 
     t = MPI_Wtime();
     if(dcntl[10] == 0){
@@ -45,6 +48,12 @@ abcd::solveABCD ( MV_ColMat_double &b )
         w = Xk; 
     }
     if(inter_comm.rank() == 0) cout << "Time to compute w = A^+ b : " << MPI_Wtime() - t << endl;
+
+    if(inter_comm.rank() == 0){
+        cout << "*----------------------------------*" << endl;
+        cout << "| [->] Building S = Y (I - P) Y^T  |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
 
     // if not created yet, do it!
     t = MPI_Wtime();
@@ -57,8 +66,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
     //inter_comm.barrier();
-    //exit(0);
-
+    //
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
@@ -96,12 +104,16 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
-        mu.irn= S.rowind_ptr();
-        mu.jcn= S.colind_ptr();
+        //mu.irn= S.rowind_ptr();
+        //mu.jcn= S.colind_ptr();
+        mu.irn = new int[mu.nz];
+        mu.jcn = new int[mu.nz];
         mu.a= S.val_ptr();
         for(int i = 0; i < mu.nz; i++){
-            mu.irn[i]++;
-            mu.jcn[i]++;
+            //mu.irn[i]++;
+            //mu.jcn[i]++;
+            mu.irn[i] = S.row_ind(i) + 1;
+            mu.jcn[i] = S.col_ind(i) + 1;
         }
     } else {
         mu.icntl[18 - 1]= 3;
@@ -137,13 +149,15 @@ abcd::solveABCD ( MV_ColMat_double &b )
      *  END MUMPS part
      *-----------------------------------------------------------------------------*/
 
-    if(inter_comm.rank() == 0)
-        cout << " [->] Setting f = - Y w" << endl;
+    if(inter_comm.rank() == 0){
+        cout << "*----------------------------------*" << endl;
+        cout << "| [->] Setting f = - Y w           |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
 
     t = MPI_Wtime();
     MV_ColMat_double f(size_c, 1, 0);
     for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
         if(it->first >= n_o){
             f(it->first - n_o, 0) = -1 * w(it->second, 0);
         }
@@ -164,18 +178,30 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
-        cout << "| [->] Solving Sz = f               |" << endl;
+        cout << "| [->] Solving Sz = f              |" << endl;
         cout << "*----------------------------------*" << endl;
     }
 
     mu.job = 3;
     dmumps_c(&mu);
 
+    //if(inter_comm.size() == 1){ 
+        //for(int i = 0; i < mu.nz; i++){
+            //mu.irn[i]--;
+            //mu.jcn[i]--;
+        //}
+    //} else {
+        //for(int i = 0; i < mu.nz_loc; i++){
+            //mu.irn_loc[i]--;
+            //mu.jcn_loc[i]--;
+        //}
+    //}
+    //
 
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
-        cout << "|                               T   |" << endl;
-        cout << "| [->] Computing zz = (I - P) Y   z |" << endl;
+        cout << "|                               T  |" << endl;
+        cout << "| [->] Computing zz = (I - P) Y  z |" << endl;
         cout << "*----------------------------------*" << endl;
     }
 
@@ -187,6 +213,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     Xk = MV_ColMat_double(n, 1, 0);
     MV_ColMat_double zrhs(m, 1, 0); 
+
     for( int i = 0; i < size_c; i++){
 
         std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
@@ -197,7 +224,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
             continue;
         }
     }
-
 
     f = MV_ColMat_double(n, 1, 0);
 
@@ -234,11 +260,12 @@ abcd::solveABCD ( MV_ColMat_double &b )
             f = f - Xk;
     }
 
-
     use_xk = false;
 
     // the final solution (distributed)
     f = w + f;
+
+    cout << f << endl;
 
     if(inter_comm.rank()==0){
         zrhs = MV_ColMat_double(m, 1, 0);
