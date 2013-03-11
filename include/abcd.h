@@ -15,6 +15,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <string>
+#include <stdlib.h>
 #include "mmio.h"
 #include "mpi.h"
 
