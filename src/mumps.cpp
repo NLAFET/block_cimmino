@@ -300,7 +300,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
-    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s);
+    for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
+    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
 
     int pos = 0;
     int b_pos = 0;
@@ -362,6 +363,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             double t = MPI_Wtime();
             dmumps_c(&mumps);
             t = MPI_Wtime() - t;
+
+            //mumps_rhs = MV_ColMat_double(mumps.rhs, mumps.n, s);
+
 
             //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
                 //<< t << endl;
@@ -463,6 +467,7 @@ MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
 
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
+    for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
     int pos = 0;
     for(int k = 0; k < partitions.size(); k++) {
         MV_ColMat_double r(partitions[k].dim(0), s, 0);
@@ -533,6 +538,7 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 
     // Build the mumps rhs
     mumps.rhs = new double[mumps.n * s];
+    for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
@@ -668,14 +674,15 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
     bool dense_rhs = (icntl[13] == 1);
-    dense_rhs = true;
+    //dense_rhs = true;
 
     int s = mycols.size();
     // Build the mumps rhs
 
     mumps.rhs = new double[mumps.n * s];
+    for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
 
-    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s);
+    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
 
     CompCol_Mat_double mumps_comp_rhs;
 
@@ -790,7 +797,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
         for(int i = start_c; i < column_index[k].size(); i++){
 
-            int ci = local_column_index[k][i] - n_o;
+            int ci = column_index[k][i] - n_o;
 
             for(int j = 0; j < s; j++) {
                 Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
@@ -813,7 +820,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     // disable sparse mumps rhs
     mumps.icntl[20 - 1] = 0;
 
-    delete mumps.rhs;
+    //delete mumps.rhs;
 
     return Delta;
 }

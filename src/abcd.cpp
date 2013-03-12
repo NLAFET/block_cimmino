@@ -155,6 +155,8 @@ abcd::abcd()
     threshold = 1e-12;
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
+
+    icntl[14] = 16;
 }
 
 abcd::~abcd()
