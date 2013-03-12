@@ -299,9 +299,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
 
     // Build the mumps rhs
-    MV_ColMat_double mumps_rhs(mumps.n, s, 0);
-    mumps.rhs = mumps_rhs.ptr();
-    //mumps.rhs = new double[mumps.n * s];
+    mumps.rhs = new double[mumps.n * s];
+    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s);
+
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
@@ -668,11 +668,14 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
     bool dense_rhs = (icntl[13] == 1);
+    dense_rhs = true;
 
     int s = mycols.size();
     // Build the mumps rhs
-    MV_ColMat_double mumps_rhs(mumps.n, s, 0);
-    mumps.rhs = mumps_rhs.ptr();
+
+    mumps.rhs = new double[mumps.n * s];
+
+    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s);
 
     CompCol_Mat_double mumps_comp_rhs;
 
@@ -775,7 +778,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     mumps.lrhs          = mumps.n;
     mumps.job           = 3;
 
-
     dmumps_c(&mumps);
 
     MV_ColMat_double Delta(size_c, s, 0);
@@ -810,6 +812,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     // disable sparse mumps rhs
     mumps.icntl[20 - 1] = 0;
+
+    delete mumps.rhs;
 
     return Delta;
 }
