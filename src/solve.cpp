@@ -205,11 +205,13 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "*----------------------------------*" << endl;
     }
 
+
     // broadcast f to other cpus, where f is the new z
     double *f_ptr = f.ptr();
     // TODO : better send parts not the whole z
     //
     mpi::broadcast(inter_comm, f_ptr, size_c, 0);
+
 
     Xk = MV_ColMat_double(n, 1, 0);
     MV_ColMat_double zrhs(m, 1, 0); 
@@ -265,19 +267,20 @@ abcd::solveABCD ( MV_ColMat_double &b )
     // the final solution (distributed)
     f = w + f;
 
-    cout << f << endl;
+    double rho = compute_rho(f, b, 0);
+    if(IRANK == 0) cout << "rho = " << rho << endl;
 
-    if(inter_comm.rank()==0){
-        zrhs = MV_ColMat_double(m, 1, 0);
-        int st = 0;
-        for(int p = 0; p < partitions.size(); p++){
-            zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                    MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
-            st += partitions[p].dim(0);
-        }
-        zrhs = zrhs - b;
-        cout << "||Ax - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
-    }
+    //if(inter_comm.rank()==0){
+        //zrhs = MV_ColMat_double(m, 1, 0);
+        //int st = 0;
+        //for(int p = 0; p < partitions.size(); p++){
+            //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+                    //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
+            //st += partitions[p].dim(0);
+        //}
+        //zrhs = zrhs - b;
+        //cout << "||Ax - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
+    //}
 
 
     // centralize the solution to the master
@@ -303,7 +306,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
     //}
 
     //MV_ColMat_double b(m, 1, 0); 
-
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

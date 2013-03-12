@@ -51,7 +51,7 @@ abcd::buildS (  )
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
 
-        int share = 16;
+        int share = icntl[14];
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
             else end_pos = my_cols.end();
