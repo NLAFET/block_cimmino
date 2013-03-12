@@ -174,9 +174,12 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
     int st_col, ed_col;
     int c = 0, j = 0, nzc;
 
-    VECTOR_int sm_r(M.dim(0)*ci.size());
+    VECTOR_int sm_r;//(M.dim(0)*ci.size());
     VECTOR_int sm_c(ci.size() + 1, 0);
-    VECTOR_double sm_v(M.dim(0)*ci.size());
+    VECTOR_double sm_v;//(M.dim(0)*ci.size());
+
+    std::vector<int> v_sm_r;
+    std::vector<double> v_sm_v;
 
     // for all columns in ci
     for(int k=0; k < ci.size(); k++){
@@ -189,8 +192,14 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         if (st_col == ed_col) continue;
 
         sm_c[j] = c;
-        sm_r(MV_VecIndex(c, c + nzc - 1)) = M.row_ind(MV_VecIndex(st_col, ed_col - 1));
-        sm_v(MV_VecIndex(c, c + nzc - 1)) = M.val(MV_VecIndex(st_col, ed_col - 1));
+        //sm_r(MV_VecIndex(c, c + nzc - 1)) = M.row_ind(MV_VecIndex(st_col, ed_col - 1));
+        //sm_v(MV_VecIndex(c, c + nzc - 1)) = M.val(MV_VecIndex(st_col, ed_col - 1));
+        //
+        int pos = st_col;
+        for(int i = c; i < c + nzc; i++){
+            v_sm_r.push_back(M.row_ind(pos));
+            v_sm_v.push_back(M.val(pos));
+        }
 
         c += nzc;
         j++;
@@ -198,7 +207,8 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
     if (c==0) return SM;
     sm_c[j] = c;
     SM = CompCol_Mat_double(M.dim(0), j, c,
-            sm_v(MV_VecIndex(0,c-1)), sm_r(MV_VecIndex(0,c-1)), sm_c);
+            //sm_v(MV_VecIndex(0,c-1)), sm_r(MV_VecIndex(0,c-1)), sm_c);
+            &v_sm_v[0], &v_sm_r[0], sm_c.ptr());
 
     return SM;
 }		/* -----  end of function subMatrix  ----- */
@@ -457,6 +467,7 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
         if ( st_cols[i] < current_column ) throw -971;
         total_columns += (st_cols[i] - current_column) + B[i].dim(1);
         total_nz += B[i].NumNonzeros();
+        cout << B[i].NumNonzeros() << endl;
 
         current_column = total_columns;
     }
