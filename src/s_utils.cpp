@@ -19,6 +19,165 @@
 
 #include <abcd.h>
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::solveS
+ *  Description:  
+ * =====================================================================================
+ */
+    MV_ColMat_double
+abcd::solveS ( MV_ColMat_double &f )
+{
+    double t;
+
+    if(inter_comm.rank() == 0){
+        cout << "*      ----------------------      *" << endl;
+        cout << "| [--] Building S = Y (I - P) Y^T  |" << endl;
+        cout << "*      ----------------------      *" << endl;
+    }
+    // if not created yet, do it!
+    t = MPI_Wtime();
+    if( S.dim(0) == 0 ){
+        S = abcd::buildS();
+    }
+
+    inter_comm.barrier(); //useless! used for timing
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
+    //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
+    //inter_comm.barrier();
+    //
+    
+    /*-----------------------------------------------------------------------------
+     *  MUMPS part
+     *-----------------------------------------------------------------------------*/
+    t = MPI_Wtime();
+    DMUMPS_STRUC_C mu;
+    mu.sym = 0;
+    mu.par = 1;
+    mu.job = -1;
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+
+    dmumps_c(&mu);
+
+    mu.icntl[0] = -1;
+    mu.icntl[1] = -1;
+    mu.icntl[2] = -1;
+
+    //if(inter_comm.rank() == 0){ 
+        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        //mu.icntl[0] = 6;
+        //mu.icntl[1] = 6;
+        //mu.icntl[2] = 6;
+        //mu.icntl[3] = 2;
+    //}
+
+    mu.n = S.dim(0);
+
+    // parallel analysis if the S is large enough
+    //if(mu.n >= 200) {
+        //mu.icntl[28 - 1] =  2;
+    //}
+    mu.icntl[8  - 1] =  7;
+    mu.icntl[7  - 1] =  5;
+    mu.icntl[14 - 1] =  70;
+
+    if(inter_comm.size() == 1){ 
+        mu.nz= S.NumNonzeros();
+        //mu.irn= S.rowind_ptr();
+        //mu.jcn= S.colind_ptr();
+        mu.irn = new int[mu.nz];
+        mu.jcn = new int[mu.nz];
+        mu.a= S.val_ptr();
+        for(int i = 0; i < mu.nz; i++){
+            //mu.irn[i]++;
+            //mu.jcn[i]++;
+            mu.irn[i] = S.row_ind(i) + 1;
+            mu.jcn[i] = S.col_ind(i) + 1;
+        }
+    } else {
+        mu.icntl[18 - 1]= 3;
+        mu.nz_loc = S.NumNonzeros();
+
+        mu.irn_loc = S.rowind_ptr();
+        mu.jcn_loc = S.colind_ptr();
+        mu.a_loc = S.val_ptr();
+        for(int i = 0; i < mu.nz_loc; i++){
+            mu.irn_loc[i]++;
+            mu.jcn_loc[i]++;
+        }
+    }
+    t = MPI_Wtime();
+
+    mu.job = 1;
+    dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
+    t = MPI_Wtime();
+
+    mu.job = 2;
+    dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
+    if(mu.info[0] < 0) {
+        cout << mu.info[0] << endl;
+        exit(0); 
+    }
+    /*-----------------------------------------------------------------------------
+     *  END MUMPS part
+     *-----------------------------------------------------------------------------*/
+
+
+    if(inter_comm.rank() == 0){
+        mu.rhs = f.ptr();
+        mu.nrhs = 1;
+    }
+
+    if(inter_comm.rank() == 0){
+        cout << "*      -------------------         *" << endl;
+        cout << "| [--] Computing z = S^-1 f        |" << endl;
+        cout << "*----------------------------------*" << endl;
+    }
+
+    mu.job = 3;
+    dmumps_c(&mu);
+
+    //if(inter_comm.size() == 1){ 
+        //for(int i = 0; i < mu.nz; i++){
+            //mu.irn[i]--;
+            //mu.jcn[i]--;
+        //}
+    //} else {
+        //for(int i = 0; i < mu.nz_loc; i++){
+            //mu.irn_loc[i]--;
+            //mu.jcn_loc[i]--;
+        //}
+    //}
+    //
+    // broadcast f to other cpus, where f is the new z
+    double *f_ptr = f.ptr();
+    // TODO : better send parts not the whole z
+    //
+    mpi::broadcast(inter_comm, f_ptr, size_c, 0);
+
+    return f;
+}		/* -----  end of function abcd::solveS  ----- */
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  abcd::buildS
@@ -32,9 +191,6 @@ abcd::buildS (  )
     //MV_ColMat_double S(size_c, size_c, 0);
     std::vector<int> sr, sc;
     std::vector<double> sv;
-    if(inter_comm.rank() == 0)
-        cout << " [->] Building S" << endl;
-
 
     std::vector<int> vc, vr;
     std::vector<double> vv;
@@ -202,3 +358,80 @@ abcd::prodSv ( MV_ColMat_double &V )
 
     return R;
 }		/* -----  end of function abcd::prodSv  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::pcgS
+ *  Description:  
+ * =====================================================================================
+ */
+    VECTOR_double
+abcd::pcgS ( VECTOR_double &b )
+{
+    //CG(const Matrix &A, Vector &x, const Vector &b,
+   //const Preconditioner &M, int &max_iter, Real &tol)
+
+    double resid, tol = 1e-10;
+    int max_iter = size_c;
+
+    VECTOR_double p, z, q;
+    VECTOR_double alpha(1), beta(1), rho(1), rho_1(1);
+
+    MV_ColMat_double zk(size_c, 1, 0);
+    VECTOR_double x = zk.data();
+
+    double normb = norm(b);
+    MV_ColMat_double Szk = prodSv(zk);
+    VECTOR_double r = b - Szk(0);
+
+    if (normb == 0.0) 
+        normb = 1;
+    
+    if ((resid = norm(r) / normb) <= tol) {
+        tol = resid;
+        max_iter = 0;
+        return 0;
+    }
+
+    for (int i = 1; i <= max_iter; i++) {
+        //z = r;
+        //z = M.solve(r);
+        //rho(0) = dot(r, z);
+        rho(0) = dot(r, r);
+        
+        if (i == 1)
+            //p = z;
+            p = r;
+        else {
+            beta(0) = rho(0) / rho_1(0);
+            //p = z + beta(0) * p;
+            p = r + beta(0) * p;
+        }
+        
+        //q = A*p;
+        MV_ColMat_double pv(p.ptr(), size_c, 1);
+        Szk = prodSv(pv);
+        q = Szk(0);
+
+
+        alpha(0) = rho(0) / dot(p, q);
+        
+        x += alpha(0) * p;
+        r -= alpha(0) * q;
+
+        
+        if ((resid = norm(r) / normb) <= tol) {
+            tol = resid;
+            max_iter = i;
+            return x;     
+        }
+
+        rho_1(0) = rho(0);
+        cout << "iteration " << i << " residual " << resid << endl;
+    }
+    
+    tol = resid;
+
+    return x;
+}		/* -----  end of function abcd::pcgS  ----- */
