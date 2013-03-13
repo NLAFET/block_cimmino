@@ -199,6 +199,7 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         for(int i = c; i < c + nzc; i++){
             v_sm_r.push_back(M.row_ind(pos));
             v_sm_v.push_back(M.val(pos));
+            pos++;
         }
 
         c += nzc;
@@ -467,7 +468,6 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
         if ( st_cols[i] < current_column ) throw -971;
         total_columns += (st_cols[i] - current_column) + B[i].dim(1);
         total_nz += B[i].NumNonzeros();
-        cout << B[i].NumNonzeros() << endl;
 
         current_column = total_columns;
     }
