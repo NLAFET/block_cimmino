@@ -98,8 +98,10 @@ private:
     void distributeRhs();
     void bcg(MV_ColMat_double &b);
     void solveABCD(MV_ColMat_double &b);
+    MV_ColMat_double solveS ( MV_ColMat_double &f );
     Coord_Mat_double buildS();
     MV_ColMat_double prodSv(MV_ColMat_double &);
+    VECTOR_double pcgS ( VECTOR_double &b );
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
