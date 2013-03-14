@@ -417,7 +417,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0) {
+                if(filter_c != 0 || icntl[15] == 2) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
                     double card_max = 0;
@@ -465,12 +465,23 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         if(mu_ij_k >= filter_c){
                             selected_cols.push_back(k);
                         }
+
+                        if(icntl[15] != 0){ 
+                            if(mu_ij_k >= dcntl[15]){
+                                selected_S_columns.push_back( nbcols + k - n_o);
+                            } else {
+                                skipped_S_columns.push_back( nbcols + k - n_o);
+                            }
+                        }
+
                     }
 
                     if (selected_cols.size() == 0) continue;
 
-                    A_ij = sub_matrix(A_ij, selected_cols);
-                    A_ji = sub_matrix(A_ji, selected_cols);
+                    if( icntl[15] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
+                        A_ij = sub_matrix(A_ij, selected_cols);
+                        A_ji = sub_matrix(A_ji, selected_cols);
+                    }
                 }
 
 

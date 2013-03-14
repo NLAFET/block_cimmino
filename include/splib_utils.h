@@ -6,6 +6,7 @@ double squaredNorm(VECTOR_double &V);
 double squaredNorm(VECTOR_double &V, VECTOR_int &I);
 double infNorm(VECTOR_double &V);
 double infNorm(MV_ColMat_double &V);
+double infNorm(Coord_Mat_double &M);
 CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows, int nb_cols);
 CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows);
 CompCol_Mat_double sub_matrix (CompCol_Mat_double &M, std::vector<int> &ci);

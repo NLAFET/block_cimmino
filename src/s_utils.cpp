@@ -70,7 +70,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        strcpy(mu.write_problem, "/tmp/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -187,6 +187,12 @@ abcd::solveS ( MV_ColMat_double &f )
     Coord_Mat_double
 abcd::buildS (  )
 {
+    std::vector<int> cols;
+    return buildS( cols );
+}
+    Coord_Mat_double
+abcd::buildS ( std::vector<int> cols )
+{
     Coord_Mat_double shur;
     //MV_ColMat_double S(size_c, size_c, 0);
     std::vector<int> sr, sc;
@@ -197,12 +203,19 @@ abcd::buildS (  )
 
     std::vector<int> my_cols;
 
-
-    if(dcntl[10] == 0){
+    if(cols.size() == 0) {
         for( int i = 0; i < size_c; i++){
             std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
+    } else {
+        for( int i = 0; i < cols.size(); i++){
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + cols[i]);
+            if(iti!=glob_to_local.end()) my_cols.push_back(cols[i]);
+        }
+    }
+
+    if(dcntl[10] == 0 || icntl[15] == 2){
 
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
@@ -235,10 +248,6 @@ abcd::buildS (  )
 
 
     } else {
-        for( int i = 0; i < size_c; i++){
-            std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
-            if(iti!=glob_to_local.end()) my_cols.push_back(i);
-        }
 
         //for( int j = 0; j < my_cols.size(); j++){
             //int i = my_cols[j];
@@ -362,6 +371,170 @@ abcd::prodSv ( MV_ColMat_double &V )
 
 /* 
  * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::buildM
+ *  Description:  
+ * =====================================================================================
+ */
+    DMUMPS_STRUC_C 
+abcd::buildM (  )
+{
+    Coord_Mat_double M = buildS(selected_S_columns);
+
+    std::vector<int> mr, mc;
+    std::vector<double> mv;
+
+    std::vector<int>::iterator it;
+    int r, c;
+    double v;
+    for(int i = 0; i < M.NumNonzeros(); i++){
+        c = M.col_ind(i);
+        r = M.row_ind(i);
+        v = M.val(i);
+        if( r != c ) {
+            mr.push_back(r);
+            mc.push_back(c);
+            mv.push_back(v);
+
+            it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
+            if(it != skipped_S_columns.end()){
+                mr.push_back(c);
+                mc.push_back(r);
+                mv.push_back(v);
+            }
+
+        } else if (r == c) {
+            mr.push_back(r);
+            mc.push_back(c);
+            mv.push_back(v);
+        }
+    }
+    cout << "Selected : " << selected_S_columns.size() << endl;
+    cout << "Skipped  : " << skipped_S_columns.size() << endl;
+
+    for(int i = 0; i < skipped_S_columns.size(); i++){
+        mr.push_back(skipped_S_columns[i]);
+        mc.push_back(skipped_S_columns[i]);
+        mv.push_back(1);
+    }
+    
+    M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
+
+    /*-----------------------------------------------------------------------------
+     *  MUMPS part
+     *-----------------------------------------------------------------------------*/
+    double t;
+    DMUMPS_STRUC_C mu;
+    mu.sym = 0;
+    mu.par = 1;
+    mu.job = -1;
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+
+    dmumps_c(&mu);
+
+    mu.icntl[0] = -1;
+    mu.icntl[1] = -1;
+    mu.icntl[2] = -1;
+
+    //if(inter_comm.rank() == 0){ 
+        strcpy(mu.write_problem, "/tmp/MMM.mtx");
+        //mu.icntl[0] = 6;
+        //mu.icntl[1] = 6;
+        //mu.icntl[2] = 6;
+        //mu.icntl[3] = 2;
+    //}
+
+    mu.n = M.dim(0);
+
+    // parallel analysis if the S is large enough
+    //if(mu.n >= 200) {
+        //mu.icntl[28 - 1] =  2;
+    //}
+    mu.icntl[8  - 1] =  7;
+    mu.icntl[7  - 1] =  5;
+    mu.icntl[14 - 1] =  70;
+
+    if(inter_comm.size() == 1){ 
+        mu.nz= M.NumNonzeros();
+        mu.irn= M.rowind_ptr();
+        mu.jcn= M.colind_ptr();
+        mu.a= M.val_ptr();
+        for(int i = 0; i < mu.nz; i++){
+            mu.irn[i]++;
+            mu.jcn[i]++;
+        }
+    } else {
+        mu.icntl[18 - 1]= 3;
+        mu.nz_loc = M.NumNonzeros();
+
+        mu.irn_loc = M.rowind_ptr();
+        mu.jcn_loc = M.colind_ptr();
+        mu.a_loc = M.val_ptr();
+        for(int i = 0; i < mu.nz_loc; i++){
+            mu.irn_loc[i]++;
+            mu.jcn_loc[i]++;
+        }
+    }
+    t = MPI_Wtime();
+
+    mu.job = 1;
+    dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.Analyse M :   " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
+    t = MPI_Wtime();
+
+    mu.job = 2;
+    dmumps_c(&mu);
+
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.Factorize M : " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
+    if(mu.info[0] < 0) {
+        cout << mu.info[0] << endl;
+        exit(0); 
+    }
+    /*-----------------------------------------------------------------------------
+     *  END MUMPS part
+     *-----------------------------------------------------------------------------*/
+    return mu;
+}		/* -----  end of function abcd::buildM  ----- */
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  abcd::solveM
+ *  Description:  
+ * =====================================================================================
+ */
+    VECTOR_double
+abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
+{
+    //VECTOR_double sol(z);
+    //if(inter_comm.rank() == 0){
+        //mu.rhs = sol.ptr();
+        //mu.nrhs = 1;
+    //}
+    mu.rhs = new double[z.size()];
+    for(int i = 0; i < z.size(); i++) mu.rhs[i] = z(i);
+    mu.nrhs = 1;
+
+    mu.job = 3;
+    dmumps_c(&mu);
+
+    return VECTOR_double(mu.rhs, z.size());
+}		/* -----  end of function abcd::solveM  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
  *         Name:  abcd::pcgS
  *  Description:  
  * =====================================================================================
@@ -371,6 +544,10 @@ abcd::pcgS ( VECTOR_double &b )
 {
     //CG(const Matrix &A, Vector &x, const Vector &b,
    //const Preconditioner &M, int &max_iter, Real &tol)
+   //
+   DMUMPS_STRUC_C mu = buildM();
+
+   //exit(0);
 
     double resid, tol = 1e-10;
     int max_iter = size_c;
@@ -396,17 +573,17 @@ abcd::pcgS ( VECTOR_double &b )
 
     for (int i = 1; i <= max_iter; i++) {
         //z = r;
-        //z = M.solve(r);
-        //rho(0) = dot(r, z);
-        rho(0) = dot(r, r);
+        z = solveM(mu, r);
+        rho(0) = dot(r, z);
+        //rho(0) = dot(r, r);
         
         if (i == 1)
-            //p = z;
-            p = r;
+            p = z;
+            //p = r;
         else {
             beta(0) = rho(0) / rho_1(0);
-            //p = z + beta(0) * p;
-            p = r + beta(0) * p;
+            p = z + beta(0) * p;
+            //p = r + beta(0) * p;
         }
         
         //q = A*p;
@@ -420,15 +597,16 @@ abcd::pcgS ( VECTOR_double &b )
         x += alpha(0) * p;
         r -= alpha(0) * q;
 
-        
-        if ((resid = norm(r) / normb) <= tol) {
+        resid = norm(r) / normb;
+
+        if (resid <= tol) {
             tol = resid;
             max_iter = i;
+            cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
             return x;     
         }
 
         rho_1(0) = rho(0);
-        cout << "iteration " << i << " residual " << resid << endl;
     }
     
     tol = resid;

@@ -100,8 +100,13 @@ private:
     void solveABCD(MV_ColMat_double &b);
     MV_ColMat_double solveS ( MV_ColMat_double &f );
     Coord_Mat_double buildS();
+    Coord_Mat_double buildS(std::vector<int>);
+    DMUMPS_STRUC_C buildM();
+    VECTOR_double solveM ( DMUMPS_STRUC_C &mu, VECTOR_double &z );
     MV_ColMat_double prodSv(MV_ColMat_double &);
     VECTOR_double pcgS ( VECTOR_double &b );
+    std::vector<int> selected_S_columns;
+    std::vector<int> skipped_S_columns;
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);

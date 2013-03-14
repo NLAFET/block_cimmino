@@ -43,6 +43,14 @@ int sum_cols(int res, CompRow_Mat_double M)
     //return (L.cols() < R.cols());
 //}
 //
+double infNorm(Coord_Mat_double &M){
+    double max = 0;
+    for (int i = 0; i < M.NumNonzeros(); i++){
+        //if(abs(V(i)) >= max) max = abs(V(i));
+        max = abs(M.val(i)) > max ? abs(M.val(i)) : max;
+    }
+    return max;
+}
 double infNorm(VECTOR_double &V){
     double max = 0;
     for (int i = 0; i < V.size(); i++){
