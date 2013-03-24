@@ -430,6 +430,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     // Now sum the data to Delta
     Delta += Others;
 
+    delete[] mumps.rhs;
+
     return Delta;
 }
 
