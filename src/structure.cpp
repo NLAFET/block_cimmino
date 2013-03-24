@@ -92,6 +92,7 @@ void abcd::partitionMatrix()
                 throw -102;
             }
 
+
             args.final_imbal    = _imba;
             args.init_imbal     = _imba * 2.0;
             args.seed           = 1;
@@ -129,19 +130,6 @@ void abcd::partitionMatrix()
 
             A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
 
-            //if(write_problem.length() != 0) {
-                //ofstream f;
-                //f.open(write_problem.c_str());
-                //f << "%%MatrixMarket matrix coordinate real general\n";
-                //f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
-                //for(int i = 0; i < m_o; i++){
-                    //for(int j = ir[i]; j< ir[i + 1]; j++){
-                        //f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
-                    //}
-                //}
-                //f.close();
-            //}
-
             nbrows = VECTOR_int(partweights, nbparts);
             strow = VECTOR_int(nbparts);
 
@@ -151,6 +139,7 @@ void abcd::partitionMatrix()
             }
 
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
+            delete[] ir, jc, val, partvec, partweights, cwghts;
             break;
     }
 
