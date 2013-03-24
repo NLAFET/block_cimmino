@@ -402,6 +402,7 @@ void abcd::distributeRhs()
                 MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
                 B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
                     RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
+                delete[] rdata;
             }
 
         }
@@ -452,4 +453,6 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, itmax, 0);
     mpi::broadcast(inter_comm, threshold, 0);
     mpi::broadcast(inter_comm, dcntl[10], 0);
+
+    delete[] rhs;
 }

@@ -49,11 +49,13 @@ void abcd::initializeCimmino()
 
     if(instance_type == 0) {
         createAugmentedSystems();
-        //mumps.perm_in = sym_perm;
+        mumps.perm_in = sym_perm;
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)
         cout << "[+] Launching MUMPS analysis" << endl;
     abcd::analyseAugmentedSystems();
+
+    delete[] sym_perm;
 
 }
