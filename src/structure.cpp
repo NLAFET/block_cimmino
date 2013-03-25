@@ -130,6 +130,7 @@ void abcd::partitionMatrix()
 
             A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
 
+
             nbrows = VECTOR_int(partweights, nbparts);
             strow = VECTOR_int(nbparts);
 
@@ -138,8 +139,31 @@ void abcd::partitionMatrix()
                 row_sum += nbrows(k);
             }
 
+           if(write_problem.length() != 0) {
+                ofstream f;
+                f.open(write_problem.c_str());
+                f << "%%MatrixMarket matrix coordinate real general\n";
+                f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
+                for(int i = 0; i < m_o; i++){
+                    for(int j = ir[i]; j< ir[i + 1]; j++){
+                        f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+                    }
+                }
+                f.close();
+
+                clog << "int nr[] = {";
+
+                for(unsigned k = 0; k < nbparts - 1; k++) {
+                    strow(k) = row_sum;
+                    row_sum += nbrows(k);
+                    cout << nbrows[k] << ", "
+                }
+
+                clog << nbrows[nbparts - 1] <<  "};" << endl;
+            }
+
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
-            delete[] ir, jc, val, partvec, partweights, cwghts;
+            delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins;
             break;
     }
 
