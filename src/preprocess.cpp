@@ -142,9 +142,10 @@ void abcd::scaleMatrix(int norm)
         drow_(k) *= double(1) / dw[k + n];
     }
 
+    delete[] iw;
+    delete[] dw;
     diagScaleMatrix(dr, dc);
 
-    delete[] iw, dw;
 }
 
 

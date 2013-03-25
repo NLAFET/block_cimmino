@@ -130,7 +130,6 @@ void abcd::partitionMatrix()
 
             A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
 
-
             nbrows = VECTOR_int(partweights, nbparts);
             strow = VECTOR_int(nbparts);
 
@@ -146,7 +145,7 @@ void abcd::partitionMatrix()
                 f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
                 for(int i = 0; i < m_o; i++){
                     for(int j = ir[i]; j< ir[i + 1]; j++){
-                        f << row_perm[i] << " " << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+                        f << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
                     }
                 }
                 f.close();
@@ -154,9 +153,7 @@ void abcd::partitionMatrix()
                 clog << "int nr[] = {";
 
                 for(unsigned k = 0; k < nbparts - 1; k++) {
-                    strow(k) = row_sum;
-                    row_sum += nbrows(k);
-                    cout << nbrows[k] << ", "
+                    cout << nbrows[k] << ", ";
                 }
 
                 clog << nbrows[nbparts - 1] <<  "};" << endl;
