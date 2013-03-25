@@ -430,6 +430,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     // Now sum the data to Delta
     Delta += Others;
 
+    delete[] mumps.rhs;
+
     return Delta;
 }
 
@@ -524,6 +526,7 @@ MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
         }
         x_pos += partitions[k].dim(0);
     }
+    delete[] mumps.rhs;
 
     return Delta;
 }
@@ -667,6 +670,7 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
     }
     // Now sum the data to Delta
     Delta += Others;
+    delete[] mumps.rhs;
 
     return Delta;
 }
@@ -821,6 +825,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     mumps.icntl[20 - 1] = 0;
 
     //delete mumps.rhs;
+    delete[] mumps.rhs;
 
     return Delta;
 }
