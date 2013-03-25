@@ -61,7 +61,8 @@ void abcd::distributePartitions()
                 inter_comm.send(i, 5, partitions[j].val_ptr(), partitions[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
-                inter_comm.send(i, 61, stC[j]);
+
+                if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
             }
         }
         cout << "sent partitions" << endl;
@@ -188,8 +189,10 @@ void abcd::distributePartitions()
             column_index.push_back(ci);
 
             int stc;
-            inter_comm.recv(0, 61, stc);
-            stC.push_back(stc);
+            if(icntl[10] > 0){
+                inter_comm.recv(0, 61, stc);
+                stC.push_back(stc);
+            }
 
             // Create the matrix and push it in!
             CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
