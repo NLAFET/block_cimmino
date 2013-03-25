@@ -129,6 +129,7 @@ void abcd::initialize()
         }
         nz = t_nz;
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+        delete[] t_irn, t_jcn, t_val;
     } else {
         for(int i=0; i<nz; i++){
             irn[i]--;

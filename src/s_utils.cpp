@@ -326,6 +326,10 @@ abcd::buildS ( std::vector<int> cols )
     }
     shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
 
+    delete[] ii;
+    delete[] jj;
+    delete[] val;
+
     use_xk = false;
 
     return shur;
@@ -528,8 +532,10 @@ abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
 
     mu.job = 3;
     dmumps_c(&mu);
+    VECTOR_double sol(mu.rhs, z.size());
+    delete[] mu.rhs;
 
-    return VECTOR_double(mu.rhs, z.size());
+    return sol;
 }		/* -----  end of function abcd::solveM  ----- */
 
 
