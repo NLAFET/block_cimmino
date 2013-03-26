@@ -445,7 +445,7 @@ abcd::buildM (  )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/MMM.mtx");
+        //strcpy(mu.write_problem, "/tmp/MMM.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
