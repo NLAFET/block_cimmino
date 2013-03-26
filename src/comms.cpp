@@ -61,7 +61,8 @@ void abcd::distributePartitions()
                 inter_comm.send(i, 5, partitions[j].val_ptr(), partitions[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
-                inter_comm.send(i, 61, stC[j]);
+
+                if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
             }
         }
         cout << "sent partitions" << endl;
@@ -188,8 +189,10 @@ void abcd::distributePartitions()
             column_index.push_back(ci);
 
             int stc;
-            inter_comm.recv(0, 61, stc);
-            stC.push_back(stc);
+            if(icntl[10] > 0){
+                inter_comm.recv(0, 61, stc);
+                stC.push_back(stc);
+            }
 
             // Create the matrix and push it in!
             CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
@@ -402,6 +405,7 @@ void abcd::distributeRhs()
                 MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
                 B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
                     RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
+                delete[] rdata;
             }
 
         }
@@ -452,4 +456,6 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, itmax, 0);
     mpi::broadcast(inter_comm, threshold, 0);
     mpi::broadcast(inter_comm, dcntl[10], 0);
+
+    delete[] rhs;
 }
