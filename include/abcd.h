@@ -8,6 +8,8 @@
 #ifndef ABCD_HXX_
 #define ABCD_HXX_
 
+#include "mpi.h"
+
 #include <iostream>
 #include <iomanip>
 #include <numeric>
@@ -16,16 +18,16 @@
 #include <algorithm>
 #include <string>
 #include <stdlib.h>
+#include <map>
 #include "mmio.h"
-#include "mpi.h"
 
 #include "dmumps_c.h"
 
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/progress.hpp>
-#include <boost/range/adaptors.hpp>
-#include <boost/range/algorithm.hpp>
+//#include <boost/range/adaptors.hpp>
+//#include <boost/range/algorithm.hpp>
 
 /*
  * A small hack to make Sparselib++ work with openmpi
@@ -47,7 +49,7 @@
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
-using namespace boost::adaptors;
+//using namespace boost::adaptors;
 
 class abcd
 {
