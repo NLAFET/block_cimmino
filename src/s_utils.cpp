@@ -326,6 +326,10 @@ abcd::buildS ( std::vector<int> cols )
     }
     shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
 
+    delete[] ii;
+    delete[] jj;
+    delete[] val;
+
     use_xk = false;
 
     return shur;
@@ -380,44 +384,49 @@ abcd::buildM (  )
 {
     Coord_Mat_double M = buildS(selected_S_columns);
 
-    std::vector<int> mr, mc;
-    std::vector<double> mv;
+    {
+        std::vector<int> mr, mc;
+        std::vector<double> mv;
 
-    std::vector<int>::iterator it;
-    int r, c;
-    double v;
-    for(int i = 0; i < M.NumNonzeros(); i++){
-        c = M.col_ind(i);
-        r = M.row_ind(i);
-        v = M.val(i);
-        if( r != c ) {
-            mr.push_back(r);
-            mc.push_back(c);
-            mv.push_back(v);
+        std::vector<int>::iterator it;
+        int r, c;
+        double v;
+        for(int i = 0; i < M.NumNonzeros(); i++){
+            c = M.col_ind(i);
+            r = M.row_ind(i);
+            v = M.val(i);
+            
+            if(v == 0) continue;
 
-            it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
-            if(it != skipped_S_columns.end()){
-                mr.push_back(c);
-                mc.push_back(r);
+            if( r != c ) {
+                mr.push_back(r);
+                mc.push_back(c);
+                mv.push_back(v);
+
+                it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
+                if(it != skipped_S_columns.end()){
+                    mr.push_back(c);
+                    mc.push_back(r);
+                    mv.push_back(v);
+                }
+
+            } else if (r == c) {
+                mr.push_back(r);
+                mc.push_back(c);
                 mv.push_back(v);
             }
-
-        } else if (r == c) {
-            mr.push_back(r);
-            mc.push_back(c);
-            mv.push_back(v);
         }
-    }
-    cout << "Selected : " << selected_S_columns.size() << endl;
-    cout << "Skipped  : " << skipped_S_columns.size() << endl;
+        cout << "Selected : " << selected_S_columns.size() << endl;
+        cout << "Skipped  : " << skipped_S_columns.size() << endl;
 
-    for(int i = 0; i < skipped_S_columns.size(); i++){
-        mr.push_back(skipped_S_columns[i]);
-        mc.push_back(skipped_S_columns[i]);
-        mv.push_back(1);
+        for(int i = 0; i < skipped_S_columns.size(); i++){
+            mr.push_back(skipped_S_columns[i]);
+            mc.push_back(skipped_S_columns[i]);
+            mv.push_back(1);
+        }
+        
+        M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
     }
-    
-    M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
 
     /*-----------------------------------------------------------------------------
      *  MUMPS part
@@ -528,8 +537,10 @@ abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
 
     mu.job = 3;
     dmumps_c(&mu);
+    VECTOR_double sol(mu.rhs, z.size());
+    delete[] mu.rhs;
 
-    return VECTOR_double(mu.rhs, z.size());
+    return sol;
 }		/* -----  end of function abcd::solveM  ----- */
 
 

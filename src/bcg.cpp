@@ -229,6 +229,9 @@ void abcd::gmgs(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, 
     CompCol_Mat_double G(AP.dim(0), AP.dim(0), AP.dim(0), gv, gr, gc);
 
     abcd::gmgs(P, AP, R, G, s, use_a);
+    delete[] gr;
+    delete[] gc;
+    delete[] gv;
 }
 
 int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)
@@ -245,6 +248,10 @@ int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, in
     gc[AP.dim(0)] = AP.dim(0);
 
     CompCol_Mat_double G(AP.dim(0), AP.dim(0), AP.dim(0), gv, gr, gc);
+
+    delete[] gr;
+    delete[] gc;
+    delete[] gv;
 
     return gqr(P, AP, R, G, s, use_a);
 }
