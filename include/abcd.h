@@ -160,7 +160,6 @@ private:
     ***************************************************************************/
     Coord_Mat_double S;
     std::vector<CompRow_Mat_double> partitions;
-    MV_ColMat_double Xk;
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;
@@ -189,6 +188,8 @@ public:
     int *jcn;
     double *val;
     double *rhs;
+
+    MV_ColMat_double Xk;
 
     /***************************************************************************
      * Matrix properties
