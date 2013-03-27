@@ -160,7 +160,8 @@ void abcd::partitionMatrix()
             }
 
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
-            delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins;
+            delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts;
+            PaToH_Free();
             break;
     }
 
