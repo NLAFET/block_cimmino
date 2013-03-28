@@ -9,7 +9,7 @@ using namespace boost::lambda;
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 {
     int total_size = std::accumulate(weights.begin(), weights.end(), 0);
-    int mean = total_size / nb_parts;
+    int mean = floor(total_size / nb_parts);
     int cum = 0;
     int precum = 0;
 
@@ -25,7 +25,7 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
         cum += weights[c];
 
         if(cum > mean) {
-            if((mean - precum) > 1.5*(cum - mean)) {
+            if((mean - precum) > 2.5*(cum - mean)) {
                 parts.push_back(c);
                 cum = 0;
             } else {
