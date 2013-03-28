@@ -29,12 +29,15 @@ void abcd::distributePartitions()
 
     if(world.rank() == 0) {
         std::vector<int> nnz_parts;
+        std::vector<int> m_parts;
         std::vector<int> groups;
         for(int k = 0; k < nbparts; k++) {
             nnz_parts.push_back(partitions[k].NumNonzeros());
+            m_parts.push_back(partitions[k].dim(0));
         }
 
         abcd::partitionWeights(groups, nnz_parts, parallel_cg);
+        //abcd::partitionWeights(groups, m_parts, parallel_cg);
 
         // first start by the master :
         for(int i = 0; i <= groups[0] ; i++)
