@@ -6,6 +6,7 @@ using namespace std;
 int abcd::bc(int job)
 {
     mpi::communicator world;
+    double t;
 
     switch(job) {
 
@@ -22,11 +23,11 @@ int abcd::bc(int job)
     case 1:
         if(world.rank() == 0) {
             abcd::partitionMatrix();
+            t = MPI_Wtime();
             abcd::preprocess();
             abcd::analyseFrame();
+            cout << "Time for preprocess : " << MPI_Wtime() - t << endl;
         }
-
-        world.barrier();
         break;
 
     case 2:
@@ -50,11 +51,15 @@ int abcd::bc(int job)
         if(inter_comm.rank() == 0 && instance_type == 0){
             cout << "[+] Launching MUMPS factorization" << endl;
         }
+
+        IBARRIER;
+        t = MPI_Wtime();
         abcd::factorizeAugmentedSystems();
-        //if(instance_type == 0){
-            //cout << "[-] "<<inter_comm.rank() << " finished factorization" << endl;
-        //}
-        //inter_comm.barrier();
+        IBARRIER;
+        if(IRANK == 0){
+            cout << "[-] "<< " Factorization time : " << MPI_Wtime() - t << endl;
+        }
+
         break;
 
     case 3:
