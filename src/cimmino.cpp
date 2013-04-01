@@ -36,7 +36,6 @@ void abcd::initializeCimmino()
 
         }
 
-        allocateMumpsSlaves();
 
         if(instance_type == 0) {
             mumps.job = -2;
@@ -45,6 +44,7 @@ void abcd::initializeCimmino()
 
     }
 
+    allocateMumpsSlaves();
     initializeMumps();
     //ordering given
     //setMumpsIcntl(7,1);
