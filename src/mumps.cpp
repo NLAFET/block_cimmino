@@ -204,9 +204,9 @@ void abcd::analyseAugmentedSystems()
 
     double t = MPI_Wtime();
     //cout << inter_comm.rank() <<  "mumps.n " << mumps.n << endl;
-    //if(inter_comm.rank() == 15){
-        //cout << "mumps.n " << mumps.n << endl;
-        //cout << "mumps.nz " << mumps.nz << endl;
+    //if(inter_comm.rank() == 0){
+        //cout << IRANK << " " << "mumps.n " << mumps.n << endl;
+        //cout << IRANK << " " << "mumps.nz " << mumps.nz << endl;
         //exit(0);
     //}
     //if(inter_comm.rank() == 3){
@@ -264,12 +264,12 @@ void abcd::factorizeAugmentedSystems()
     t = MPI_Wtime() - t;
 
     if(getMumpsInfo(1) != 0){
-        //cout << string(32, '-') << endl
-             //<< "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             //<< string(32, '-') << endl
-             //<< "| info(1)       : " << setw(6) << getMumpsInfo(1) << string(4, ' ') << " |" << endl
-             //<< "| info(2)       : " << setw(6) << getMumpsInfo(2) << string(4, ' ') << " |" << endl
-             //<< string(32, '-') << endl;
+        cout << string(32, '-') << endl
+             << "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" << endl
+             << string(32, '-') << endl
+             << "| info(1)       : " << setw(6) << getMumpsInfo(1) << string(4, ' ') << " |" << endl
+             << "| info(2)       : " << setw(6) << getMumpsInfo(2) << string(4, ' ') << " |" << endl
+             << string(32, '-') << endl;
         throw 100 * getMumpsInfo(1) - getMumpsInfo(2);
     }
 
@@ -367,8 +367,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             //mumps_rhs = MV_ColMat_double(mumps.rhs, mumps.n, s);
 
 
-            //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : "
-                //<< t << endl;
+            //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
 
             //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
 
@@ -389,46 +388,68 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     // Where the other Deltas are going to be summed
     MV_ColMat_double Others(n, s, 0);
 
+    //std::vector<std::vector<double> > itc(nbparts);
+    //std::vector<std::vector<double> > otc(nbparts);
 
-    std::map<int, std::vector<double> > itc;
-    std::map<int, std::vector<double> > otc;
+    double *itcp[nbparts];
+    double *otcp[nbparts];
+
     std::vector<mpi::status> sts;
     mpi::request reqs[2*col_interconnections.size()];
     int id_to = 0;
 
+    double t = MPI_Wtime();
+    double t1 = t;
+    double t2 = 0;
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
 
+        if(it->second.size() == 0) continue;
         // Prepare the data to be sent
         //
         //create it if does not exist
-        itc[it->first];
+        itcp[it->first] = new double[it->second.size()*s];
+        otcp[it->first] = new double[it->second.size()*s];
+
+        double t3 = MPI_Wtime();
         int kp = 0;
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                itc[it->first].push_back(Delta(*i, j));
+                //itc[it->first].push_back(Delta(*i, j));
+                itcp[it->first][kp] = Delta(*i,j);
                 kp++;
             }
         }
+        t2 += MPI_Wtime() - t3;
 
-        otc[it->first];
-        reqs[id_to++] = inter_comm.irecv(it->first, 31, otc[it->first]);
-        reqs[id_to++] = inter_comm.isend(it->first, 31, itc[it->first]);
+        //reqs[id_to++] = inter_comm.irecv(it->first, 31, otc[it->first]);
+        //reqs[id_to++] = inter_comm.isend(it->first, 31, itc[it->first]);
+        reqs[id_to++] = inter_comm.irecv(it->first, 31, otcp[it->first], kp);
+        reqs[id_to++] = inter_comm.isend(it->first, 31, itcp[it->first], kp);
     }
     mpi::wait_all(reqs, reqs + id_to);
+    t1 = MPI_Wtime() - t1;
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
+
+        if(it->second.size() == 0) continue;
+
         int p = 0;
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                Others(*i, j) += otc[it->first][p];
+                //Others(*i, j) += otc[it->first][p];
+                Others(*i, j) += otcp[it->first][p];
                 p++;
             }
         }
 
+        delete[] itcp[it->first];
+        delete[] otcp[it->first];
     }
     // Now sum the data to Delta
     Delta += Others;
+
+    //clog << "["<< IRANK << "] Time spent merging results : " << MPI_Wtime() -t << " ["<<t1 - t2<<", "<< t2<< "]" << endl;
 
     delete[] mumps.rhs;
 
