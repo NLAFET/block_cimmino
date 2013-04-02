@@ -9,7 +9,7 @@ void abcd::initializeCimmino()
     mpi::broadcast(world, nbparts, 0);
 
     
-    if(world.size() > nbparts) {
+    if(world.size() > parallel_cg) {
         if(instance_type == 0) {
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Initializing MUMPS" << endl;

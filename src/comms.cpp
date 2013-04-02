@@ -36,8 +36,13 @@ void abcd::distributePartitions()
             m_parts.push_back(partitions[k].dim(0));
         }
 
-        abcd::partitionWeights(groups, nnz_parts, parallel_cg);
-        //abcd::partitionWeights(groups, m_parts, parallel_cg);
+        //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
+        abcd::partitionWeights(groups, m_parts, parallel_cg);
+        clog << "Groups : [" << groups[0] + 1;
+        for(int k = 1; k < parallel_cg; k++) {
+            clog  << ", "<< groups[k] - groups[k-1];
+        }
+        clog << "]" << endl;
 
         // first start by the master :
         for(int i = 0; i <= groups[0] ; i++)

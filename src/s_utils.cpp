@@ -225,6 +225,13 @@ abcd::buildS ( std::vector<int> cols )
             if(pos + share < my_cols.end()) end_pos = pos + share;
             else end_pos = my_cols.end();
 
+            double perc = end_pos - my_cols.begin();
+            perc /= my_cols.size();
+            perc *= 100;
+
+            //clog << IRANK << " ["<< floor(perc) << "%] : " << 
+                //end_pos - my_cols.begin() << " / " << my_cols.size() << endl;
+
             std::vector<int> cur_cols;
 
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
@@ -232,6 +239,10 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share > 32 ? share/2 : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
+
+            vc.reserve(my_cols.size());
+            vr.reserve(my_cols.size());
+            vv.reserve(my_cols.size());
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
@@ -316,19 +327,22 @@ abcd::buildS ( std::vector<int> cols )
         vv.push_back(0.0);
     }
 
-    int *ii = new int[vv.size()];
-    int *jj = new int[vv.size()];
-    double *val = new double[vv.size()];
-    for(int i = 0; i < vv.size(); i++){
-        ii[i] = vr[i];
-        jj[i] = vc[i];
-        val[i] = vv[i];
-    }
-    shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
+    //int *ii = new int[vv.size()];
+    //int *jj = new int[vv.size()];
+    //double *val = new double[vv.size()];
+    //for(int i = 0; i < vv.size(); i++){
+        //ii[i] = vr[i];
+        //jj[i] = vc[i];
+        //val[i] = vv[i];
+    //}
+    //shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
+    //
+    //delete[] ii;
+    //delete[] jj;
+    //delete[] val;
+    //
+    shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 
-    delete[] ii;
-    delete[] jj;
-    delete[] val;
 
     use_xk = false;
 
@@ -616,6 +630,7 @@ abcd::pcgS ( VECTOR_double &b )
             cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
             return x;     
         }
+        cout << "Iteration  " << i << " residual " << resid << endl;
 
         rho_1(0) = rho(0);
     }
