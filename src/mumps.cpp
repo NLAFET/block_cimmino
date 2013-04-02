@@ -717,6 +717,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     std::vector<CompRow_Mat_double> r;
     std::vector<std::map<int,int> > loc_cols(partitions.size());
 
+    int nzr_estim = 0;
+
     for(int k = 0; k < partitions.size(); k++) {
 
         CompRow_Mat_double Y;
@@ -742,6 +744,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         Coord_Mat_double Yt(partitions[k].dim(1), s, ct, yv.ptr(), yr.ptr(), yc.ptr());
 
         Y = CompRow_Mat_double(Yt);
+
+        nzr_estim += Y.NumNonzeros();
 
         r.push_back( spmm(partitions[k], Y) );
     }
@@ -771,6 +775,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
         {
             mumps.irhs_ptr      = new int[s + 1];
+            rr.reserve(nzr_estim);
+            rv.reserve(nzr_estim);
 
             int cnz = 1;
             for(int r_p = 0; r_p < s; r_p++) {

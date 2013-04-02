@@ -7,6 +7,7 @@ int abcd::bc(int job)
 {
     mpi::communicator world;
     double t;
+    static int times = 0;
 
     switch(job) {
 
@@ -47,7 +48,13 @@ int abcd::bc(int job)
         if(instance_type == 0) {
             abcd::distributePartitions();
         }
+        IBARRIER;
+        t = MPI_Wtime();
         abcd::initializeCimmino();
+        IBARRIER;
+        if(IRANK == 0){
+            clog << "[-] "<< times << " Initialization time : " << MPI_Wtime() - t << endl;
+        }
         if(inter_comm.rank() == 0 && instance_type == 0){
             cout << "[+] Launching MUMPS factorization" << endl;
         }

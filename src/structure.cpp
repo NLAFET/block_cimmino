@@ -66,7 +66,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 2;
+            _imba   = 1.1;
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();

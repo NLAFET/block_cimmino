@@ -25,7 +25,7 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
         cum += weights[c];
 
         if(cum > mean) {
-            if((mean - precum) > 2.5*(cum - mean)) {
+            if((mean - precum) > 1.5*(cum - mean)) {
                 parts.push_back(c);
                 cum = 0;
             } else {
