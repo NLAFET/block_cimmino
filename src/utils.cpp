@@ -193,6 +193,7 @@ vector<int> sort_indexes(const int *v, const int nb_el) {
 
     typedef std::pair<int,int> pair_type;
     std::vector< std::pair<int,int> > vp;
+    vp.reserve(nb_el);
 
     for(int i = 0; i < nb_el; i++)
         vp.push_back( std::make_pair<int,int>(v[i], i) );
@@ -211,6 +212,7 @@ vector<int> sort_indexes(const vector<T> &v) {
 
     typedef std::pair<T,int> pair_type;
     std::vector< std::pair<T,int> > vp;
+    vp.reserve(v.size());
     for(int i = 0; i < v.size(); i++)
         vp.push_back( std::make_pair<T,int>(v[i], i) );
 

@@ -183,6 +183,7 @@ void abcd::analyseFrame()
         loc_parts.push_back(part);
 
         std::vector<int> ci;
+        ci.reserve(loc_parts[k].dim(1));
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
             if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
@@ -217,6 +218,7 @@ void abcd::analyseFrame()
         double t1, t2;
         // Build the column index of part
         std::vector<int> ci;
+        ci.reserve(loc_parts[k].dim(1));
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
             if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
@@ -432,6 +434,9 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 if(filter_c != 0 || icntl[15] == 2) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
+
+                    frob_ij.reserve(A_ij.dim(1));
+                    mu.reserve(A_ij.dim(1));
                     double card_max = 0;
                     double frob_sum = 0;
                     double nu;

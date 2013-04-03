@@ -189,6 +189,25 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
     std::vector<int> v_sm_r;
     std::vector<double> v_sm_v;
 
+    for(int k=0; k < ci.size(); k++){
+        st_col = M.col_ptr(ci[k]);
+        ed_col = M.col_ptr(ci[k] + 1);
+
+        nzc = ed_col - st_col;
+
+        // if the column is empty
+        if (st_col == ed_col) continue;
+
+        c += nzc;
+        j++;
+    }
+
+    v_sm_r.reserve(nzc);
+    v_sm_v.reserve(nzc);
+
+    c = 0; j = 0;
+
+
     // for all columns in ci
     for(int k=0; k < ci.size(); k++){
         st_col = M.col_ptr(ci[k]);

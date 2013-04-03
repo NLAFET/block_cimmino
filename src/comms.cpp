@@ -80,6 +80,7 @@ void abcd::distributePartitions()
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
             std::vector<int> merge_index;
+            merge_index.reserve(n);
             for(int j = st; j <= groups[i] ; j++) {
                 std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
             }
@@ -101,6 +102,9 @@ void abcd::distributePartitions()
                 std::vector<int> inter2;
                 std::vector<int>::iterator it1 = group_column_index[i].begin();
                 std::vector<int>::iterator it2 = group_column_index[j].begin();
+
+                inter1.reserve(group_column_index[j].size());
+                inter2.reserve(group_column_index[j].size());
 
                 while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
                     if(*it1 < *it2) {

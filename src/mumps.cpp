@@ -803,8 +803,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
             mumps.rhs_sparse    = &rv[0];
             mumps.irhs_sparse   = &rr[0];
-
-
         }
 
     }
