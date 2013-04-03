@@ -84,7 +84,7 @@ abcd::solveS ( MV_ColMat_double &f )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
+    mu.icntl[7  - 1] =  0;
     mu.icntl[14 - 1] =  70;
 
     if(inter_comm.size() == 1){ 
@@ -220,6 +220,10 @@ abcd::buildS ( std::vector<int> cols )
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
 
+        vc.reserve(my_cols.size());
+        vr.reserve(my_cols.size());
+        vv.reserve(my_cols.size());
+
         int share = icntl[14];
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
@@ -229,8 +233,9 @@ abcd::buildS ( std::vector<int> cols )
             perc /= my_cols.size();
             perc *= 100;
 
-            //clog << IRANK << " ["<< floor(perc) << "%] : " << 
-                //end_pos - my_cols.begin() << " / " << my_cols.size() << endl;
+            clog << IRANK << " ["<< floor(perc) << "%] : " 
+                //<< end_pos - my_cols.begin() << " / " << my_cols.size()
+                << endl;
 
             std::vector<int> cur_cols;
 
@@ -239,10 +244,6 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share > 32 ? share/2 : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
-
-            vc.reserve(my_cols.size());
-            vr.reserve(my_cols.size());
-            vv.reserve(my_cols.size());
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];

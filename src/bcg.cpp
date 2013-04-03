@@ -157,7 +157,9 @@ void abcd::bcg(MV_ColMat_double &b)
         //
         t = MPI_Wtime() - t;
         if(world.rank() == 0 && verbose){
-            clog << "ITERATION " << it << " rho = " << rho << "\t Timings: " << std::setprecision(1) << t << " [" << t1 << "," << t2 << "]" << endl;
+            clog << "ITERATION " << it << " rho = " << rho << "\t Timings: " <<
+                //std::setprecision(1) << 
+                t << " [" << t1 << "," << t2 << "]" << endl;
             //cout << ". " << flush; 
         }
         t1_total += t1;
