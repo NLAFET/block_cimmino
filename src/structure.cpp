@@ -66,7 +66,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 2;
+            _imba   = 1.1;
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -160,7 +160,9 @@ void abcd::partitionMatrix()
             }
 
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
-            delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins;
+            delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
+                ir, jc, val;
+            PaToH_Free();
             break;
     }
 
@@ -181,6 +183,7 @@ void abcd::analyseFrame()
         loc_parts.push_back(part);
 
         std::vector<int> ci;
+        ci.reserve(loc_parts[k].dim(1));
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
             if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
@@ -215,6 +218,7 @@ void abcd::analyseFrame()
         double t1, t2;
         // Build the column index of part
         std::vector<int> ci;
+        ci.reserve(loc_parts[k].dim(1));
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
             if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
@@ -430,6 +434,9 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 if(filter_c != 0 || icntl[15] == 2) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
+
+                    frob_ij.reserve(A_ij.dim(1));
+                    mu.reserve(A_ij.dim(1));
                     double card_max = 0;
                     double frob_sum = 0;
                     double nu;

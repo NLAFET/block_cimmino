@@ -77,9 +77,13 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "*                                  *" << endl;
     }
     if(icntl[15] != 0){
+        double *f_ptr = f.ptr();
+
         VECTOR_double f0 = f.data();
         f0 = pcgS(f0);
         f.setData(f0);
+
+        mpi::broadcast(inter_comm, f_ptr, size_c, 0);
     } else {
         f = solveS(f);
     }
@@ -145,7 +149,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     // the final solution (distributed)
     f = w + f;
-    cout << "last element of f : " << f(n-1, 0) << endl;
+    //cout << "last element of f : " << f(n-1, 0) << endl;
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
