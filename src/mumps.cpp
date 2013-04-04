@@ -391,11 +391,11 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     //std::vector<std::vector<double> > itc(nbparts);
     //std::vector<std::vector<double> > otc(nbparts);
 
-    double *itcp[nbparts];
-    double *otcp[nbparts];
+    std::vector<double *>itcp(nbparts);
+    std::vector<double *>otcp(nbparts);
 
     std::vector<mpi::status> sts;
-    mpi::request reqs[2*col_interconnections.size()];
+    mpi::request *reqs = new mpi::request[2*col_interconnections.size()];
     int id_to = 0;
 
     double t = MPI_Wtime();
@@ -428,6 +428,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         reqs[id_to++] = inter_comm.isend(it->first, 31, itcp[it->first], kp);
     }
     mpi::wait_all(reqs, reqs + id_to);
+    delete[] reqs;
     t1 = MPI_Wtime() - t1;
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
@@ -651,7 +652,7 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
     std::map<int, std::vector<double> > itc;
     std::map<int, std::vector<double> > otc;
     std::vector<mpi::status> sts;
-    mpi::request reqs[2*col_interconnections.size()];
+    mpi::request *reqs = new mpi::request[2*col_interconnections.size()];
     int id_to = 0;
 
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
@@ -676,6 +677,7 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
     }
 
     mpi::wait_all(reqs, reqs + id_to);
+    delete[] reqs;
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
 
