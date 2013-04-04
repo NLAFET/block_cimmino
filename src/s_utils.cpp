@@ -265,7 +265,7 @@ abcd::buildS ( std::vector<int> cols )
             //int i = my_cols[j];
         for( int i = 0; i < size_c; i++){
         //
-            int my_bro = -1;
+            //int my_bro = -1;
             if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
 
             //for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
