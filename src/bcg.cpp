@@ -81,7 +81,6 @@ void abcd::bcg(MV_ColMat_double &b)
     int it = 0;
     double rho = 1;
     std::vector<double> grho(inter_comm.size());
-    double mrho;
 
     double ti = MPI_Wtime();
 
@@ -182,9 +181,11 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //double nrmX = x.norm();
     int s = x.dim(1);
     MV_ColMat_double R(m, s, 0);
+/*
     int pos = 0;
     int ci;
-    double gnrmx, nrmXfmX;
+*/
+    double /*gnrmx,*/ nrmXfmX;
     //std::vector<double> vnrmx(inter_comm.size());
 
     //for(int p = 0; p < partitions.size(); p++) {
@@ -401,7 +402,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     char right = 'R';
 
     double *r_ptr = r.ptr();
-    int rsz = s* s;
+    //int rsz = s* s;
 
 
     //double tt = MPI_Wtime();
