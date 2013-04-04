@@ -70,7 +70,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/sss.mtx");
+        //strcpy(mu.write_problem, "/tmp/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -382,7 +382,10 @@ abcd::prodSv ( MV_ColMat_double &V )
     DMUMPS_STRUC_C 
 abcd::buildM (  )
 {
+    cout << selected_S_columns.size() << endl;
     Coord_Mat_double M = buildS(selected_S_columns);
+
+    S = buildS();
 
     {
         std::vector<int> mr, mc;
@@ -420,9 +423,22 @@ abcd::buildM (  )
         cout << "Skipped  : " << skipped_S_columns.size() << endl;
 
         for(int i = 0; i < skipped_S_columns.size(); i++){
-            mr.push_back(skipped_S_columns[i]);
-            mc.push_back(skipped_S_columns[i]);
-            mv.push_back(1);
+
+            int ro = skipped_S_columns[i];
+
+            mr.push_back(ro);
+            mc.push_back(ro);
+            mv.push_back(S(ro,ro));
+
+            //double sum = 0;
+            //for(int j = 0; j < selected_S_columns.size() ; j++){
+                //int co = selected_S_columns[j];
+                //sum += M(ro, co) * M(ro, co);
+            //}
+            //mv.push_back(2*sum);
+            //mv.push_back(3);
+            //mv.push_back( 0.5*(1 + sqrt(1 - 4*sum)));
+            //cout << i << " " << sqrt(1 - 4*sum) << endl;
         }
         
         M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
@@ -445,7 +461,7 @@ abcd::buildM (  )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/MMM.mtx");
+        //strcpy(mu.write_problem, "/tmp/mmm.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -621,6 +637,7 @@ abcd::pcgS ( VECTOR_double &b )
     }
     
     tol = resid;
+    cout << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
 
     return x;
 }		/* -----  end of function abcd::pcgS  ----- */
