@@ -66,7 +66,7 @@ void abcd::preprocess()
 
 void abcd::scaleMatrix(int norm)
 {
-    int ldw, liw, nout, job;
+    int ldw, liw, job;
     int *iw;
     double *dw;
     int mc77_icntl[10], mc77_info[10];
@@ -115,7 +115,7 @@ void abcd::scaleMatrix(int norm)
             iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
 
 
-    if(mc77_info[0] < 0) throw - 100 + mc77_info;
+    if(mc77_info[0] < 0) throw - 100 + mc77_info[0];
 
     if(norm == 0)
         cout << "Distance from 1 (norm inf) : " << mc77_rinfo[0] << endl;

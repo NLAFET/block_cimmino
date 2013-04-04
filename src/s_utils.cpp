@@ -84,7 +84,7 @@ abcd::solveS ( MV_ColMat_double &f )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
+    mu.icntl[7  - 1] =  0;
     mu.icntl[14 - 1] =  70;
 
     if(inter_comm.size() == 1){ 
@@ -220,10 +220,22 @@ abcd::buildS ( std::vector<int> cols )
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
 
+        vc.reserve(my_cols.size());
+        vr.reserve(my_cols.size());
+        vv.reserve(my_cols.size());
+
         int share = icntl[14];
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
             else end_pos = my_cols.end();
+
+            double perc = end_pos - my_cols.begin();
+            perc /= my_cols.size();
+            perc *= 100;
+
+            clog << IRANK << " ["<< floor(perc) << "%] : " 
+                //<< end_pos - my_cols.begin() << " / " << my_cols.size()
+                << endl;
 
             std::vector<int> cur_cols;
 
@@ -253,7 +265,7 @@ abcd::buildS ( std::vector<int> cols )
             //int i = my_cols[j];
         for( int i = 0; i < size_c; i++){
         //
-            int my_bro = -1;
+            //int my_bro = -1;
             if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
 
             //for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
@@ -316,19 +328,22 @@ abcd::buildS ( std::vector<int> cols )
         vv.push_back(0.0);
     }
 
-    int *ii = new int[vv.size()];
-    int *jj = new int[vv.size()];
-    double *val = new double[vv.size()];
-    for(int i = 0; i < vv.size(); i++){
-        ii[i] = vr[i];
-        jj[i] = vc[i];
-        val[i] = vv[i];
-    }
-    shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
+    //int *ii = new int[vv.size()];
+    //int *jj = new int[vv.size()];
+    //double *val = new double[vv.size()];
+    //for(int i = 0; i < vv.size(); i++){
+        //ii[i] = vr[i];
+        //jj[i] = vc[i];
+        //val[i] = vv[i];
+    //}
+    //shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
+    //
+    //delete[] ii;
+    //delete[] jj;
+    //delete[] val;
+    //
+    shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 
-    delete[] ii;
-    delete[] jj;
-    delete[] val;
 
     use_xk = false;
 
@@ -632,6 +647,7 @@ abcd::pcgS ( VECTOR_double &b )
             cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
             return x;     
         }
+        cout << "Iteration  " << i << " residual " << resid << endl;
 
         rho_1(0) = rho(0);
     }

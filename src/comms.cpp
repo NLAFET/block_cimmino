@@ -29,12 +29,20 @@ void abcd::distributePartitions()
 
     if(world.rank() == 0) {
         std::vector<int> nnz_parts;
+        std::vector<int> m_parts;
         std::vector<int> groups;
         for(int k = 0; k < nbparts; k++) {
             nnz_parts.push_back(partitions[k].NumNonzeros());
+            m_parts.push_back(partitions[k].dim(0));
         }
 
-        abcd::partitionWeights(groups, nnz_parts, parallel_cg);
+        //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
+        abcd::partitionWeights(groups, m_parts, parallel_cg);
+        clog << "Groups : [" << groups[0] + 1;
+        for(int k = 1; k < parallel_cg; k++) {
+            clog  << ", "<< groups[k] - groups[k-1];
+        }
+        clog << "]" << endl;
 
         // first start by the master :
         for(int i = 0; i <= groups[0] ; i++)
@@ -72,6 +80,7 @@ void abcd::distributePartitions()
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
             std::vector<int> merge_index;
+            merge_index.reserve(n);
             for(int j = st; j <= groups[i] ; j++) {
                 std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
             }
@@ -93,6 +102,9 @@ void abcd::distributePartitions()
                 std::vector<int> inter2;
                 std::vector<int>::iterator it1 = group_column_index[i].begin();
                 std::vector<int>::iterator it2 = group_column_index[j].begin();
+
+                inter1.reserve(group_column_index[j].size());
+                inter2.reserve(group_column_index[j].size());
 
                 while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
                     if(*it1 < *it2) {

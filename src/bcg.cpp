@@ -3,6 +3,7 @@
 
 void abcd::bcg(MV_ColMat_double &b)
 {
+    double t, t1, t2, t1_total, t2_total;
     mpi::communicator world;
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
@@ -55,6 +56,7 @@ void abcd::bcg(MV_ColMat_double &b)
         //VECTOR_double vt = B(k);
         //u.setCol(vt, k);
     //}
+    t1_total = MPI_Wtime();
     if(use_xk) {
         MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
         r.setCols(sp, 0, s);
@@ -62,6 +64,7 @@ void abcd::bcg(MV_ColMat_double &b)
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, s);
     }
+    t1_total = MPI_Wtime() - t1_total;
     // orthogonalize
     // r = r*gamma^-1
     if(gqr(r, r, gammak, s, false) != 0){
@@ -78,11 +81,12 @@ void abcd::bcg(MV_ColMat_double &b)
     int it = 0;
     double rho = 1;
     std::vector<double> grho(inter_comm.size());
-    double mrho;
 
     double ti = MPI_Wtime();
 
+    t2_total = MPI_Wtime();
     rho = compute_rho(Xk, u, thresh);
+    t2_total = MPI_Wtime() - t2_total;
     if(inter_comm.rank() == 0 && verbose) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
@@ -93,8 +97,11 @@ void abcd::bcg(MV_ColMat_double &b)
             //cout << "ITERATION " << it + 1 << " Rho = " << rho << endl;
         //}
         it++;
+        t = MPI_Wtime();
 
         qp = sumProject(0e0, b, 1e0, p);
+
+        t1 = MPI_Wtime() - t;
 
         if(gqr(p, qp, betak, s, true) != 0){
             gmgs(p, qp, betak, s, true);
@@ -140,15 +147,22 @@ void abcd::bcg(MV_ColMat_double &b)
 
         p = r + gemmColMat(p, betak);
 
+        t2 = MPI_Wtime();
         rho = abcd::compute_rho(Xk, u, thresh);
+        t2 = MPI_Wtime() - t2;
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
+        //
+        t = MPI_Wtime() - t;
         if(world.rank() == 0 && verbose){
-            cout << "ITERATION " << it << " rho = " << rho << endl;
-            cout << endl;
+            clog << "ITERATION " << it << " rho = " << rho << "\t Timings: " <<
+                //std::setprecision(1) << 
+                t << " [" << t1 << "," << t2 << "]" << endl;
             //cout << ". " << flush; 
         }
+        t1_total += t1;
+        t2_total += t2;
     }
 
     if(inter_comm.rank() == 0) {
@@ -156,6 +170,8 @@ void abcd::bcg(MV_ColMat_double &b)
         cout << "BCG Rho: " << rho << endl;
         cout << "BCG Iterations : " << it << endl;
         cout << "BCG TIME : " << MPI_Wtime() - ti << endl;
+        cout << "SumProject time : " << t1_total << endl;
+        cout << "Rho Computation time : " << t2_total << endl;
         cout << endl;
     }
 }
@@ -165,9 +181,11 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //double nrmX = x.norm();
     int s = x.dim(1);
     MV_ColMat_double R(m, s, 0);
+/*
     int pos = 0;
     int ci;
-    double gnrmx, nrmXfmX;
+*/
+    double /*gnrmx,*/ nrmXfmX;
     //std::vector<double> vnrmx(inter_comm.size());
 
     //for(int p = 0; p < partitions.size(); p++) {
@@ -270,9 +288,6 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         VECTOR_double p_k = p(k);
         VECTOR_double ap_k = ap(k);
         r(k, k) = abcd::ddot(p_k, ap_k);
-        cout << r << endl;
-        cout << ap_k << endl;
-        cout << p_k << endl;
 
         if(abs(r(k, k)) < abs(r(0,0))*1e-16) {
             r(k, k) = 1;
@@ -387,7 +402,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     char right = 'R';
 
     double *r_ptr = r.ptr();
-    int rsz = s* s;
+    //int rsz = s* s;
 
 
     //double tt = MPI_Wtime();
@@ -410,7 +425,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 //     For the moment if there is an error, just crash!
     if(ierr != 0){
         cout << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
-        cout << r << endl;
         //exit(0);
         return ierr;
     }

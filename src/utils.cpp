@@ -3,13 +3,14 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
 
+using namespace std;
 using namespace boost::lambda;
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 {
     int total_size = std::accumulate(weights.begin(), weights.end(), 0);
-    int mean = total_size / nb_parts;
+    int mean = floor((double)total_size / nb_parts);
     int cum = 0;
     int precum = 0;
 
@@ -193,6 +194,7 @@ vector<int> sort_indexes(const int *v, const int nb_el) {
 
     typedef std::pair<int,int> pair_type;
     std::vector< std::pair<int,int> > vp;
+    vp.reserve(nb_el);
 
     for(int i = 0; i < nb_el; i++)
         vp.push_back( std::make_pair<int,int>(v[i], i) );
@@ -211,13 +213,14 @@ vector<int> sort_indexes(const vector<T> &v) {
 
     typedef std::pair<T,int> pair_type;
     std::vector< std::pair<T,int> > vp;
+    vp.reserve(v.size());
     for(int i = 0; i < v.size(); i++)
         vp.push_back( std::make_pair<T,int>(v[i], i) );
 
     // sort indexes based on comparing values in v
-    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+    //sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
 
     std::vector<int> idx;
-    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    //transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
     return idx;
 }
