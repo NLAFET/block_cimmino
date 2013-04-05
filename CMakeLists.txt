@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
 
+include(abcdCmake.in)
 project(abcd CXX C Fortran)
 
-include(abcdCmake.in)
 
 find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
@@ -18,6 +18,7 @@ set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 include_directories(
   include
   ${Boost_INCLUDE_DIRS}
+  ${BOOST_ROOT}
   ${SPARSELIB_DIR}/include
   ${MV_DIR}/include
   ${MUMPS_INCLUDE_DIR}
