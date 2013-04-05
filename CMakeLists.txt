@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
 
+include(abcdCmake.in)
 project(abcd CXX C Fortran)
 
-include(abcdCmake.in)
 
 find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
