@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
 
-SET(CMAKE_CXX_COMPILER mpic++)
-SET(CMAKE_C_COMPILER mpicc)
-#SET(CMAKE_CXX_FLAGS "-fopenmp")
-
-#Configuration du projet
 project(Test_abcd)
 
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
@@ -32,7 +27,6 @@ add_executable(
 target_link_libraries(
     test_abcd
     abcd 
-    patoh
     ${Boost_LIBRARIES}
     ${LIBS}
 )
