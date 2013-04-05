@@ -25,15 +25,15 @@ int main(int argc, char* argv[])
     if(world.rank() == 0) {
         string config_file;
         if(argc != 2) {
-            config_file = new string("config_file.info");
+            config_file = "config_file.info";
             //clog << "Usage " << argv[0] << " config_file.json" << endl;
             //exit(-1);
         } else {
-            config_file = new string(argv[0]);
+            config_file = argv[1];
         }
 
         /* open the config file */
-        ifstream conf_file(argv[1]);
+        ifstream conf_file(config_file.c_str());
         boost::property_tree::ptree pt;
 
         if(conf_file){
