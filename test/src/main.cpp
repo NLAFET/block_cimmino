@@ -23,9 +23,13 @@ int main(int argc, char* argv[])
 
     // This should be done only by the master
     if(world.rank() == 0) {
+        string config_file;
         if(argc != 2) {
-            clog << "Usage " << argv[0] << " config_file.json" << endl;
-            exit(-1);
+            config_file = new string("config_file.info");
+            //clog << "Usage " << argv[0] << " config_file.json" << endl;
+            //exit(-1);
+        } else {
+            config_file = new string(argv[0]);
         }
 
         /* open the config file */
