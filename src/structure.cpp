@@ -56,7 +56,7 @@ void abcd::partitionMatrix()
                 cut, *partweights, ret;
             char cutdef[] = "CUT";
 
-            CompCol_Mat_double t_A = A;
+            CompCol_Mat_double t_A = Coord_Mat_double(A);
 
             double t = MPI_Wtime();
             cout << "[-] launching PaToH" << endl;
