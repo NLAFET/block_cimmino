@@ -98,6 +98,7 @@ private:
     // Cimmino
     void initializeCimmino();
     void distributeRhs();
+    void distributeNewRhs();
     void bcg(MV_ColMat_double &b);
     void solveABCD(MV_ColMat_double &b);
     MV_ColMat_double solveS ( MV_ColMat_double &f );
@@ -168,6 +169,8 @@ private:
     MV_ColMat_double RRand;
 
     CompRow_Mat_double A;
+
+    bool runSolveS;
 
 public:
     /***************************************************************************
