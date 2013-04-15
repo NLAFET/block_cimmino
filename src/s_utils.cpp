@@ -596,7 +596,7 @@ abcd::pcgS ( VECTOR_double &b )
    //
    DMUMPS_STRUC_C mu = buildM();
 
-   //exit(0);
+   exit(0);
 
     double resid, tol = 1e-10;
     int max_iter = size_c;
