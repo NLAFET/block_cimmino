@@ -327,20 +327,15 @@ void abcd::distributeRhs()
         // Build my part of the RHS
         int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
 
-        if(rhs==NULL){
-            //rhs = new double[r * nrhs];
-            //for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
-            rhs = new double[n_l * nrhs];
-
-            //for(int j = 0; j < obj.nrhs; j++){
-                //for(int i = 0; i < obj.n_l; i++){
-                    ////obj.rhs[i + j * obj.n_l] = j+1;
-                    //obj.rhs[i + j * obj.n_l] = ((rand()%10)+j+1)/10; 
-                //}
-            //}
-        }
 
         if(use_xf){
+
+            if(rhs==NULL){
+                //rhs = new double[r * nrhs];
+                //for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
+                rhs = new double[n_l * nrhs];
+
+            }
 
             nrmXf = 0;
 
@@ -375,34 +370,46 @@ void abcd::distributeRhs()
                 }
             }
         } else {
-            B = MV_ColMat_double(m_l, block_size);
+            if(rhs==NULL){
+                rhs = new double[n_l * nrhs];
 
-            Xf = MV_ColMat_double(A.dim(1), nrhs);
-            for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < A.dim(1); i++){
-                    rhs[i + j * A.dim(1)] = j+1;
-                    //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
+                B = MV_ColMat_double(m_l, block_size);
+
+                Xf = MV_ColMat_double(A.dim(1), nrhs);
+                for(int j = 0; j < nrhs; j++){
+                    for(int i = 0; i < A.dim(1); i++){
+                        rhs[i + j * A.dim(1)] = j+1;
+                        //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
+                    }
                 }
-            }
 
-            nrmXf = 0;
+                nrmXf = 0;
 
-            for(int j = 0; j < nrhs; j++){
-                VECTOR_double xf_col(A.dim(1));
-                for(int i = 0; i < A.dim(1); i++) {
-                    xf_col[i] = rhs[i + j * A.dim(1)];
-                    if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
+                for(int j = 0; j < nrhs; j++){
+                    VECTOR_double xf_col(A.dim(1));
+                    for(int i = 0; i < A.dim(1); i++) {
+                        xf_col[i] = rhs[i + j * A.dim(1)];
+                        if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
+                    }
+                    Xf.setCol(xf_col, j);
                 }
-                Xf.setCol(xf_col, j);
-            }
 
-            MV_ColMat_double BB = smv(A, Xf);
+                MV_ColMat_double BB = smv(A, Xf);
 
-            for(int j = 0; j < nrhs; j++){
-                //VECTOR_double t(rhs+j*m_l, m_l);
-                //B.setCol(t, j);
-                //B.push_back(t);
-                B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
+                for(int j = 0; j < nrhs; j++){
+                    //VECTOR_double t(rhs+j*m_l, m_l);
+                    //B.setCol(t, j);
+                    //B.push_back(t);
+                    B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
+                }
+            } else {
+                B = MV_ColMat_double(m_l, block_size);
+
+                for(int j = 0; j < nrhs; j++){
+                    for(int i = 0; i < m_l; i++) {
+                        B(i, j) = rhs[i + j*m_l];
+                    }
+                }
             }
 
             if(block_size > nrhs) {
@@ -468,6 +475,57 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, itmax, 0);
     mpi::broadcast(inter_comm, threshold, 0);
     mpi::broadcast(inter_comm, dcntl[10], 0);
+
+    delete[] rhs;
+}
+
+void abcd::distributeNewRhs()
+{
+    mpi::communicator world;
+
+
+    if(world.rank() == 0) {
+
+        int r_pos = 0;
+        // Build my part of the RHS
+        int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+
+        r_pos += r;
+
+        double *b_ptr = B.ptr();
+
+        // for other masters except me!
+        for(int k = 1; k < parallel_cg; k++) {
+            // get the partitions that will be sent to the master
+            int rows_for_k;
+            inter_comm.recv(k, 16, rows_for_k);
+            inter_comm.send(k, 17, nrhs);
+            for(int j = 0; j < block_size; j++) {
+                inter_comm.send(k, 18, b_ptr + r_pos + j * m_l, rows_for_k);
+            }
+
+            r_pos += rows_for_k;
+        }
+
+    } else {
+        inter_comm.send(0, 16, m);
+        inter_comm.recv(0, 17, nrhs);
+
+        //b = Eigen::MatrixXd(m, nrhs);
+        //b.setZero();
+
+        int size_rhs = m*block_size;
+        rhs = new double[size_rhs];
+        for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
+
+        B = MV_ColMat_double(m, block_size);
+        for(int j = 0; j < block_size; j++) {
+
+            inter_comm.recv(0, 18, rhs + j * m, m);
+            VECTOR_double t(rhs+j*m, m);
+            B.setCol(t, j);
+        }
+    }
 
     delete[] rhs;
 }
