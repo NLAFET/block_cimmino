@@ -42,13 +42,6 @@ abcd::solveS ( MV_ColMat_double &f )
         S = abcd::buildS();
     }
 
-    inter_comm.barrier(); //useless! used for timing
-    if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
-    }
-
     //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
     //inter_comm.barrier();
     //
@@ -62,7 +55,6 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
-    cout << mu.comm_fortran << endl;
 
     dmumps_c(&mu);
 
@@ -71,7 +63,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        strcpy(mu.write_problem, "/tmp/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -81,26 +73,78 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.n = S.dim(0);
 
     // parallel analysis if the S is large enough
-    if(mu.n >= 200) {
-        mu.icntl[28 - 1] =  2;
-    }
+    //if(mu.n >= 200) {
+        //mu.icntl[28 - 1] =  2;
+    //}
     mu.icntl[8  - 1] =  7;
     mu.icntl[7  - 1] =  2;
     mu.icntl[14 - 1] =  70;
 
+#ifdef CENTRALIZE
+    /*  This part is in case it's centralization */
+
+    //get the total nz
+    int loc_nz = S.NumNonzeros();
+    mpi::all_reduce(inter_comm, loc_nz, mu.nz, std::plus<int>());
+
+    // get everything to the master
+    std::vector<int> irn_loc (loc_nz);
+    std::vector<int> jcn_loc (loc_nz);
+    std::vector<double> a_loc(loc_nz);
+
+    for(int i = 0; i < loc_nz; i++){
+        irn_loc[i] = S.row_ind(i) + 1;
+        jcn_loc[i] = S.col_ind(i) + 1;
+        a_loc[i] = S.val(i);
+    }
+    
+    if(IRANK == 0){
+
+        mu.irn = new int[mu.nz];
+        mu.jcn = new int[mu.nz];
+        mu.a   = new double[mu.nz];
+
+        memcpy( mu.irn, &irn_loc[0], loc_nz * sizeof(int));
+        memcpy( mu.jcn, &jcn_loc[0], loc_nz * sizeof(int));
+        memcpy( mu.a  , &a_loc[0],   loc_nz * sizeof(double));
+
+        int current_pos = loc_nz;
+
+        for(int i = 1; i < inter_comm.size(); i++){
+
+            int rnz; 
+            inter_comm.recv(i, 70, rnz);
+
+            inter_comm.recv(i, 71, mu.irn + current_pos, rnz);
+            inter_comm.recv(i, 72, mu.jcn + current_pos, rnz);
+            inter_comm.recv(i, 73, mu.a   + current_pos, rnz);
+
+            current_pos += rnz;
+        }
+
+    } else {
+        inter_comm.send(0, 70, loc_nz);
+        inter_comm.send(0, 71, &irn_loc[0], loc_nz);
+        inter_comm.send(0, 72, &jcn_loc[0], loc_nz);
+        inter_comm.send(0, 73, &a_loc[0], loc_nz);
+    }
+
+    //if(IRANK == 0) cout << "TOTAL " << mu.nz << endl;
+    //IBARRIER;
+    //exit(0);
+
+#else
     if(inter_comm.size() == 1){ 
         mu.nz= S.NumNonzeros();
-        //mu.irn= S.rowind_ptr();
-        //mu.jcn= S.colind_ptr();
         mu.irn = new int[mu.nz];
         mu.jcn = new int[mu.nz];
         mu.a= S.val_ptr();
+
         for(int i = 0; i < mu.nz; i++){
-            //mu.irn[i]++;
-            //mu.jcn[i]++;
             mu.irn[i] = S.row_ind(i) + 1;
             mu.jcn[i] = S.col_ind(i) + 1;
         }
+
     } else {
         mu.icntl[18 - 1]= 3;
         mu.nz_loc = S.NumNonzeros();
@@ -119,6 +163,15 @@ abcd::solveS ( MV_ColMat_double &f )
             mu.a_loc[i] = S.val(i);
         }
     }
+#endif
+
+    inter_comm.barrier(); //useless! used for timing
+    if(inter_comm.rank() == 0){
+        cout << "*                                  *" << endl;
+        cout << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
+        cout << "*                                  *" << endl;
+    }
+
     t = MPI_Wtime();
 
     mu.job = 1;
