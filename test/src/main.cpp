@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
             obj.icntl[13]   = pt.get<int>("augmentation.denserhs", 0);
             obj.icntl[14]   = pt.get<int>("augmentation.multirhs", 256);
             obj.icntl[15]   = pt.get<int>("augmentation.iterative", 0);
-            obj.icntl[15]   = pt.get<double>("augmentation.precond", 0.0);
+            obj.dcntl[15]   = pt.get<double>("augmentation.precond", 0.0);
         }
 
         obj.parallel_cg = pt.get<int>("dist_scheme", obj.nbparts < world.size() ? obj.nbparts : world.size());
