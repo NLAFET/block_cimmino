@@ -62,6 +62,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+    cout << mu.comm_fortran << endl;
 
     dmumps_c(&mu);
 
@@ -80,11 +81,11 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.n = S.dim(0);
 
     // parallel analysis if the S is large enough
-    //if(mu.n >= 200) {
-        //mu.icntl[28 - 1] =  2;
-    //}
+    if(mu.n >= 200) {
+        mu.icntl[28 - 1] =  2;
+    }
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  0;
+    mu.icntl[7  - 1] =  2;
     mu.icntl[14 - 1] =  70;
 
     if(inter_comm.size() == 1){ 
@@ -104,12 +105,18 @@ abcd::solveS ( MV_ColMat_double &f )
         mu.icntl[18 - 1]= 3;
         mu.nz_loc = S.NumNonzeros();
 
-        mu.irn_loc = S.rowind_ptr();
-        mu.jcn_loc = S.colind_ptr();
-        mu.a_loc = S.val_ptr();
+        mu.irn_loc = new int[mu.nz_loc];
+        mu.jcn_loc = new int[mu.nz_loc];
+        mu.a_loc   = new double[mu.nz_loc];
+        //mu.irn_loc = S.rowind_ptr();
+        //mu.jcn_loc = S.colind_ptr();
+        //mu.a_loc = S.val_ptr();
         for(int i = 0; i < mu.nz_loc; i++){
-            mu.irn_loc[i]++;
-            mu.jcn_loc[i]++;
+            //mu.irn_loc[i]++;
+            //mu.jcn_loc[i]++;
+            mu.irn_loc[i] = S.row_ind(i) + 1;
+            mu.jcn_loc[i] = S.col_ind(i) + 1;
+            mu.a_loc[i] = S.val(i);
         }
     }
     t = MPI_Wtime();
