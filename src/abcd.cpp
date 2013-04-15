@@ -75,7 +75,7 @@ int abcd::bc(int job)
             cout << "[+] Launching Solve" << endl;
         }
         if(instance_type == 0) {
-            if(size_c == 0 && inter_comm.rank() == 0 && icntl[10] != 0 && runSolveS != true){
+            if(size_c == 0 && inter_comm.rank() == 0 && icntl[10] != 0){
                 cout << "Size of S is 0, therefore launching bcg" << endl;
                 icntl[10] = 0;
             }
