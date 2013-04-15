@@ -166,6 +166,7 @@ abcd::abcd()
     size_c = 0;
     verbose = false;
     threshold = 1e-12;
+    runSolveS = false;
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
 
