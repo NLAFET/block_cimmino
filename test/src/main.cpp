@@ -194,11 +194,11 @@ int main(int argc, char* argv[])
             obj.bc(2);
 
             obj.nrhs = 1;
-            obj.itmax = 1500;
             // works only in sequential for the moment
             obj.use_xf = false;
 
             obj.block_size = pt.get<int>("system.block_size", 1);
+            obj.itmax = pt.get<int>("system.itmax", 2000);
 
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);
