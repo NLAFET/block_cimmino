@@ -51,6 +51,7 @@ void abcd::partitionMatrix()
          *  PaToH partitioning
          *-----------------------------------------------------------------------------*/
         case 3:
+#ifdef PATOH
             PaToH_Parameters args;
             int _c, _n, _nconst, _imba, _ne, *cwghts, *nwghts, *xpins, *pins, *partvec,
                 cut, *partweights, ret;
@@ -163,6 +164,9 @@ void abcd::partitionMatrix()
             delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
                 ir, jc, val;
             PaToH_Free();
+#else
+	    throw -99;
+#endif
             break;
     }
 
