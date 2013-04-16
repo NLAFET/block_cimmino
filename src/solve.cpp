@@ -66,7 +66,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
         double *f_ptr = f.ptr();
         MV_ColMat_double ff(size_c, 1, 0);
         double *f_o = ff.ptr();
-        mpi::reduce(inter_comm, f_ptr, size_c, f_o, or_bin, 0);
+        mpi::all_reduce(inter_comm, f_ptr, size_c, f_o, or_bin);
         f = ff;
     }
     if(inter_comm.rank() == 0) cout << "Time to centralize f : " << MPI_Wtime() - t << endl;
@@ -76,14 +76,18 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "| [->] Solving Sz = f              |" << endl;
         cout << "*                                  *" << endl;
     }
+
     if(icntl[15] != 0){
+        MV_ColMat_double Ytf(m_l, 1, 0);
+
         double *f_ptr = f.ptr();
 
         VECTOR_double f0 = f.data();
         f0 = pcgS(f0);
         f.setData(f0);
 
-        mpi::broadcast(inter_comm, f_ptr, size_c, 0);
+        //mpi::broadcast(inter_comm, f_ptr, size_c, 0);
+
     } else {
         f = solveS(f);
     }
@@ -149,10 +153,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     // the final solution (distributed)
     f = w + f;
-    //cout << "last element of f : " << f(n-1, 0) << endl;
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
+
+    cout << "last element of f : " << f(n-1, 0) << endl;
 
     //if(inter_comm.rank()==0){
         //zrhs = MV_ColMat_double(m, 1, 0);

@@ -293,9 +293,9 @@ abcd::buildS ( std::vector<int> cols )
             perc /= my_cols.size();
             perc *= 100;
 
-            clog << IRANK << " ["<< floor(perc) << "%] : " 
+            //clog << IRANK << " ["<< floor(perc) << "%] : " 
                 //<< end_pos - my_cols.begin() << " / " << my_cols.size()
-                << endl;
+                //<< endl;
 
             std::vector<int> cur_cols;
 
@@ -457,8 +457,8 @@ abcd::prodSv ( MV_ColMat_double &V )
     DMUMPS_STRUC_C 
 abcd::buildM (  )
 {
-    cout << selected_S_columns.size() << endl;
     Coord_Mat_double M = buildS(selected_S_columns);
+    cout << IRANK << " Selected : " << selected_S_columns.size() << " NZ : " << M.NumNonzeros() << endl;
 
     S = buildS();
 
@@ -494,8 +494,7 @@ abcd::buildM (  )
                 mv.push_back(v);
             }
         }
-        cout << "Selected : " << selected_S_columns.size() << endl;
-        cout << "Skipped  : " << skipped_S_columns.size() << endl;
+        //cout << "Skipped  : " << skipped_S_columns.size() << endl;
 
         for(int i = 0; i < skipped_S_columns.size(); i++){
 
@@ -617,21 +616,27 @@ abcd::buildM (  )
     VECTOR_double
 abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
 {
-    //VECTOR_double sol(z);
-    //if(inter_comm.rank() == 0){
-        //mu.rhs = sol.ptr();
-        //mu.nrhs = 1;
-    //}
-    mu.rhs = new double[z.size()];
-    for(int i = 0; i < z.size(); i++) mu.rhs[i] = z(i);
-    mu.nrhs = 1;
+    if(IRANK == 0) {
+        mu.rhs = new double[z.size()];
+        for(int i = 0; i < z.size(); i++) mu.rhs[i] = z(i);
+        mu.nrhs = 1;
+    }
 
     mu.job = 3;
     dmumps_c(&mu);
-    VECTOR_double sol(mu.rhs, z.size());
-    delete[] mu.rhs;
+    if(IRANK == 0){
+        VECTOR_double sol(mu.rhs, z.size());
+        double *sol_ptr = sol.ptr();
+        mpi::broadcast(inter_comm, sol_ptr, size_c, 0);
+        delete[] mu.rhs;
+        return sol;
+    } else {
+        VECTOR_double sol(z.size(), 0);
+        double *sol_ptr = sol.ptr();
+        mpi::broadcast(inter_comm, sol_ptr, size_c, 0);
+        return sol;
+    }
 
-    return sol;
 }		/* -----  end of function abcd::solveM  ----- */
 
 
@@ -644,15 +649,13 @@ abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
     VECTOR_double
 abcd::pcgS ( VECTOR_double &b )
 {
-    //CG(const Matrix &A, Vector &x, const Vector &b,
-   //const Preconditioner &M, int &max_iter, Real &tol)
-   //
-   DMUMPS_STRUC_C mu = buildM();
-
-   exit(0);
-
     double resid, tol = 1e-10;
+
+    //int max_iter = 2;
     int max_iter = size_c;
+
+    DMUMPS_STRUC_C mu;
+    if(dcntl[15] > 0) mu = buildM();
 
     VECTOR_double p, z, q;
     VECTOR_double alpha(1), beta(1), rho(1), rho_1(1);
@@ -666,36 +669,43 @@ abcd::pcgS ( VECTOR_double &b )
 
     if (normb == 0.0) 
         normb = 1;
-    
-    if ((resid = norm(r) / normb) <= tol) {
+
+    resid = norm(r) / normb;
+
+    if (resid <= tol) {
         tol = resid;
         max_iter = 0;
         return 0;
     }
 
     for (int i = 1; i <= max_iter; i++) {
-        //z = r;
-        z = solveM(mu, r);
+        if(dcntl[15] > 0) { 
+            z = solveM(mu, r);
+        } else {
+            z = r;
+        }
+
         rho(0) = dot(r, z);
-        //rho(0) = dot(r, r);
         
         if (i == 1)
             p = z;
-            //p = r;
         else {
             beta(0) = rho(0) / rho_1(0);
             p = z + beta(0) * p;
-            //p = r + beta(0) * p;
         }
         
-        //q = A*p;
         MV_ColMat_double pv(p.ptr(), size_c, 1);
         Szk = prodSv(pv);
-        q = Szk(0);
 
+        double *f_ptr = Szk.ptr();
+        MV_ColMat_double ff(size_c, 1, 0);
+        double *f_o = ff.ptr();
+        mpi::all_reduce(inter_comm, f_ptr, size_c, f_o, or_bin);
+
+        q = ff(0);
 
         alpha(0) = rho(0) / dot(p, q);
-        
+
         x += alpha(0) * p;
         r -= alpha(0) * q;
 
@@ -704,16 +714,19 @@ abcd::pcgS ( VECTOR_double &b )
         if (resid <= tol) {
             tol = resid;
             max_iter = i;
-            cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
+            if(IRANK == 0)
+                cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
             return x;     
         }
-        cout << "Iteration  " << i << " residual " << resid << endl;
+        if(IRANK == 0)
+            cout << "Iteration  " << i << " residual " << resid << endl;
 
         rho_1(0) = rho(0);
     }
     
     tol = resid;
-    cout << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
+    if(IRANK == 0)
+        cout << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
 
     return x;
 }		/* -----  end of function abcd::pcgS  ----- */

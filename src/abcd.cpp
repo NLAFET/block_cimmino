@@ -40,7 +40,8 @@ int abcd::bc(int job)
             mpi::broadcast(inter_comm, m_o, 0);
             mpi::broadcast(inter_comm, n_o, 0);
             mpi::broadcast(inter_comm, nz_o, 0);
-            mpi::broadcast(inter_comm, icntl, 0);
+            mpi::broadcast(inter_comm, icntl, 20, 0);
+            mpi::broadcast(inter_comm, dcntl, 20, 0);
             if( icntl[10] != 0 )
                 mpi::broadcast(inter_comm, size_c, 0);
         }
@@ -75,6 +76,10 @@ int abcd::bc(int job)
             cout << "[+] Launching Solve" << endl;
         }
         if(instance_type == 0) {
+
+            mpi::broadcast(inter_comm, icntl, 20, 0);
+            mpi::broadcast(inter_comm, dcntl, 20, 0);
+
             if(size_c == 0 && inter_comm.rank() == 0 && icntl[10] != 0){
                 cout << "Size of S is 0, therefore launching bcg" << endl;
                 icntl[10] = 0;
