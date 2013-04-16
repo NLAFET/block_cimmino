@@ -1,18 +1,32 @@
 #include <abcd.h>
+#include <Eigen/src/misc/blas.h>
+#include <boost/lambda/lambda.hpp>
+#include <boost/lambda/bind.hpp>
+
+using namespace std;
+using namespace boost::lambda;
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 {
-    int mean = std::accumulate(weights.begin(), weights.end(), 0) / nb_parts;
+    int total_size = std::accumulate(weights.begin(), weights.end(), 0);
+    int mean = floor((double)total_size / nb_parts);
     int cum = 0;
     int precum = 0;
+
+    if(nb_parts == weights.size()){
+        for(int i = 0; i < weights.size(); i++){
+            parts.push_back(i); 
+        }
+        return;
+    }
 
     for(int c = 0; c < weights.size(); c++) {
         precum = cum;
         cum += weights[c];
 
-        if(cum >= mean) {
-            if((mean - precum) > (cum - mean)) {
+        if(cum > mean) {
+            if((mean - precum) > 1.5*(cum - mean)) {
                 parts.push_back(c);
                 cum = 0;
             } else {
@@ -30,41 +44,31 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
     }
 }
 ///DDOT
-Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
+double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 {
-    int ln = p.cols();
-    int lm = p.rows();
-    int rn = ap.cols();
-    int rm = ap.rows();
+    int lm = p.size();
+    int rm = ap.size();
     if(lm != rm) throw - 800;
 
-    Eigen::MatrixXd loc_p(lm, ln);
-    Eigen::MatrixXd loc_ap(rm, rn);
-    Eigen::MatrixXd loc_r(ln, rn);
-    Eigen::MatrixXd r(ln, rn);
-    loc_ap.setZero();
-    loc_p.setZero();
-    loc_r.setZero();
+    VECTOR_double loc_p(lm, 0);
+    VECTOR_double loc_ap(rm, 0);
+    double loc_r, r;
 
     int pos = 0;
     for(int i = 0; i < lm; i++) {
-        if(comm_map(i) == 1) {
-            for(int j = 0; j < ln; j++) {
-                loc_p(pos, j) = p(i, j);
-            }
-            for(int j = 0; j < rn; j++) {
-                loc_ap(pos, j) = ap(i, j);
-            }
+        if(comm_map[i] == 1) {
+            loc_p(pos) = p(i);
+            loc_ap(pos) = ap(i);
             pos++;
         }
     }
 
     // R = P'AP
-    loc_r = loc_p.transpose() * loc_ap;
+    for(int i = 0; i < lm; i++){
+        loc_r += loc_p(i) * loc_ap(i);
+    }
 
-    const double *l_r_ptr = loc_r.data();
-    double *r_ptr = r.data();
-    mpi::all_reduce(inter_comm, l_r_ptr, ln * rn,  r_ptr, std::plus<double>());
+    mpi::all_reduce(inter_comm, loc_r, r, std::plus<double>());
 
     return r;
 }
@@ -75,37 +79,37 @@ Eigen::MatrixXd abcd::ddot(Eigen::MatrixXd p, Eigen::MatrixXd ap)
  *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
  * =====================================================================================
  */
-void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrmXfmX)
+void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
-    int rn = x.cols();
-    int rm = x.rows();
+    int rn = x.dim(1);
+    int rm = x.dim(0);
+
     nrmX = 0;
     nrmR = 0;
 
-    Eigen::MatrixXd loc_x(rm, rn);
-    Eigen::MatrixXd loc_r(m, rn);
-    Eigen::MatrixXd loc_xfmx(rm, rn);
-    loc_x.setZero();
-    loc_r.setZero();
-    loc_xfmx.setZero();
+    VECTOR_double nrmXV(rn, 0);
+    VECTOR_double nrmRV(rn, 0);
+
+    MV_ColMat_double loc_x(rm, rn, 0);
+    MV_ColMat_double loc_r(m, rn, 0);
+    MV_ColMat_double loc_xfmx(rm, rn, 0);
 
     int pos = 0;
     for(int i = 0; i < rm; i++) {
-        if(comm_map(i) == 1) {
+        if(comm_map[i] == 1) {
             for(int j = 0; j < rn; j++) {
-                //@todo : this stands only when there is one rhs
-                nrmX += pow(x(i, j), 2);
+                double cur = abs(x(i, j));
+                nrmXV(j) += cur;
             }
             pos++;
         }
     }
 
     pos = 0;
-    for(int p = 0; p < parts.size(); p++) {
-        Eigen::VectorXd compressed_x(parts[p].cols());
-        for(int j = 0; j < x.cols(); j++) {
-            compressed_x.setZero();
+    for(int p = 0; p < partitions.size(); p++) {
+        for(int j = 0; j < x.dim(1); j++) {
+            VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
             for(int i = 0; i < local_column_index[p].size(); i++) {
@@ -113,11 +117,12 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
                 compressed_x(x_pos) = x(ci, j);
                 x_pos++;
             }
-            loc_r.col(j).segment(pos, parts[p].rows()) = parts[p] * compressed_x;
+            VECTOR_double vj = loc_r(j);
+            vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
+            loc_r.setCol(vj, j);
         }
-        //nrmX += compressed_x.squaredNorm();
 
-        pos += parts[p].rows();
+        pos += partitions[p].dim(0);
     }
 
     double loc_nrmxfmx;
@@ -126,21 +131,32 @@ void abcd::get_nrmres(Eigen::MatrixXd x, double &nrmR, double &nrmX, double &nrm
             if(inter_comm.rank()==0)
                 cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
         } else {
-            loc_xfmx = xf - x;
-            loc_nrmxfmx = loc_xfmx.lpNorm<Infinity>();
+            loc_xfmx = Xf - x;
+            loc_nrmxfmx = infNorm(loc_xfmx);
         }
     }
 
     loc_r  = b - loc_r;
-    //nrmX = x.squaredNorm();
 
-    double loc_nrm = loc_r.squaredNorm();
-    //double loc_nrm = loc_r.lpNorm<Infinity>();
-    double nrm;
-    mpi::all_reduce(inter_comm, &loc_nrm, 1,  &nrm, std::plus<double>());
-    nrmR = sqrt(nrm);
-    mpi::all_reduce(inter_comm, &nrmX, 1,  &nrm, std::plus<double>());
-    nrmX = sqrt(nrm);
+    for(int j = 0; j<rn ; j++){
+        VECTOR_double loc_r_j = loc_r(j);
+        double loc_nrm = infNorm(loc_r_j);
+
+        //double nrms[2] = {loc_nrm, nrmXV[j]};
+        //double nrms_out[2];
+
+        mpi::all_reduce(inter_comm, &loc_nrm, 1, &nrmR, mpi::maximum<double>());
+        mpi::all_reduce(inter_comm, &nrmXV[j], 1, &nrmX, std::plus<double>());
+
+        //double temp_nrmR = sqrt(nrms_out[0]);
+        //double temp_nrmX = sqrt(nrms_out[1]);
+
+        //nrmR = nrmR < temp_nrmR ? temp_nrmR : sqrt(nrmR);
+        //nrmX = nrmX < temp_nrmX ? temp_nrmX : sqrt(nrmX);
+        //nrmR = nrms_out[0];
+        //nrmX = nrms_out[1];
+    }
+
     if(use_xf){
         if(inter_comm.size()==1)
             mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());
@@ -154,20 +170,57 @@ bool ip_comp(const dipair &l, const dipair &r)
     return l.first > r.first;
 }
 
-/// Sum nonzeros from parts
-int sum_nnz(int res, Eigen::SparseMatrix<double, RowMajor> M)
-{
-    return res += M.nonZeros();
+template <class K, class V>
+std::vector<K> get_keys(std::map<K,V> my_map){
+    std::vector<K> keys;
+    for(typename std::map<K,V>::iterator it = my_map.begin(); it != my_map.end(); it++){
+        keys.push_back(it->first);
+    }
+    return keys;
 }
-int sum_rows(int res, Eigen::SparseMatrix<double, RowMajor> M)
-{
-    return res += M.rows();
+
+double or_bin(double &a, double &b){
+    if(a!=0) return a;
+    else if(b!=0) return b;
+    else return 0;
 }
-int sum_cols(int res, Eigen::SparseMatrix<double, RowMajor> M)
-{
-    return res += M.cols();
+
+void setVal(int *lst, int sz, int ival) {
+        int i;
+        for (i=0;i < sz; i++) lst[i] = ival;
 }
-bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
-{
-    return (L.cols() < R.cols());
+
+vector<int> sort_indexes(const int *v, const int nb_el) {
+
+    typedef std::pair<int,int> pair_type;
+    std::vector< std::pair<int,int> > vp;
+    vp.reserve(nb_el);
+
+    for(int i = 0; i < nb_el; i++)
+        vp.push_back( std::make_pair<int,int>(v[i], i) );
+
+
+    // sort indexes based on comparing values in v
+    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+
+    std::vector<int> idx(vp.size());
+    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    return idx;
+}
+
+template <typename T>
+vector<int> sort_indexes(const vector<T> &v) {
+
+    typedef std::pair<T,int> pair_type;
+    std::vector< std::pair<T,int> > vp;
+    vp.reserve(v.size());
+    for(int i = 0; i < v.size(); i++)
+        vp.push_back( std::make_pair<T,int>(v[i], i) );
+
+    // sort indexes based on comparing values in v
+    //sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+
+    std::vector<int> idx;
+    //transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    return idx;
 }

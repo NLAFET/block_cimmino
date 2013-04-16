@@ -1,40 +1,78 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include <fstream>
 
 #include "abcd.h"
 
-using namespace std;
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/info_parser.hpp>
+#include <boost/property_tree/exceptions.hpp>
+#include <boost/foreach.hpp>
 
-int main(int argc, char *argv[])
+
+using namespace std;
+using namespace boost::property_tree;
+
+int main(int argc, char* argv[]) 
 {
-    mpi::environment env;
+    mpi::environment env(argc, argv);
     mpi::communicator world;
+
+    abcd obj;
 
     // This should be done only by the master
     if(world.rank() == 0) {
-        abcd obj;
-        FILE *f;
+        string config_file;
+        if(argc != 2) {
+            config_file = "config_file.info";
+            //clog << "Usage " << argv[0] << " config_file.json" << endl;
+            //exit(-1);
+        } else {
+            config_file = argv[1];
+        }
+
+        /* open the config file */
+        ifstream conf_file(config_file.c_str());
+        boost::property_tree::ptree pt;
+
+        if(conf_file){
+            try {
+                read_info(conf_file, pt);
+            } catch (info_parser::info_parser_error e){
+                clog << " *** Problem while parsing the info file" << endl
+                     << " *** The what() : " << e.what() << endl << endl
+                     << " *   Check that there is no aditional comma at the end" << endl
+                     << " *   or an unamed node" << endl;
+                exit(-1);
+            }
+            conf_file.close();
+        } else {
+            clog << "Error while opening config file" << endl;
+            exit(-2);
+        }
+
+        cout << pt.get<int>("jobtype") << endl;
+        cout << pt.get<int>("partitioning.nbparts") << endl;
+
+        /* READING THE MATRIX AND THE RHS */
+        string matrix_file;
+        try {
+            matrix_file = pt.get<string>("system.matrix_file");
+        } catch (ptree_bad_path e) {
+            clog << "Error parsing the file, you have to give the matrix name as in the example file" << endl;
+            clog << "The what() : " << e.what() << endl << endl;
+            exit(-1);
+        }
+
+        FILE *f = fopen(matrix_file.c_str(), "r");
+
+        if(f == NULL){
+            cerr << "Error opening the file '"<< matrix_file << "'" << endl;
+            exit(-1);
+        }
         MM_typecode mat_code;
 
-        /* read the file and its content */
-        //f = fopen("/home/knuthy/work/stash/offshore/offshore_pr.mtx", "r");
-        f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/gre_1107/gre_1107.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/SiO2/SiO2_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/bone010/bone010_pr.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/RM07R/RM07R.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/GT01R/GT01R.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/lhr34c/lhr34c.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/bayer01/bayer01.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/ASIC_320ks/ASIC_320ks.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/PR02R/PR02R.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/pores_3/pores_3.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/s3_sym.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/Huhs_DNA_CC.mtx", "r");
-        //f = fopen("/home/knuthy/work/stash/1970", "r");
         mm_read_banner(f, &mat_code);
         mm_read_mtx_crd_size(f, (int *)&obj.m, (int *)&obj.n, (int *)&obj.nz);
 
@@ -48,64 +86,138 @@ int main(int argc, char *argv[])
         obj.jcn = new int[obj.nz];
         obj.val = new double[obj.nz];
 
-        obj.start_index = 1;
-        obj.icntl[9] = 2;
-
-        obj.nbparts = 5;
-
-        obj.partitioning_type = 1;
-        obj.nbrows = ArrayXi(obj.nbparts);
-        //gre_1107
-        obj.nbrows << 219, 218, 223, 224, 223;
-        //
-        //bayer01
-        //obj.nbrows << 3659, 3653, 3610, 3662, 3582, 3583, 3634, 3623, 3604, 3569, 3608, 3588, 3589, 3603, 3569, 3599;
-
-        /*sio2*/
-        //obj.nbrows << 5117,5213,5200,5158,5192,5205,5145,5137,5136,5181,5181,5186,5245,5193,5249,5112,5203,5195,5141,5198,5140,5200,5146,5145,5146,5145,5212,5151,5206,5253;
-
-        /* offshore */
-        //obj.nbrows <<   8613,8761,8761,8669,8754,8710,8710,8669,8668,8732,8775,8734, 8735,8687,8686,8666,8656,8656,8625,8624,8694,8694,8519,8519, 8609,8608,8564,8564,8564,8563;
-        //obj.nbrows << 10967,11035,10957,10907,10908,11038,11079,10993,11083,11014,11013,11022,11010,11016,11004,11004,10915,11027,11028,10993,10996,10980,10934,10934,11011,10941,10942,11018,11067,11161,11017,11017,11016,10899,10994,10992,11069,10982,11019,11013,11028,11031,10972,10956,10955,10869,10869,10964,10961,10961,11061,11035,10948,10960,11042,11042,10986,10987,10967,10965,10966,10905,10982,11034,10907,11007,11007,10865,10900,10902,10862,10880,10832,10781,10781,10842,10776,10776,10958,10911,10912,10873,10961,10947,10877,10952,10952,10926,10927,10928;
-
-        obj.parallel_cg = obj.nbparts < world.size() ? obj.nbparts : world.size();
-
-        mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val,
-                             mat_code);
+        mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mat_code);
 
         cout << "Matrix information : ";
         cout << "m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
 
         fclose(f);
 
+        //read the rhs here!
+        boost::optional<string> rhs_file = pt.get_optional<string>("system.rhs_file");
+        
+        if(rhs_file){
+            FILE *rhs_f = fopen(rhs_file->c_str(), "r");
+
+            if(rhs_f == NULL){
+                cerr << "Error opening the file '"<< *rhs_file << "'" << endl;
+                exit(-1);
+            }
+
+            int nb_v, i=0;
+            double cv;
+
+            fscanf(rhs_f, "%d", &nb_v);
+
+            obj.rhs = new double[nb_v];
+            cout << "Reading "<< nb_v << " values from the rhs" << endl;
+
+            while(i < nb_v){
+                fscanf(rhs_f, "&f", &cv);
+                obj.rhs[i++] = cv;
+            }
+            fclose(rhs_f);
+        }
+        //
+        /*  DONE READING THE MATRIX AND THE RHS */
+
+        try{
+            ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning");
+        } catch (ptree_bad_path e){
+            clog << "Error parsing the file, you have to give the partitioning as in the example file" << endl;
+            clog << "The what() : " << e.what() << endl << endl;
+            exit(-1);
+        }
+
+        obj.nbparts = pt.get<int>("partitioning.nbparts");
+
+        if(obj.nbparts < 0 && obj.nbparts <= obj.m) {
+            clog << "Error parsing the file, the number of partitions has to be positive and smaller than the number of rows" << endl;
+            exit(-1);
+        }
+
+        obj.partitioning_type = pt.get<int>("partitioning.type", 2);
+
+        if(obj.partitioning_type == 1){
+            //std::set<int> nbrows; =  pt.get_child<int>();
+            //cout << nbrows.size() << endl;
+            //
+            try{
+                ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning.nbrows");
+            } catch (ptree_bad_path e){
+                clog << "Error parsing the file, you have to give the number of rows per partition as in the example file" << endl;
+                clog << "The what() : " << e.what() << endl << endl;
+                exit(-1);
+            }
+
+            std::vector<int> nrows;
+
+
+            BOOST_FOREACH( ptree::value_type v, pt.get_child("partitioning.nbrows") )
+            {
+                nrows.push_back(atoi(v.first.data()));
+            }
+
+            if(nrows.size() != obj.nbparts){
+                clog << "Error parsing the file, nbparts is different from the partitioning description" << endl;
+                exit(-1);
+            }
+
+            obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
+        }
+
+        obj.icntl[9]    = pt.get<int>("scaling", 2);
+
+        boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
+
+        if(augmentation){
+            obj.icntl[10]   = pt.get<int>("augmentation.type", 2);
+            obj.dcntl[10]   = pt.get<double>("augmentation.filtering", 0.0);
+            obj.icntl[11]   = pt.get<int>("augmentation.analysis", 0);
+            obj.icntl[12]   = pt.get<int>("augmentation.project_only", 0);
+            obj.icntl[13]   = pt.get<int>("augmentation.denserhs", 0);
+            obj.icntl[14]   = pt.get<int>("augmentation.multirhs", 256);
+            obj.icntl[15]   = pt.get<int>("augmentation.iterative", 0);
+            obj.dcntl[15]   = pt.get<double>("augmentation.precond", 0.0);
+        }
+
+        obj.parallel_cg = pt.get<int>("dist_scheme", obj.nbparts < world.size() ? obj.nbparts : world.size());
+
         try {
+            
+            double t = MPI_Wtime();
+
+            obj.verbose =  pt.get<int>("all_verbose", 0);
+
             obj.bc(-1);
             obj.bc(1);
             obj.bc(2);
 
-            obj.block_size = 1;
-            obj.itmax = 1000;
+            obj.nrhs = 1;
             // works only in sequential for the moment
-            obj.use_xf = true;
-            obj.rhs = new double[obj.m_l * obj.nrhs];
-            for(int j = 0; j < obj.nrhs; j++)
-                for(int i = 0; i < obj.m_l; i++)
-                    obj.rhs[i + j * obj.m_l] = j+1;
+            obj.use_xf = false;
 
+            obj.block_size = pt.get<int>("system.block_size", 1);
+            obj.itmax = pt.get<int>("system.itmax", 2000);
+
+            obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);
+
+            cout << "Total time: " << MPI_Wtime() - t << endl;
         } catch(int e) {
-            cout << "Error code : " << e << endl;
+            cout << world.rank() << " Error code : " << e << endl;
+            //exit(0);
         }
     } else {
-        abcd obj;
-
         try {
             obj.bc(-1);
             obj.bc(1);
             obj.bc(2);
             obj.bc(3);
         } catch(int e) {
-            cout << "Error code : " << e << endl;
+            cout << world.rank() << " Error code : " << e << endl;
+            if(world.rank() == 6) 
+            exit(0);
         }
     }
     world.barrier();
