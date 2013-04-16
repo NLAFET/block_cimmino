@@ -1,33 +1,38 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(CMAKE_CXX_COMPILER mpicxx)
-set(CMAKE_C_COMPILER mpicc)
-set(CMAKE_FC_COMPILER mpif90)
-SET(CMAKE_CXX_FLAGS "-std=c++0x")
 
+include(abcdCmake.in)
 project(abcd CXX C Fortran)
 
-find_package (Boost COMPONENTS mpi serialization unit_test_framework REQUIRED)
+
+find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
-set(CMAKE_BUILD_TYPE "Debug")
+#set(CMAKE_BUILD_TYPE "Debug")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
+set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
+set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
+#add_definitions(-DCOMPLEX="std::complex<double>")
 
 include_directories(
   include
   ${Boost_INCLUDE_DIRS}
-  ${MUMPS_DIR}/include/
-)
+  ${BOOST_ROOT}
+  ${SPARSELIB_DIR}/include
+  ${MV_DIR}/include
+  ${MUMPS_INCLUDE_DIR}
+  )
 
 file(
     GLOB_RECURSE
     source_files
     src/*.f
     src/*.cpp
-    include/*
 )
+
 
 add_library(abcd STATIC ${source_files})
 
 add_subdirectory(test)
+
