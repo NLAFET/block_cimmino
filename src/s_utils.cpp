@@ -63,7 +63,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     //if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/sss.mtx");
+        //strcpy(mu.write_problem, "/tmp/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -458,9 +458,10 @@ abcd::prodSv ( MV_ColMat_double &V )
 abcd::buildM (  )
 {
     Coord_Mat_double M = buildS(selected_S_columns);
-    cout << IRANK << " Selected : " << selected_S_columns.size() << " NZ : " << M.NumNonzeros() << endl;
 
     S = buildS();
+
+    double max = 0;
 
     {
         std::vector<int> mr, mc;
@@ -473,19 +474,23 @@ abcd::buildM (  )
             c = M.col_ind(i);
             r = M.row_ind(i);
             v = M.val(i);
+
             
             if(v == 0) continue;
+
 
             if( r != c ) {
                 mr.push_back(r);
                 mc.push_back(c);
                 mv.push_back(v);
 
+
                 it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
                 if(it != skipped_S_columns.end()){
                     mr.push_back(c);
                     mc.push_back(r);
                     mv.push_back(v);
+
                 }
 
             } else if (r == c) {
@@ -494,25 +499,22 @@ abcd::buildM (  )
                 mv.push_back(v);
             }
         }
-        //cout << "Skipped  : " << skipped_S_columns.size() << endl;
 
         for(int i = 0; i < skipped_S_columns.size(); i++){
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + skipped_S_columns[i]);
+            if(iti == glob_to_local.end()) continue;
 
             int ro = skipped_S_columns[i];
 
             mr.push_back(ro);
             mc.push_back(ro);
-            mv.push_back(S(ro,ro));
-
-            //double sum = 0;
-            //for(int j = 0; j < selected_S_columns.size() ; j++){
-                //int co = selected_S_columns[j];
-                //sum += M(ro, co) * M(ro, co);
-            //}
-            //mv.push_back(2*sum);
-            //mv.push_back(3);
+            //mv.push_back(S(ro,ro));
+            //if(abs(S(ro, ro)) > max) max = abs(S(ro, ro));
+            //mv.push_back(sqrt(max));
+            //
+            mv.push_back(0.5 - sqrt(max));
             //mv.push_back( 0.5*(1 + sqrt(1 - 4*sum)));
-            //cout << i << " " << sqrt(1 - 4*sum) << endl;
+            //cout << IRANK << " " << S(ro, ro) << " " << 0.5 - srow[ro] << endl;
         }
         
         M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);

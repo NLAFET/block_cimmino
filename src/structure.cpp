@@ -431,11 +431,12 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                 CompCol_Mat_double A_ij = sub_matrix(M[i], intersect);
                 CompCol_Mat_double A_ji = sub_matrix(M[j], intersect);
+
                 for(int k = 0; k < A_ji.NumNonzeros(); k++)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || icntl[15] == 2) {
+                if(filter_c != 0 || dcntl[15] > 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 

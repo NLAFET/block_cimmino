@@ -310,6 +310,9 @@ void abcd::distributePartitions()
     mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
     //nrmA = sqrt(nrmA);
     //nrmMtx = sqrt(nrmMtx);
+    //
+    mpi::broadcast(inter_comm, selected_S_columns, 0);
+    mpi::broadcast(inter_comm, skipped_S_columns, 0);
 }
 
 void abcd::distributeRhs()
