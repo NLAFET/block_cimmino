@@ -199,6 +199,7 @@ int main(int argc, char* argv[])
 
             obj.block_size = pt.get<int>("system.block_size", 1);
             obj.itmax = pt.get<int>("system.itmax", 2000);
+            obj.threshold = pt.get<double>("system.threshold", 1e-12);
 
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);
