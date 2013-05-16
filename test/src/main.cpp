@@ -137,6 +137,7 @@ int main(int argc, char* argv[])
         }
 
         obj.partitioning_type = pt.get<int>("partitioning.type", 2);
+        obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
             //std::set<int> nbrows; =  pt.get_child<int>();
