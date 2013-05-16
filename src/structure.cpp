@@ -67,7 +67,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 1.1;
+            _imba   = dcntl[8];
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -97,6 +97,8 @@ void abcd::partitionMatrix()
             args.final_imbal    = _imba;
             args.init_imbal     = _imba * 2.0;
             args.seed           = 1;
+
+            //args.initp_alg      = 12;
 
             partvec     = new int[_c];
             partweights = new int[args._k * _nconst];
@@ -151,14 +153,8 @@ void abcd::partitionMatrix()
                 }
                 f.close();
 
-                clog << "int nr[] = {";
-
-                for(unsigned k = 0; k < nbparts - 1; k++) {
-                    cout << nbrows[k] << ", ";
-                }
-
-                clog << nbrows[nbparts - 1] <<  "};" << endl;
             }
+
 
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
             delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
@@ -169,6 +165,14 @@ void abcd::partitionMatrix()
 #endif
             break;
     }
+
+    clog << "partitioning = [";
+
+    for(unsigned k = 0; k < nbparts - 1; k++) {
+        clog << nbrows[k] << ", ";
+    }
+
+    clog << nbrows[nbparts - 1] <<  "]" << endl;
 
 }
 
