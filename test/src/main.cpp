@@ -166,6 +166,7 @@ int main(int argc, char* argv[])
 
             obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
         }
+        obj.write_problem   = pt.get<string>("write_problem", "");
 
         obj.icntl[9]    = pt.get<int>("scaling", 2);
 
