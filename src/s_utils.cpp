@@ -32,17 +32,23 @@ abcd::solveS ( MV_ColMat_double &f )
     double t;
 
     if(inter_comm.rank() == 0){
-        cout << "*      ----------------------      *" << endl;
-        cout << "| [--] Building S = Y (I - P) Y^T  |" << endl;
-        cout << "*      ----------------------      *" << endl;
+        clog << "*      ----------------------      *" << endl;
+        clog << "| [--] Building S = Y (I - P) Y^T  |" << endl;
+        clog << "*      ----------------------      *" << endl;
     }
     // if not created yet, do it!
     t = MPI_Wtime();
     if( S.dim(0) == 0 ){
         S = abcd::buildS();
     }
+    inter_comm.barrier(); //useless! used for timing
+    if(inter_comm.rank() == 0){
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
+    }
 
-    //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
+    //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
     
@@ -51,7 +57,7 @@ abcd::solveS ( MV_ColMat_double &f )
      *-----------------------------------------------------------------------------*/
     t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
-    mu.sym = 0;
+    mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
@@ -76,8 +82,10 @@ abcd::solveS ( MV_ColMat_double &f )
     //if(mu.n >= 200) {
         //mu.icntl[28 - 1] =  2;
     //}
-    mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  2;
+    mu.icntl[8  - 1] =  77;
+    mu.icntl[7  - 1] =  6;
+    mu.icntl[6  - 1] =  5;
+    mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
 
 #ifdef CENTRALIZE
@@ -129,7 +137,7 @@ abcd::solveS ( MV_ColMat_double &f )
         inter_comm.send(0, 73, &a_loc[0], loc_nz);
     }
 
-    //if(IRANK == 0) cout << "TOTAL " << mu.nz << endl;
+    //if(IRANK == 0) clog << "TOTAL " << mu.nz << endl;
     //IBARRIER;
     //exit(0);
 
@@ -167,9 +175,9 @@ abcd::solveS ( MV_ColMat_double &f )
 
     inter_comm.barrier(); //useless! used for timing
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.init mumps S: " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -178,9 +186,9 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -189,13 +197,13 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     if(mu.info[0] < 0) {
-        cout << mu.info[0] << endl;
+        clog << mu.info[0] << endl;
         exit(0); 
     }
     /*-----------------------------------------------------------------------------
@@ -209,9 +217,9 @@ abcd::solveS ( MV_ColMat_double &f )
     }
 
     if(inter_comm.rank() == 0){
-        cout << "*      -------------------         *" << endl;
-        cout << "| [--] Computing z = S^-1 f        |" << endl;
-        cout << "*----------------------------------*" << endl;
+        clog << "*      -------------------         *" << endl;
+        clog << "| [--] Computing z = S^-1 f        |" << endl;
+        clog << "*----------------------------------*" << endl;
     }
 
     mu.job = 3;
@@ -301,14 +309,14 @@ abcd::buildS ( std::vector<int> cols )
 
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
 
-            int mumps_share = share > 32 ? share/2 : 16;
+            int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
                 for( int i = 0; i < size_c; i++){
-                    if(sp(i,j)!=0){
+                    if(sp(i,j)!=0 && i >= c){
                         vc.push_back(c);
                         vr.push_back(i);
                         vv.push_back(sp(i, j));
@@ -326,7 +334,7 @@ abcd::buildS ( std::vector<int> cols )
         for( int i = 0; i < size_c; i++){
         //
             //int my_bro = -1;
-            if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
+            if(inter_comm.rank() == 0) clog << " Column " << i << " out of " << size_c << endl;
 
             //for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
                     //it != col_interconnections.end(); it++) {
@@ -374,7 +382,7 @@ abcd::buildS ( std::vector<int> cols )
                 if(it->first >= n_o && comm_map[it->second] == 1){
                     //if(inter_comm.rank() > my_bro) continue;
 
-                    //cout << "Comm map : " << it->first << " " << comm_map[it->first] << endl;
+                    //clog << "Comm map : " << it->first << " " << comm_map[it->first] << endl;
                     vc.push_back(i);
                     vr.push_back(it->first - n_o);
                     vv.push_back(Xk(it->second,0));
@@ -457,9 +465,20 @@ abcd::prodSv ( MV_ColMat_double &V )
     DMUMPS_STRUC_C 
 abcd::buildM (  )
 {
-    Coord_Mat_double M = buildS(selected_S_columns);
+    if(inter_comm.rank() == 0){
+        clog << "* Building the preconditioner      *" << endl;
+        clog << " Size is : " << selected_S_columns.size() << endl;
+    }
 
-    S = buildS();
+    double t = MPI_Wtime();
+    Coord_Mat_double M = buildS(selected_S_columns);
+    clog << " Time to build M : " << MPI_Wtime() - t << endl;
+
+    if(IRANK == 0) clog << "* -----------  DONE  ------------- * " << endl;
+
+    //t = MPI_Wtime();
+    //S = buildS();
+    //clog << " Time to build S : " << MPI_Wtime() - t << endl;
 
     double max = 0;
 
@@ -470,34 +489,11 @@ abcd::buildM (  )
         std::vector<int>::iterator it;
         int r, c;
         double v;
+
         for(int i = 0; i < M.NumNonzeros(); i++){
-            c = M.col_ind(i);
-            r = M.row_ind(i);
-            v = M.val(i);
-
-            
-            if(v == 0) continue;
-
-
-            if( r != c ) {
-                mr.push_back(r);
-                mc.push_back(c);
-                mv.push_back(v);
-
-
-                it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
-                if(it != skipped_S_columns.end()){
-                    mr.push_back(c);
-                    mc.push_back(r);
-                    mv.push_back(v);
-
-                }
-
-            } else if (r == c) {
-                mr.push_back(r);
-                mc.push_back(c);
-                mv.push_back(v);
-            }
+            mr.push_back(M.row_ind(i));
+            mc.push_back(M.col_ind(i));
+            mv.push_back(M.val(i));
         }
 
         for(int i = 0; i < skipped_S_columns.size(); i++){
@@ -508,13 +504,14 @@ abcd::buildM (  )
 
             mr.push_back(ro);
             mc.push_back(ro);
+            mv.push_back(1);
             //mv.push_back(S(ro,ro));
             //if(abs(S(ro, ro)) > max) max = abs(S(ro, ro));
             //mv.push_back(sqrt(max));
             //
-            mv.push_back(0.5 - sqrt(max));
+            //mv.push_back(0.5 - sqrt(max));
             //mv.push_back( 0.5*(1 + sqrt(1 - 4*sum)));
-            //cout << IRANK << " " << S(ro, ro) << " " << 0.5 - srow[ro] << endl;
+            //clog << IRANK << " " << S(ro, ro) << " " << 0.5 - srow[ro] << endl;
         }
         
         M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
@@ -523,9 +520,9 @@ abcd::buildM (  )
     /*-----------------------------------------------------------------------------
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
-    double t;
+    
     DMUMPS_STRUC_C mu;
-    mu.sym = 0;
+    mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
@@ -536,13 +533,13 @@ abcd::buildM (  )
     mu.icntl[1] = -1;
     mu.icntl[2] = -1;
 
-    //if(inter_comm.rank() == 0){ 
+    if(inter_comm.rank() == 0){ 
         //strcpy(mu.write_problem, "/tmp/mmm.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
         //mu.icntl[3] = 2;
-    //}
+    }
 
     mu.n = M.dim(0);
 
@@ -551,7 +548,7 @@ abcd::buildM (  )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
+    mu.icntl[7  - 1] =  6;
     mu.icntl[14 - 1] =  70;
 
     if(inter_comm.size() == 1){ 
@@ -577,13 +574,17 @@ abcd::buildM (  )
     }
     t = MPI_Wtime();
 
+    IBARRIER;
+    if(inter_comm.rank() == 0)
+        clog << "* Starting Analysis of the precond *" << endl;
+
     mu.job = 1;
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Analyse M :   " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Analyse M :   " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -592,13 +593,17 @@ abcd::buildM (  )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Factorize M : " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Factorize M : " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
+    mu.icntl[0] = -1;
+    mu.icntl[1] = -1;
+    mu.icntl[2] = -1;
+
     if(mu.info[0] < 0) {
-        cout << mu.info[0] << endl;
+        clog << IRANK << " " << mu.info[0] << endl;
         exit(0); 
     }
     /*-----------------------------------------------------------------------------
@@ -658,6 +663,7 @@ abcd::pcgS ( VECTOR_double &b )
 
     DMUMPS_STRUC_C mu;
     if(dcntl[15] > 0) mu = buildM();
+    double t = MPI_Wtime();
 
     VECTOR_double p, z, q;
     VECTOR_double alpha(1), beta(1), rho(1), rho_1(1);
@@ -716,19 +722,23 @@ abcd::pcgS ( VECTOR_double &b )
         if (resid <= tol) {
             tol = resid;
             max_iter = i;
-            if(IRANK == 0)
-                cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
+            if(IRANK == 0){
+                clog << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
+                clog << "Time in iterations : " << MPI_Wtime() - t << endl;
+            }
             return x;     
         }
         if(IRANK == 0)
-            cout << "Iteration  " << i << " residual " << resid << endl;
+            clog << "Iteration  " << i << " residual " << resid << endl;
 
         rho_1(0) = rho(0);
     }
     
     tol = resid;
-    if(IRANK == 0)
-        cout << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
+    if(IRANK == 0){
+        clog << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
+        clog << "Time in iterations : " << MPI_Wtime() - t << endl;
+    }
 
     return x;
 }		/* -----  end of function abcd::pcgS  ----- */
