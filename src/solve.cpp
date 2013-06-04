@@ -32,7 +32,7 @@
 abcd::solveABCD ( MV_ColMat_double &b )
 {
 
-    double t;
+    double t, tto = MPI_Wtime();
     MV_ColMat_double w;
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
@@ -77,7 +77,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "*                                  *" << endl;
     }
 
+    t = MPI_Wtime();
     if(icntl[15] != 0){
+        if(inter_comm.rank() == 0)
+            cout << "* ITERATIVELY                      *" << endl;
+
         MV_ColMat_double Ytf(m_l, 1, 0);
 
         double *f_ptr = f.ptr();
@@ -91,7 +95,10 @@ abcd::solveABCD ( MV_ColMat_double &b )
     } else {
         f = solveS(f);
     }
+    if(IRANK == 0) 
+        cout << "| Time to solve Sz = f : " << MPI_Wtime() - t << endl;
 
+    t = MPI_Wtime();
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
         cout << "|                               T  |" << endl;
@@ -148,11 +155,14 @@ abcd::solveABCD ( MV_ColMat_double &b )
         else
             f = f - Xk;
     }
+    if(IRANK == 0) 
+        cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
 
     use_xk = false;
 
     // the final solution (distributed)
     f = w + f;
+    if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
