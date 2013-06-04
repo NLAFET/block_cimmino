@@ -313,6 +313,7 @@ void abcd::distributePartitions()
     //
     mpi::broadcast(inter_comm, selected_S_columns, 0);
     mpi::broadcast(inter_comm, skipped_S_columns, 0);
+
 }
 
 void abcd::distributeRhs()
@@ -480,6 +481,7 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, dcntl[10], 0);
 
     delete[] rhs;
+    A = CompRow_Mat_double();
 }
 
 void abcd::distributeNewRhs()
