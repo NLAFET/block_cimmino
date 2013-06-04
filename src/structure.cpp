@@ -160,6 +160,7 @@ void abcd::partitionMatrix()
             delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
                 ir, jc, val;
             PaToH_Free();
+            t_A = CompCol_Mat_double();
 #else
 	    throw -99;
 #endif
