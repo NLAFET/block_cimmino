@@ -433,23 +433,17 @@ abcd::prodSv ( MV_ColMat_double &V )
     MV_ColMat_double b; // just for decoration!
     MV_ColMat_double R(V.dim(0), V.dim(1), 0);
 
-    std::map<int,int>::iterator iti;
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
-        if(it->first >= n_o){
-            for(int j = 0; j < V.dim(1); j++) W(it->second , j) = V(it->first - n_o, j);
-
-        }
+    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
+            for(int j = 0; j < V.dim(1); j++)
+                W(iti - glob_to_local_ind.begin() , j) = V(*iti - n_o, j);
     }
 
     W = W - sumProject(0e0, b, 1e0, W);
 
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
+            for(int j = 0; j < V.dim(1); j++)
+                R(*iti - n_o, j) = W(iti - glob_to_local_ind.begin() , j);
 
-        if(it->first >= n_o){
-            for(int j = 0; j < V.dim(1); j++) R(it->first - n_o, j) = W(it->second , j);
-
-        }
     }
 
     return R;
@@ -476,9 +470,9 @@ abcd::buildM (  )
 
     if(IRANK == 0) clog << "* -----------  DONE  ------------- * " << endl;
 
-    //t = MPI_Wtime();
-    //S = buildS();
-    //clog << " Time to build S : " << MPI_Wtime() - t << endl;
+    t = MPI_Wtime();
+    S = buildS();
+    clog << " Time to build S : " << MPI_Wtime() - t << endl;
 
     double max = 0;
 
