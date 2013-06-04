@@ -32,7 +32,7 @@
 abcd::solveABCD ( MV_ColMat_double &b )
 {
 
-    double t;
+    double t, tto = MPI_Wtime();
     MV_ColMat_double w;
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
@@ -77,7 +77,11 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "*                                  *" << endl;
     }
 
+    t = MPI_Wtime();
     if(icntl[15] != 0){
+        if(inter_comm.rank() == 0)
+            cout << "* ITERATIVELY                      *" << endl;
+
         MV_ColMat_double Ytf(m_l, 1, 0);
 
         double *f_ptr = f.ptr();
@@ -91,7 +95,10 @@ abcd::solveABCD ( MV_ColMat_double &b )
     } else {
         f = solveS(f);
     }
+    if(IRANK == 0) 
+        cout << "| Time to solve Sz = f : " << MPI_Wtime() - t << endl;
 
+    t = MPI_Wtime();
     if(inter_comm.rank() == 0){
         cout << "*----------------------------------*" << endl;
         cout << "|                               T  |" << endl;
@@ -148,53 +155,60 @@ abcd::solveABCD ( MV_ColMat_double &b )
         else
             f = f - Xk;
     }
+    if(IRANK == 0) 
+        cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
 
     use_xk = false;
 
     // the final solution (distributed)
     f = w + f;
+    if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
 
-    cout << "last element of f : " << f(n-1, 0) << endl;
+    //cout << "last element of f : " << f(n-1, 0) << endl;
+    //if(IRANK == 0) cout << f(MV_VecIndex(0, 10), 0) << endl;
 
-    //if(inter_comm.rank()==0){
-        //zrhs = MV_ColMat_double(m, 1, 0);
-        //int st = 0;
-        //for(int p = 0; p < partitions.size(); p++){
-            //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                    //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
-            //st += partitions[p].dim(0);
-        //}
-        //zrhs = zrhs - b;
-        //cout << "||Ax - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
-    //}
+     //centralize the solution to the master
+    {
+
+        MV_ColMat_double xfmf(n, 1, 0);
+        MV_ColMat_double lf(n, 1, 0);
+
+        for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+
+            if(it->first < n_o){
+                xfmf(it->second , 0) = 1 - f(it->second, 0);
+                lf(it->second , 0) = f(it->second, 0);
+            }
+        }
+        cout << "f: " <<  infNorm(lf) << endl;
+
+        double nf = infNorm(xfmf);
+        double nff = infNorm(lf);
+        
+        double nfa, nfb;
+        mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+
+        if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+    }
+
+    //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
+    //double rho;
+    if(inter_comm.rank()==0){
+        zrhs = MV_ColMat_double(m, 1, 0);
+        int st = 0;
+        for(int p = 0; p < partitions.size(); p++){
+            zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+                    MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
+            st += partitions[p].dim(0);
+        }
+        zrhs = zrhs - b;
+        cout << "||\\bar{A}z - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
+    }
 
 
-    // centralize the solution to the master
-    //{
-        //double *f_ptr = f.ptr();
-        //MV_ColMat_double ff(size_c, 1, 0);
-        //double *f_o = ff.ptr();
-        //mpi::reduce(inter_comm, f_ptr, size_c, f_o, or_bin, 0);
-        //f = ff;
-    //}
-
-
-
-
-    //// set xk = [0 I] 
-    //Xk = MV_ColMat_double(n, 1, 0);
-    //// Retrieve all keys
-    ////cout << inter_comm.rank() << " " << indices[0] << " " << indices.back() << " " << n_o + i << endl;
-    //std::map<int,int>::iterator iti = glob_to_local.find(n_o + i);
-
-    //if(iti!=glob_to_local.end()){
-        //Xk(glob_to_local[n_o + i], 0) = 1;
-    //}
-
-    //MV_ColMat_double b(m, 1, 0); 
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

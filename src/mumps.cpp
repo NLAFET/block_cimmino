@@ -364,9 +364,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             dmumps_c(&mumps);
             t = MPI_Wtime() - t;
 
-            //mumps_rhs = MV_ColMat_double(mumps.rhs, mumps.n, s);
-
-
             //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
 
             //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
@@ -386,16 +383,13 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     }
 
     // Where the other Deltas are going to be summed
-    MV_ColMat_double Others(n, s, 0);
-
-    //std::vector<std::vector<double> > itc(nbparts);
-    //std::vector<std::vector<double> > otc(nbparts);
+    //MV_ColMat_double Others(n, s, 0);
 
     std::vector<double *>itcp(nbparts);
     std::vector<double *>otcp(nbparts);
 
     std::vector<mpi::status> sts;
-    mpi::request *reqs = new mpi::request[2*col_interconnections.size()];
+    std::vector<mpi::request> reqs;
     int id_to = 0;
 
     double t = MPI_Wtime();
@@ -422,35 +416,36 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         }
         t2 += MPI_Wtime() - t3;
 
-        //reqs[id_to++] = inter_comm.irecv(it->first, 31, otc[it->first]);
-        //reqs[id_to++] = inter_comm.isend(it->first, 31, itc[it->first]);
-        reqs[id_to++] = inter_comm.irecv(it->first, 31, otcp[it->first], kp);
-        reqs[id_to++] = inter_comm.isend(it->first, 31, itcp[it->first], kp);
+        reqs.push_back(inter_comm.irecv(it->first, 31, otcp[it->first], kp));
+        reqs.push_back(inter_comm.isend(it->first, 31, itcp[it->first], kp));
     }
-    mpi::wait_all(reqs, reqs + id_to);
-    delete[] reqs;
+
+    mpi::wait_all(reqs.begin(), reqs.end());
     t1 = MPI_Wtime() - t1;
+
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
             it != col_interconnections.end(); it++) {
 
         if(it->second.size() == 0) continue;
-
         int p = 0;
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                //Others(*i, j) += otc[it->first][p];
-                Others(*i, j) += otcp[it->first][p];
+                //Others(*i, j) += otcp[it->first][p];
+                Delta(*i, j) += otcp[it->first][p];
                 p++;
             }
         }
 
-        delete[] itcp[it->first];
-        delete[] otcp[it->first];
     }
+
     // Now sum the data to Delta
-    Delta += Others;
+    //Delta += Others;
 
     //clog << "["<< IRANK << "] Time spent merging results : " << MPI_Wtime() -t << " ["<<t1 - t2<<", "<< t2<< "]" << endl;
+    for(int i = 0; i < itcp.size(); i ++) {
+        delete[] itcp[i];
+        delete[] otcp[i];
+    }
 
     delete[] mumps.rhs;
 
