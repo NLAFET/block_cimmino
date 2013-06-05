@@ -283,6 +283,13 @@ abcd::buildS ( std::vector<int> cols )
         }
     }
 
+
+#ifdef MUMPS_ES
+    mumps.keep[235 - 1] = icntl[8];
+    mumps.keep[261 - 1] = icntl[8];
+    mumps.keep[495 - 1] = icntl[8];
+    mumps.keep[497 - 1] = icntl[8];
+#endif
     if(dcntl[10] == 0 || icntl[15] == 2){
 
         std::vector<int>::iterator pos = my_cols.begin();
@@ -315,8 +322,8 @@ abcd::buildS ( std::vector<int> cols )
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
-                for( int i = 0; i < size_c; i++){
-                    if(sp(i,j)!=0 && i >= c){
+                for( int i = c; i < size_c; i++){
+                    if(sp(i,j)!=0){
                         vc.push_back(c);
                         vr.push_back(i);
                         vv.push_back(sp(i, j));
@@ -437,8 +444,19 @@ abcd::prodSv ( MV_ColMat_double &V )
             for(int j = 0; j < V.dim(1); j++)
                 W(iti - glob_to_local_ind.begin() , j) = V(*iti - n_o, j);
     }
+    //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        //if(it->first >= n_o){
+                //for(int j = 0; j < V.dim(1); j++)
+                    //W(it->second , j) = V(it->first - n_o, j);
+        //}
+    //}
 
     W = W - sumProject(0e0, b, 1e0, W);
+    //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        //if(it->first >= n_o){
+                    //for(int j = 0; j < V.dim(1); j++) R(it->first - n_o, j) = W(it->second , j); 
+        //}
+    //}
 
     for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
             for(int j = 0; j < V.dim(1); j++)
@@ -498,8 +516,8 @@ abcd::buildM (  )
 
             mr.push_back(ro);
             mc.push_back(ro);
-            mv.push_back(1);
-            //mv.push_back(S(ro,ro));
+            //mv.push_back(1);
+            mv.push_back(S(ro,ro));
             //if(abs(S(ro, ro)) > max) max = abs(S(ro, ro));
             //mv.push_back(sqrt(max));
             //
@@ -681,12 +699,15 @@ abcd::pcgS ( VECTOR_double &b )
     }
 
     for (int i = 1; i <= max_iter; i++) {
+        TIC;
         if(dcntl[15] > 0) { 
             z = solveM(mu, r);
         } else {
             z = r;
         }
+        //IFMASTER clog << " Time in solveM " << TOC << endl;
 
+        TIC;
         rho(0) = dot(r, z);
         
         if (i == 1)
@@ -697,11 +718,16 @@ abcd::pcgS ( VECTOR_double &b )
         }
         
         MV_ColMat_double pv(p.ptr(), size_c, 1);
+        //IFMASTER clog<< "Time in dot " << TOC << endl;
+        TIC;
         Szk = prodSv(pv);
+        //IFMASTER clog<< "Time in prodsv " << TOC << endl;
+        TIC;
 
         double *f_ptr = Szk.ptr();
         MV_ColMat_double ff(size_c, 1, 0);
         double *f_o = ff.ptr();
+
         mpi::all_reduce(inter_comm, f_ptr, size_c, f_o, or_bin);
 
         q = ff(0);
@@ -725,6 +751,7 @@ abcd::pcgS ( VECTOR_double &b )
         if(IRANK == 0)
             clog << "Iteration  " << i << " residual " << resid << endl;
 
+        //IFMASTER clog<< "Time in otherstuffs " << TOC << endl;
         rho_1(0) = rho(0);
     }
     

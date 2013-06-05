@@ -46,6 +46,10 @@
 #define IRANK inter_comm.rank()
 #define IBARRIER inter_comm.barrier()
 
+#define IFMASTER if(inter_comm.rank() == 0)
+#define TIC t = MPI_Wtime()
+#define TOC MPI_Wtime() - t
+
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
