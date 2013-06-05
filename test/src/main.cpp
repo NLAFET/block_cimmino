@@ -168,6 +168,7 @@ int main(int argc, char* argv[])
         }
         obj.write_problem   = pt.get<string>("write_problem", "");
 
+        obj.icntl[8]    = pt.get<int>("esparse", 0);
         obj.icntl[9]    = pt.get<int>("scaling", 2);
 
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");

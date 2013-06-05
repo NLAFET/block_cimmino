@@ -183,7 +183,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
                 lf(it->second , 0) = f(it->second, 0);
             }
         }
-        cout << "f: " <<  infNorm(lf) << endl;
 
         double nf = infNorm(xfmf);
         double nff = infNorm(lf);
