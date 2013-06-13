@@ -137,6 +137,7 @@ int main(int argc, char* argv[])
         }
 
         obj.partitioning_type = pt.get<int>("partitioning.type", 2);
+        obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
             //std::set<int> nbrows; =  pt.get_child<int>();
@@ -165,7 +166,9 @@ int main(int argc, char* argv[])
 
             obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
         }
+        obj.write_problem   = pt.get<string>("write_problem", "");
 
+        obj.icntl[8]    = pt.get<int>("esparse", 0);
         obj.icntl[9]    = pt.get<int>("scaling", 2);
 
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
@@ -199,6 +202,7 @@ int main(int argc, char* argv[])
 
             obj.block_size = pt.get<int>("system.block_size", 1);
             obj.itmax = pt.get<int>("system.itmax", 2000);
+            obj.threshold = pt.get<double>("system.threshold", 1e-12);
 
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);

@@ -67,7 +67,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = 1.1;
+            _imba   = dcntl[8];
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -97,6 +97,8 @@ void abcd::partitionMatrix()
             args.final_imbal    = _imba;
             args.init_imbal     = _imba * 2.0;
             args.seed           = 1;
+
+            //args.initp_alg      = 12;
 
             partvec     = new int[_c];
             partweights = new int[args._k * _nconst];
@@ -151,24 +153,27 @@ void abcd::partitionMatrix()
                 }
                 f.close();
 
-                clog << "int nr[] = {";
-
-                for(unsigned k = 0; k < nbparts - 1; k++) {
-                    cout << nbrows[k] << ", ";
-                }
-
-                clog << nbrows[nbparts - 1] <<  "};" << endl;
             }
+
 
             cout << "    Finished Partitioning, time : " << MPI_Wtime() - t << endl;
             delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
                 ir, jc, val;
             PaToH_Free();
+            t_A = CompCol_Mat_double();
 #else
 	    throw -99;
 #endif
             break;
     }
+
+    clog << "partitioning = [";
+
+    for(unsigned k = 0; k < nbparts - 1; k++) {
+        clog << nbrows[k] << ", ";
+    }
+
+    clog << nbrows[nbparts - 1] <<  "]" << endl;
 
 }
 
@@ -431,11 +436,12 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                 CompCol_Mat_double A_ij = sub_matrix(M[i], intersect);
                 CompCol_Mat_double A_ji = sub_matrix(M[j], intersect);
+
                 for(int k = 0; k < A_ji.NumNonzeros(); k++)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || icntl[15] == 2) {
+                if(filter_c != 0 || dcntl[15] > 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 

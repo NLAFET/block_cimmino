@@ -242,6 +242,16 @@ void abcd::distributePartitions()
 
     for(int j = 0; j < merge_index.size(); j++) {
         glob_to_local[merge_index[j]] = j;
+        glob_to_local_ind.push_back(merge_index[j]);
+    }
+    st_c_part_it = glob_to_local_ind.end();
+
+    while(*(st_c_part_it - 1) >= n_o) st_c_part_it--;
+
+    st_c_part = st_c_part_it - glob_to_local_ind.begin();
+
+    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
+        glob_to_local_c[*iti - n_o] = iti - glob_to_local_ind.begin();
     }
 
     for(int k = 0; k < partitions.size(); k++) {
@@ -310,6 +320,10 @@ void abcd::distributePartitions()
     mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
     //nrmA = sqrt(nrmA);
     //nrmMtx = sqrt(nrmMtx);
+    //
+    mpi::broadcast(inter_comm, selected_S_columns, 0);
+    mpi::broadcast(inter_comm, skipped_S_columns, 0);
+
 }
 
 void abcd::distributeRhs()
@@ -477,6 +491,7 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, dcntl[10], 0);
 
     delete[] rhs;
+    A = CompRow_Mat_double();
 }
 
 void abcd::distributeNewRhs()
