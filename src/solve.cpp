@@ -82,8 +82,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
         if(inter_comm.rank() == 0)
             cout << "* ITERATIVELY                      *" << endl;
 
-        MV_ColMat_double Ytf(m_l, 1, 0);
-
         double *f_ptr = f.ptr();
 
         VECTOR_double f0 = f.data();
@@ -93,6 +91,14 @@ abcd::solveABCD ( MV_ColMat_double &b )
         //mpi::broadcast(inter_comm, f_ptr, size_c, 0);
 
     } else {
+
+        //ofstream fo;
+        //fo.open("/tmp/z");
+        //for(int i = 0; i < f.dim(0); i++){
+            //fo << f(i,0) << endl;
+        //}
+        //fo.close();
+        
         f = solveS(f);
     }
     if(IRANK == 0) 
