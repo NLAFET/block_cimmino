@@ -46,6 +46,10 @@
 #define IRANK inter_comm.rank()
 #define IBARRIER inter_comm.barrier()
 
+#define IFMASTER if(inter_comm.rank() == 0)
+#define TIC t = MPI_Wtime()
+#define TOC MPI_Wtime() - t
+
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
@@ -220,6 +224,12 @@ public:
     /// A merge of col_index vectors, determines non-null columns in all local partitions
     std::vector<std::vector<int> > local_column_index;
     std::map<int,int> glob_to_local;
+    // Both of these are meant to replace the glob_to_local map
+    std::vector<int> glob_to_local_ind;
+    std::map<int,int> glob_to_local_c;
+    std::vector<int>::iterator st_c_part_it;
+    int st_c_part;
+
     std::vector<std::map<int,int> > glob_to_part;
     std::vector<std::map<int,int> > part_to_glob;
     std::vector<int> stC;

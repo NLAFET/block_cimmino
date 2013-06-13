@@ -18,6 +18,8 @@
  */
 
 #include <abcd.h>
+#include <iostream>
+#include <fstream>
 
 
 /* 
@@ -32,17 +34,23 @@ abcd::solveS ( MV_ColMat_double &f )
     double t;
 
     if(inter_comm.rank() == 0){
-        cout << "*      ----------------------      *" << endl;
-        cout << "| [--] Building S = Y (I - P) Y^T  |" << endl;
-        cout << "*      ----------------------      *" << endl;
+        clog << "*      ----------------------      *" << endl;
+        clog << "| [--] Building S = Y (I - P) Y^T  |" << endl;
+        clog << "*      ----------------------      *" << endl;
     }
     // if not created yet, do it!
     t = MPI_Wtime();
     if( S.dim(0) == 0 ){
         S = abcd::buildS();
     }
+    inter_comm.barrier(); //useless! used for timing
+    if(inter_comm.rank() == 0){
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
+    }
 
-    //if(inter_comm.rank() == 0) cout << S(0,0) << endl;
+    //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
     
@@ -51,7 +59,7 @@ abcd::solveS ( MV_ColMat_double &f )
      *-----------------------------------------------------------------------------*/
     t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
-    mu.sym = 0;
+    mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
@@ -62,13 +70,13 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[1] = -1;
     mu.icntl[2] = -1;
 
-    //if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/sss.mtx");
-        //mu.icntl[0] = 6;
-        //mu.icntl[1] = 6;
-        //mu.icntl[2] = 6;
+    if(inter_comm.rank() == 0){ 
+        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        mu.icntl[0] = 6;
+        mu.icntl[1] = 6;
+        mu.icntl[2] = 6;
         //mu.icntl[3] = 2;
-    //}
+    }
 
     mu.n = S.dim(0);
 
@@ -76,8 +84,10 @@ abcd::solveS ( MV_ColMat_double &f )
     //if(mu.n >= 200) {
         //mu.icntl[28 - 1] =  2;
     //}
-    mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  2;
+    mu.icntl[8  - 1] =  77;
+    mu.icntl[7  - 1] =  6;
+    mu.icntl[6  - 1] =  5;
+    mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
 
 #ifdef CENTRALIZE
@@ -129,7 +139,7 @@ abcd::solveS ( MV_ColMat_double &f )
         inter_comm.send(0, 73, &a_loc[0], loc_nz);
     }
 
-    //if(IRANK == 0) cout << "TOTAL " << mu.nz << endl;
+    //if(IRANK == 0) clog << "TOTAL " << mu.nz << endl;
     //IBARRIER;
     //exit(0);
 
@@ -167,9 +177,9 @@ abcd::solveS ( MV_ColMat_double &f )
 
     inter_comm.barrier(); //useless! used for timing
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.build S :     " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.init mumps S: " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -178,9 +188,9 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -189,13 +199,13 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     if(mu.info[0] < 0) {
-        cout << mu.info[0] << endl;
+        clog << mu.info[0] << endl;
         exit(0); 
     }
     /*-----------------------------------------------------------------------------
@@ -209,9 +219,9 @@ abcd::solveS ( MV_ColMat_double &f )
     }
 
     if(inter_comm.rank() == 0){
-        cout << "*      -------------------         *" << endl;
-        cout << "| [--] Computing z = S^-1 f        |" << endl;
-        cout << "*----------------------------------*" << endl;
+        clog << "*      -------------------         *" << endl;
+        clog << "| [--] Computing z = S^-1 f        |" << endl;
+        clog << "*----------------------------------*" << endl;
     }
 
     mu.job = 3;
@@ -275,6 +285,13 @@ abcd::buildS ( std::vector<int> cols )
         }
     }
 
+
+#ifdef MUMPS_ES
+    mumps.keep[235 - 1] = icntl[8];
+    mumps.keep[261 - 1] = icntl[8];
+    mumps.keep[495 - 1] = icntl[8];
+    mumps.keep[497 - 1] = icntl[8];
+#endif
     if(dcntl[10] == 0 || icntl[15] == 2){
 
         std::vector<int>::iterator pos = my_cols.begin();
@@ -301,14 +318,15 @@ abcd::buildS ( std::vector<int> cols )
 
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
 
-            int mumps_share = share > 32 ? share/2 : 16;
+            int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
-                for( int i = 0; i < size_c; i++){
-                    if(sp(i,j)!=0){
+                for( int i = c; i < size_c; i++){
+                    //if(sp(i,j)!=0){
+                    if(abs(sp(i,j))>1e-16){
                         vc.push_back(c);
                         vr.push_back(i);
                         vv.push_back(sp(i, j));
@@ -326,7 +344,7 @@ abcd::buildS ( std::vector<int> cols )
         for( int i = 0; i < size_c; i++){
         //
             //int my_bro = -1;
-            if(inter_comm.rank() == 0) cout << " Column " << i << " out of " << size_c << endl;
+            if(inter_comm.rank() == 0) clog << " Column " << i << " out of " << size_c << endl;
 
             //for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
                     //it != col_interconnections.end(); it++) {
@@ -374,7 +392,7 @@ abcd::buildS ( std::vector<int> cols )
                 if(it->first >= n_o && comm_map[it->second] == 1){
                     //if(inter_comm.rank() > my_bro) continue;
 
-                    //cout << "Comm map : " << it->first << " " << comm_map[it->first] << endl;
+                    //clog << "Comm map : " << it->first << " " << comm_map[it->first] << endl;
                     vc.push_back(i);
                     vr.push_back(it->first - n_o);
                     vv.push_back(Xk(it->second,0));
@@ -425,23 +443,28 @@ abcd::prodSv ( MV_ColMat_double &V )
     MV_ColMat_double b; // just for decoration!
     MV_ColMat_double R(V.dim(0), V.dim(1), 0);
 
-    std::map<int,int>::iterator iti;
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
-        if(it->first >= n_o){
-            for(int j = 0; j < V.dim(1); j++) W(it->second , j) = V(it->first - n_o, j);
-
-        }
+    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
+            for(int j = 0; j < V.dim(1); j++)
+                W(iti - glob_to_local_ind.begin() , j) = V(*iti - n_o, j);
     }
+    //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        //if(it->first >= n_o){
+                //for(int j = 0; j < V.dim(1); j++)
+                    //W(it->second , j) = V(it->first - n_o, j);
+        //}
+    //}
 
     W = W - sumProject(0e0, b, 1e0, W);
+    //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        //if(it->first >= n_o){
+                    //for(int j = 0; j < V.dim(1); j++) R(it->first - n_o, j) = W(it->second , j); 
+        //}
+    //}
 
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
+            for(int j = 0; j < V.dim(1); j++)
+                R(*iti - n_o, j) = W(iti - glob_to_local_ind.begin() , j);
 
-        if(it->first >= n_o){
-            for(int j = 0; j < V.dim(1); j++) R(it->first - n_o, j) = W(it->second , j);
-
-        }
     }
 
     return R;
@@ -457,10 +480,38 @@ abcd::prodSv ( MV_ColMat_double &V )
     DMUMPS_STRUC_C 
 abcd::buildM (  )
 {
-    Coord_Mat_double M = buildS(selected_S_columns);
-    cout << IRANK << " Selected : " << selected_S_columns.size() << " NZ : " << M.NumNonzeros() << endl;
+    if(inter_comm.rank() == 0){
+        clog << "* Building the preconditioner      *" << endl;
+        clog << " Size is : " << selected_S_columns.size() << endl;
 
-    S = buildS();
+        //ofstream f;
+        //f.open("/tmp/selected");
+        //for(int i = 0; i < selected_S_columns.size(); i++){
+            //f << selected_S_columns[i] << endl;
+        //}
+        //f.close();
+    }
+
+
+    double t = MPI_Wtime();
+    //t = MPI_Wtime();
+    //S = buildS(skipped_S_columns);
+    //S = buildS();
+    //clog << " Time to build S : " << MPI_Wtime() - t << endl;
+
+    //std::vector<int> sc, ss;
+    //for(int i = 0; i < S.dim(0); i++){
+        //if(2*S(i,i) <= 0.7) sc.push_back(i);
+        //else ss.push_back(i);
+    //}
+    //cout << ss.size() << endl;
+    Coord_Mat_double M = buildS(selected_S_columns);
+    //Coord_Mat_double M = buildS(sc);
+    //clog << " Time to build M : " << MPI_Wtime() - t << endl;
+
+    //if(IRANK == 0) clog << "* -----------  DONE  ------------- * " << endl;
+
+    double max = 0;
 
     {
         std::vector<int> mr, mc;
@@ -469,50 +520,35 @@ abcd::buildM (  )
         std::vector<int>::iterator it;
         int r, c;
         double v;
+
         for(int i = 0; i < M.NumNonzeros(); i++){
-            c = M.col_ind(i);
-            r = M.row_ind(i);
-            v = M.val(i);
-            
-            if(v == 0) continue;
-
-            if( r != c ) {
-                mr.push_back(r);
-                mc.push_back(c);
-                mv.push_back(v);
-
-                it = find(skipped_S_columns.begin(), skipped_S_columns.end(), r);
-                if(it != skipped_S_columns.end()){
-                    mr.push_back(c);
-                    mc.push_back(r);
-                    mv.push_back(v);
-                }
-
-            } else if (r == c) {
-                mr.push_back(r);
-                mc.push_back(c);
-                mv.push_back(v);
-            }
+            mr.push_back(M.row_ind(i));
+            mc.push_back(M.col_ind(i));
+            mv.push_back(M.val(i));
         }
-        //cout << "Skipped  : " << skipped_S_columns.size() << endl;
 
         for(int i = 0; i < skipped_S_columns.size(); i++){
+            std::map<int,int>::iterator iti = glob_to_local.find(n_o + skipped_S_columns[i]);
+            if(iti == glob_to_local.end()) continue;
 
             int ro = skipped_S_columns[i];
 
+        //for(int i = 0; i < ss.size(); i++){
+            //std::map<int,int>::iterator iti = glob_to_local.find(n_o + ss[i]);
+            //if(iti == glob_to_local.end()) continue;
+
+            //int ro = ss[i];
+
             mr.push_back(ro);
             mc.push_back(ro);
-            mv.push_back(S(ro,ro));
-
-            //double sum = 0;
-            //for(int j = 0; j < selected_S_columns.size() ; j++){
-                //int co = selected_S_columns[j];
-                //sum += M(ro, co) * M(ro, co);
-            //}
-            //mv.push_back(2*sum);
-            //mv.push_back(3);
+            mv.push_back(1);
+            //mv.push_back(S(ro,ro));
+            //if(abs(S(ro, ro)) > max) max = abs(S(ro, ro));
+            //mv.push_back(sqrt(max));
+            //
+            //mv.push_back(0.5 - sqrt(max));
             //mv.push_back( 0.5*(1 + sqrt(1 - 4*sum)));
-            //cout << i << " " << sqrt(1 - 4*sum) << endl;
+            //clog << IRANK << " " << S(ro, ro) << " " << 0.5 - srow[ro] << endl;
         }
         
         M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
@@ -521,9 +557,9 @@ abcd::buildM (  )
     /*-----------------------------------------------------------------------------
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
-    double t;
+    
     DMUMPS_STRUC_C mu;
-    mu.sym = 0;
+    mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
@@ -534,13 +570,13 @@ abcd::buildM (  )
     mu.icntl[1] = -1;
     mu.icntl[2] = -1;
 
-    //if(inter_comm.rank() == 0){ 
+    if(inter_comm.rank() == 0){ 
         //strcpy(mu.write_problem, "/tmp/mmm.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
         //mu.icntl[3] = 2;
-    //}
+    }
 
     mu.n = M.dim(0);
 
@@ -549,8 +585,9 @@ abcd::buildM (  )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  5;
-    mu.icntl[14 - 1] =  70;
+    mu.icntl[7  - 1] =  6;
+    mu.icntl[14 - 1] =  900;
+    mu.icntl[23 - 1] =  2000;
 
     if(inter_comm.size() == 1){ 
         mu.nz= M.NumNonzeros();
@@ -575,13 +612,17 @@ abcd::buildM (  )
     }
     t = MPI_Wtime();
 
+    IBARRIER;
+    if(inter_comm.rank() == 0)
+        clog << "* Starting Analysis of the precond *" << endl;
+
     mu.job = 1;
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Analyse M :   " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Analyse M :   " << MPI_Wtime() - t << endl;
+        clog << "*                                  *" << endl;
     }
 
     t = MPI_Wtime();
@@ -590,13 +631,18 @@ abcd::buildM (  )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        cout << "*                                  *" << endl;
-        cout << "  [--] T.Factorize M : " << MPI_Wtime() - t << endl;
-        cout << "*                                  *" << endl;
+        clog << "*                                  *" << endl;
+        clog << "  [--] T.Factorize M : " << MPI_Wtime() - t << endl;
+        clog << "  N, NZ              : " << mu.n << ", " << mu.nz << endl;
+        clog << "*                                  *" << endl;
     }
 
+    mu.icntl[0] = -1;
+    mu.icntl[1] = -1;
+    mu.icntl[2] = -1;
+
     if(mu.info[0] < 0) {
-        cout << mu.info[0] << endl;
+        clog << IRANK << " 1 : " << mu.info[0] <<  " 2 : " << mu.info[1] << endl;
         exit(0); 
     }
     /*-----------------------------------------------------------------------------
@@ -649,13 +695,14 @@ abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
     VECTOR_double
 abcd::pcgS ( VECTOR_double &b )
 {
-    double resid, tol = 1e-10;
+    double resid, tol = 1e-7;
 
     //int max_iter = 2;
     int max_iter = size_c;
 
     DMUMPS_STRUC_C mu;
     if(dcntl[15] > 0) mu = buildM();
+    double t = MPI_Wtime();
 
     VECTOR_double p, z, q;
     VECTOR_double alpha(1), beta(1), rho(1), rho_1(1);
@@ -679,12 +726,15 @@ abcd::pcgS ( VECTOR_double &b )
     }
 
     for (int i = 1; i <= max_iter; i++) {
+        TIC;
         if(dcntl[15] > 0) { 
             z = solveM(mu, r);
         } else {
             z = r;
         }
+        //IFMASTER clog << " Time in solveM " << TOC << endl;
 
+        TIC;
         rho(0) = dot(r, z);
         
         if (i == 1)
@@ -695,11 +745,16 @@ abcd::pcgS ( VECTOR_double &b )
         }
         
         MV_ColMat_double pv(p.ptr(), size_c, 1);
+        //IFMASTER clog<< "Time in dot " << TOC << endl;
+        TIC;
         Szk = prodSv(pv);
+        //IFMASTER clog<< "Time in prodsv " << TOC << endl;
+        TIC;
 
         double *f_ptr = Szk.ptr();
         MV_ColMat_double ff(size_c, 1, 0);
         double *f_o = ff.ptr();
+
         mpi::all_reduce(inter_comm, f_ptr, size_c, f_o, or_bin);
 
         q = ff(0);
@@ -714,19 +769,24 @@ abcd::pcgS ( VECTOR_double &b )
         if (resid <= tol) {
             tol = resid;
             max_iter = i;
-            if(IRANK == 0)
-                cout << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
+            if(IRANK == 0){
+                clog << "Iteration to solve Sz = f " << i << " with a residual of " << resid << endl;
+                clog << "Time in iterations : " << MPI_Wtime() - t << endl;
+            }
             return x;     
         }
         if(IRANK == 0)
-            cout << "Iteration  " << i << " residual " << resid << endl;
+            clog << "Iteration  " << i << " residual " << resid << "\r" << flush;
 
+        //IFMASTER clog<< "Time in otherstuffs " << TOC << endl;
         rho_1(0) = rho(0);
     }
     
     tol = resid;
-    if(IRANK == 0)
-        cout << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
+    if(IRANK == 0){
+        clog << "Iteration to solve Sz = f " << max_iter << " with a residual of " << resid << endl;
+        clog << "Time in iterations : " << MPI_Wtime() - t << endl;
+    }
 
     return x;
 }		/* -----  end of function abcd::pcgS  ----- */

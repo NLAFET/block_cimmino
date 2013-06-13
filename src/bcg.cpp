@@ -88,7 +88,7 @@ void abcd::bcg(MV_ColMat_double &b)
     rho = compute_rho(Xk, u, thresh);
     t2_total = MPI_Wtime() - t2_total;
     if(inter_comm.rank() == 0 && verbose) {
-        cout << "ITERATION " << 0 << " rho = " << rho << endl;
+        cout << "ITERATION " << 0 << " rho = " << rho << "\r" << flush;
     }
 
     while((rho > thresh) && (it < itmax)) {
@@ -158,7 +158,7 @@ void abcd::bcg(MV_ColMat_double &b)
         if(world.rank() == 0 && verbose){
             clog << "ITERATION " << it << " rho = " << rho << "\t Timings: " <<
                 //std::setprecision(1) << 
-                t << " [" << t1 << "," << t2 << "]" << endl;
+                t << " [" << t1 << "," << t2 << "]\r" << flush;
             //cout << ". " << flush; 
         }
         t1_total += t1;
