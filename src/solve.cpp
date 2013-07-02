@@ -210,7 +210,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
             st += partitions[p].dim(0);
         }
         zrhs = zrhs - b;
-        cout << "||\\bar{A}z - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
+        cout << "||\\bar{A}z - b||_2 / ||b|| = " << sqrt(zrhs.squaredSum()) / norm(b(0)) << endl;
     }
 
 

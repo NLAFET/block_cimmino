@@ -11,20 +11,18 @@ extern "C"
 
 void abcd::preprocess()
 {
-    if(icntl[9] > 0) {
-        drow_ = VECTOR_double(m, double(1));
-        dcol_ = VECTOR_double(n, double(1));
-    }
+    dcol_ = VECTOR_double(n, double(1));
+    drow_ = VECTOR_double(m, double(1));
 
     if(icntl[9] >= 1) {
-        ///TODO:Use logging
-        std::cout << "[-] Scaling with Infinity" << std::endl;
+        //drow_ = VECTOR_double(m, double(1));
 
-        abcd::scaleMatrix(0);
+        std::clog << "[-] Scaling with Infinity" << std::endl;
 
         ///BUG: This takes too much time!
+        //
         double rsum;
-        drow_ = VECTOR_double(m, double(0));
+        drow_ = VECTOR_double(m);
         dcol_ = VECTOR_double(n, double(1));
         for(int r = 0; r < m; r++) {
             rsum = 0;
@@ -34,8 +32,10 @@ void abcd::preprocess()
             drow_(r) = 1/sqrt(rsum);
         }
         abcd::diagScaleMatrix(drow_, dcol_);
-        drow_ = VECTOR_double(m, double(1));
-        dcol_ = VECTOR_double(n, double(1));
+        //drow_ = VECTOR_double(m, double(1));
+        //dcol_ = VECTOR_double(n, double(1));
+        //
+        abcd::scaleMatrix(0);
 
     }
 
@@ -48,18 +48,41 @@ void abcd::preprocess()
         abcd::scaleMatrix(2);
 
         //double rsum;
-        //drow_ = VECTOR_double(m, double(0));
-        //dcol_ = VECTOR_double(n, double(1));
+        //VECTOR_double dc_ = VECTOR_double(n, double(1));
         //for(int r = 0; r < m; r++) {
             //rsum = 0;
             //for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
                 //rsum += pow(A(r, A.col_ind(c)), 2);
             //}
-            //drow_(r) = 1/sqrt(rsum);
+            //drow_(r) *= 1/sqrt(rsum);
         //}
-        //abcd::diagScaleMatrix(drow_, dcol_);
-        //drow_ = VECTOR_double(m, double(1));
-        //dcol_ = VECTOR_double(n, double(1));
+        //abcd::diagScaleMatrix(drow_, dc_);
+        //
+        double min_r = 999;
+        double max_r = 0;
+        double min_c = 999;
+        double max_c = 0;
+
+        for(int i = 0; i < m; i++){
+            if(min_r > abs(drow_[i])) min_r = abs(drow_[i]);
+            if(max_r < abs(drow_[i])) max_r = abs(drow_[i]);
+        }
+        for(int i = 0; i < n; i++){
+            if(min_c > abs(dcol_[i])) min_c = abs(dcol_[i]);
+            if(max_c < abs(dcol_[i])) max_c = abs(dcol_[i]);
+        }
+
+        cout << "min/max row, col " << min_r << " " << max_r << " | " << min_c << " " << max_c << endl;
+    }
+
+
+    nrmMtx = 0;
+    for(int r = 0; r < m; r++) {
+        double rsum = 0;
+        for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+            rsum += abs(A(r, A.col_ind(c)));
+        }
+        if(nrmMtx < rsum) nrmMtx = rsum;
     }
 
 }
@@ -107,8 +130,7 @@ void abcd::scaleMatrix(int norm)
 
     if(norm < 0) throw - 12;
 
-    mc77_icntl[9] = 0;
-    if(norm == 2) mc77_icntl[6] = 20;
+    mc77_icntl[6] = 20;
 
     job = norm;
     mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,
@@ -158,18 +180,12 @@ void abcd::scaleMatrix(int norm)
     void
 abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)
 {
-    //cout.precision(16);
-    //cout << scientific << A.val(1) << " " << 1 + 1 << " " << 57422 << " " << drow(1) << " " << dcol(57421) << endl;
-    //cout << scientific << A.val(2) << " " << 1 + 1 << " " << 57423 << " " << drow(1) << " " << dcol(57422) << endl;
-
     for ( int i = 0; i < A.dim(0); i++ ) {
         for ( int j = A.row_ptr(i); j < A.row_ptr(i+1); j++ ) {
-            A.val(j) = drow(i) * A.val(j) * dcol(A.col_ind(j));
+            A.val(j) = drow(i) * A.val(j); 
+            A.val(j) = A.val(j) * dcol(A.col_ind(j));
         }
     }
-    //cout << endl;
-    //cout << scientific << A.val(1) << " " << 1 + 1 << " " << 57422 << " " << drow(1) << " " << dcol(57421) << endl;
-    //cout << scientific << A.val(2) << " " << 1 + 1 << " " << 57423 << " " << drow(1) << " " << dcol(57422) << endl;
 }		/* -----  end of function abcd::diagscal  ----- */
 
 
@@ -184,6 +200,14 @@ abcd::diagScaleRhs ( VECTOR_double &b)
 {
     for ( int i = 0; i < m; i++ ) {
         b(i) = b(i)*drow_(i);
+    }
+
+}		/* -----  end of function abcd::scalRhs  ----- */
+    void
+abcd::diagScaleRhs ( MV_ColMat_double &B)
+{
+    for ( int i = 0; i < m; i++ ) {
+        B(i,0) = B(i,0)*drow_(i);
     }
 
 }		/* -----  end of function abcd::scalRhs  ----- */
