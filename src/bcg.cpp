@@ -12,6 +12,8 @@ void abcd::bcg(MV_ColMat_double &b)
     //exit(0);
     if(!use_xk) {
         Xk = MV_ColMat_double(n, nrhs, 0);
+    } else {
+        cout << "HEY" << endl;
     }
 
     // temporary solution
@@ -37,7 +39,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double lnrmBs = infNorm(b);
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
-    //nrmB = sqrt(nrmB);
+    mpi::broadcast(inter_comm, nrmMtx, 0);
 
     for(int k =0; k < e1.dim(1); k++) e1(0,k) = 1;
     char up = 'U';
@@ -88,7 +90,7 @@ void abcd::bcg(MV_ColMat_double &b)
     rho = compute_rho(Xk, u, thresh);
     t2_total = MPI_Wtime() - t2_total;
     if(inter_comm.rank() == 0 && verbose) {
-        cout << "ITERATION " << 0 << " rho = " << rho << "\r" << flush;
+        cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
 
     while((rho > thresh) && (it < itmax)) {
@@ -156,10 +158,7 @@ void abcd::bcg(MV_ColMat_double &b)
         //
         t = MPI_Wtime() - t;
         if(world.rank() == 0 && verbose){
-            clog << "ITERATION " << it << " rho = " << rho << "\t Timings: " <<
-                //std::setprecision(1) << 
-                t << " [" << t1 << "," << t2 << "]\r" << flush;
-            //cout << ". " << flush; 
+            clog << "ITERATION " << it << " rho = " << rho << "  Timings: " << t << "\r" << flush;
         }
         t1_total += t1;
         t2_total += t2;
@@ -174,6 +173,14 @@ void abcd::bcg(MV_ColMat_double &b)
         cout << "Rho Computation time : " << t2_total << endl;
         cout << endl;
     }
+    IBARRIER;
+
+    MV_ColMat_double xf = MV_ColMat_double(n, 1, 1);
+    xf = xf - Xk;
+    double nrxf =  infNorm(xf);
+    double nrmxf;
+    mpi::reduce(inter_comm, &nrxf, 1,  &nrmxf, mpi::maximum<double>(), 0);
+    IFMASTER cout << nrmxf << " " <<  nrmxf/nrmXf << endl;
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
@@ -181,38 +188,10 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //double nrmX = x.norm();
     int s = x.dim(1);
     MV_ColMat_double R(m, s, 0);
-/*
-    int pos = 0;
-    int ci;
-*/
-    double /*gnrmx,*/ nrmXfmX;
-    //std::vector<double> vnrmx(inter_comm.size());
 
-    //for(int p = 0; p < partitions.size(); p++) {
-        //VECTOR_double compressed_x(partitions[p].dim(1));
-        //for(int j = 0; j < s; j++) {
-            //compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
-
-            //int x_pos = 0;
-            //for(int i = 0; i < local_column_index[p].size(); i++) {
-                //int ci = local_column_index[p][i];
-                //compressed_x(x_pos) = x(ci, j);
-                //x_pos++;
-            //}
-            ////R.col(j).segment(pos, partitions[p].dim(0)) = partitions[p] * compressed_x;
-            //VECTOR_double vj(R.dim(0));
-            //vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
-            //R.setCol(vj, j);
-        //}
-
-        //pos += partitions[p].dim(0);
-    //}
-    //R = u - R;
-    //
+    double nrmXfmX;
     double nrmR, nrmX, rho;
     abcd::get_nrmres(x, u, nrmR, nrmX, nrmXfmX);
-    //if(inter_comm.rank() == 0 && verbose)
-        //cout << nrmR << " " << nrmMtx << " " << nrmX << " " << nrmB << endl;
     rho = nrmR / (nrmMtx*nrmX + nrmB);
     //cout << "X -> " << x.col(0).norm() << endl;
     //cout << "X -> " << nrmX << endl;
@@ -222,11 +201,11 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh
     //cout << "M -> " << nrmMtx << endl;
     //return R.col(0).norm() / (nrmA * x.col(0).norm() + u.col(0).norm());
     //cout<< R.col(0).norm() / (nrmA * x.col(0).norm() + nrmB) << endl;
-    //if(inter_comm.rank() == 0) {
+    //if(inter_comm.rank() == 0 && use_xf) {
         //cout << "Rho = " << rho << endl;
         //if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
     //}
-    //if(use_xf) cout << "Fwd: " << nrmXfmX/nrmXf << endl;
+    //if(IRANK == 0) cout << "Fwd_to_1: " << scientific << nrmXfmX << "    " << flush;
     return rho;
 }
 

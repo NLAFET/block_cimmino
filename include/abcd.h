@@ -75,6 +75,7 @@ private:
     void scaleMatrix(int norm);
     void diagScaleMatrix(VECTOR_double , VECTOR_double );
     void diagScaleRhs(VECTOR_double &);
+    void diagScaleRhs(MV_ColMat_double &);
     /**
      * Computes the norm of the matrix
      * @todo implement it!

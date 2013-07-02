@@ -70,8 +70,10 @@ void abcd::distributePartitions()
 
                 inter_comm.send(i, 6, column_index[j]);
 
+
                 if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
             }
+
         }
         cout << "sent partitions" << endl;
 
@@ -206,6 +208,7 @@ void abcd::distributePartitions()
                 stC.push_back(stc);
             }
 
+
             // Create the matrix and push it in!
             CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
             partitions.push_back(mat);
@@ -307,17 +310,17 @@ void abcd::distributePartitions()
     */
 
     /* ||A||_inf */
-    nrmA = 0;
-    for(int i=0; i<partitions.size(); i++){
-        for(int j=0; j<partitions[i].NumNonzeros(); j++){
-            double cur = abs(partitions[i].val(j));
-            if(cur > nrmA){
-                nrmA = cur;
-            }
-        }
-    }
+    //nrmA = 0;
+    //for(int i=0; i<partitions.size(); i++){
+        //for(int j=0; j<partitions[i].NumNonzeros(); j++){
+            //double cur = abs(partitions[i].val(j));
+            //if(cur > nrmA){
+                //nrmA = cur;
+            //}
+        //}
+    //}
 
-    mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
+    //mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
     //nrmA = sqrt(nrmA);
     //nrmMtx = sqrt(nrmMtx);
     //
@@ -389,15 +392,19 @@ void abcd::distributeRhs()
 
                 B = MV_ColMat_double(m_l, block_size);
 
+                nrmXf = 0;
                 Xf = MV_ColMat_double(A.dim(1), nrhs);
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < A.dim(1); i++){
-                        rhs[i + j * A.dim(1)] = j+1;
+                        //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
+                        rhs[i + j * A.dim(1)] = 1;
+                        //rhs[i + j * A.dim(1)] = j+1;
                         //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
+                        if(nrmXf < abs(rhs[i + j * A.dim(1)])) nrmXf = abs(rhs[i + j * A.dim(1)]);
                     }
                 }
 
-                nrmXf = 0;
+                cout << nrmXf << endl;
 
                 for(int j = 0; j < nrhs; j++){
                     VECTOR_double xf_col(A.dim(1));
@@ -417,19 +424,21 @@ void abcd::distributeRhs()
                     B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
                 }
             } else {
-                B = MV_ColMat_double(m_l, block_size);
+                B = MV_ColMat_double(m_l, block_size, 0);
 
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < m_l; i++) {
                         B(i, j) = rhs[i + j*m_l];
                     }
                 }
+                IFMASTER diagScaleRhs(B);
+
             }
 
             if(block_size > nrhs) {
                 double *rdata = new double[m_l * (block_size - nrhs)];
 
-                srand((unsigned)time(0)); 
+                srand(100); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
                     rdata[i] = ((rand()%10)+1)/10; 
                     //rdata[i] = 2;
