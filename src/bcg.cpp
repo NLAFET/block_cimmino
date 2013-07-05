@@ -12,8 +12,6 @@ void abcd::bcg(MV_ColMat_double &b)
     //exit(0);
     if(!use_xk) {
         Xk = MV_ColMat_double(n, nrhs, 0);
-    } else {
-        cout << "HEY" << endl;
     }
 
     // temporary solution
