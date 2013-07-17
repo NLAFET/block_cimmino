@@ -72,9 +72,9 @@ abcd::solveS ( MV_ColMat_double &f )
 
     if(inter_comm.rank() == 0){ 
         //strcpy(mu.write_problem, "/tmp/sss.mtx");
-        mu.icntl[0] = 6;
-        mu.icntl[1] = 6;
-        mu.icntl[2] = 6;
+        //mu.icntl[0] = 6;
+        //mu.icntl[1] = 6;
+        //mu.icntl[2] = 6;
         //mu.icntl[3] = 2;
     }
 
@@ -86,8 +86,8 @@ abcd::solveS ( MV_ColMat_double &f )
     //}
     mu.icntl[8  - 1] =  77;
     mu.icntl[7  - 1] =  6;
-    mu.icntl[6  - 1] =  5;
-    mu.icntl[12 - 1] =  2;
+    //mu.icntl[6  - 1] =  5;
+    //mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
 
 #ifdef CENTRALIZE
@@ -325,8 +325,8 @@ abcd::buildS ( std::vector<int> cols )
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
                 for( int i = c; i < size_c; i++){
-                    //if(sp(i,j)!=0){
-                    if(abs(sp(i,j))>1e-16){
+                    if(sp(i,j)!=0){
+                    //if(abs(sp(i,j))>1e-16){
                         vc.push_back(c);
                         vr.push_back(i);
                         vv.push_back(sp(i, j));
@@ -495,23 +495,16 @@ abcd::buildM (  )
 
     double t = MPI_Wtime();
     //t = MPI_Wtime();
-    //S = buildS(skipped_S_columns);
-    //S = buildS();
+    S = buildS(skipped_S_columns);
     //clog << " Time to build S : " << MPI_Wtime() - t << endl;
 
-    //std::vector<int> sc, ss;
-    //for(int i = 0; i < S.dim(0); i++){
-        //if(2*S(i,i) <= 0.7) sc.push_back(i);
-        //else ss.push_back(i);
-    //}
-    //cout << ss.size() << endl;
     Coord_Mat_double M = buildS(selected_S_columns);
-    //Coord_Mat_double M = buildS(sc);
     //clog << " Time to build M : " << MPI_Wtime() - t << endl;
 
     //if(IRANK == 0) clog << "* -----------  DONE  ------------- * " << endl;
 
     double max = 0;
+    std::vector<int> dropped;
 
     {
         std::vector<int> mr, mc;
@@ -521,34 +514,24 @@ abcd::buildM (  )
         int r, c;
         double v;
 
-        for(int i = 0; i < M.NumNonzeros(); i++){
-            mr.push_back(M.row_ind(i));
-            mc.push_back(M.col_ind(i));
-            mv.push_back(M.val(i));
-        }
-
         for(int i = 0; i < skipped_S_columns.size(); i++){
             std::map<int,int>::iterator iti = glob_to_local.find(n_o + skipped_S_columns[i]);
             if(iti == glob_to_local.end()) continue;
 
             int ro = skipped_S_columns[i];
 
-        //for(int i = 0; i < ss.size(); i++){
-            //std::map<int,int>::iterator iti = glob_to_local.find(n_o + ss[i]);
-            //if(iti == glob_to_local.end()) continue;
-
-            //int ro = ss[i];
-
             mr.push_back(ro);
             mc.push_back(ro);
-            mv.push_back(1);
-            //mv.push_back(S(ro,ro));
-            //if(abs(S(ro, ro)) > max) max = abs(S(ro, ro));
-            //mv.push_back(sqrt(max));
-            //
-            //mv.push_back(0.5 - sqrt(max));
-            //mv.push_back( 0.5*(1 + sqrt(1 - 4*sum)));
-            //clog << IRANK << " " << S(ro, ro) << " " << 0.5 - srow[ro] << endl;
+            mv.push_back(S(ro,ro));
+            //mv.push_back(1);
+        }
+
+        for(int i = 0; i < M.NumNonzeros(); i++){
+            if(std::find(skipped_S_columns.begin(), skipped_S_columns.end(), M.row_ind(i))
+                    !=skipped_S_columns.end()) continue;
+            mr.push_back(M.row_ind(i));
+            mc.push_back(M.col_ind(i));
+            mv.push_back(M.val(i));
         }
         
         M = Coord_Mat_double(size_c, size_c, mv.size(), &mv[0], &mr[0], &mc[0]);
@@ -695,7 +678,7 @@ abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
     VECTOR_double
 abcd::pcgS ( VECTOR_double &b )
 {
-    double resid, tol = 1e-7;
+    double resid, tol = 1e-4;
 
     //int max_iter = 2;
     int max_iter = size_c;

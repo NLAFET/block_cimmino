@@ -107,6 +107,9 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
     }
 
     pos = 0;
+
+    double loc_nrmxfmx = 0;
+
     for(int p = 0; p < partitions.size(); p++) {
         for(int j = 0; j < x.dim(1); j++) {
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
@@ -115,6 +118,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
             for(int i = 0; i < local_column_index[p].size(); i++) {
                 int ci = local_column_index[p][i];
                 compressed_x(x_pos) = x(ci, j);
+
                 x_pos++;
             }
             VECTOR_double vj = loc_r(j);
@@ -125,16 +129,6 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
         pos += partitions[p].dim(0);
     }
 
-    double loc_nrmxfmx;
-    if(use_xf){
-        if(inter_comm.size()>1) {
-            if(inter_comm.rank()==0)
-                cout << "NOT IMPLEMENTED YET : Parallel use of xf" << endl;
-        } else {
-            loc_xfmx = Xf - x;
-            loc_nrmxfmx = infNorm(loc_xfmx);
-        }
-    }
 
     loc_r  = b - loc_r;
 
@@ -157,11 +151,6 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
         //nrmX = nrms_out[1];
     }
 
-    if(use_xf){
-        if(inter_comm.size()==1)
-            mpi::all_reduce(inter_comm, &loc_nrmxfmx, 1,  &nrmXfmX, mpi::maximum<double>());
-        //nrmXfmX = loc_xfmx.norm();
-    }
 }
 
 /// Compair pairs
