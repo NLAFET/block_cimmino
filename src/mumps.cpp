@@ -285,6 +285,7 @@ void abcd::factorizeAugmentedSystems()
              << "| NZ            : " << setw(12) << mumps.nz << " |" << endl
              << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
              << "| Time          : " << setw(6) << t << " sec |" << endl
+             << "| memory        : " << setw(6) << getMumpsInfo(22) << " M|" << endl
              << string(32, '-') << endl;
         cout.precision(prec);
     }

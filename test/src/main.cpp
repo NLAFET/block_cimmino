@@ -191,11 +191,12 @@ int main(int argc, char* argv[])
 
         try {
             
-            double t = MPI_Wtime();
 
             obj.verbose =  pt.get<int>("all_verbose", 0);
 
             obj.bc(-1);
+
+            double t = MPI_Wtime();
             obj.bc(1);
             obj.bc(2);
 

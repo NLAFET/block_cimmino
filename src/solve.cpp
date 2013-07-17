@@ -169,6 +169,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     // the final solution (distributed)
     f = w + f;
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
+    IBARRIER;
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
@@ -177,41 +178,41 @@ abcd::solveABCD ( MV_ColMat_double &b )
     //if(IRANK == 0) cout << f(MV_VecIndex(0, 10), 0) << endl;
 
      //centralize the solution to the master
-    {
+    //{
 
-        MV_ColMat_double xfmf(n, 1, 0);
-        MV_ColMat_double lf(n, 1, 0);
+        //MV_ColMat_double xfmf(n, 1, 0);
+        //MV_ColMat_double lf(n, 1, 0);
 
-        for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+        //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
-            if(it->first < n_o){
-                xfmf(it->second , 0) = 1 - f(it->second, 0);
-                lf(it->second , 0) = f(it->second, 0);
-            }
-        }
+            //if(it->first < n_o){
+                //xfmf(it->second , 0) = 1 - f(it->second, 0);
+                //lf(it->second , 0) = f(it->second, 0);
+            //}
+        //}
 
-        double nf = infNorm(xfmf);
-        double nff = infNorm(lf);
+        //double nf = infNorm(xfmf);
+        //double nff = infNorm(lf);
         
-        double nfa, nfb;
-        mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+        //double nfa, nfb;
+        //mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
 
-        if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
-    }
+        //if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+    //}
 
     //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
     //double rho;
-    if(inter_comm.rank()==0){
-        zrhs = MV_ColMat_double(m, 1, 0);
-        int st = 0;
-        for(int p = 0; p < partitions.size(); p++){
-            zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                    MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
-            st += partitions[p].dim(0);
-        }
-        zrhs = zrhs - b;
-        cout << "||\\bar{A}z - b||_2 / ||b|| = " << sqrt(zrhs.squaredSum()) / norm(b(0)) << endl;
-    }
+    //if(inter_comm.rank()==0){
+        //zrhs = MV_ColMat_double(m, 1, 0);
+        //int st = 0;
+        //for(int p = 0; p < partitions.size(); p++){
+            //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
+                    //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
+            //st += partitions[p].dim(0);
+        //}
+        //zrhs = zrhs - b;
+        //cout << "||\\bar{A}z - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
+    //}
 
 
 
