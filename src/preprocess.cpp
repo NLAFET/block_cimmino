@@ -130,7 +130,7 @@ void abcd::scaleMatrix(int norm)
 
     if(norm < 0) throw - 12;
 
-    mc77_icntl[6] = 20;
+    mc77_icntl[6] = 10;
 
     job = norm;
     mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,

@@ -440,8 +440,8 @@ void abcd::distributeRhs()
 
                 srand(100); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = ((rand()%10)+1)/10; 
-                    //rdata[i] = 2;
+                    rdata[i] = (((double)rand())+1)/(double)RAND_MAX; 
+                    //rdata[i] = i+1;
                 }
 
                 MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
