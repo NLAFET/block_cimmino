@@ -104,18 +104,21 @@ int main(int argc, char* argv[])
                 exit(-1);
             }
 
-            int nb_v, i=0;
+            MM_typecode rhs_code;
+            int nb_v, m_v;
+
+            mm_read_banner(rhs_f, &rhs_code);
+            mm_read_mtx_array_size(rhs_f, &m_v, &nb_v);
+
+            obj.rhs = new double[nb_v * m_v];
+            cout << "Reading "<< m_v << " values for each of the " << nb_v << " rhs" << endl;
+
             double cv;
-
-            fscanf(rhs_f, "%d", &nb_v);
-
-            obj.rhs = new double[nb_v];
-            cout << "Reading "<< nb_v << " values from the rhs" << endl;
-
-            while(i < nb_v){
-                fscanf(rhs_f, "&f", &cv);
-                obj.rhs[i++] = cv;
+            for(int i = 0; i < m_v*nb_v; i++){
+                fscanf(rhs_f, "%lf", &cv);
+                obj.rhs[i] = cv;
             }
+            //
             fclose(rhs_f);
         }
         //
@@ -188,11 +191,12 @@ int main(int argc, char* argv[])
 
         try {
             
-            double t = MPI_Wtime();
 
             obj.verbose =  pt.get<int>("all_verbose", 0);
 
             obj.bc(-1);
+
+            double t = MPI_Wtime();
             obj.bc(1);
             obj.bc(2);
 

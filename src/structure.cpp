@@ -211,10 +211,10 @@ void abcd::analyseFrame()
         cout << endl;
         while(size_c > 0 && f < 0.9){
             dcntl[10] = f;
-            cout << "filter value : " << fixed << setprecision(3) << f << " gives : ";
+            cout << "filter value : " << fixed << setprecision(5) << f << " gives : ";
             abcd::augmentMatrix(loc_parts);
             cout << endl << endl;
-            f+=25.0/1000;
+            f+=0.025;
         }
         exit(0);
     }

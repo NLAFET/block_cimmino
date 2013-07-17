@@ -84,6 +84,7 @@ int abcd::bc(int job)
                 cout << "Size of S is 0, therefore launching bcg" << endl;
                 icntl[10] = 0;
             }
+
             abcd::distributeRhs();
             if(icntl[10] == 0 || icntl[12] != 0 || runSolveS){
                 abcd::bcg(B);
