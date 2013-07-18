@@ -169,6 +169,25 @@ int main(int argc, char* argv[])
 
             obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
         }
+
+        if(obj.partitioning_type == 4){
+            string parts = pt.get<string>("partitioning.partsfile");
+            ifstream f;
+            f.open(parts.c_str());
+            std::vector<int> nrows;
+
+            for(unsigned k = 0; k < obj.nbparts; k++) {
+                string l;
+                getline(f, l);
+                nrows.push_back(atoi(l.c_str()));
+                cout << nrows.back() << endl;
+            }
+            exit(0);
+
+            obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
+
+            f.close();
+        }
         obj.write_problem   = pt.get<string>("write_problem", "");
 
         obj.icntl[8]    = pt.get<int>("esparse", 0);
