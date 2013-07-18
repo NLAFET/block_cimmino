@@ -53,16 +53,20 @@ abcd::solveS ( MV_ColMat_double &f )
     //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
+    int job = 21;
+    mpi::broadcast(intra_comm, job, 0);
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
     t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
+    mpi::communicator world;
     mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
-    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+    //mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
 
     dmumps_c(&mu);
 
