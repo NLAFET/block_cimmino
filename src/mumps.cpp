@@ -463,6 +463,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     void
 abcd::waitForSolve()
 {
+    DMUMPS_STRUC_C mu;
+    mpi::communicator world;
+
     int job = 0;
     do{
         mpi::broadcast(intra_comm, job, 0);
@@ -471,10 +474,7 @@ abcd::waitForSolve()
         if(job == 1){
             mumps.job = 3;
             dmumps_c(&mumps);
-        } else if (job == 21) {
-            DMUMPS_STRUC_C mu;
-            mpi::communicator world;
-
+        } else if (job == 2) {
             mu.sym = 2;
             mu.par = 1;
             mu.job = -1;
