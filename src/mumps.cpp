@@ -354,8 +354,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
         if(infNorm(X) != 0 || infNorm(Rhs) != 0){
 
-            bool stay_alive = true;
-            mpi::broadcast(intra_comm, stay_alive, 0);
+            int job = 1;
+            mpi::broadcast(intra_comm, job, 0);
 
             mumps.nrhs = s;
             mumps.lrhs = mumps.n;
@@ -463,12 +463,36 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     void
 abcd::waitForSolve()
 {
-    bool stay_alive = true;
+    DMUMPS_STRUC_C mu;
+    mpi::communicator world;
+
+    int job = 0;
     do{
-        mpi::broadcast(intra_comm, stay_alive, 0);
-        if(!stay_alive) break;
-        mumps.job = 3;
-        dmumps_c(&mumps);
+        mpi::broadcast(intra_comm, job, 0);
+        
+        if(job == -1) break;
+        if(job == 1){
+            mumps.job = 3;
+            dmumps_c(&mumps);
+        } else if (job == 2) {
+            mu.sym = 2;
+            mu.par = 1;
+            mu.job = -1;
+
+            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+            dmumps_c(&mu);
+
+            mu.icntl[0] = -1;
+            mu.icntl[1] = -1;
+            mu.icntl[2] = -1;
+
+            mu.job = 1;
+            dmumps_c(&mu);
+            mu.job = 2;
+            dmumps_c(&mu);
+            mu.job = 3;
+            dmumps_c(&mu);
+        }
     }while(true);
 
 }		/* -----  end of function abcd::waitForSolve()  ----- */
@@ -521,8 +545,8 @@ MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
 
     }
 
-    bool stay_alive = true;
-    mpi::broadcast(intra_comm, stay_alive, 0);
+    int job = 1;
+    mpi::broadcast(intra_comm, job, 0);
 
     mumps.nrhs = s;
     mumps.lrhs = mumps.n;
@@ -610,8 +634,8 @@ MV_ColMat_double abcd::coupleSumProject(double alpha, MV_ColMat_double &Rhs, dou
 
         if(infNorm(X) != 0 || infNorm(Rhs) != 0){
 
-            bool stay_alive = true;
-            mpi::broadcast(intra_comm, stay_alive, 0);
+            int job = 1;
+            mpi::broadcast(intra_comm, job, 0);
 
             mumps.nrhs = s;
             mumps.lrhs = mumps.n;
@@ -805,8 +829,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     }
 
-    bool stay_alive = true;
-    mpi::broadcast(intra_comm, stay_alive, 0);
+    int job = 1;
+    mpi::broadcast(intra_comm, job, 0);
 
     mumps.nrhs          = s;
     mumps.lrhs          = mumps.n;

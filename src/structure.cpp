@@ -167,14 +167,17 @@ void abcd::partitionMatrix()
             break;
     }
 
-    clog << "partitioning = [";
+    if(write_problem.length() != 0) {
+        string parts = write_problem + "_parts";
+        ofstream f;
+        f.open(parts.c_str());
 
-    for(unsigned k = 0; k < nbparts - 1; k++) {
-        clog << nbrows[k] << ", ";
+        for(unsigned k = 0; k < nbparts; k++) {
+            f << nbrows[k] << "\n";
+        }
+
+        f.close();
     }
-
-    clog << nbrows[nbparts - 1] <<  "]" << endl;
-
 }
 
 void abcd::analyseFrame()

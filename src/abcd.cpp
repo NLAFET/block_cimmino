@@ -92,8 +92,8 @@ int abcd::bc(int job)
                 abcd::solveABCD(B);
             }
 
-            bool stay_alive = false;
-            mpi::broadcast(intra_comm, stay_alive, 0);
+            int job = -1;
+            mpi::broadcast(intra_comm, job, 0);
 
         } else {
             abcd::waitForSolve();

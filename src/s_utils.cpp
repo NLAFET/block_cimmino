@@ -53,16 +53,23 @@ abcd::solveS ( MV_ColMat_double &f )
     //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
+    //
     
     /*-----------------------------------------------------------------------------
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
     t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
+    mpi::communicator world;
     mu.sym = 2;
     mu.par = 1;
     mu.job = -1;
-    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+
+    int job = 2;
+    mpi::broadcast(intra_comm, job, 0);
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+    //
+    //mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
 
     dmumps_c(&mu);
 
@@ -71,7 +78,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        //strcpy(mu.write_problem, "/group/gc26/c26048/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;

@@ -143,23 +143,34 @@ int main(int argc, char* argv[])
         obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
-            //std::set<int> nbrows; =  pt.get_child<int>();
-            //cout << nbrows.size() << endl;
-            //
-            try{
-                ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning.nbrows");
-            } catch (ptree_bad_path e){
-                clog << "Error parsing the file, you have to give the number of rows per partition as in the example file" << endl;
-                clog << "The what() : " << e.what() << endl << endl;
-                exit(-1);
-            }
-
+            string parts = pt.get<string>("partitioning.partsfile", "");
             std::vector<int> nrows;
 
+            if(parts.length() == 0){
+                try{
+                    ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning.nbrows");
+                } catch (ptree_bad_path e){
+                    clog << "Error parsing the file, you have to give the number of rows per partition as in the example file" << endl;
+                    clog << "The what() : " << e.what() << endl << endl;
+                    exit(-1);
+                }
 
-            BOOST_FOREACH( ptree::value_type v, pt.get_child("partitioning.nbrows") )
-            {
-                nrows.push_back(atoi(v.first.data()));
+                BOOST_FOREACH( ptree::value_type v, pt.get_child("partitioning.nbrows") )
+                {
+                    nrows.push_back(atoi(v.first.data()));
+                }
+
+            } else {
+                ifstream f;
+                f.open(parts.c_str());
+
+                for(unsigned k = 0; k < obj.nbparts; k++) {
+                    string l;
+                    getline(f, l);
+                    nrows.push_back(atoi(l.c_str()));
+                }
+
+                f.close();
             }
 
             if(nrows.size() != obj.nbparts){
@@ -169,6 +180,7 @@ int main(int argc, char* argv[])
 
             obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
         }
+
         obj.write_problem   = pt.get<string>("write_problem", "");
 
         obj.icntl[8]    = pt.get<int>("esparse", 0);
