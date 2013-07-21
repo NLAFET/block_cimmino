@@ -65,11 +65,11 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.par = 1;
     mu.job = -1;
 
-    //int job = 2;
-    //mpi::broadcast(intra_comm, job, 0);
-    //mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+    int job = 2;
+    mpi::broadcast(intra_comm, job, 0);
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
     //
-    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+    //mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
 
     dmumps_c(&mu);
 
@@ -78,7 +78,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/tmp/sss.mtx");
+        //strcpy(mu.write_problem, "/group/gc26/c26048/sss.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -92,7 +92,7 @@ abcd::solveS ( MV_ColMat_double &f )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  77;
-    mu.icntl[7  - 1] =  5;
+    mu.icntl[7  - 1] =  6;
     //mu.icntl[6  - 1] =  5;
     //mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
