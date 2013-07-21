@@ -5,7 +5,7 @@ include(abcdCmake.in)
 project(abcd CXX C Fortran)
 
 
-find_package (Boost COMPONENTS mpi serialization REQUIRED)
+#find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
 #set(CMAKE_BUILD_TYPE "Debug")
