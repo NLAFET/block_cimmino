@@ -50,6 +50,20 @@ abcd::solveS ( MV_ColMat_double &f )
         clog << "*                                  *" << endl;
     }
 
+        if(false) {
+            ofstream f;
+            ostringstream ff;
+            ff << "/tmp/d";
+            ff << IRANK << ".mtx";
+            f.open(ff.str().c_str());
+            f << "%%MatrixMarket matrix coordinate real general\n";
+            f << S.dim(0) << " " << S.dim(1) << " " << S.NumNonzeros() << "\n";
+            for(int i = 0; i < S.NumNonzeros(); i++){
+                f << S.row_ind(i) + 1 << " " << S.col_ind(i) + 1 << " " << S.val(i) << "\n";
+            }
+            f.close();
+        }
+
     //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
@@ -78,7 +92,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/group/gc26/c26048/sss.mtx");
+        //strcpy(mu.write_problem, "/tmp/st.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -110,8 +124,10 @@ abcd::solveS ( MV_ColMat_double &f )
     std::vector<double> a_loc(loc_nz);
 
     for(int i = 0; i < loc_nz; i++){
-        irn_loc[i] = S.row_ind(i) + 1;
-        jcn_loc[i] = S.col_ind(i) + 1;
+        //irn_loc[i] = S.row_ind(i) + 1;
+        //jcn_loc[i] = S.col_ind(i) + 1;
+        irn_loc[i] = S.row_ind(i);
+        jcn_loc[i] = S.col_ind(i);
         a_loc[i] = S.val(i);
     }
     
@@ -136,7 +152,45 @@ abcd::solveS ( MV_ColMat_double &f )
             inter_comm.recv(i, 72, mu.jcn + current_pos, rnz);
             inter_comm.recv(i, 73, mu.a   + current_pos, rnz);
 
+
             current_pos += rnz;
+        }
+
+        Coord_Mat_double SS(size_c, size_c, mu.nz, mu.a, mu.irn, mu.jcn);
+        CompCol_Mat_double SC(SS);
+        
+        delete[] mu.irn, mu.jcn, mu.a;
+        std::vector<int> ii, jj;
+        std::vector<double> vv;
+
+        int r;
+        for(int c = 0; c < SC.dim(1); c++){
+            std::map<int,double> mi;
+            for(int i=SC.col_ptr(c); i < SC.col_ptr(c+1); i++){
+                r = SC.row_ind(i);
+                if(mi[r]){
+                    mi[r] += SC.val(i);
+                } else {
+                    mi[r] = SC.val(i);
+                }
+            }
+            for(std::map<int,double>::iterator it = mi.begin();
+                    it != mi.end(); it++) {
+                ii.push_back(it->first);
+                jj.push_back(c);
+                vv.push_back(it->second);
+            }
+        }
+        mu.nz  = vv.size();
+        mu.irn = new int[mu.nz];
+        mu.jcn = new int[mu.nz];
+        mu.a   = new double[mu.nz];
+        cout << mu.nz << endl;
+
+        for(int i = 0; i < mu.nz; i++){
+            mu.irn[i] = ii[i] + 1;
+            mu.jcn[i] = jj[i] + 1;
+            mu.a  [i] = vv[i] + 1;
         }
 
     } else {
