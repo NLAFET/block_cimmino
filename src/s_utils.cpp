@@ -50,10 +50,10 @@ abcd::solveS ( MV_ColMat_double &f )
         clog << "*                                  *" << endl;
     }
 
-        if(false) {
+        if(true) {
             ofstream f;
             ostringstream ff;
-            ff << "/tmp/d";
+            ff << "/tmp/m";
             ff << IRANK << ".mtx";
             f.open(ff.str().c_str());
             f << "%%MatrixMarket matrix coordinate real general\n";
@@ -152,12 +152,15 @@ abcd::solveS ( MV_ColMat_double &f )
             inter_comm.recv(i, 72, mu.jcn + current_pos, rnz);
             inter_comm.recv(i, 73, mu.a   + current_pos, rnz);
 
-
             current_pos += rnz;
+            cout << rnz << endl;
         }
 
         Coord_Mat_double SS(size_c, size_c, mu.nz, mu.a, mu.irn, mu.jcn);
+        cout << SS << endl;
+        exit(0);
         CompCol_Mat_double SC(SS);
+
         
         delete[] mu.irn, mu.jcn, mu.a;
         std::vector<int> ii, jj;
@@ -192,6 +195,7 @@ abcd::solveS ( MV_ColMat_double &f )
             mu.jcn[i] = jj[i] + 1;
             mu.a  [i] = vv[i] + 1;
         }
+        exit(0);
 
     } else {
         inter_comm.send(0, 70, loc_nz);
@@ -382,6 +386,97 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
+
+#ifdef EXPLICIT_SUM
+
+            std::map<int, std::vector<int> > rs;
+            std::map<int, std::vector<int> > rc;
+            std::map<int, std::vector<double> > rv;
+
+            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                    it != col_interconnections.end(); it++) {
+
+                std::vector<int> itc;
+                //cout << IRANK << "=" << it->first << endl;
+
+                for(int k = 0; k < partitions.size(); k++) {
+                    int start_c = glob_to_part[k][stC[k]];
+                    int st_c = glob_to_local[stC[k]];
+
+                    std::vector<int>::iterator beg = std::find(it->second.begin(), it->second.end(), st_c);
+                    int pos = stC[k] - n_o;
+
+                    //cout << IRANK << " stc " << start_c << " " << stC[k] << " " << (beg == it->second.end()) << endl;
+                    //for(int i = 0; i < column_index[k].size(); i++){
+                        //cout << IRANK << " ci " << k << " -- " << i << " " << column_index[k][i] << endl;
+                    //}
+
+                    //for(map<int, int>::iterator i = glob_to_local.begin(); i != glob_to_local.end(); i++){
+                        //cout << IRANK << " gl " << k << " -- " << i->first << " " << i->second  << endl;
+                    //}
+
+                    //for(std::vector<int>::iterator b = it->second.begin(); b != it->second.end(); b++){
+                        //cout << IRANK << " " << k << " " << *b <<  endl;
+                    //}
+                    if(beg == it->second.end()) continue;
+
+                    for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
+                        if(g->second == *beg){
+                            //cout << IRANK << " " << k << " > " << *beg << " " << g->first  << " <" << pos << endl;
+                            itc.push_back(pos);
+                            beg++;
+                            pos++;
+                        }
+                    }
+
+                    //for(int i = start_c; i < column_index[k].size() && beg != it->second.end(); i++){
+                        //int ci = column_index[k][i];
+                        //int cj = column_index[k][*beg];
+                        //while(cj < ci && beg != it->second.end()) {
+                            //beg++;
+                            //cj = column_index[k][*beg];
+                        //}
+                        //if(ci == cj){
+                            //itc.push_back(ci - n_o);
+                            //cout << IRANK << " " << ci - n_o << endl;
+                            //beg++;
+                        //}
+                    //}
+                }
+                //IBARRIER; exit(0);
+
+                if(itc.size() == 0){
+                } else {
+
+                    std::sort(itc.begin(), itc.end());
+                    std::vector<int>::iterator last = std::unique(itc.begin(), itc.end());
+                    itc.erase(last, itc.end());
+                    std::vector<int>::iterator deb = itc.begin();
+                    std::vector<int>::iterator to_send = itc.begin();
+
+                    if(IRANK > it->first){
+                        for( int j = 0; j < cur_cols.size(); j++){
+                            if(*deb != cur_cols[j]) continue;
+                            for(int r = 0; r < sp.dim(0); r++){
+                                std::vector<int>::iterator position = std::find(to_send, itc.end(), r);
+                                if(sp(r, j) == 0 || position == itc.end()) continue;
+                                //cout << IRANK << " -> " << it->first <<
+                                    //" (" << r+1 << ", " << *deb + 1 << " " << j + 1 << ") " << 
+                                    //sp(r, j) << endl;
+
+                                rs[it->first].push_back(r);
+                                rc[it->first].push_back(*deb);
+                                rv[it->first].push_back(sp(r,j));
+
+                                to_send = position;
+                            }
+                            deb++;
+                        }
+                    }
+                }
+            }
+                //IBARRIER; exit(0);
+#endif
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
