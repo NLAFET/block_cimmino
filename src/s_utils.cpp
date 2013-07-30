@@ -370,7 +370,7 @@ abcd::buildS ( std::vector<int> cols )
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
             else end_pos = my_cols.end();
-
+            
             double perc = end_pos - my_cols.begin();
             perc /= my_cols.size();
             perc *= 100;
@@ -388,7 +388,6 @@ abcd::buildS ( std::vector<int> cols )
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
 #ifdef EXPLICIT_SUM
-
             std::map<int, std::vector<int> > rs, rs_in;
             std::map<int, std::vector<int> > rc, rc_in;
             std::map<int, std::vector<double> > rv, rv_in;
@@ -400,10 +399,10 @@ abcd::buildS ( std::vector<int> cols )
             int last_spot = 0;
             std::vector<int> last_post(nbparts, 0);
 
-            double t = MPI_Wtime();
             for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
                     it != col_interconnections.end(); it++) {
 
+                double t = MPI_Wtime();
                 std::vector<int> itc;
 
                 for(int k = 0; k < partitions.size(); k++) {
@@ -424,8 +423,9 @@ abcd::buildS ( std::vector<int> cols )
 
                     if(beg == it->second.end()) continue;
 
-
-                    for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
+                    std::map<int, int>::iterator g = glob_to_local.begin();
+                    while( ( g != glob_to_local.end() ) && ( *beg < cur_cols.back() ) ){
+                    //for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
                         if(g->second == *beg){
                             itc.push_back(pos);
                             beg++;
@@ -461,6 +461,7 @@ abcd::buildS ( std::vector<int> cols )
                     }
                 }
 
+
                 reqs.push_back(inter_comm.irecv(it->first, 41, rs_in[it->first]));
                 reqs.push_back(inter_comm.irecv(it->first, 42, rc_in[it->first]));
                 reqs.push_back(inter_comm.irecv(it->first, 43, rv_in[it->first]));
@@ -473,9 +474,6 @@ abcd::buildS ( std::vector<int> cols )
 
             mpi::wait_all(reqs.begin(), reqs.end());
             reqs.clear();
-
-            IFMASTER cout << "t1 " << MPI_Wtime() - t << endl;
-            t = MPI_Wtime();
 
             //exit(0);
 
@@ -501,9 +499,6 @@ abcd::buildS ( std::vector<int> cols )
                 cit++;
                 vit++;
             }
-
-            IFMASTER cout << "t2 " << MPI_Wtime() - t << endl;
-
 #endif
 
             for( int j = 0; j < cur_cols.size(); j++){
