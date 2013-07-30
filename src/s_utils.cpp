@@ -50,6 +50,20 @@ abcd::solveS ( MV_ColMat_double &f )
         clog << "*                                  *" << endl;
     }
 
+        if(true) {
+            ofstream f;
+            ostringstream ff;
+            ff << "/tmp/m";
+            ff << IRANK << ".mtx";
+            f.open(ff.str().c_str());
+            f << "%%MatrixMarket matrix coordinate real general\n";
+            f << S.dim(0) << " " << S.dim(1) << " " << S.NumNonzeros() << "\n";
+            for(int i = 0; i < S.NumNonzeros(); i++){
+                f << S.row_ind(i) + 1 << " " << S.col_ind(i) + 1 << " " << S.val(i) << "\n";
+            }
+            f.close();
+        }
+
     //if(inter_comm.rank() == 0) clog << S(0,0) << endl;
     //inter_comm.barrier();
     //
@@ -78,7 +92,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/group/gc26/c26048/sss.mtx");
+        strcpy(mu.write_problem, "/tmp/st.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -110,8 +124,13 @@ abcd::solveS ( MV_ColMat_double &f )
     std::vector<double> a_loc(loc_nz);
 
     for(int i = 0; i < loc_nz; i++){
+#ifdef CENTRALIZED_SUM
+        irn_loc[i] = S.row_ind(i);
+        jcn_loc[i] = S.col_ind(i);
+#else
         irn_loc[i] = S.row_ind(i) + 1;
         jcn_loc[i] = S.col_ind(i) + 1;
+#endif
         a_loc[i] = S.val(i);
     }
     
@@ -138,6 +157,45 @@ abcd::solveS ( MV_ColMat_double &f )
 
             current_pos += rnz;
         }
+
+#ifdef CENTRALIZED_SUM
+        Coord_Mat_double SS(size_c, size_c, mu.nz, mu.a, mu.irn, mu.jcn);
+        CompCol_Mat_double SC(SS);
+
+        
+        delete[] mu.irn, mu.jcn, mu.a;
+        std::vector<int> ii, jj;
+        std::vector<double> vv;
+
+        int r;
+        for(int c = 0; c < SC.dim(1); c++){
+            std::map<int,double> mi;
+            for(int i=SC.col_ptr(c); i < SC.col_ptr(c+1); i++){
+                r = SC.row_ind(i);
+                if(mi[r]){
+                    mi[r] += SC.val(i);
+                } else {
+                    mi[r] = SC.val(i);
+                }
+            }
+            for(std::map<int,double>::iterator it = mi.begin();
+                    it != mi.end(); it++) {
+                ii.push_back(it->first);
+                jj.push_back(c);
+                vv.push_back(it->second);
+            }
+        }
+        mu.nz  = vv.size();
+        mu.irn = new int[mu.nz];
+        mu.jcn = new int[mu.nz];
+        mu.a   = new double[mu.nz];
+
+        for(int i = 0; i < mu.nz; i++){
+            mu.irn[i] = ii[i] + 1;
+            mu.jcn[i] = jj[i] + 1;
+            mu.a  [i] = vv[i] + 1;
+        }
+#endif
 
     } else {
         inter_comm.send(0, 70, loc_nz);
@@ -328,6 +386,119 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
+
+#ifdef EXPLICIT_SUM
+
+            std::map<int, std::vector<int> > rs, rs_in;
+            std::map<int, std::vector<int> > rc, rc_in;
+            std::map<int, std::vector<double> > rv, rv_in;
+
+            std::map<int, int> nelts;
+
+            std::vector<mpi::request> reqs;
+
+            int last_spot = 0;
+            std::vector<int> last_post(nbparts, 0);
+
+            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                    it != col_interconnections.end(); it++) {
+
+                std::vector<int> itc;
+
+                for(int k = 0; k < partitions.size(); k++) {
+                    int start_c = glob_to_part[k][stC[k]];
+                    int st_c = glob_to_local[stC[k]];
+
+                    if(it->second.size() == 0 || it->first > IRANK) continue;
+
+                    int pos;
+                    if(last_post[k] == 0){
+                        pos = stC[k] - n_o;
+                    } else {
+                        pos = stC[k] - n_o + last_post[k];
+                    }
+
+                    std::vector<int>::iterator beg = it->second.begin();
+                    while(*beg < st_c) beg++;
+
+                    if(beg == it->second.end()) continue;
+
+
+                    for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
+                        if(g->second == *beg){
+                            itc.push_back(pos);
+                            beg++;
+                            pos++;
+                            last_post[k]++;
+                        }
+                    }
+                }
+
+                if(itc.size() != 0){
+                    std::sort(itc.begin(), itc.end());
+                    std::vector<int>::iterator last = std::unique(itc.begin(), itc.end());
+                    itc.erase(last, itc.end());
+                    std::vector<int>::iterator deb = itc.begin();
+                    std::vector<int>::iterator to_send = itc.begin();
+
+                    for( int j = last_spot; j < cur_cols.size(); j++){
+                        if(*deb != cur_cols[j]) continue;
+                        for(int r = 0; r < sp.dim(0); r++){
+                            std::vector<int>::iterator position = std::find(to_send, itc.end(), r);
+                            if(sp(r,j) == 0 || position == itc.end()) continue;
+
+                            rs[it->first].push_back(r);
+                            rc[it->first].push_back(*deb);
+                            rv[it->first].push_back(sp(r,j));
+
+                            sp(r, j) = 0;
+
+                            to_send = position;
+                        }
+                        deb++;
+                        last_spot++;
+                    }
+                }
+
+                reqs.push_back(inter_comm.irecv(it->first, 41, rs_in[it->first]));
+                reqs.push_back(inter_comm.irecv(it->first, 42, rc_in[it->first]));
+                reqs.push_back(inter_comm.irecv(it->first, 43, rv_in[it->first]));
+
+                reqs.push_back(inter_comm.isend(it->first, 41, rs[it->first]));
+                reqs.push_back(inter_comm.isend(it->first, 42, rc[it->first]));
+                reqs.push_back(inter_comm.isend(it->first, 43, rv[it->first]));
+
+            }
+
+            mpi::wait_all(reqs.begin(), reqs.end());
+            reqs.clear();
+
+            //exit(0);
+
+            std::map<int, std::vector<int> >::iterator rit = rs_in.begin();
+            std::map<int, std::vector<int> >::iterator cit = rc_in.begin();
+            std::map<int, std::vector<double> >::iterator vit = rv_in.begin();
+
+            while(rit != rs_in.end()){
+                int p = 0;
+
+                std::vector<int>::iterator ct = cit->second.begin();
+                std::vector<int>::iterator rt = rit->second.begin();
+                std::vector<double>::iterator vt = vit->second.begin();
+
+                for(int j = 0; j < cur_cols.size() && ct != cit->second.end(); j++){
+                    if(*ct == cur_cols[j]){
+                        sp(*rt, j) += *vt;
+                        ct++; rt++; vt++;
+                    }
+                }
+
+                rit++;
+                cit++;
+                vit++;
+            }
+
+#endif
 
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];

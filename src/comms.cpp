@@ -108,25 +108,20 @@ void abcd::distributePartitions()
                 inter1.reserve(group_column_index[j].size());
                 inter2.reserve(group_column_index[j].size());
 
+                int id1 = 0, id2 = 0;
+
                 while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
                     if(*it1 < *it2) {
                         ++it1;
+                        ++id1;
                     } else {
                         if(!(*it2 < *it1)) {
-                            inter1.push_back(
-				    it1 - group_column_index[i].begin()
-                            );
-                            inter2.push_back(
-				    it2 - group_column_index[j].begin()
-                            );
+                            inter1.push_back( id1);
+                            inter2.push_back( id2);
 
-                            inter[i].push_back(
-				    it1 - group_column_index[i].begin()
-                            );
-                            inter[j].push_back(
-				    it1 - group_column_index[i].begin()
-                            );
+                            ++it1; ++id1;
                         }
+                        ++id2;
                         ++it2;
                     }
                 }
@@ -136,11 +131,11 @@ void abcd::distributePartitions()
                     inter_comm.send(i, 7, j);
                     inter_comm.send(i, 8, inter1);
                 }
+
                 inter_comm.send(j, 7, i);
                 inter_comm.send(j, 8, inter2);
             }
         }
-
 
         for(int i = 1; i < parallel_cg; i++) {
             inter_comm.send(i, 7, -1);

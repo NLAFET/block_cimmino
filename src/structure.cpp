@@ -514,7 +514,6 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     }
                 }
 
-
                 stCols[i].push_back(nbcols);
                 stCols[j].push_back(nbcols);
                 C[i].push_back(A_ij);
