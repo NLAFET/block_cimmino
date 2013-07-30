@@ -400,6 +400,7 @@ abcd::buildS ( std::vector<int> cols )
             int last_spot = 0;
             std::vector<int> last_post(nbparts, 0);
 
+            double t = MPI_Wtime();
             for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
                     it != col_interconnections.end(); it++) {
 
@@ -473,6 +474,9 @@ abcd::buildS ( std::vector<int> cols )
             mpi::wait_all(reqs.begin(), reqs.end());
             reqs.clear();
 
+            IFMASTER cout << "t1 " << MPI_Wtime() - t << endl;
+            t = MPI_Wtime();
+
             //exit(0);
 
             std::map<int, std::vector<int> >::iterator rit = rs_in.begin();
@@ -497,6 +501,8 @@ abcd::buildS ( std::vector<int> cols )
                 cit++;
                 vit++;
             }
+
+            IFMASTER cout << "t2 " << MPI_Wtime() - t << endl;
 
 #endif
 
