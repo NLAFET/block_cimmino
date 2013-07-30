@@ -92,7 +92,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        //strcpy(mu.write_problem, "/tmp/st.mtx");
+        strcpy(mu.write_problem, "/tmp/st.mtx");
         //mu.icntl[0] = 6;
         //mu.icntl[1] = 6;
         //mu.icntl[2] = 6;
@@ -124,10 +124,13 @@ abcd::solveS ( MV_ColMat_double &f )
     std::vector<double> a_loc(loc_nz);
 
     for(int i = 0; i < loc_nz; i++){
-        //irn_loc[i] = S.row_ind(i) + 1;
-        //jcn_loc[i] = S.col_ind(i) + 1;
+#ifdef CENTRALIZED_SUM
         irn_loc[i] = S.row_ind(i);
         jcn_loc[i] = S.col_ind(i);
+#else
+        irn_loc[i] = S.row_ind(i) + 1;
+        jcn_loc[i] = S.col_ind(i) + 1;
+#endif
         a_loc[i] = S.val(i);
     }
     
@@ -153,12 +156,10 @@ abcd::solveS ( MV_ColMat_double &f )
             inter_comm.recv(i, 73, mu.a   + current_pos, rnz);
 
             current_pos += rnz;
-            cout << rnz << endl;
         }
 
+#ifdef CENTRALIZED_SUM
         Coord_Mat_double SS(size_c, size_c, mu.nz, mu.a, mu.irn, mu.jcn);
-        cout << SS << endl;
-        exit(0);
         CompCol_Mat_double SC(SS);
 
         
@@ -188,14 +189,13 @@ abcd::solveS ( MV_ColMat_double &f )
         mu.irn = new int[mu.nz];
         mu.jcn = new int[mu.nz];
         mu.a   = new double[mu.nz];
-        cout << mu.nz << endl;
 
         for(int i = 0; i < mu.nz; i++){
             mu.irn[i] = ii[i] + 1;
             mu.jcn[i] = jj[i] + 1;
             mu.a  [i] = vv[i] + 1;
         }
-        exit(0);
+#endif
 
     } else {
         inter_comm.send(0, 70, loc_nz);
@@ -389,93 +389,115 @@ abcd::buildS ( std::vector<int> cols )
 
 #ifdef EXPLICIT_SUM
 
-            std::map<int, std::vector<int> > rs;
-            std::map<int, std::vector<int> > rc;
-            std::map<int, std::vector<double> > rv;
+            std::map<int, std::vector<int> > rs, rs_in;
+            std::map<int, std::vector<int> > rc, rc_in;
+            std::map<int, std::vector<double> > rv, rv_in;
+
+            std::map<int, int> nelts;
+
+            std::vector<mpi::request> reqs;
+
+            int last_spot = 0;
+            std::vector<int> last_post(nbparts, 0);
 
             for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
                     it != col_interconnections.end(); it++) {
 
                 std::vector<int> itc;
-                //cout << IRANK << "=" << it->first << endl;
 
                 for(int k = 0; k < partitions.size(); k++) {
                     int start_c = glob_to_part[k][stC[k]];
                     int st_c = glob_to_local[stC[k]];
 
-                    std::vector<int>::iterator beg = std::find(it->second.begin(), it->second.end(), st_c);
-                    int pos = stC[k] - n_o;
+                    if(it->second.size() == 0 || it->first > IRANK) continue;
 
-                    //cout << IRANK << " stc " << start_c << " " << stC[k] << " " << (beg == it->second.end()) << endl;
-                    //for(int i = 0; i < column_index[k].size(); i++){
-                        //cout << IRANK << " ci " << k << " -- " << i << " " << column_index[k][i] << endl;
-                    //}
+                    int pos;
+                    if(last_post[k] == 0){
+                        pos = stC[k] - n_o;
+                    } else {
+                        pos = stC[k] - n_o + last_post[k];
+                    }
 
-                    //for(map<int, int>::iterator i = glob_to_local.begin(); i != glob_to_local.end(); i++){
-                        //cout << IRANK << " gl " << k << " -- " << i->first << " " << i->second  << endl;
-                    //}
+                    std::vector<int>::iterator beg = it->second.begin();
+                    while(*beg < st_c) beg++;
 
-                    //for(std::vector<int>::iterator b = it->second.begin(); b != it->second.end(); b++){
-                        //cout << IRANK << " " << k << " " << *b <<  endl;
-                    //}
                     if(beg == it->second.end()) continue;
+
 
                     for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
                         if(g->second == *beg){
-                            //cout << IRANK << " " << k << " > " << *beg << " " << g->first  << " <" << pos << endl;
                             itc.push_back(pos);
                             beg++;
                             pos++;
+                            last_post[k]++;
                         }
                     }
-
-                    //for(int i = start_c; i < column_index[k].size() && beg != it->second.end(); i++){
-                        //int ci = column_index[k][i];
-                        //int cj = column_index[k][*beg];
-                        //while(cj < ci && beg != it->second.end()) {
-                            //beg++;
-                            //cj = column_index[k][*beg];
-                        //}
-                        //if(ci == cj){
-                            //itc.push_back(ci - n_o);
-                            //cout << IRANK << " " << ci - n_o << endl;
-                            //beg++;
-                        //}
-                    //}
                 }
-                //IBARRIER; exit(0);
 
-                if(itc.size() == 0){
-                } else {
-
+                if(itc.size() != 0){
                     std::sort(itc.begin(), itc.end());
                     std::vector<int>::iterator last = std::unique(itc.begin(), itc.end());
                     itc.erase(last, itc.end());
                     std::vector<int>::iterator deb = itc.begin();
                     std::vector<int>::iterator to_send = itc.begin();
 
-                    if(IRANK > it->first){
-                        for( int j = 0; j < cur_cols.size(); j++){
-                            if(*deb != cur_cols[j]) continue;
-                            for(int r = 0; r < sp.dim(0); r++){
-                                std::vector<int>::iterator position = std::find(to_send, itc.end(), r);
-                                if(sp(r, j) == 0 || position == itc.end()) continue;
-                                //cout << IRANK << " -> " << it->first <<
-                                    //" (" << r+1 << ", " << *deb + 1 << " " << j + 1 << ") " << 
-                                    //sp(r, j) << endl;
+                    for( int j = last_spot; j < cur_cols.size(); j++){
+                        if(*deb != cur_cols[j]) continue;
+                        for(int r = 0; r < sp.dim(0); r++){
+                            std::vector<int>::iterator position = std::find(to_send, itc.end(), r);
+                            if(sp(r,j) == 0 || position == itc.end()) continue;
 
-                                rs[it->first].push_back(r);
-                                rc[it->first].push_back(*deb);
-                                rv[it->first].push_back(sp(r,j));
+                            rs[it->first].push_back(r);
+                            rc[it->first].push_back(*deb);
+                            rv[it->first].push_back(sp(r,j));
 
-                                to_send = position;
-                            }
-                            deb++;
+                            sp(r, j) = 0;
+
+                            to_send = position;
                         }
+                        deb++;
+                        last_spot++;
                     }
                 }
+
+                reqs.push_back(inter_comm.irecv(it->first, 41, rs_in[it->first]));
+                reqs.push_back(inter_comm.irecv(it->first, 42, rc_in[it->first]));
+                reqs.push_back(inter_comm.irecv(it->first, 43, rv_in[it->first]));
+
+                reqs.push_back(inter_comm.isend(it->first, 41, rs[it->first]));
+                reqs.push_back(inter_comm.isend(it->first, 42, rc[it->first]));
+                reqs.push_back(inter_comm.isend(it->first, 43, rv[it->first]));
+
             }
-                //IBARRIER; exit(0);
+
+            mpi::wait_all(reqs.begin(), reqs.end());
+            reqs.clear();
+
+            //exit(0);
+
+            std::map<int, std::vector<int> >::iterator rit = rs_in.begin();
+            std::map<int, std::vector<int> >::iterator cit = rc_in.begin();
+            std::map<int, std::vector<double> >::iterator vit = rv_in.begin();
+
+            while(rit != rs_in.end()){
+                int p = 0;
+
+                std::vector<int>::iterator ct = cit->second.begin();
+                std::vector<int>::iterator rt = rit->second.begin();
+                std::vector<double>::iterator vt = vit->second.begin();
+
+                for(int j = 0; j < cur_cols.size() && ct != cit->second.end(); j++){
+                    if(*ct == cur_cols[j]){
+                        sp(*rt, j) += *vt;
+                        ct++; rt++; vt++;
+                    }
+                }
+
+                rit++;
+                cit++;
+                vit++;
+            }
+
 #endif
 
             for( int j = 0; j < cur_cols.size(); j++){
