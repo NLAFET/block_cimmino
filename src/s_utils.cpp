@@ -336,12 +336,6 @@ abcd::buildS ( std::vector<int> cols )
     std::vector<int> vc, vr;
     std::vector<double> vv;
 
-#ifdef EXPLICIT_SUM
-    std::map<int, std::vector<int> > rs;
-    std::map<int, std::vector<int> > rc;
-    std::map<int, std::vector<double> > rv;
-#endif
-
     std::vector<int> my_cols;
 
     if(cols.size() == 0) {
@@ -356,6 +350,40 @@ abcd::buildS ( std::vector<int> cols )
         }
     }
 
+#ifdef EXPLICIT_SUM
+    double t_sum = MPI_Wtime();
+    double t;
+    std::map<int, std::vector<int> > rs;
+    std::map<int, std::vector<int> > rc;
+    std::map<int, std::vector<double> > rv;
+
+    std::map<int, std::vector<int> > cols_to_send;
+    std::map<int, int > their_job;
+    {
+        std::map<int, std::vector<int> > their_cols;
+        std::vector<mpi::request> reqs_c;
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                it != col_interconnections.end(); it++) {
+            reqs_c.push_back(inter_comm.irecv(it->first, 40, their_cols[it->first]));
+            reqs_c.push_back(inter_comm.isend(it->first, 40, my_cols));
+        }
+        mpi::wait_all(reqs_c.begin(), reqs_c.end());
+        reqs_c.clear();
+
+        for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
+                it != their_cols.end(); it++) {
+            their_job[it->first] = it->second.size();
+            set_intersection(
+                    my_cols.begin(), my_cols.end(),
+                    it->second.begin(), it->second.end(),
+                    back_inserter(cols_to_send[it->first])
+                    );
+        }
+
+    }
+    t_sum = MPI_Wtime() - t_sum;
+
+#endif
 
 #ifdef MUMPS_ES
     mumps.keep[235 - 1] = icntl[8];
@@ -371,48 +399,6 @@ abcd::buildS ( std::vector<int> cols )
         vc.reserve(my_cols.size());
         vr.reserve(my_cols.size());
         vv.reserve(my_cols.size());
-
-#ifdef EXPLICIT_SUM
-        int last_spot = 0;
-        std::vector<int> last_post(nbparts, 0);
-        std::map<int, std::vector<int> > itc;
-        int ne = 0;
-
-        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-                it != col_interconnections.end(); it++) {
-
-            double t = MPI_Wtime();
-
-            for(int k = 0; k < partitions.size(); k++) {
-                int start_c = glob_to_part[k][stC[k]];
-                int st_c = glob_to_local[stC[k]];
-
-                if(it->second.size() == 0 || it->first > IRANK) continue;
-
-                int pos;
-                if(last_post[k] == 0){
-                    pos = stC[k] - n_o;
-                } else {
-                    pos = stC[k] - n_o + last_post[k];
-                }
-
-                std::vector<int>::iterator beg = it->second.begin();
-                while(*beg < st_c) beg++;
-
-                if(beg == it->second.end()) continue;
-
-                for(std::map<int, int>::iterator g = glob_to_local.begin();
-                        g != glob_to_local.end() &&  pos <= my_cols.back(); g++){
-                    if(g->second == *beg){
-                        itc[it->first].push_back(pos);
-                        beg++;
-                        pos++;
-                        last_post[k]++;
-                    }
-                }
-            }
-        }
-#endif
 
         int share = icntl[14];
         while(pos != my_cols.end()){
@@ -436,40 +422,43 @@ abcd::buildS ( std::vector<int> cols )
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
 #ifdef EXPLICIT_SUM
-            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-                    it != col_interconnections.end(); it++) {
+            t = MPI_Wtime();
+            for(std::map<int, std::vector<int> >::iterator it = cols_to_send.begin();
+                    it != cols_to_send.end(); it++) {
 
-                if(itc[it->first].size() != 0){
-                    std::sort(itc[it->first].begin(), itc[it->first].end());
-                    std::vector<int>::iterator last = std::unique(itc[it->first].begin(), itc[it->first].end());
-                    itc[it->first].erase(last, itc[it->first].end());
-                    std::vector<int>::iterator deb = itc[it->first].begin();
-                    std::vector<int>::iterator to_send = itc[it->first].begin();
+                if(it->second.size() != 0 && their_job[it->first] < my_cols.size()){
 
-                    for( int j = last_spot; j < cur_cols.size(); j++){
+                    std::vector<int>::iterator deb = it->second.begin();
+
+                    if(*deb > cur_cols.back() ) continue;
+
+                    for( int j = 0; j < cur_cols.size() && deb != it->second.end(); j++){
+
+                        //if(cur_cols[j] == 6504) 
+                                //cout << IRANK << " ==  " << cur_cols[j] << endl;
+                        //if(IRANK == 15) cout << it->first << "    " << *deb << "    " << cur_cols[j] << endl;
+                        while(*deb < cur_cols[j] && deb != it->second.end()) deb++;
                         if(*deb != cur_cols[j]) continue;
+
                         for(int r = 0; r < sp.dim(0); r++){
                             //std::vector<int>::iterator position = std::find(to_send, itc[it->first].end(), r);
                             //if(sp(r,j) == 0 || position == itc[it->first].end()) continue;
-                            if(sp(r,j) == 0) continue;
-                            if(*deb > r) continue;
+                            if(sp(r,j) == 0 || *deb > r) continue;
 
                             rs[it->first].push_back(r);
                             rc[it->first].push_back(*deb);
                             rv[it->first].push_back(sp(r,j));
 
-                            ne++;
                             sp(r, j) = 0;
 
                             //to_send = position;
                         }
                         deb++;
-                        last_spot++;
                     }
                 }
 
             }
-
+            t_sum += MPI_Wtime() - t;
 #endif
 
             for( int j = 0; j < cur_cols.size(); j++){
@@ -557,6 +546,7 @@ abcd::buildS ( std::vector<int> cols )
     }
 
 #ifdef EXPLICIT_SUM
+    t = MPI_Wtime();
     std::vector<mpi::request> reqs;
 
         std::vector<int> ii, jj;
@@ -596,6 +586,7 @@ abcd::buildS ( std::vector<int> cols )
         }
 
         Coord_Mat_double SS(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
+
         CompCol_Mat_double SC(SS);
 
         int r;
@@ -619,10 +610,12 @@ abcd::buildS ( std::vector<int> cols )
 
         shur = Coord_Mat_double(size_c, size_c, va.size(), &va[0], &ii[0], &jj[0]);
     }
+
+    t_sum += MPI_Wtime() - t;
+    IFMASTER cout << "*    Time of sum    :    " << t_sum << endl;
 #else
     shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 #endif
-
 
     use_xk = false;
 
