@@ -350,6 +350,40 @@ abcd::buildS ( std::vector<int> cols )
         }
     }
 
+#ifdef EXPLICIT_SUM
+    double t_sum = MPI_Wtime();
+    double t;
+    std::map<int, std::vector<int> > rs;
+    std::map<int, std::vector<int> > rc;
+    std::map<int, std::vector<double> > rv;
+
+    std::map<int, std::vector<int> > cols_to_send;
+    std::map<int, int > their_job;
+    {
+        std::map<int, std::vector<int> > their_cols;
+        std::vector<mpi::request> reqs_c;
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                it != col_interconnections.end(); it++) {
+            reqs_c.push_back(inter_comm.irecv(it->first, 40, their_cols[it->first]));
+            reqs_c.push_back(inter_comm.isend(it->first, 40, my_cols));
+        }
+        mpi::wait_all(reqs_c.begin(), reqs_c.end());
+        reqs_c.clear();
+
+        for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
+                it != their_cols.end(); it++) {
+            their_job[it->first] = it->second.size();
+            set_intersection(
+                    my_cols.begin(), my_cols.end(),
+                    it->second.begin(), it->second.end(),
+                    back_inserter(cols_to_send[it->first])
+                    );
+        }
+
+    }
+    t_sum = MPI_Wtime() - t_sum;
+
+#endif
 
 #ifdef MUMPS_ES
     mumps.keep[235 - 1] = icntl[8];
@@ -370,7 +404,7 @@ abcd::buildS ( std::vector<int> cols )
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
             else end_pos = my_cols.end();
-
+            
             double perc = end_pos - my_cols.begin();
             perc /= my_cols.size();
             perc *= 100;
@@ -388,64 +422,28 @@ abcd::buildS ( std::vector<int> cols )
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
 #ifdef EXPLICIT_SUM
+            t = MPI_Wtime();
+            for(std::map<int, std::vector<int> >::iterator it = cols_to_send.begin();
+                    it != cols_to_send.end(); it++) {
 
-            std::map<int, std::vector<int> > rs, rs_in;
-            std::map<int, std::vector<int> > rc, rc_in;
-            std::map<int, std::vector<double> > rv, rv_in;
+                if(it->second.size() != 0 && their_job[it->first] < my_cols.size()){
 
-            std::map<int, int> nelts;
+                    std::vector<int>::iterator deb = it->second.begin();
 
-            std::vector<mpi::request> reqs;
+                    if(*deb > cur_cols.back() ) continue;
 
-            int last_spot = 0;
-            std::vector<int> last_post(nbparts, 0);
+                    for( int j = 0; j < cur_cols.size() && deb != it->second.end(); j++){
 
-            for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-                    it != col_interconnections.end(); it++) {
-
-                std::vector<int> itc;
-
-                for(int k = 0; k < partitions.size(); k++) {
-                    int start_c = glob_to_part[k][stC[k]];
-                    int st_c = glob_to_local[stC[k]];
-
-                    if(it->second.size() == 0 || it->first > IRANK) continue;
-
-                    int pos;
-                    if(last_post[k] == 0){
-                        pos = stC[k] - n_o;
-                    } else {
-                        pos = stC[k] - n_o + last_post[k];
-                    }
-
-                    std::vector<int>::iterator beg = it->second.begin();
-                    while(*beg < st_c) beg++;
-
-                    if(beg == it->second.end()) continue;
-
-
-                    for(std::map<int, int>::iterator g = glob_to_local.begin(); g != glob_to_local.end(); g++){
-                        if(g->second == *beg){
-                            itc.push_back(pos);
-                            beg++;
-                            pos++;
-                            last_post[k]++;
-                        }
-                    }
-                }
-
-                if(itc.size() != 0){
-                    std::sort(itc.begin(), itc.end());
-                    std::vector<int>::iterator last = std::unique(itc.begin(), itc.end());
-                    itc.erase(last, itc.end());
-                    std::vector<int>::iterator deb = itc.begin();
-                    std::vector<int>::iterator to_send = itc.begin();
-
-                    for( int j = last_spot; j < cur_cols.size(); j++){
+                        //if(cur_cols[j] == 6504) 
+                                //cout << IRANK << " ==  " << cur_cols[j] << endl;
+                        //if(IRANK == 15) cout << it->first << "    " << *deb << "    " << cur_cols[j] << endl;
+                        while(*deb < cur_cols[j] && deb != it->second.end()) deb++;
                         if(*deb != cur_cols[j]) continue;
+
                         for(int r = 0; r < sp.dim(0); r++){
-                            std::vector<int>::iterator position = std::find(to_send, itc.end(), r);
-                            if(sp(r,j) == 0 || position == itc.end()) continue;
+                            //std::vector<int>::iterator position = std::find(to_send, itc[it->first].end(), r);
+                            //if(sp(r,j) == 0 || position == itc[it->first].end()) continue;
+                            if(sp(r,j) == 0 || *deb > r) continue;
 
                             rs[it->first].push_back(r);
                             rc[it->first].push_back(*deb);
@@ -453,51 +451,14 @@ abcd::buildS ( std::vector<int> cols )
 
                             sp(r, j) = 0;
 
-                            to_send = position;
+                            //to_send = position;
                         }
                         deb++;
-                        last_spot++;
                     }
                 }
 
-                reqs.push_back(inter_comm.irecv(it->first, 41, rs_in[it->first]));
-                reqs.push_back(inter_comm.irecv(it->first, 42, rc_in[it->first]));
-                reqs.push_back(inter_comm.irecv(it->first, 43, rv_in[it->first]));
-
-                reqs.push_back(inter_comm.isend(it->first, 41, rs[it->first]));
-                reqs.push_back(inter_comm.isend(it->first, 42, rc[it->first]));
-                reqs.push_back(inter_comm.isend(it->first, 43, rv[it->first]));
-
             }
-
-            mpi::wait_all(reqs.begin(), reqs.end());
-            reqs.clear();
-
-            //exit(0);
-
-            std::map<int, std::vector<int> >::iterator rit = rs_in.begin();
-            std::map<int, std::vector<int> >::iterator cit = rc_in.begin();
-            std::map<int, std::vector<double> >::iterator vit = rv_in.begin();
-
-            while(rit != rs_in.end()){
-                int p = 0;
-
-                std::vector<int>::iterator ct = cit->second.begin();
-                std::vector<int>::iterator rt = rit->second.begin();
-                std::vector<double>::iterator vt = vit->second.begin();
-
-                for(int j = 0; j < cur_cols.size() && ct != cit->second.end(); j++){
-                    if(*ct == cur_cols[j]){
-                        sp(*rt, j) += *vt;
-                        ct++; rt++; vt++;
-                    }
-                }
-
-                rit++;
-                cit++;
-                vit++;
-            }
-
+            t_sum += MPI_Wtime() - t;
 #endif
 
             for( int j = 0; j < cur_cols.size(); j++){
@@ -584,22 +545,77 @@ abcd::buildS ( std::vector<int> cols )
         vv.push_back(0.0);
     }
 
-    //int *ii = new int[vv.size()];
-    //int *jj = new int[vv.size()];
-    //double *val = new double[vv.size()];
-    //for(int i = 0; i < vv.size(); i++){
-        //ii[i] = vr[i];
-        //jj[i] = vc[i];
-        //val[i] = vv[i];
-    //}
-    //shur = Coord_Mat_double(size_c, size_c, vv.size(), val, ii, jj);
-    //
-    //delete[] ii;
-    //delete[] jj;
-    //delete[] val;
-    //
-    shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
+#ifdef EXPLICIT_SUM
+    t = MPI_Wtime();
+    std::vector<mpi::request> reqs;
 
+        std::vector<int> ii, jj;
+        std::vector<double> va;
+
+    {
+        std::vector<int> sr;
+        std::vector<int> sc;
+        std::vector<double> sv;
+
+        std::map<int, std::vector<int> > rs_in;
+        std::map<int, std::vector<int> > rc_in;
+        std::map<int, std::vector<double> > rv_in;
+
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                it != col_interconnections.end(); it++) {
+            reqs.push_back(inter_comm.irecv(it->first, 41, rs_in[it->first]));
+            reqs.push_back(inter_comm.irecv(it->first, 42, rc_in[it->first]));
+            reqs.push_back(inter_comm.irecv(it->first, 43, rv_in[it->first]));
+
+            reqs.push_back(inter_comm.isend(it->first, 41, rs[it->first]));
+            reqs.push_back(inter_comm.isend(it->first, 42, rc[it->first]));
+            reqs.push_back(inter_comm.isend(it->first, 43, rv[it->first]));
+        }
+        mpi::wait_all(reqs.begin(), reqs.end());
+        reqs.clear();
+
+        std::vector<int>::iterator rit = vr.begin();
+        std::vector<int>::iterator cit = vc.begin();
+        std::vector<double>::iterator vit = vv.begin();
+
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                it != col_interconnections.end(); it++) {
+            copy(rs_in[it->first].begin(), rs_in[it->first].end(), back_inserter(vr));
+            copy(rc_in[it->first].begin(), rc_in[it->first].end(), back_inserter(vc));
+            copy(rv_in[it->first].begin(), rv_in[it->first].end(), back_inserter(vv));
+        }
+
+        Coord_Mat_double SS(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
+
+        CompCol_Mat_double SC(SS);
+
+        int r;
+        for(int c = 0; c < SC.dim(1); c++){
+            std::map<int,double> mi;
+            for(int i=SC.col_ptr(c); i < SC.col_ptr(c+1); i++){
+                r = SC.row_ind(i);
+                if(mi[r]){
+                    mi[r] += SC.val(i);
+                } else {
+                    mi[r] = SC.val(i);
+                }
+            }
+            for(std::map<int,double>::iterator it = mi.begin(); it != mi.end(); it++) {
+                if(it->second == 0) continue;
+                ii.push_back(it->first);
+                jj.push_back(c);
+                va.push_back(it->second);
+            }
+        }
+
+        shur = Coord_Mat_double(size_c, size_c, va.size(), &va[0], &ii[0], &jj[0]);
+    }
+
+    t_sum += MPI_Wtime() - t;
+    IFMASTER cout << "*    Time of sum    :    " << t_sum << endl;
+#else
+    shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
+#endif
 
     use_xk = false;
 
