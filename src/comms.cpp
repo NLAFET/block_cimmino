@@ -385,6 +385,7 @@ void abcd::distributeRhs()
             if(rhs==NULL){
                 rhs = new double[n_l * nrhs];
 
+                srand(10); 
                 B = MV_ColMat_double(m_l, block_size);
 
                 nrmXf = 0;
@@ -392,14 +393,12 @@ void abcd::distributeRhs()
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < A.dim(1); i++){
                         //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
-                        rhs[i + j * A.dim(1)] = 1;
+                        //rhs[i + j * A.dim(1)] = 1;
                         //rhs[i + j * A.dim(1)] = j+1;
-                        //rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
+                        rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
                         if(nrmXf < abs(rhs[i + j * A.dim(1)])) nrmXf = abs(rhs[i + j * A.dim(1)]);
                     }
                 }
-
-                cout << nrmXf << endl;
 
                 for(int j = 0; j < nrhs; j++){
                     VECTOR_double xf_col(A.dim(1));
