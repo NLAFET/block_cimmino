@@ -382,6 +382,7 @@ abcd::buildS ( std::vector<int> cols )
 
             if(cols_to_send[it->first].size() != 0 && their_job[it->first] < my_cols.size())
                 debut[it->first] = cols_to_send[it->first].begin();
+
         }
 
     }
@@ -421,6 +422,7 @@ abcd::buildS ( std::vector<int> cols )
 
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
 
+
             int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
@@ -431,7 +433,7 @@ abcd::buildS ( std::vector<int> cols )
                     it != cols_to_send.end(); it++) {
 
 
-                if(it->second.size() != 0 && it->first > IRANK){
+                if(it->second.size() != 0 && it->first < IRANK){
 
                     std::vector<int>::iterator deb = it->second.begin();
                     //std::vector<int>::iterator deb = debut[it->first];
