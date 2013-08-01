@@ -358,6 +358,7 @@ abcd::buildS ( std::vector<int> cols )
     std::map<int, std::vector<double> > rv;
 
     std::map<int, std::vector<int> > cols_to_send;
+    std::map<int, std::vector<int>::iterator > debut;
     std::map<int, int > their_job;
     {
         std::map<int, std::vector<int> > their_cols;
@@ -378,6 +379,9 @@ abcd::buildS ( std::vector<int> cols )
                     it->second.begin(), it->second.end(),
                     back_inserter(cols_to_send[it->first])
                     );
+
+            if(cols_to_send[it->first].size() != 0 && their_job[it->first] < my_cols.size())
+                debut[it->first] = cols_to_send[it->first].begin();
         }
 
     }
@@ -426,23 +430,19 @@ abcd::buildS ( std::vector<int> cols )
             for(std::map<int, std::vector<int> >::iterator it = cols_to_send.begin();
                     it != cols_to_send.end(); it++) {
 
-                if(it->second.size() != 0 && their_job[it->first] < my_cols.size()){
+
+                if(it->second.size() != 0 && it->first > IRANK){
 
                     std::vector<int>::iterator deb = it->second.begin();
+                    //std::vector<int>::iterator deb = debut[it->first];
 
                     if(*deb > cur_cols.back() ) continue;
 
                     for( int j = 0; j < cur_cols.size() && deb != it->second.end(); j++){
-
-                        //if(cur_cols[j] == 6504) 
-                                //cout << IRANK << " ==  " << cur_cols[j] << endl;
-                        //if(IRANK == 15) cout << it->first << "    " << *deb << "    " << cur_cols[j] << endl;
                         while(*deb < cur_cols[j] && deb != it->second.end()) deb++;
                         if(*deb != cur_cols[j]) continue;
 
                         for(int r = 0; r < sp.dim(0); r++){
-                            //std::vector<int>::iterator position = std::find(to_send, itc[it->first].end(), r);
-                            //if(sp(r,j) == 0 || position == itc[it->first].end()) continue;
                             if(sp(r,j) == 0 || *deb > r) continue;
 
                             rs[it->first].push_back(r);
@@ -455,6 +455,8 @@ abcd::buildS ( std::vector<int> cols )
                         }
                         deb++;
                     }
+
+                    //debut[it->first] = deb;
                 }
 
             }
@@ -610,9 +612,10 @@ abcd::buildS ( std::vector<int> cols )
 
         shur = Coord_Mat_double(size_c, size_c, va.size(), &va[0], &ii[0], &jj[0]);
     }
+    //IBARRIER; exit(0);
 
     t_sum += MPI_Wtime() - t;
-    IFMASTER cout << "*    Time of sum    :    " << t_sum << endl;
+    IFMASTER clog << "*    Time of sum    :    " << t_sum << endl;
 #else
     shur = Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 #endif
