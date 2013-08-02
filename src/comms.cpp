@@ -31,33 +31,42 @@ void abcd::distributePartitions()
         std::vector<int> nnz_parts;
         std::vector<int> m_parts;
         std::vector<int> groups;
+        std::vector<vector<int> > sets;
+
         for(int k = 0; k < nbparts; k++) {
             nnz_parts.push_back(partitions[k].NumNonzeros());
             m_parts.push_back(partitions[k].dim(0));
         }
 
         //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
-        abcd::partitionWeights(groups, m_parts, parallel_cg);
-        clog << "Groups : [" << groups[0] + 1;
+        //abcd::partitionWeights(groups, m_parts, parallel_cg);
+        abcd::partitioning(sets, m_parts, parallel_cg);
+        //exit(0);
+
+        clog << "Groups : [" << sets[0].size();
         for(int k = 1; k < parallel_cg; k++) {
-            clog  << ", "<< groups[k] - groups[k-1];
+            clog  << ", "<< sets[k].size();
         }
         clog << "]" << endl;
 
         // first start by the master :
-        for(int i = 0; i <= groups[0] ; i++)
-            parts_id.push_back(i);
+        //for(int i = 0; i <= groups[0] ; i++)
+            //parts_id.push_back(i);
 
         for(int i = 1; i < parallel_cg ; i++) {
             // send to each CG-Master its starting and ending partitions ids
-            std::vector<int> se;
-            se.push_back(groups[i - 1]);
-            se.push_back(groups[i]);
+            //std::vector<int> se;
+            //se.push_back(groups[i - 1]);
+            //se.push_back(groups[i]);
 
-            inter_comm.send(i, 0, se);
+            //inter_comm.send(i, 0, se);
+            inter_comm.send(i, 0, sets[i]);
 
             // send to each CG-Master the corresponding col_index and partitions
-            for(int j = se[0] + 1; j <= se[1]; j++) {
+            //for(int j = se[0] + 1; j <= se[1]; j++) {
+            for(int k = 0; k < sets[i].size(); k++){
+                int j = sets[i][k];
+
                 std::vector<int> sh;
                 sh.push_back(partitions[j].dim(0));
                 sh.push_back(partitions[j].dim(1));
@@ -83,15 +92,16 @@ void abcd::distributePartitions()
         for(int i = 0; i < parallel_cg ; i++) {
             std::vector<int> merge_index;
             merge_index.reserve(n);
-            for(int j = st; j <= groups[i] ; j++) {
+            //for(int j = st; j <= groups[i] ; j++) {
+            for(int k = 0; k < sets[i].size(); k++){
+                int j = sets[i][k];
                 std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
             }
             std::sort(merge_index.begin(), merge_index.end());
             std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
             merge_index.erase(last, merge_index.end());
             group_column_index.push_back(merge_index);
-            st = groups[i] + 1;
-
+            //st = groups[i] + 1;
         }
 
         cout << "Merge done" << endl;
@@ -155,25 +165,46 @@ void abcd::distributePartitions()
         cout << "sent interconnections to others" << endl;
 
 
-        if(groups[0] + 1 < nbparts){
-            // Now that everybody got its partition, delete them from the master
-            partitions.erase(partitions.begin() + groups[0] + 1, partitions.end());
-            column_index.erase(column_index.begin() + groups[0] + 1, column_index.end());
-            stC.erase(stC.begin() + groups[0] + 1, stC.end());
+        if(parallel_cg != 1){
+            std::map<int, CompRow_Mat_double> tp;
+            std::vector<std::vector<int> > cis;
+            std::vector<int> stcs;
+
+            for(int i = 0; i < sets[0].size(); i++){
+                int j = sets[0][i];
+                tp[i] = partitions[j];
+                cis.push_back(column_index[j]);
+                stcs.push_back(stC[j]);
+            }
+            partitions.clear();
+            column_index.clear();
+            stC.clear();
+            for(int i = 0; i < tp.size(); i++){
+                partitions[i] = tp[i];
+                column_index.push_back(cis[i]);
+                stC.push_back(stcs[i]);
+            }
         }
 
         m_l = m;
         n_l = n;
-        m = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
-        nz = std::accumulate(partitions.begin(), partitions.end(), 0, sum_nnz);
+        m = 0;
+        nz = 0;
+        for(int i = 0; i < partitions.size(); i++){
+            m += partitions[i].dim(0);
+            nz += partitions[i].NumNonzeros();
+        }
+        //m = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        //nz = std::accumulate(partitions.begin(), partitions.end(), 0, sum_nnz);
     } else {
         std::vector<int> se;
         inter_comm.recv(0, 0, se);
         int sm = 0, snz = 0;
-        for(int i = se[0] + 1; i <= se[1]; i++) {
+        //for(int i = se[0] + 1; i <= se[1]; i++) {
+        for(int i = 0; i < se.size(); i++) {
 
             // The partition number to be added
-            parts_id.push_back(i);
+            //parts_id.push_back(i);
 
             // THe partition data
             std::vector<int> sh;
@@ -206,7 +237,7 @@ void abcd::distributePartitions()
 
             // Create the matrix and push it in!
             CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
-            partitions.push_back(mat);
+            partitions[i] = mat;
 
             sm += l_m;
             snz += l_nz;
@@ -337,7 +368,11 @@ void abcd::distributeRhs()
 
         int r_pos = 0;
         // Build my part of the RHS
-        int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        //int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        int r = 0;
+        for(int i = 0; i < partitions.size(); i++){
+            r += partitions[i].dim(0);
+        }
 
 
         if(use_xf){
@@ -506,7 +541,11 @@ void abcd::distributeNewRhs()
 
         int r_pos = 0;
         // Build my part of the RHS
-        int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        //int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        int r = 0;
+        for(int i = 0; i < partitions.size(); i++){
+            r += partitions[i].dim(0);
+        }
 
         r_pos += r;
 
