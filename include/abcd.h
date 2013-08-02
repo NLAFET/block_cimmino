@@ -153,6 +153,7 @@ private:
 
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
+    void partitioning(std::vector<std::vector<int> > &, std::vector<int>, int);
     double ddot(VECTOR_double &p, VECTOR_double &ap);
     void get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX);
 
@@ -167,7 +168,7 @@ private:
      * The matrix object itself
     ***************************************************************************/
     Coord_Mat_double S;
-    std::vector<CompRow_Mat_double> partitions;
+    std::map<int, CompRow_Mat_double> partitions;
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;

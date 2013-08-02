@@ -6,6 +6,35 @@
 using namespace std;
 using namespace boost::lambda;
 
+void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weights, int nb_parts){
+    int total_size = std::accumulate(weights.begin(), weights.end(), 0);
+    int mean = floor((double)total_size / nb_parts);
+    vector<int> sets(nb_parts);
+    map<int, vector<int> > pts;
+
+    for(int i = 0; i < nb_parts; i++){
+        sets[i] = 0;
+        pts[i];
+    }
+    
+    int cur = 0;
+    int ls = 0;
+    while(cur != weights.size()){
+        int sm = ls;
+        for(int i = 0; i < nb_parts; i++){
+            if(sets[i] < sets[sm]) sm = i;
+        }
+        sets[sm] = sets[sm] + weights[cur];
+        pts[sm].push_back(cur);
+        cur++;
+        ls = sm;
+    }
+
+    for(int i = 0; i < nb_parts; i++){
+        parts.push_back(pts[i]);
+    }
+}
+
 /// Partition weigts
 void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
 {
@@ -26,7 +55,7 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
         cum += weights[c];
 
         if(cum > mean) {
-            if((mean - precum) > 1.1*(cum - mean)) {
+            if((mean - precum) > 1.5*(cum - mean)) {
                 parts.push_back(c);
                 cum = 0;
             } else {
@@ -42,7 +71,6 @@ void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, i
     } else {
         parts.push_back(weights.size() - 1);
     }
-    if(parts.size() != nb_parts) throw -9876;
 }
 ///DDOT
 double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
