@@ -93,9 +93,9 @@ abcd::solveS ( MV_ColMat_double &f )
 
     if(inter_comm.rank() == 0){ 
         strcpy(mu.write_problem, "/tmp/st.mtx");
-        //mu.icntl[0] = 6;
-        //mu.icntl[1] = 6;
-        //mu.icntl[2] = 6;
+        mu.icntl[0] = 6;
+        mu.icntl[1] = 6;
+        mu.icntl[2] = 6;
         //mu.icntl[3] = 2;
     }
 
@@ -349,6 +349,12 @@ abcd::buildS ( std::vector<int> cols )
             if(iti!=glob_to_local.end()) my_cols.push_back(cols[i]);
         }
     }
+
+    int maxcols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::maximum<int>());
+    int mincols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::minimum<int>());
+    int total = mpi::all_reduce(inter_comm, (int) my_cols.size(), std::plus<int>());
+	IFMASTER clog << "Max number of cols is " << maxcols << " ,  min is " << mincols <<
+	   "and average is " << total/parallel_cg <<	endl;
 
 #ifdef EXPLICIT_SUM
     double t_sum = MPI_Wtime();
