@@ -174,15 +174,15 @@ void abcd::distributePartitions()
                 int j = sets[0][i];
                 tp[i] = partitions[j];
                 cis.push_back(column_index[j]);
-                stcs.push_back(stC[j]);
+                if(icntl[10] != 0) stcs.push_back(stC[j]);
             }
             partitions.clear();
             column_index.clear();
-            stC.clear();
+            if(icntl[10] != 0) stC.clear();
             for(int i = 0; i < tp.size(); i++){
                 partitions[i] = tp[i];
                 column_index.push_back(cis[i]);
-                stC.push_back(stcs[i]);
+                if(icntl[10] != 0) stC.push_back(stcs[i]);
             }
         }
 
