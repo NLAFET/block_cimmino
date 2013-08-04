@@ -190,6 +190,7 @@ public:
     int n_o, m_o, nz_o;
 
     std::string write_problem;
+    std::string write_s;
 
 
     /***************************************************************************
