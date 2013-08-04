@@ -50,7 +50,7 @@ abcd::solveS ( MV_ColMat_double &f )
         clog << "*                                  *" << endl;
     }
 
-        if(true) {
+        if(false) {
             ofstream f;
             ostringstream ff;
             ff << "/tmp/m";
@@ -92,7 +92,8 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[2] = -1;
 
     if(inter_comm.rank() == 0){ 
-        strcpy(mu.write_problem, "/tmp/st.mtx");
+        if(write_s.length() != 0)
+            strcpy(mu.write_problem, write_s.c_str());
         mu.icntl[0] = 6;
         mu.icntl[1] = 6;
         mu.icntl[2] = 6;
@@ -106,7 +107,7 @@ abcd::solveS ( MV_ColMat_double &f )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  77;
-    mu.icntl[7  - 1] =  6;
+    mu.icntl[7  - 1] =  5;
     //mu.icntl[6  - 1] =  5;
     //mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
