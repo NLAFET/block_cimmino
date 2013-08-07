@@ -169,6 +169,7 @@ private:
     ***************************************************************************/
     Coord_Mat_double S;
     std::map<int, CompRow_Mat_double> partitions;
+    std::vector<vector<int> > p_sets;
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;
@@ -244,6 +245,7 @@ public:
      * The key is the cg-master rank (in inter_comm) and the value is the column indices
      */
     std::map<int,std::vector<int> > col_interconnections;
+    std::map<int,std::vector<int> > col_inter;
     /// Contains the partitions that are handled by this instance
     std::vector<int> parts_id;
 
