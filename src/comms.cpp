@@ -31,7 +31,6 @@ void abcd::distributePartitions()
         std::vector<int> nnz_parts;
         std::vector<int> m_parts;
         std::vector<int> groups;
-        std::vector<vector<int> > sets;
 
         for(int k = 0; k < nbparts; k++) {
             nnz_parts.push_back(partitions[k].NumNonzeros());
@@ -40,12 +39,12 @@ void abcd::distributePartitions()
 
         //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
         //abcd::partitionWeights(groups, m_parts, parallel_cg);
-        abcd::partitioning(sets, m_parts, parallel_cg);
+        abcd::partitioning(p_sets, m_parts, parallel_cg);
         //exit(0);
 
-        clog << "Groups : [" << sets[0].size();
+        clog << "Groups : [" << p_sets[0].size();
         for(int k = 1; k < parallel_cg; k++) {
-            clog  << ", "<< sets[k].size();
+            clog  << ", "<< p_sets[k].size();
         }
         clog << "]" << endl;
 
@@ -60,12 +59,12 @@ void abcd::distributePartitions()
             //se.push_back(groups[i]);
 
             //inter_comm.send(i, 0, se);
-            inter_comm.send(i, 0, sets[i]);
+            inter_comm.send(i, 0, p_sets[i]);
 
             // send to each CG-Master the corresponding col_index and partitions
             //for(int j = se[0] + 1; j <= se[1]; j++) {
-            for(int k = 0; k < sets[i].size(); k++){
-                int j = sets[i][k];
+            for(int k = 0; k < p_sets[i].size(); k++){
+                int j = p_sets[i][k];
 
                 std::vector<int> sh;
                 sh.push_back(partitions[j].dim(0));
@@ -93,8 +92,8 @@ void abcd::distributePartitions()
             std::vector<int> merge_index;
             merge_index.reserve(n);
             //for(int j = st; j <= groups[i] ; j++) {
-            for(int k = 0; k < sets[i].size(); k++){
-                int j = sets[i][k];
+            for(int k = 0; k < p_sets[i].size(); k++){
+                int j = p_sets[i][k];
                 std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
             }
             std::sort(merge_index.begin(), merge_index.end());
@@ -170,8 +169,8 @@ void abcd::distributePartitions()
             std::vector<std::vector<int> > cis;
             std::vector<int> stcs;
 
-            for(int i = 0; i < sets[0].size(); i++){
-                int j = sets[0][i];
+            for(int i = 0; i < p_sets[0].size(); i++){
+                int j = p_sets[0][i];
                 tp[i] = partitions[j];
                 cis.push_back(column_index[j]);
                 if(icntl[10] != 0) stcs.push_back(stC[j]);
@@ -324,6 +323,31 @@ void abcd::distributePartitions()
             }
         }
     }
+
+    std::map<int, std::vector<int>::iterator > debut;
+    std::map<int, int > their_job;
+    {
+        std::map<int, std::vector<int> > their_cols;
+        std::vector<mpi::request> reqs_c;
+        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+                it != col_interconnections.end(); it++) {
+            reqs_c.push_back(inter_comm.irecv(it->first, 40, their_cols[it->first]));
+            reqs_c.push_back(inter_comm.isend(it->first, 40, glob_to_local_ind));
+        }
+        mpi::wait_all(reqs_c.begin(), reqs_c.end());
+        reqs_c.clear();
+
+        for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
+                it != their_cols.end(); it++) {
+            their_job[it->first] = it->second.size();
+            set_intersection(
+                    glob_to_local_ind.begin(), glob_to_local_ind.end(),
+                    it->second.begin(), it->second.end(),
+                    back_inserter(col_inter[it->first])
+                    );
+        }
+
+    }
     /*
      * ||A||_F
     nrmA = 0;
@@ -430,8 +454,9 @@ void abcd::distributeRhs()
                         //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
                         //rhs[i + j * A.dim(1)] = 1;
                         //rhs[i + j * A.dim(1)] = j+1;
-                        rhs[i + j * n_l] = ((rand()%10)+j+1)/10; 
-                        if(nrmXf < abs(rhs[i + j * A.dim(1)])) nrmXf = abs(rhs[i + j * A.dim(1)]);
+                        //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
+                        rhs[i + j * n_l] = (((double)rand())+1)/(double)RAND_MAX;
+                        if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
                     }
                 }
 
@@ -485,27 +510,39 @@ void abcd::distributeRhs()
 
         double *b_ptr = B.ptr();
 
+
+
         // for other masters except me!
         for(int k = 1; k < parallel_cg; k++) {
             // get the partitions that will be sent to the master
-            int rows_for_k;
-            inter_comm.recv(k, 16, rows_for_k);
             inter_comm.send(k, 17, nrhs);
-            for(int j = 0; j < block_size; j++) {
-                inter_comm.send(k, 18, b_ptr + r_pos + j * m_l, rows_for_k);
-            }
+        }
 
-            r_pos += rows_for_k;
+        for(int k = 1; k < parallel_cg; k++) {
+            for(int j = 0; j < block_size; j++) {
+                for(int i = 0; i < p_sets[k].size(); i++){
+                    int p = p_sets[k][i];
+                    inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
+                }
+            }
         }
 
         if(!use_xf){
-            MV_ColMat_double BB(m, block_size, 0);
-            BB = B(MV_VecIndex(0, m-1), MV_VecIndex(0,block_size-1));
+            MV_ColMat_double BB(B);
+
             B = MV_ColMat_double(m, block_size, 0);
-            B = BB;
+            int pos = 0;
+            for(int i = 0; i < p_sets[0].size(); i++){
+                int p = p_sets[0][i];
+                for(int j = 0; j < nbrows[p]; j++){
+                    for(int k = 0; k < block_size; k++){
+                        B(pos, k) = BB(strow[p] + j, k);
+                    }
+                    pos++;
+                }
+            }
         }
     } else {
-        inter_comm.send(0, 16, m);
         inter_comm.recv(0, 17, nrhs);
 
         //b = Eigen::MatrixXd(m, nrhs);
@@ -515,10 +552,14 @@ void abcd::distributeRhs()
         rhs = new double[size_rhs];
         for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
 
-        B = MV_ColMat_double(m, block_size);
+        B = MV_ColMat_double(m, block_size, 0);
         for(int j = 0; j < block_size; j++) {
+            int p = 0;
+            for(int k = 0; k < partitions.size(); k++){
+                inter_comm.recv(0, 18, rhs + p + j * m, partitions[k].dim(0));
+                p+= partitions[k].dim(0);
+            }
 
-            inter_comm.recv(0, 18, rhs + j * m, m);
             VECTOR_double t(rhs+j*m, m);
             B.setCol(t, j);
         }
