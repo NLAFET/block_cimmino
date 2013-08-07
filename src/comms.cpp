@@ -455,7 +455,8 @@ void abcd::distributeRhs()
                         //rhs[i + j * A.dim(1)] = 1;
                         //rhs[i + j * A.dim(1)] = j+1;
                         //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
-                        rhs[i + j * n_l] = (((double)rand())+1)/(double)RAND_MAX;
+                        rhs[i + j * n_l] = (((double)rand())%100+1)/99.0;
+
                         if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
                     }
                 }
@@ -494,7 +495,7 @@ void abcd::distributeRhs()
 
                 srand(100); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = (((double)rand())+1)/(double)RAND_MAX; 
+                    rdata[i] = (((double)rand()%300)+1)/99.0; 
                     //rdata[i] = i+1;
                 }
 
