@@ -173,6 +173,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
+    IBARRIER;
 
     //cout << "last element of f : " << f(n-1, 0) << endl;
     //if(IRANK == 0) cout << f(MV_VecIndex(0, 10), 0) << endl;
