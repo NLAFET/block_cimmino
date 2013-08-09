@@ -173,12 +173,38 @@ void abcd::bcg(MV_ColMat_double &b)
     }
     IBARRIER;
 
-    MV_ColMat_double xf = MV_ColMat_double(n, 1, 1);
-    xf = xf - Xk;
-    double nrxf =  infNorm(xf);
-    double nrmxf;
-    mpi::reduce(inter_comm, &nrxf, 1,  &nrmxf, mpi::maximum<double>(), 0);
-    IFMASTER cout << nrmxf << " " <<  nrmxf/nrmXf << endl;
+    if(IRANK == 0) {
+        MV_ColMat_double x = MV_ColMat_double(n_o, 1, 0);
+        map<int, vector<double> > xo;
+        map<int, vector<int> > io;
+        for(int k = 1; k < inter_comm.size(); k++){
+            inter_comm.recv(k, 71, xo[k]);
+            inter_comm.recv(k, 72, io[k]);
+        }
+        for(int k = 1; k < inter_comm.size(); k++){
+            for(int i = 0; i < io[k].size(); i++){
+                int ci = io[k][i];
+                x(ci, 0) = xo[k][i];
+            }
+        }
+        for(int i = 0; i < n; i++){
+            x(glob_to_local_ind[i], 0) = Xk(i, 0);
+        }
+
+        MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
+        xf = Xf - x;
+        double nrmxf =  infNorm(xf);
+        IFMASTER cout << nrmxf << " " << nrmXf << " --> " <<  nrmxf/nrmXf << endl;
+    } else {
+        vector<double> x;
+        x.reserve(n);
+        for(int i = 0; i < n; i++){
+            x.push_back(Xk(i, 0));
+        }
+        inter_comm.send(0, 71, x);
+        inter_comm.send(0, 72, glob_to_local_ind);
+    }
+
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
