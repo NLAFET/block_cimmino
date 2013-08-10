@@ -308,12 +308,18 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
     double ti = 0, to;
+    double *xpt = X.ptr();
+    int xlda = X.lda();
+    int dlda = Delta.lda();
 
     if(beta != 0 || alpha != 0){
         for(int k = 0; k < partitions.size(); k++) {
             MV_ColMat_double r(partitions[k].dim(0), s, 0);
             double *rpt = r.ptr();
+            int rlda = r.lda();
             MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
+            double *cxpt = compressed_x.ptr();
+            int cxlda = compressed_x.lda();
 
             // avoid useless operations
             if(beta != 0){
@@ -322,13 +328,13 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
                     //int ci = local_column_index[k][i];
                     int ci = fast_local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
-                        compressed_x(x_pos, j) = X(ci, j);
+                        //compressed_x(x_pos, j) = X(ci, j);
+                        cxpt[x_pos + j * cxlda] = xpt[ci + j * xlda];
                     }
                     x_pos++;
                 }
 
                 r = smv(partitions[k], compressed_x) * beta;
-
             }
 
             if(alpha != 0 && beta !=0){
@@ -348,7 +354,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             int j = 0;
             for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
                 //for(int r_p = 0; r_p < s; r_p++) mumps_rhs(i, r_p) = r(j, r_p);
-                for(int r_p = 0; r_p < s; r_p++) mumps.rhs[i + r_p * mumps.n] = rpt[j + r_p * r.lda()];
+                for(int r_p = 0; r_p < s; r_p++) mumps.rhs[i + r_p * mumps.n] = rpt[j + r_p * rlda];
                 j++;
             }
             //ti += MPI_Wtime() - to;
@@ -373,12 +379,14 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
 
         int x_pos = 0;
+        double *dpt = Delta.ptr();
         for(int k = 0; k < partitions.size(); k++) {
             for(int i = 0; i < local_column_index[k].size(); i++) {
                 //int ci = local_column_index[k][i];
                 int ci = fast_local_column_index[k][i];
                 for(int j = 0; j < s; j++) {
-                    Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
+                    //Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
+                    dpt[ci + j * dlda] += mumps.rhs[x_pos + j * mumps.n];
                 }
                 x_pos++;
             }
