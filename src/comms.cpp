@@ -33,8 +33,8 @@ void abcd::distributePartitions()
         std::vector<int> groups;
 
         for(int k = 0; k < nbparts; k++) {
-            nnz_parts.push_back(partitions[k].NumNonzeros());
-            m_parts.push_back(partitions[k].dim(0));
+            nnz_parts.push_back(parts[k].NumNonzeros());
+            m_parts.push_back(parts[k].dim(0));
         }
 
         //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
@@ -67,14 +67,14 @@ void abcd::distributePartitions()
                 int j = p_sets[i][k];
 
                 std::vector<int> sh;
-                sh.push_back(partitions[j].dim(0));
-                sh.push_back(partitions[j].dim(1));
-                inter_comm.send(i, 1, partitions[j].NumNonzeros());
+                sh.push_back(parts[j].dim(0));
+                sh.push_back(parts[j].dim(1));
+                inter_comm.send(i, 1, parts[j].NumNonzeros());
                 inter_comm.send(i, 2, sh);
                 inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, partitions[j].colind_ptr(), partitions[j].NumNonzeros());
-                inter_comm.send(i, 4, partitions[j].rowptr_ptr(), sh[0] + 1);
-                inter_comm.send(i, 5, partitions[j].val_ptr(), partitions[j].NumNonzeros());
+                inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
+                inter_comm.send(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
 
@@ -165,24 +165,30 @@ void abcd::distributePartitions()
 
 
         if(parallel_cg != 1){
-            std::map<int, CompRow_Mat_double> tp;
+            //std::map<int, CompRow_Mat_double> tp;
             std::vector<std::vector<int> > cis;
             std::vector<int> stcs;
 
             for(int i = 0; i < p_sets[0].size(); i++){
                 int j = p_sets[0][i];
-                tp[i] = partitions[j];
+                //tp[i] = partitions[j];
+                partitions.push_back(parts[j]);
                 cis.push_back(column_index[j]);
                 if(icntl[10] != 0) stcs.push_back(stC[j]);
             }
-            partitions.clear();
+            parts.clear();
             column_index.clear();
             if(icntl[10] != 0) stC.clear();
-            for(int i = 0; i < tp.size(); i++){
-                partitions[i] = tp[i];
+            for(int i = 0; i < partitions.size(); i++){
+                //partitions[i] = tp[i];
                 column_index.push_back(cis[i]);
                 if(icntl[10] != 0) stC.push_back(stcs[i]);
             }
+        } else {
+            for(int i = 0; i < parts.size(); i++){
+                partitions.push_back(parts[i]);
+            }
+            parts.clear();
         }
 
         m_l = m;
@@ -236,7 +242,7 @@ void abcd::distributePartitions()
 
             // Create the matrix and push it in!
             CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
-            partitions[i] = mat;
+            partitions.push_back(mat);
 
             sm += l_m;
             snz += l_nz;
@@ -309,6 +315,25 @@ void abcd::distributePartitions()
             }
         }
     }
+
+    // test!
+    fast_local_column_index = new int *[partitions.size()];
+    for(int i = 0; i < partitions.size(); i++) {
+        indices[i] = 0;
+        int p = 0;
+        fast_local_column_index[i] = new int[local_column_index[i].size()];
+        for(int j = 0; j < merge_index.size(); j++) {
+            if(indices[i] >= column_index[i].size()) continue;
+            if(column_index[i][indices[i]] == merge_index[j] &&
+                    indices[i] < column_index[i].size() ) {
+
+                fast_local_column_index[i][p] = j;
+                p++;
+                indices[i]++;
+            }
+        }
+    }
+
 
     n = merge_index.size();
 
@@ -455,7 +480,7 @@ void abcd::distributeRhs()
                         //rhs[i + j * A.dim(1)] = 1;
                         //rhs[i + j * A.dim(1)] = j+1;
                         //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
-                        rhs[i + j * n_l] = (((double)rand())%100+1)/99.0;
+                        rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
 
                         if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
                     }
@@ -495,7 +520,7 @@ void abcd::distributeRhs()
 
                 srand(100); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = (((double)rand()%300)+1)/99.0; 
+                    rdata[i] = (double)((rand()%300)+1)/99.0; 
                     //rdata[i] = i+1;
                 }
 

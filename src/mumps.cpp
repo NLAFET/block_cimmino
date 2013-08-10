@@ -317,7 +317,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             if(beta != 0){
                 int x_pos = 0;
                 for(int i = 0; i < local_column_index[k].size(); i++) {
-                    int ci = local_column_index[k][i];
+                    //int ci = local_column_index[k][i];
+                    int ci = fast_local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
                         //assert(x_pos < compressed_x.dim(0));
                         //assert(ci < X.dim(0));
@@ -372,7 +373,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             int x_pos = 0;
             for(int k = 0; k < partitions.size(); k++) {
                 for(int i = 0; i < local_column_index[k].size(); i++) {
-                    int ci = local_column_index[k][i];
+                    //int ci = local_column_index[k][i];
+                    int ci = fast_local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
                         Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
                     }
@@ -381,6 +383,10 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
                 x_pos += partitions[k].dim(0);
             }
         }
+    }
+    if(inter_comm.size() == 1) {
+        delete[] mumps.rhs;
+        return Delta;
     }
 
     // Where the other Deltas are going to be summed

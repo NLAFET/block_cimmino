@@ -168,7 +168,8 @@ private:
      * The matrix object itself
     ***************************************************************************/
     Coord_Mat_double S;
-    std::map<int, CompRow_Mat_double> partitions;
+    std::map<int, CompRow_Mat_double> parts;
+    std::vector<CompRow_Mat_double> partitions;
     std::vector<vector<int> > p_sets;
 
     MV_ColMat_double Xf;
@@ -227,6 +228,7 @@ public:
     std::vector<std::vector<int> > column_index;
     /// A merge of col_index vectors, determines non-null columns in all local partitions
     std::vector<std::vector<int> > local_column_index;
+    int **fast_local_column_index;
     std::map<int,int> glob_to_local;
     // Both of these are meant to replace the glob_to_local map
     std::vector<int> glob_to_local_ind;
