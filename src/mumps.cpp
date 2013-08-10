@@ -307,10 +307,12 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
+    double ti = 0, to;
 
     if(beta != 0 || alpha != 0){
         for(int k = 0; k < partitions.size(); k++) {
             MV_ColMat_double r(partitions[k].dim(0), s, 0);
+            double *rpt = r.ptr();
             MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
 
             // avoid useless operations
@@ -320,8 +322,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
                     //int ci = local_column_index[k][i];
                     int ci = fast_local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
-                        //assert(x_pos < compressed_x.dim(0));
-                        //assert(ci < X.dim(0));
                         compressed_x(x_pos, j) = X(ci, j);
                     }
                     x_pos++;
@@ -343,15 +343,15 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
             b_pos += partitions[k].dim(0);
 
-            for(int r_p = 0; r_p < s; r_p++) {
-                //for(int i = pos; i < pos + partitions[k].dim(1); i++) {
-                    //mumps.rhs[i + r_p * mumps.n] = 0;
-                //}
-                int j = 0;
-                for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                    mumps_rhs(i, r_p) = r(j++, r_p);
-                }
+            //to = MPI_Wtime();
+
+            int j = 0;
+            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                //for(int r_p = 0; r_p < s; r_p++) mumps_rhs(i, r_p) = r(j, r_p);
+                for(int r_p = 0; r_p < s; r_p++) mumps.rhs[i + r_p * mumps.n] = rpt[j + r_p * r.lda()];
+                j++;
             }
+            //ti += MPI_Wtime() - to;
 
             pos += partitions[k].dim(1) + partitions[k].dim(0);
 
@@ -385,6 +385,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             x_pos += partitions[k].dim(0);
         }
     }
+    //cout << "ti = " << ti <<  "        " << endl;
     if(inter_comm.size() == 1) {
         delete[] mumps.rhs;
         return Delta;
