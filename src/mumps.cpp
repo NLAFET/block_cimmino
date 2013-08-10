@@ -856,28 +856,37 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     MV_ColMat_double Delta(size_c, s, 0);
 
+    int dlda = Delta.lda();
+    double *dpt = Delta.ptr();
+
     int x_pos = 0;
+    int lx_pos;
 
     for(int k = 0; k < partitions.size(); k++) {
         int start_c = glob_to_part[k][stC[k]];
         x_pos += glob_to_part[k][stC[k]];
 
-        for(int i = start_c; i < column_index[k].size(); i++){
+        for(int j = 0; j < s; j++) {
+            lx_pos = x_pos;
+            for(int i = start_c; i < column_index[k].size(); i++){
 
-            int ci = column_index[k][i] - n_o;
+                int ci = column_index[k][i] - n_o;
 
-            for(int j = 0; j < s; j++) {
-                Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
+                //Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
+
+                dpt[ci + j * dlda] -= mumps.rhs[lx_pos + j * mumps.n];
+
+                lx_pos++;
             }
 
-            x_pos++;
         }
 
         for(int j = 0; j < s; j++) {
             if(loc_cols[k][j]){
                 int c = mycols[j];
 
-                Delta(c, j) = 0.5 + Delta(c,j);
+                //Delta(c, j) = 0.5 + Delta(c,j);
+                dpt[c + j * dlda] += 0.5;
             }
         }
 
