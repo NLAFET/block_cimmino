@@ -372,17 +372,17 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
         //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
 
-        for(int j = 0; j < s; j++) {
-            int x_pos = 0;
-            for(int k = 0; k < partitions.size(); k++) {
-                for(int i = 0; i < local_column_index[k].size(); i++) {
-                    //int ci = local_column_index[k][i];
-                    int ci = fast_local_column_index[k][i];
+        int x_pos = 0;
+        for(int k = 0; k < partitions.size(); k++) {
+            for(int i = 0; i < local_column_index[k].size(); i++) {
+                //int ci = local_column_index[k][i];
+                int ci = fast_local_column_index[k][i];
+                for(int j = 0; j < s; j++) {
                     Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
-                    x_pos++;
                 }
-                x_pos += partitions[k].dim(0);
+                x_pos++;
             }
+            x_pos += partitions[k].dim(0);
         }
     }
     if(inter_comm.size() == 1) {
