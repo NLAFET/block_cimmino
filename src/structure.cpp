@@ -246,7 +246,7 @@ void abcd::analyseFrame()
         //cout << col_vect << endl;
         int *last = std::unique(col_vect.ptr(), col_vect.ptr() + loc_parts[k].dim(1) + 1);
 
-        partitions[k] =  
+        parts[k] =  
                 CompRow_Mat_double( 
                     CompCol_Mat_double( loc_parts[k].dim(0), ci.size(), loc_parts[k].NumNonzeros(),
                         loc_parts[k].t_val(), loc_parts[k].t_row(), col_vect(MV_VecIndex(0, ci.size())) 

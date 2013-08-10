@@ -307,80 +307,96 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
+    double ti = 0, to;
+    double *xpt = X.ptr();
+    int xlda = X.lda();
+    int dlda = Delta.lda();
 
     if(beta != 0 || alpha != 0){
         for(int k = 0; k < partitions.size(); k++) {
             MV_ColMat_double r(partitions[k].dim(0), s, 0);
+            double *rpt = r.ptr();
+            int rlda = r.lda();
             MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
+            double *cxpt = compressed_x.ptr();
+            int cxlda = compressed_x.lda();
 
             // avoid useless operations
             if(beta != 0){
                 int x_pos = 0;
                 for(int i = 0; i < local_column_index[k].size(); i++) {
-                    int ci = local_column_index[k][i];
+                    //int ci = local_column_index[k][i];
+                    int ci = fast_local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
-                        //assert(x_pos < compressed_x.dim(0));
-                        //assert(ci < X.dim(0));
-                        compressed_x(x_pos, j) = X(ci, j);
+                        //compressed_x(x_pos, j) = X(ci, j);
+                        cxpt[x_pos + j * cxlda] = xpt[ci + j * xlda];
                     }
                     x_pos++;
                 }
 
                 r = smv(partitions[k], compressed_x) * beta;
-
             }
 
-            if(alpha != 0){
+            if(alpha != 0 && beta !=0){
                 MV_ColMat_double rr(partitions[k].dim(0), s);
                 rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
                 r = r + rr * alpha;
             }
 
+            if(alpha != 0 && beta ==0){
+                r = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1)) * alpha;
+            }
+
             b_pos += partitions[k].dim(0);
 
-            for(int r_p = 0; r_p < s; r_p++) {
-                //for(int i = pos; i < pos + partitions[k].dim(1); i++) {
-                    //mumps.rhs[i + r_p * mumps.n] = 0;
-                //}
-                int j = 0;
-                for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                    mumps_rhs(i, r_p) = r(j++, r_p);
-                }
+            //to = MPI_Wtime();
+
+            int j = 0;
+            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+                //for(int r_p = 0; r_p < s; r_p++) mumps_rhs(i, r_p) = r(j, r_p);
+                for(int r_p = 0; r_p < s; r_p++) mumps.rhs[i + r_p * mumps.n] = rpt[j + r_p * rlda];
+                j++;
             }
+            //ti += MPI_Wtime() - to;
 
             pos += partitions[k].dim(1) + partitions[k].dim(0);
 
         }
 
-        if(infNorm(X) != 0 || infNorm(Rhs) != 0){
+        int job = 1;
+        mpi::broadcast(intra_comm, job, 0);
 
-            int job = 1;
-            mpi::broadcast(intra_comm, job, 0);
+        mumps.nrhs = s;
+        mumps.lrhs = mumps.n;
+        mumps.job = 3;
 
-            mumps.nrhs = s;
-            mumps.lrhs = mumps.n;
-            mumps.job = 3;
+        double t = MPI_Wtime();
+        dmumps_c(&mumps);
+        t = MPI_Wtime() - t;
 
-            double t = MPI_Wtime();
-            dmumps_c(&mumps);
-            t = MPI_Wtime() - t;
+        //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
 
-            //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
+        //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
 
-            //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-
-            int x_pos = 0;
-            for(int k = 0; k < partitions.size(); k++) {
-                for(int i = 0; i < local_column_index[k].size(); i++) {
-                    int ci = local_column_index[k][i];
-                    for(int j = 0; j < s; j++) {
-                        Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
-                    }
-                    x_pos++;
+        int x_pos = 0;
+        double *dpt = Delta.ptr();
+        for(int k = 0; k < partitions.size(); k++) {
+            for(int i = 0; i < local_column_index[k].size(); i++) {
+                //int ci = local_column_index[k][i];
+                int ci = fast_local_column_index[k][i];
+                for(int j = 0; j < s; j++) {
+                    //Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
+                    dpt[ci + j * dlda] += mumps.rhs[x_pos + j * mumps.n];
                 }
-                x_pos += partitions[k].dim(0);
+                x_pos++;
             }
+            x_pos += partitions[k].dim(0);
         }
+    }
+    //cout << "ti = " << ti <<  "        " << endl;
+    if(inter_comm.size() == 1) {
+        delete[] mumps.rhs;
+        return Delta;
     }
 
     // Where the other Deltas are going to be summed
@@ -840,6 +856,9 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     MV_ColMat_double Delta(size_c, s, 0);
 
+    int dlda = Delta.lda();
+    double *dpt = Delta.ptr();
+
     int x_pos = 0;
 
     for(int k = 0; k < partitions.size(); k++) {
@@ -851,7 +870,9 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             int ci = column_index[k][i] - n_o;
 
             for(int j = 0; j < s; j++) {
-                Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
+                //Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
+
+                dpt[ci + j * dlda] -= mumps.rhs[x_pos + j * mumps.n];
             }
 
             x_pos++;
@@ -861,7 +882,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             if(loc_cols[k][j]){
                 int c = mycols[j];
 
-                Delta(c, j) = 0.5 + Delta(c,j);
+                //Delta(c, j) = 0.5 + Delta(c,j);
+                dpt[c + j * dlda] += 0.5;
             }
         }
 
