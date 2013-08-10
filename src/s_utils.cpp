@@ -433,6 +433,9 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share > 32 ? share : 16;
             setMumpsIcntl(27, mumps_share);
             MV_ColMat_double sp = spSimpleProject(cur_cols);
+            double *sptr = sp.ptr();
+            int slda = sp.lda();
+            double *sv;
 
 #ifdef EXPLICIT_SUM
             t = MPI_Wtime();
@@ -452,13 +455,17 @@ abcd::buildS ( std::vector<int> cols )
                         if(*deb != cur_cols[j]) continue;
 
                         for(int r = 0; r < sp.dim(0); r++){
-                            if(sp(r,j) == 0 || *deb > r) continue;
+                            //if(sp(r,j) == 0 || *deb > r) continue;
+                            sv = sptr + r + j * slda;
+                            if( *sv == 0 || *deb > r) continue;
 
                             rs[it->first].push_back(r);
                             rc[it->first].push_back(*deb);
-                            rv[it->first].push_back(sp(r,j));
+                            //rv[it->first].push_back(sp(r,j));
+                            rv[it->first].push_back(*sv);
 
-                            sp(r, j) = 0;
+                            //sp(r, j) = 0;
+                            *sv = 0;
 
                             //to_send = position;
                         }
@@ -475,11 +482,12 @@ abcd::buildS ( std::vector<int> cols )
             for( int j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
                 for( int i = c; i < size_c; i++){
-                    if(sp(i,j)!=0){
+                    if(sptr[i + j * slda] != 0){
+                    //if(sp(i,j)!=0){
                     //if(abs(sp(i,j))>1e-16){
                         vc.push_back(c);
                         vr.push_back(i);
-                        vv.push_back(sp(i, j));
+                        vv.push_back(sptr[i + j * slda]);
                     }
                 }
             }
