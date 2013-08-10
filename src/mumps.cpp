@@ -331,10 +331,14 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
             }
 
-            if(alpha != 0){
+            if(alpha != 0 && beta !=0){
                 MV_ColMat_double rr(partitions[k].dim(0), s);
                 rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
                 r = r + rr * alpha;
+            }
+
+            if(alpha != 0 && beta ==0){
+                r = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1)) * alpha;
             }
 
             b_pos += partitions[k].dim(0);
@@ -353,31 +357,28 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
         }
 
-        if(infNorm(X) != 0 || infNorm(Rhs) != 0){
+        int job = 1;
+        mpi::broadcast(intra_comm, job, 0);
 
-            int job = 1;
-            mpi::broadcast(intra_comm, job, 0);
+        mumps.nrhs = s;
+        mumps.lrhs = mumps.n;
+        mumps.job = 3;
 
-            mumps.nrhs = s;
-            mumps.lrhs = mumps.n;
-            mumps.job = 3;
+        double t = MPI_Wtime();
+        dmumps_c(&mumps);
+        t = MPI_Wtime() - t;
 
-            double t = MPI_Wtime();
-            dmumps_c(&mumps);
-            t = MPI_Wtime() - t;
+        //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
 
-            //cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
+        //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
 
-            //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-
+        for(int j = 0; j < s; j++) {
             int x_pos = 0;
             for(int k = 0; k < partitions.size(); k++) {
                 for(int i = 0; i < local_column_index[k].size(); i++) {
                     //int ci = local_column_index[k][i];
                     int ci = fast_local_column_index[k][i];
-                    for(int j = 0; j < s; j++) {
-                        Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
-                    }
+                    Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
                     x_pos++;
                 }
                 x_pos += partitions[k].dim(0);
