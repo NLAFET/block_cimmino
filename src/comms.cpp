@@ -493,6 +493,7 @@ void abcd::distributeRhs()
                         if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                     }
                     Xf.setCol(xf_col, j);
+
                 }
 
                 MV_ColMat_double BB = smv(A, Xf);
@@ -536,7 +537,13 @@ void abcd::distributeRhs()
 
         double *b_ptr = B.ptr();
 
-
+        // temp solution :
+        // send Xf to everybody
+        double *xf_ptr = Xf.ptr();
+        // for other masters except me!
+        for(int k = 1; k < parallel_cg; k++) {
+            inter_comm.send(k, 171, xf_ptr, Xf.dim(0));
+        }
 
         // for other masters except me!
         for(int k = 1; k < parallel_cg; k++) {
@@ -569,6 +576,10 @@ void abcd::distributeRhs()
             }
         }
     } else {
+        Xf = MV_ColMat_double(n_o, 1, 0);
+        double *xf_ptr = Xf.ptr();
+        inter_comm.recv(0, 171, xf_ptr, n_o);
+
         inter_comm.recv(0, 17, nrhs);
 
         //b = Eigen::MatrixXd(m, nrhs);

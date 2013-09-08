@@ -1,0 +1,101 @@
+jobtype         1
+scaling         2
+esparse         1
+
+all_verbose     0 ; 1 or 0
+solve_verbose   1 ; 1 or 0
+
+;dist_scheme 1
+
+;write_problem "/tmp/geo_pr"
+
+system
+{
+   ;matrix_file "/home/mzenadi/work/stash/tmt_unsym/tmt_unsym.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/tpll01a_raff6_meca_pr.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/bayer01/bayer01.mtx"
+    matrix_file "/home/mzenadi/work/stash/gre_1107/gre_1107.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/cube50mds"
+   ;matrix_file "/home/mzenadi/work/stash/Cube_Coup_dt6/Cube_Coup_dt6.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/Hook_1498/Hook_1498.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/language/language.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/circuit5M/circuit5M.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/torso3/torso3.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/audikw_1/audikw_1.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/Serena/Serena.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/cage13/cage13.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/cage14/cage14.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/cage15/cage15.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/tmt_unsym/tmt_unsym.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/RM07R/RM07R.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/bmw3_2/bmw3_2.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/Hamrle3/Hamrle3.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/kkt_power/kkt_power.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/CoupCons3D/CoupCons3D.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/lung2/lung2.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/lhr71c/lhr71c.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/memchip/memchip.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/nlpkkt80/nlpkkt80.mtx"
+   ;matrix_file "/home/mzenadi/work/stash/Si41Ge41H72/Si41Ge41H72.mtx"
+   ;matrix_file "/scratch/common/tpll01d_ther_raff7.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/sherman3/sherman3.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/sherman3/sherman3_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/PR02R/PR02R.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/PR02R/PR02R_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/atmosmodl/atmosmodl.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/atmosmodl/atmosmodl_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/atmosmodj/atmosmodj.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/atmosmodj/atmosmodj_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/af_shell10/af_shell10.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/poisson3Db/poisson3Db.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/poisson3Db/poisson3Db_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/ohne2/ohne2.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/ohne2/ohne2_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/parabolic_fem/parabolic_fem.mtx"
+   ;rhs_file    "/home/mzenadi/work/stash/parabolic_fem/parabolic_fem_b.mtx"
+
+   ;matrix_file "/home/mzenadi/work/stash/edf/VelocityZ_0005_0000322560_A.dat"
+   ;matrix_file "/home/mzenadi/work/stash/edf/Pressure_0200_0000322560_A.dat"
+
+   ;matrix_file "/home/mzenadi/work/stash/edf/Pressure_0005_0005040000_A.dat"
+   ;rhs_file    "/home/mzenadi/work/stash/edf/Pressure_0005_0005040000_B.dat"
+
+   ;matrix_file "/home/mzenadi/work/stash/b1_ss/b1_ss.mtx"
+   
+    block_size  1
+    itmax       1000
+    threshold   5e-10
+}
+
+partitioning
+{
+    nbparts      4
+
+    type         3
+    imba         1.5
+
+    nbrows
+    {
+    }
+}
+
+augmentation
+{
+    type         0
+    filtering    0
+    analysis     0
+    denserhs     0
+
+    iterative    0
+    precond      0
+
+    multirhs     256
+}
