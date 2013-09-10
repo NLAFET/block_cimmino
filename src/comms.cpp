@@ -519,13 +519,14 @@ void abcd::distributeRhs()
             if(block_size > nrhs) {
                 double *rdata = new double[m_l * (block_size - nrhs)];
 
-                srand(100); 
+                srand(n_l); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = (double)((rand()%300)+1)/99.0; 
+                    rdata[i] = (double)((rand())%100+1)/99.0;
                     //rdata[i] = i+1;
                 }
+                MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
+                MV_ColMat_double RR = smv(A, BR);
 
-                MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
                 B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
                     RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
                 delete[] rdata;
