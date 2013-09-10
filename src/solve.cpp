@@ -175,31 +175,27 @@ abcd::solveABCD ( MV_ColMat_double &b )
     if(IRANK == 0) cout << "rho = " << rho << endl;
     IBARRIER;
 
-    //cout << "last element of f : " << f(n-1, 0) << endl;
-    //if(IRANK == 0) cout << f(MV_VecIndex(0, 10), 0) << endl;
+    {
 
-     //centralize the solution to the master
-    //{
+        MV_ColMat_double xfmf(n, 1, 0);
+        MV_ColMat_double lf(n, 1, 0);
 
-        //MV_ColMat_double xfmf(n, 1, 0);
-        //MV_ColMat_double lf(n, 1, 0);
+        for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
 
-        //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+            if(it->first < n_o){
+                xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
+                lf(it->second , 0) = f(it->second, 0);
+            }
+        }
 
-            //if(it->first < n_o){
-                //xfmf(it->second , 0) = 1 - f(it->second, 0);
-                //lf(it->second , 0) = f(it->second, 0);
-            //}
-        //}
-
-        //double nf = infNorm(xfmf);
-        //double nff = infNorm(lf);
+        double nf = infNorm(xfmf);
+        double nff = infNorm(lf);
         
-        //double nfa, nfb;
-        //mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+        double nfa, nfb;
+        mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
 
-        //if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
-    //}
+        if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+    }
 
     //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
     //double rho;

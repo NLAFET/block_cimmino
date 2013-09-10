@@ -24,11 +24,11 @@ int main(int argc, char* argv[])
     // This should be done only by the master
     if(world.rank() == 0) {
         string config_file;
-        if(argc != 2) {
+        if(argc < 2) {
             config_file = "config_file.info";
             //clog << "Usage " << argv[0] << " config_file.json" << endl;
             //exit(-1);
-        } else {
+        } else if(argc >= 2){
             config_file = argv[1];
         }
 
@@ -58,7 +58,8 @@ int main(int argc, char* argv[])
         /* READING THE MATRIX AND THE RHS */
         string matrix_file;
         try {
-            matrix_file = pt.get<string>("system.matrix_file");
+            if(argc <= 2) matrix_file = pt.get<string>("system.matrix_file");
+            else matrix_file = argv[2];
         } catch (ptree_bad_path e) {
             clog << "Error parsing the file, you have to give the matrix name as in the example file" << endl;
             clog << "The what() : " << e.what() << endl << endl;
@@ -132,7 +133,8 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        obj.nbparts = pt.get<int>("partitioning.nbparts");
+        if(argc <= 2) obj.nbparts = pt.get<int>("partitioning.nbparts");
+        else obj.nbparts = atoi(argv[3]);
 
         if(obj.nbparts < 0 && obj.nbparts <= obj.m) {
             clog << "Error parsing the file, the number of partitions has to be positive and smaller than the number of rows" << endl;
@@ -217,7 +219,9 @@ int main(int argc, char* argv[])
             // works only in sequential for the moment
             obj.use_xf = false;
 
-            obj.block_size = pt.get<int>("system.block_size", 1);
+            if(argc <= 2) obj.block_size = pt.get<int>("system.block_size", 1);
+            else obj.block_size = atoi(argv[4]);
+
             obj.itmax = pt.get<int>("system.itmax", 2000);
             obj.threshold = pt.get<double>("system.threshold", 1e-12);
 

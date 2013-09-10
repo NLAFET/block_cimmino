@@ -493,6 +493,7 @@ void abcd::distributeRhs()
                         if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                     }
                     Xf.setCol(xf_col, j);
+
                 }
 
                 MV_ColMat_double BB = smv(A, Xf);
@@ -518,13 +519,14 @@ void abcd::distributeRhs()
             if(block_size > nrhs) {
                 double *rdata = new double[m_l * (block_size - nrhs)];
 
-                srand(100); 
+                srand(n_l); 
                 for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = (double)((rand()%300)+1)/99.0; 
+                    rdata[i] = (double)((rand())%100+1)/99.0;
                     //rdata[i] = i+1;
                 }
+                MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
+                MV_ColMat_double RR = smv(A, BR);
 
-                MV_ColMat_double RR(rdata, m_l, block_size-nrhs);
                 B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
                     RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
                 delete[] rdata;
@@ -536,7 +538,13 @@ void abcd::distributeRhs()
 
         double *b_ptr = B.ptr();
 
-
+        // temp solution :
+        // send Xf to everybody
+        double *xf_ptr = Xf.ptr();
+        // for other masters except me!
+        for(int k = 1; k < parallel_cg; k++) {
+            inter_comm.send(k, 171, xf_ptr, Xf.dim(0));
+        }
 
         // for other masters except me!
         for(int k = 1; k < parallel_cg; k++) {
@@ -569,6 +577,10 @@ void abcd::distributeRhs()
             }
         }
     } else {
+        Xf = MV_ColMat_double(n_o, 1, 0);
+        double *xf_ptr = Xf.ptr();
+        inter_comm.recv(0, 171, xf_ptr, n_o);
+
         inter_comm.recv(0, 17, nrhs);
 
         //b = Eigen::MatrixXd(m, nrhs);
