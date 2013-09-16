@@ -106,7 +106,7 @@ void abcd::partitionMatrix()
             PaToH_Part(&args, _c, _n, _nconst, 0, cwghts, nwghts,
                             xpins, pins, NULL, partvec, partweights, &cut);
 
-            std::vector<int> row_perm = sort_indexes(partvec, _c);
+            row_perm = sort_indexes(partvec, _c);
 
             // Permutation
             int *iro = A.rowptr_ptr();
