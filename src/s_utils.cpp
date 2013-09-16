@@ -75,7 +75,7 @@ abcd::solveS ( MV_ColMat_double &f )
     t = MPI_Wtime();
     DMUMPS_STRUC_C mu;
     mpi::communicator world;
-    mu.sym = 2;
+    mu.sym = 1;
     mu.par = 1;
     mu.job = -1;
 
