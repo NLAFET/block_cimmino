@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
             // works only in sequential for the moment
             obj.use_xf = false;
 
-            if(argc <= 2) obj.block_size = pt.get<int>("system.block_size", 1);
+            if(argc <= 3) obj.block_size = pt.get<int>("system.block_size", 1);
             else obj.block_size = atoi(argv[4]);
 
             obj.itmax = pt.get<int>("system.itmax", 2000);
