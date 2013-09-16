@@ -177,6 +177,7 @@ private:
     MV_ColMat_double RRand;
 
     CompRow_Mat_double A;
+    std::vector<int> row_perm;
 
     bool runSolveS;
 
