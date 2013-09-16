@@ -408,9 +408,9 @@ abcd::buildS ( std::vector<int> cols )
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
 
-        vc.reserve(my_cols.size());
-        vr.reserve(my_cols.size());
-        vv.reserve(my_cols.size());
+        vc.reserve(my_cols.size() * my_cols.size());
+        vr.reserve(my_cols.size() * my_cols.size());
+        vv.reserve(my_cols.size() * my_cols.size());
 
         int share = icntl[14];
         while(pos != my_cols.end()){
