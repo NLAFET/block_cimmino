@@ -506,12 +506,21 @@ void abcd::distributeRhs()
                 }
             } else {
                 B = MV_ColMat_double(m_l, block_size, 0);
+                if(row_perm.size() != 0){
+                    for(int j = 0; j < nrhs; j++){
+                        for(int i = 0; i < m_l; i++) {
+                            B(i, j) = rhs[row_perm[i] + j*m_l];
+                        }
+                    }
 
-                for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[i + j*m_l];
+                } else {
+                    for(int j = 0; j < nrhs; j++){
+                        for(int i = 0; i < m_l; i++) {
+                            B(i, j) = rhs[i + j*m_l];
+                        }
                     }
                 }
+
                 IFMASTER diagScaleRhs(B);
 
             }
