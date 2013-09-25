@@ -51,8 +51,8 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(7, 5);
     setMumpsIcntl(8, -2);
     //setMumpsIcntl(11, 1);
-    //setMumpsIcntl(12, 2);
-    setMumpsIcntl(14, 50);
+    setMumpsIcntl(12, 2);
+    setMumpsIcntl(14, 70);
 }
 
 void abcd::createAugmentedSystems()
@@ -568,7 +568,9 @@ MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
     mumps.lrhs = mumps.n;
     mumps.job = 3;
 
+	double t = MPI_Wtime();
     dmumps_c(&mumps);
+	IFMASTER clog << "mumps " << MPI_Wtime() - t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
     MV_ColMat_double Delta(n, s, 0);
@@ -817,23 +819,29 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             rv.reserve(nzr_estim);
 
             int cnz = 1;
-            for(int r_p = 0; r_p < s; r_p++) {
-                mumps.irhs_ptr[r_p] = cnz;
-                int pos = 0;
-                for(int k = 0; k < partitions.size(); k++) {
+
+			int pos = 0;
+			for(int k = 0; k < partitions.size(); k++) {
+				CompRow_Mat_double rtt = r[k];
+				int _dim1 = partitions[k].dim(1);
+				int _dim0 = partitions[k].dim(0);
+
+				for(int r_p = 0; r_p < s; r_p++) {
+					mumps.irhs_ptr[r_p] = cnz;
+
                     // no need to put zeros before!
                     //
                     int j = 0;
-                    for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                        if(r[k](j, r_p) != 0){
+                    for(int i = pos + _dim1; i < pos + _dim1 + _dim0; i++) {
+                        if(rtt(j, r_p) != 0){
                             rr.push_back(i+1);
-                            rv.push_back(r[k](j, r_p));
+                            rv.push_back(rtt(j, r_p));
                             cnz++;
                         }
                         j++;
                     }
-                    pos += partitions[k].dim(1) + partitions[k].dim(0);
                 }
+				pos += _dim1 + _dim0;
             }
             mumps.irhs_ptr[s] = cnz;
 
