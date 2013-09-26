@@ -112,8 +112,17 @@ abcd::solveS ( MV_ColMat_double &f )
     mu.icntl[7  - 1] =  5;
     //mu.icntl[6  - 1] =  5;
     //mu.icntl[12 - 1] =  2;
-    mu.icntl[14 - 1] =  120;
-    mu.icntl[40 - 1] =  0;
+    mu.icntl[14 - 1] =  70;
+    mu.icntl[40 - 1] =  1; // no type 2 if 1
+
+
+    /*
+    mu.keep[24 -1 ] = 8;
+    mu.keep[78 -1 ] = 0;
+    mu.keep[77 -1 ] = 0;
+    mu.keep[68 -1 ] = 0;
+    mu.keep[9 -1 ] = 4000;
+    */
 
 #ifdef CENTRALIZE
     /*  This part is in case it's centralization */

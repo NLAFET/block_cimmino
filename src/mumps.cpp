@@ -273,6 +273,15 @@ void abcd::factorizeAugmentedSystems()
         throw 100 * getMumpsInfo(1) - getMumpsInfo(2);
     }
 
+    double smem;
+    if(instance_type == 0) {
+        double mem = mumps.infog[21 -1];
+
+        if(IRANK == 0) mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
+        else mpi::reduce(inter_comm, mem, std::plus<double>(), 0);
+
+        if(IRANK == 0) smem = smem/world.size();
+    }
 
     if(instance_type == 0 && verbose == true) {
         double flop = getMumpsRinfoG(3);
@@ -285,7 +294,7 @@ void abcd::factorizeAugmentedSystems()
              << "| NZ            : " << setw(12) << mumps.nz << " |" << endl
              << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
              << "| Time          : " << setw(6) << t << " sec |" << endl
-             << "| memory        : " << setw(6) << getMumpsInfo(22) << " M|" << endl
+             << "| avg memory    : " << setw(6) << smem << " M| "<< endl
              << string(32, '-') << endl;
         cout.precision(prec);
     }
