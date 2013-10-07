@@ -51,8 +51,8 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(7, 5);
     setMumpsIcntl(8, -2);
     //setMumpsIcntl(11, 1);
-    //setMumpsIcntl(12, 2);
-    setMumpsIcntl(14, 50);
+    setMumpsIcntl(12, 2);
+    setMumpsIcntl(14, 70);
 }
 
 void abcd::createAugmentedSystems()
@@ -273,6 +273,15 @@ void abcd::factorizeAugmentedSystems()
         throw 100 * getMumpsInfo(1) - getMumpsInfo(2);
     }
 
+    double smem;
+    if(instance_type == 0) {
+        double mem = mumps.infog[21 -1];
+
+        if(IRANK == 0) mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
+        else mpi::reduce(inter_comm, mem, std::plus<double>(), 0);
+
+        if(IRANK == 0) smem = smem/world.size();
+    }
 
     if(instance_type == 0 && verbose == true) {
         double flop = getMumpsRinfoG(3);
@@ -285,7 +294,7 @@ void abcd::factorizeAugmentedSystems()
              << "| NZ            : " << setw(12) << mumps.nz << " |" << endl
              << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
              << "| Time          : " << setw(6) << t << " sec |" << endl
-             << "| memory        : " << setw(6) << getMumpsInfo(22) << " M|" << endl
+             << "| avg memory    : " << setw(6) << smem << " M| "<< endl
              << string(32, '-') << endl;
         cout.precision(prec);
     }
@@ -568,7 +577,9 @@ MV_ColMat_double abcd::simpleProject(MV_ColMat_double &X)
     mumps.lrhs = mumps.n;
     mumps.job = 3;
 
+	double t = MPI_Wtime();
     dmumps_c(&mumps);
+	IFMASTER clog << "mumps " << MPI_Wtime() - t << endl;
 
     MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
     MV_ColMat_double Delta(n, s, 0);
@@ -817,23 +828,29 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             rv.reserve(nzr_estim);
 
             int cnz = 1;
-            for(int r_p = 0; r_p < s; r_p++) {
-                mumps.irhs_ptr[r_p] = cnz;
-                int pos = 0;
-                for(int k = 0; k < partitions.size(); k++) {
+
+			int pos = 0;
+			for(int k = 0; k < partitions.size(); k++) {
+				CompRow_Mat_double rtt = r[k];
+				int _dim1 = partitions[k].dim(1);
+				int _dim0 = partitions[k].dim(0);
+
+				for(int r_p = 0; r_p < s; r_p++) {
+					mumps.irhs_ptr[r_p] = cnz;
+
                     // no need to put zeros before!
                     //
                     int j = 0;
-                    for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
-                        if(r[k](j, r_p) != 0){
+                    for(int i = pos + _dim1; i < pos + _dim1 + _dim0; i++) {
+                        if(rtt(j, r_p) != 0){
                             rr.push_back(i+1);
-                            rv.push_back(r[k](j, r_p));
+                            rv.push_back(rtt(j, r_p));
                             cnz++;
                         }
                         j++;
                     }
-                    pos += partitions[k].dim(1) + partitions[k].dim(0);
                 }
+				pos += _dim1 + _dim0;
             }
             mumps.irhs_ptr[s] = cnz;
 

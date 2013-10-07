@@ -38,8 +38,8 @@ void abcd::initializeCimmino()
 
 
         if(instance_type == 0) {
-            mumps.job = -2;
-            dmumps_c(&mumps);
+//            mumps.job = -2;
+//            dmumps_c(&mumps);
         }
 
     }
