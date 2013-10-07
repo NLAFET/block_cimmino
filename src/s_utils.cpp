@@ -83,7 +83,9 @@ abcd::solveS ( MV_ColMat_double &f )
     mpi::broadcast(intra_comm, job, 0);
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
     //
-    //mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+	/*
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
+	*/
 
     dmumps_c(&mu);
 
@@ -111,6 +113,16 @@ abcd::solveS ( MV_ColMat_double &f )
     //mu.icntl[6  - 1] =  5;
     //mu.icntl[12 - 1] =  2;
     mu.icntl[14 - 1] =  70;
+    mu.icntl[40 - 1] =  1; // no type 2 if 1
+
+
+    /*
+    mu.keep[24 -1 ] = 8;
+    mu.keep[78 -1 ] = 0;
+    mu.keep[77 -1 ] = 0;
+    mu.keep[68 -1 ] = 0;
+    mu.keep[9 -1 ] = 4000;
+    */
 
 #ifdef CENTRALIZE
     /*  This part is in case it's centralization */
@@ -437,14 +449,17 @@ abcd::buildS ( std::vector<int> cols )
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
 
 
-            int mumps_share = share > 32 ? share : 16;
-            setMumpsIcntl(27, mumps_share);
+            //int mumps_share = share > 32 ? share : 16;
+            int mumps_share = share;
+			mumps.icntl[27 - 1] = mumps_share;
+
             MV_ColMat_double sp = spSimpleProject(cur_cols);
+
             double *sptr = sp.ptr();
             int slda = sp.lda();
-            double *sv;
 
 #ifdef EXPLICIT_SUM
+            double *sv;
             t = MPI_Wtime();
             for(std::map<int, std::vector<int> >::iterator it = cols_to_send.begin();
                     it != cols_to_send.end(); it++) {

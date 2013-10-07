@@ -173,6 +173,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
+    IBARRIER;
 
     {
 
