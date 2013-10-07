@@ -188,26 +188,29 @@ void abcd::analyseFrame()
 {
 
     std::vector<CompCol_Mat_double > loc_parts;
+    loc_parts.reserve(nbparts);
     std::vector<int> ci_sizes;
 
 
     double t  = MPI_Wtime();
 
-    cout << "[+] Creating partitions"<< endl;
+    column_index.reserve(nbparts);
+    cout << "[+] Creating partitions"<< flush;
     for(unsigned k = 0; k < nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         loc_parts.push_back(part);
+        int * col_ptr = loc_parts[k].colptr_ptr();
 
         std::vector<int> ci;
         ci.reserve(loc_parts[k].dim(1));
         int j = 0;
         for(int i = 1; i <= loc_parts[k].dim(1); i++) {
-            if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
-                ci.push_back(j);
+            if(col_ptr[i] != col_ptr[i - 1]) ci.push_back(j);
             j++;
         }
         column_index.push_back(ci);
     }
+    cout << ", done in " << MPI_Wtime() - t<< endl;
     //
     t= MPI_Wtime();
 
@@ -258,7 +261,8 @@ void abcd::analyseFrame()
                     )
                 ;
     }
-    cout << "    Done, time to part [includes augmentation] : " << MPI_Wtime() -t << endl;
+    if(icntl[10] != 0)
+        cout << "    time to part /w augmentation : " << MPI_Wtime() -t << endl;
 
 }
 
