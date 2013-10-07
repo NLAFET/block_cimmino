@@ -2,6 +2,34 @@
 
 using namespace std;
 
+
+/// Set the defaults in the constructor
+abcd::abcd()
+{
+    nrhs = 1;
+    start_index = 0;
+    block_size = 1;
+    use_xk = false;
+    use_xf = false;
+    rhs = NULL;
+    size_c = 0;
+    verbose = false;
+    threshold = 1e-12;
+    runSolveS = false;
+    for(int i = 0; i < 20; i++) icntl[i] = 0;
+    for(int i = 0; i < 20; i++) dcntl[i] = 0;
+    
+    irn = nullptr;
+    jcn = nullptr;
+    val = nullptr;
+
+    icntl[14] = 16;
+}
+
+abcd::~abcd()
+{
+}
+
 ///
 /// \brief Creates the internal matrix from user's data
 ///
@@ -11,7 +39,48 @@ int abcd::InitializeMatrix()
     
     if(world.rank() != 0) return 0;
     
-    abcd::initialize();
+    // Check that the matrix data is present
+    if(irn == 0 || jcn == 0 || val == 0) {
+        // Hey!! where is my data?
+        throw - 1;
+    }
+
+    double t = MPI_Wtime();
+    Coord_Mat_double t_A;
+
+    if(sym) {
+        //over estimate nz
+        int     *t_irn = new int[2*nz];
+        int     *t_jcn = new int[2*nz];
+        double  *t_val = new double[2*nz];
+        int     t_nz = 0;
+        for(int k = 0; k < nz; ++k) {
+            irn[k]--; jcn[k]--;
+
+            t_irn[t_nz] = irn[k];
+            t_jcn[t_nz] = jcn[k];
+            t_val[t_nz] = val[k];
+            t_nz++;
+            if(irn[k] != jcn[k]){
+                t_irn[t_nz] = jcn[k];
+                t_jcn[t_nz] = irn[k];
+                t_val[t_nz] = val[k];
+                t_nz++;
+            }
+        }
+        nz = t_nz;
+        t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+        delete[] t_irn, t_jcn, t_val;
+    } else {
+        for(int i=0; i<nz; i++){
+            irn[i]--;
+            jcn[i]--;
+        }
+        t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+    }
+    A = CompRow_Mat_double(t_A);
+    cout << "splib : " << MPI_Wtime() - t << endl;
+    
     n_o = n;
     m_o = m;
     nz_o = nz;
@@ -146,78 +215,4 @@ int abcd::bc(int job)
         return -1;
     }
     return 0;
-}
-
-/// Creates and intializes the matrix object
-void abcd::initialize()
-{
-
-    // Check that the matrix data is present
-    if(irn == 0 ||
-            jcn == 0 ||
-            val == 0) {
-
-        // Hey!! where is my data?
-        throw - 1;
-    }
-
-    double t = MPI_Wtime();
-    Coord_Mat_double t_A;
-
-    if(sym) {
-        //over estimate nz
-        int     *t_irn = new int[2*nz];
-        int     *t_jcn = new int[2*nz];
-        double  *t_val = new double[2*nz];
-        int     t_nz = 0;
-        for(int k = 0; k < nz; ++k) {
-            irn[k]--; jcn[k]--;
-
-            t_irn[t_nz] = irn[k];
-            t_jcn[t_nz] = jcn[k];
-            t_val[t_nz] = val[k];
-            t_nz++;
-            if(irn[k] != jcn[k]){
-                t_irn[t_nz] = jcn[k];
-                t_jcn[t_nz] = irn[k];
-                t_val[t_nz] = val[k];
-                t_nz++;
-            }
-        }
-        nz = t_nz;
-        t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
-        delete[] t_irn, t_jcn, t_val;
-    } else {
-        for(int i=0; i<nz; i++){
-            irn[i]--;
-            jcn[i]--;
-        }
-        t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
-    }
-    A = CompRow_Mat_double(t_A);
-    cout << "splib : " << MPI_Wtime() - t << endl;
-}
-
-
-/// Set the defaults in the constructor
-abcd::abcd()
-{
-    nrhs = 1;
-    start_index = 0;
-    block_size = 1;
-    use_xk = false;
-    use_xf = false;
-    rhs = NULL;
-    size_c = 0;
-    verbose = false;
-    threshold = 1e-12;
-    runSolveS = false;
-    for(int i = 0; i < 20; i++) icntl[i] = 0;
-    for(int i = 0; i < 20; i++) dcntl[i] = 0;
-
-    icntl[14] = 16;
-}
-
-abcd::~abcd()
-{
 }
