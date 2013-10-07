@@ -216,7 +216,6 @@ int main(int argc, char* argv[])
             obj.bc(2);
 
             obj.nrhs = 1;
-            // works only in sequential for the moment
             obj.use_xf = false;
 
             if(argc <= 2) obj.block_size = pt.get<int>("system.block_size", 1);

@@ -282,6 +282,13 @@ abcd::solveS ( MV_ColMat_double &f )
     if(inter_comm.rank() == 0){
         mu.rhs = f.ptr();
         mu.nrhs = 1;
+
+        ofstream f;
+        f.open("/tmp/z");
+        for(int i = 0; i < mu.n; i++){
+            f << mu.rhs[i] << endl;
+        }
+        f.close();
     }
 
     if(inter_comm.rank() == 0){
@@ -737,12 +744,14 @@ abcd::buildM (  )
             mr.push_back(ro);
             mc.push_back(ro);
             mv.push_back(S(ro,ro));
+
             //mv.push_back(1);
         }
 
         for(int i = 0; i < M.NumNonzeros(); i++){
             if(std::find(skipped_S_columns.begin(), skipped_S_columns.end(), M.row_ind(i))
                     !=skipped_S_columns.end()) continue;
+            if(M.val(i) == 0) continue;
             mr.push_back(M.row_ind(i));
             mc.push_back(M.col_ind(i));
             mv.push_back(M.val(i));
@@ -756,7 +765,7 @@ abcd::buildM (  )
      *-----------------------------------------------------------------------------*/
     
     DMUMPS_STRUC_C mu;
-    mu.sym = 2;
+    mu.sym = 1;
     mu.par = 1;
     mu.job = -1;
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
@@ -782,9 +791,8 @@ abcd::buildM (  )
         //mu.icntl[28 - 1] =  2;
     //}
     mu.icntl[8  - 1] =  7;
-    mu.icntl[7  - 1] =  6;
-    mu.icntl[14 - 1] =  900;
-    mu.icntl[23 - 1] =  2000;
+    mu.icntl[7  - 1] =  5;
+    mu.icntl[14 - 1] =  90;
 
     if(inter_comm.size() == 1){ 
         mu.nz= M.NumNonzeros();
