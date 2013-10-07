@@ -81,8 +81,6 @@ private:
     double nrmXf;
     double nrmMtx;
 
-    void initialize();
-
     // preprocess stuffs
     void preprocess();
     /**
