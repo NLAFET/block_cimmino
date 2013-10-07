@@ -242,14 +242,14 @@ void abcd::analyseFrame()
 
         //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
         //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
-        VECTOR_int col_vect = loc_parts[k].t_col();
+	int * col_vect_ptr = loc_parts[k].colptr_ptr();
         //cout << col_vect << endl;
-        int *last = std::unique(col_vect.ptr(), col_vect.ptr() + loc_parts[k].dim(1) + 1);
+        int *last = std::unique(col_vect_ptr, col_vect_ptr + loc_parts[k].dim(1) + 1);
 
         parts[k] =  
                 CompRow_Mat_double( 
                     CompCol_Mat_double( loc_parts[k].dim(0), ci.size(), loc_parts[k].NumNonzeros(),
-                        loc_parts[k].t_val(), loc_parts[k].t_row(), col_vect(MV_VecIndex(0, ci.size())) 
+                        loc_parts[k].val_ptr(), loc_parts[k].rowind_ptr(), col_vect_ptr 
                         ) 
                     )
                 ;
