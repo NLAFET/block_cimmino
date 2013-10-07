@@ -111,7 +111,8 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
-    int rn = x.dim(1);
+    //int rn = x.dim(1);
+    int rn = 1;
     int rm = x.dim(0);
 
     nrmX = 0;
@@ -128,8 +129,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
     for(int i = 0; i < rm; i++) {
         if(comm_map[i] == 1) {
             for(int j = 0; j < rn; j++) {
-                double cur = abs(x(i, j));
-                nrmXV(j) += cur;
+                nrmXV(j) += abs(x(i, j));
             }
             pos++;
         }
@@ -161,23 +161,13 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
     loc_r  = b - loc_r;
 
-    for(int j = 0; j<rn ; j++){
+    for(int j = 0; j < rn ; j++){
         VECTOR_double loc_r_j = loc_r(j);
         double loc_nrm = infNorm(loc_r_j);
-
-        //double nrms[2] = {loc_nrm, nrmXV[j]};
-        //double nrms_out[2];
 
         mpi::all_reduce(inter_comm, &loc_nrm, 1, &nrmR, mpi::maximum<double>());
         mpi::all_reduce(inter_comm, &nrmXV[j], 1, &nrmX, std::plus<double>());
 
-        //double temp_nrmR = sqrt(nrms_out[0]);
-        //double temp_nrmX = sqrt(nrms_out[1]);
-
-        //nrmR = nrmR < temp_nrmR ? temp_nrmR : sqrt(nrmR);
-        //nrmX = nrmX < temp_nrmX ? temp_nrmX : sqrt(nrmX);
-        //nrmR = nrms_out[0];
-        //nrmX = nrms_out[1];
     }
 
 }

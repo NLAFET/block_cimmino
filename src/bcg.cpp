@@ -34,7 +34,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
-    double lnrmBs = infNorm(b);
+    double lnrmBs = infNorm(u);
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
     mpi::broadcast(inter_comm, nrmMtx, 0);
@@ -117,7 +117,6 @@ void abcd::bcg(MV_ColMat_double &b)
 
         MV_ColMat_double pl = gemmColMat(p, lambdak);
 
-
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
         //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
@@ -162,6 +161,7 @@ void abcd::bcg(MV_ColMat_double &b)
         t2_total += t2;
     }
 
+
     if(inter_comm.rank() == 0) {
         cout << endl;
         cout << "BCG Rho: " << rho << endl;
@@ -204,32 +204,14 @@ void abcd::bcg(MV_ColMat_double &b)
         inter_comm.send(0, 71, x);
         inter_comm.send(0, 72, glob_to_local_ind);
     }
-
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
 {
-    //double nrmX = x.norm();
-    int s = x.dim(1);
-    MV_ColMat_double R(m, s, 0);
-
     double nrmXfmX;
     double nrmR, nrmX, rho;
     abcd::get_nrmres(x, u, nrmR, nrmX, nrmXfmX);
     rho = nrmR / (nrmMtx*nrmX + nrmB);
-    //cout << "X -> " << x.col(0).norm() << endl;
-    //cout << "X -> " << nrmX << endl;
-    //cout << "R -> " << nrmR << endl;
-    //cout << "B -> " << nrmB << endl;
-    //cout << "A -> " << nrmA << endl;
-    //cout << "M -> " << nrmMtx << endl;
-    //return R.col(0).norm() / (nrmA * x.col(0).norm() + u.col(0).norm());
-    //cout<< R.col(0).norm() / (nrmA * x.col(0).norm() + nrmB) << endl;
-    //if(inter_comm.rank() == 0 && use_xf) {
-        //cout << "Rho = " << rho << endl;
-        //if(use_xf) cout << "Forward = " << nrmXfmX/nrmXf << endl << endl;
-    //}
-    //if(IRANK == 0) cout << "Fwd_to_1: " << scientific << nrmXfmX << "    " << flush;
     return rho;
 }
 
