@@ -50,6 +50,23 @@
 #define TIC t = MPI_Wtime()
 #define TOC MPI_Wtime() - t
 
+#ifndef CPP11
+#define CPP11 201103L
+#endif
+
+#ifndef CPP03
+#define CPP03 199711L
+#endif
+
+#ifndef __cplusplus
+/// If __cplusplus is not defined, then consider that it is C++98/03
+#define __cplusplus CPP03
+#endif
+
+#if __cplusplus == CPP03
+#define nullptr 0
+#endif
+
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
