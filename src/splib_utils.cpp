@@ -113,7 +113,7 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
     int starting_point = M.row_ptr(st_row);
 
     int * m_row_ptr = M.rowptr_ptr() + st_row;
-    int * sub_row_vect = new int[nb_rows];
+    int * sub_row_vect = new int[nb_rows + 1];
     
     for(int i = 0; i <= nb_rows; i++){
         sub_row_vect[i] = m_row_ptr[i] - starting_point;
