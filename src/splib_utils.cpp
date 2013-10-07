@@ -110,22 +110,17 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
     // last index in JCN
     ed_index = M.row_ptr(st_row + nb_rows) - 1;
 
-    VECTOR_int sub_row_vect(nb_rows + 1);
-    sub_row_vect() = M.row_ptr(MV_VecIndex(st_row, st_row + nb_rows));
-
     int starting_point = M.row_ptr(st_row);
-    VECTOR_double vv = M.val(MV_VecIndex(st_index, ed_index));
 
-
+    int * m_row_ptr = M.rowptr_ptr() + st_row;
+    int * sub_row_vect = new int[nb_rows];
+    
     for(int i = 0; i <= nb_rows; i++){
-        sub_row_vect[i] -= starting_point;
+        sub_row_vect[i] = m_row_ptr[i] - starting_point;
     }
-
-    VECTOR_int sub_col_vect(ed_index - st_index + 1);
-    sub_col_vect() = M.col_ind(MV_VecIndex(st_index, ed_index));
-
-    VECTOR_double sub_val_vect(ed_index - st_index + 1);
-    sub_val_vect() = M.val(MV_VecIndex(st_index, ed_index));
+    
+    int * sub_col_vect = M.colind_ptr() + st_index;
+    double * sub_val_vect = M.val_ptr() + st_index;
 
     return CompRow_Mat_double( nb_rows, M.dim(1), ed_index - st_index + 1,
             sub_val_vect,
