@@ -272,6 +272,10 @@ public:
     int icntl[20];
     double dcntl[20];
 
+    int InitializeMatrix();
+    int PreprocessMatrix();
+    int FactorizeAugmentedSystems();
+    int SolveSystem();
 
     int bc(int);
     abcd();
