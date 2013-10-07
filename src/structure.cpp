@@ -167,6 +167,10 @@ void abcd::partitionMatrix()
             break;
     }
 
+    for(unsigned k = 0; k < nbparts; k++) {
+        cout << nbrows[k] << "\n";
+    }
+
     if(write_problem.length() != 0) {
         string parts = write_problem + "_parts";
         ofstream f;
@@ -310,6 +314,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                  *-----------------------------------------------------------------------------*/
                 std::vector<int> cic, cir, ci;
                 bool reversed = false;
+                std::vector<int> selected_cols;
 
                 //[> Compute the Column compression <]
                 int l = 0;
@@ -318,10 +323,24 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         bool valid = false;
                         int coli = C_ij.col_ptr(k-1);
                         while(coli < C_ij.col_ptr(k)){
+                            if(icntl[15] != 0){ 
+                                if(abs(C_ij.val(coli)) >= dcntl[15]){
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                } else {
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
+                                }
+                            }
+
                             if(abs(C_ij.val(coli)) >= filter_c){
                                 valid = true;
                                 break;
                             }
+
+                            if( icntl[15] != 2 ){ // don't reduce, we just need the selected columns!
+                                valid = true; // let the force be with you, always!
+                                break;
+                            }
+
                             coli++;
                         }
                         if(valid) cic.push_back(l);
@@ -337,8 +356,21 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         bool valid = false;
                         int coli = CT_ij.col_ptr(k-1);
                         while(coli < CT_ij.col_ptr(k)){
+                            if(icntl[15] != 0){ 
+                                if(abs(CT_ij.val(coli)) >= dcntl[15]){
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                } else {
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
+                                }
+                            }
+
                             if(abs(CT_ij.val(coli)) >= filter_c){
                                 valid = true;
+                                break;
+                            }
+
+                            if( icntl[15] != 2 ){ // don't reduce, we just need the selected columns!
+                                valid = true; // let the force be with you, always!
                                 break;
                             }
                             coli++;
@@ -414,7 +446,9 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
         // Augment the matrices
         for(int k = 0; k < M.size(); k++){
+            if(stCols[k].size() == 0) continue;
             // now augment each partition!
+            stC.push_back(stCols[k][0]);
             M[k] = concat_columns(M[k], C[k], stCols[k]);
             M[k] = resize_columns(M[k], nbcols);
         }
