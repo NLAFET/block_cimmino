@@ -8,7 +8,6 @@ extern "C"
                  int *info, double *rinfo);
 }
 
-
 void abcd::preprocess()
 {
     dcol_ = VECTOR_double(n, double(1));
@@ -19,8 +18,6 @@ void abcd::preprocess()
 
         std::clog << "[-] Scaling with Infinity" << std::endl;
 
-        ///BUG: This takes too much time!
-        //
         double rsum;
         drow_ = VECTOR_double(m);
         dcol_ = VECTOR_double(n, double(1));
