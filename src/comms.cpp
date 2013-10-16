@@ -423,124 +423,79 @@ void abcd::distributeRhs()
             r += partitions[i].dim(0);
         }
 
+        if(rhs==NULL){
+            rhs = new double[n_l * nrhs];
 
-        if(use_xf){
-
-            if(rhs==NULL){
-                //rhs = new double[r * nrhs];
-                //for(int i=0; i<r*nrhs; i++) rhs[i] = ((double)rand()/(double)RAND_MAX);
-                rhs = new double[n_l * nrhs];
-
-            }
+            srand(10); 
+            B = MV_ColMat_double(m_l, block_size);
 
             nrmXf = 0;
+            Xf = MV_ColMat_double(A.dim(1), nrhs);
+            for(int j = 0; j < nrhs; j++){
+                for(int i = 0; i < A.dim(1); i++){
+                    //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
+                    //rhs[i + j * A.dim(1)] = 1;
+                    //rhs[i + j * A.dim(1)] = j+1;
+                    //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
+                    rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
 
-            Xf = MV_ColMat_double(n_l, nrhs);
+                    if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
+                }
+            }
 
             for(int j = 0; j < nrhs; j++){
-                VECTOR_double xf_col(n_l);
-                for(int i = 0; i < n_l; i++) {
-                    xf_col[i] = rhs[i + j * n_l];
+                VECTOR_double xf_col(A.dim(1));
+                for(int i = 0; i < A.dim(1); i++) {
+                    xf_col[i] = rhs[i + j * A.dim(1)];
                     if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                 }
                 Xf.setCol(xf_col, j);
+
             }
 
-            B = smv(A, Xf);
-            //
+            MV_ColMat_double BB = smv(A, Xf);
 
-            // this is the augmented version!
-            // ??? B should not change !
-            //if(icntl[10]!=0){
-                //for(int j = 0; j < B.size(); j++){
-                    //VECTOR_double t(r, 0);
-                    //t(MV_VecIndex(0, r-1)) = B[j](MV_VecIndex());
-                    //B[j] = t;
-                //}
-            //}
-
-            // for each rhs j
-            for(int j = 0; j < B.dim(1); j++){
-                for(int i = 0; i < B.dim(0); i++) {
-                    rhs[i + j * B.dim(0)] = B(i,j);
-                }
+            for(int j = 0; j < nrhs; j++){
+                //VECTOR_double t(rhs+j*m_l, m_l);
+                //B.setCol(t, j);
+                //B.push_back(t);
+                B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
             }
         } else {
-            if(rhs==NULL){
-                rhs = new double[n_l * nrhs];
-
-                srand(10); 
-                B = MV_ColMat_double(m_l, block_size);
-
-                nrmXf = 0;
-                Xf = MV_ColMat_double(A.dim(1), nrhs);
+            B = MV_ColMat_double(m_l, block_size, 0);
+            if(row_perm.size() != 0){
                 for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < A.dim(1); i++){
-                        //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
-                        //rhs[i + j * A.dim(1)] = 1;
-                        //rhs[i + j * A.dim(1)] = j+1;
-                        //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
-                        rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
-
-                        if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
+                    for(int i = 0; i < m_l; i++) {
+                        B(i, j) = rhs[row_perm[i] + j*m_l];
                     }
                 }
 
-                for(int j = 0; j < nrhs; j++){
-                    VECTOR_double xf_col(A.dim(1));
-                    for(int i = 0; i < A.dim(1); i++) {
-                        xf_col[i] = rhs[i + j * A.dim(1)];
-                        if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
-                    }
-                    Xf.setCol(xf_col, j);
-
-                }
-
-                MV_ColMat_double BB = smv(A, Xf);
-
-                for(int j = 0; j < nrhs; j++){
-                    //VECTOR_double t(rhs+j*m_l, m_l);
-                    //B.setCol(t, j);
-                    //B.push_back(t);
-                    B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
-                }
             } else {
-                B = MV_ColMat_double(m_l, block_size, 0);
-                if(row_perm.size() != 0){
-                    for(int j = 0; j < nrhs; j++){
-                        for(int i = 0; i < m_l; i++) {
-                            B(i, j) = rhs[row_perm[i] + j*m_l];
-                        }
-                    }
-
-                } else {
-                    for(int j = 0; j < nrhs; j++){
-                        for(int i = 0; i < m_l; i++) {
-                            B(i, j) = rhs[i + j*m_l];
-                        }
+                for(int j = 0; j < nrhs; j++){
+                    for(int i = 0; i < m_l; i++) {
+                        B(i, j) = rhs[i + j*m_l];
                     }
                 }
-
-                IFMASTER diagScaleRhs(B);
-
             }
 
-            if(block_size > nrhs) {
-                double *rdata = new double[m_l * (block_size - nrhs)];
+            IFMASTER diagScaleRhs(B);
 
-                srand(n_l); 
-                for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                    rdata[i] = (double)((rand())%100+1)/99.0;
-                    //rdata[i] = i+1;
-                }
-                MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
-                MV_ColMat_double RR = smv(A, BR);
+        }
 
-                B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
-                    RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
-                delete[] rdata;
+        if(block_size > nrhs) {
+            double *rdata = new double[m_l * (block_size - nrhs)];
+
+            srand(n_l); 
+            for(int i=0; i< m_l*(block_size-nrhs); i++){ 
+                rdata[i] = (double)((rand())%100+1)/99.0;
+                //rdata[i] = i+1;
             }
+            MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
+            MV_ColMat_double RR = smv(A, BR);
 
+            B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
+                RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
+            delete[] rdata;
         }
 
         r_pos += r;
