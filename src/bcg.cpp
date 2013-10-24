@@ -174,7 +174,7 @@ void abcd::bcg(MV_ColMat_double &b)
     IBARRIER;
 
     if(IRANK == 0) {
-        MV_ColMat_double x = MV_ColMat_double(n_o, 1, 0);
+        MV_ColMat_double sol = MV_ColMat_double(n_o, 1, 0);
         map<int, vector<double> > xo;
         map<int, vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
@@ -184,17 +184,19 @@ void abcd::bcg(MV_ColMat_double &b)
         for(int k = 1; k < inter_comm.size(); k++){
             for(int i = 0; i < io[k].size(); i++){
                 int ci = io[k][i];
-                x(ci, 0) = xo[k][i];
+                sol(ci, 0) = xo[k][i];
             }
         }
         for(int i = 0; i < n; i++){
-            x(glob_to_local_ind[i], 0) = Xk(i, 0);
+            sol(glob_to_local_ind[i], 0) = Xk(i, 0);
+        }
+        if(Xf.dim(0) != 0) {
+            MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
+            xf = Xf - sol;
+            double nrmxf =  infNorm(xf);
+            IFMASTER cout << nrmxf << " " << nrmXf << " --> " <<  nrmxf/nrmXf << endl;
         }
 
-        MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
-        xf = Xf - x;
-        double nrmxf =  infNorm(xf);
-        IFMASTER cout << nrmxf << " " << nrmXf << " --> " <<  nrmxf/nrmXf << endl;
     } else {
         vector<double> x;
         x.reserve(n);

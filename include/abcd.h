@@ -86,7 +86,7 @@ private:
     void partitionMatrix();
     /**
      * Analyses the structure of each partition
-     * Compresses the partitions and analyses the interconnections between them
+     * Compresses the  and analyses the interconnections between them
      */
     void analyseFrame();
     
@@ -204,6 +204,8 @@ public:
     double *rhs;
 
     MV_ColMat_double Xk;
+    MV_ColMat_double sol;
+    
 
     /***************************************************************************
      * Matrix properties
