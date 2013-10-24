@@ -19,9 +19,9 @@ abcd::abcd()
     for(int i = 0; i < 20; i++) icntl[i] = 0;
     for(int i = 0; i < 20; i++) dcntl[i] = 0;
     
-    irn = nullptr;
-    jcn = nullptr;
-    val = nullptr;
+    irn = 0;
+    jcn = 0;
+    val = 0;
 
     icntl[14] = 16;
 }
