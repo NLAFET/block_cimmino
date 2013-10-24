@@ -26,7 +26,7 @@ void abcd::initializeMumps(bool local)
         intra_comm = mpi::communicator(world, grp);
     }
 
-    mumps.sym = 0;
+    mumps.sym = 2;
     mumps.par = 1;
     mumps.job = -1;
     mumps.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
@@ -38,6 +38,9 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(1, -1);
     setMumpsIcntl(2, -1);
     setMumpsIcntl(3, -1);
+
+    mumps.keep[486] = 1;
+    mumps.dkeep[8]  = 1e-6;
 
     //if(inter_comm.rank() == 0){ 
         //strcpy(mumps.write_problem, "/scratch/mzenadi/pb6.mtx");
@@ -52,7 +55,7 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(8, -2);
     //setMumpsIcntl(11, 1);
     setMumpsIcntl(12, 2);
-    setMumpsIcntl(14, 70);
+    setMumpsIcntl(14, 90);
 }
 
 void abcd::createAugmentedSystems()
@@ -62,8 +65,8 @@ void abcd::createAugmentedSystems()
     // for performance, compute total nnz and size of the matrix
     for(int j = 0; j < partitions.size(); j++) {
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
-        //m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
-        m_nz += partitions[j].dim(1) + 2 * partitions[j].NumNonzeros();
+        m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
+        //m_nz += partitions[j].dim(1) + 2 * partitions[j].NumNonzeros();
     }
 
     // Allocate the data for mumps
@@ -99,10 +102,10 @@ void abcd::createAugmentedSystems()
                 mumps.a[st] = partitions[p].val(j);
 
                 st++;
-                mumps.jcn[st] = i_pos + k;
-                mumps.irn[st] = j_pos + partitions[p].col_ind(j);
-                mumps.a[st] = partitions[p].val(j);
-                st++;
+                //mumps.jcn[st] = i_pos + k;
+                //mumps.irn[st] = j_pos + partitions[p].col_ind(j);
+                //mumps.a[st] = partitions[p].val(j);
+                //st++;
             }
         }
 
@@ -253,15 +256,25 @@ void abcd::factorizeAugmentedSystems()
     mpi::communicator world;
     mumps.job = 2;
 
+    mumps.keep[486] = 1;
+    mumps.dkeep[8]  = 1e-4;
+
     double t = MPI_Wtime();
-    //if(inter_comm.rank() == 3){
+    if(inter_comm.rank() == 0){
         //setMumpsIcntl(4, 2);
-        //setMumpsIcntl(1, 6);
-        //setMumpsIcntl(2, 6);
-        //setMumpsIcntl(3, 6);
-    //}
+        setMumpsIcntl(1, 6);
+        setMumpsIcntl(2, 6);
+        setMumpsIcntl(3, 6);
+    }
     dmumps_c(&mumps);
     t = MPI_Wtime() - t;
+
+    if(inter_comm.rank() == 0){
+        //setMumpsIcntl(4, 2);
+        setMumpsIcntl(1, -1);
+        setMumpsIcntl(2, -1);
+        setMumpsIcntl(3, -1);
+    }
 
     if(getMumpsInfo(1) != 0){
         cout << string(32, '-') << endl
