@@ -208,8 +208,6 @@ int abcd::bc(int job)
 
     case 3:
         SolveSystem();
-        //debug why!
-        exit(0);
         break;
 
     default:

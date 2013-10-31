@@ -167,6 +167,10 @@ void abcd::partitionMatrix()
             break;
     }
 
+    for(unsigned k = 0; k < nbparts; k++) {
+        cout << nbrows[k] << "\n";
+    }
+
     if(write_problem.length() != 0) {
         string parts = write_problem + "_parts";
         ofstream f;
@@ -189,80 +193,24 @@ void abcd::analyseFrame()
 
 
     double t  = MPI_Wtime();
-    double ts = 0, tt, tb = 0;
 
     column_index.reserve(nbparts);
     cout << "[+] Creating partitions"<< flush;
     for(unsigned k = 0; k < nbparts; k++) {
-        tt = MPI_Wtime();
-        //
-        //CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
-        //
-        int st_row = strow[k];
-        int nb_rows = nbrows[k];
-
-        int st_index, ed_index;
-
-        // starting index in JCN
-        st_index = A.row_ptr(st_row);
-        // last index in JCN
-        ed_index = A.row_ptr(st_row + nb_rows) - 1;
-
-        int starting_point = A.row_ptr(st_row);
-
-        int *m_row_ptr = A.rowptr_ptr() + st_row;
-        int *sub_row_vect = new int[nb_rows + 1];
-        
-        for(int i = 0; i <= nb_rows; i++){
-            sub_row_vect[i] = m_row_ptr[i] - starting_point;
-        }
-        
-        int * sub_col_vect = A.colind_ptr() + st_index;
-        double * sub_val_vect = A.val_ptr() + st_index;
-
-        CompCol_Mat_double part = 
-            CompRow_Mat_double( nb_rows, A.dim(1), ed_index - st_index + 1,
-                sub_val_vect,
-                sub_row_vect,
-                sub_col_vect
-            );
-
+        CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         loc_parts.push_back(part);
+        int * col_ptr = loc_parts[k].colptr_ptr();
 
-        tt = MPI_Wtime() - tt;
-        ts += tt;
-
-        //int * col_ptr = loc_parts[k].colptr_ptr();
-
-        tt = MPI_Wtime();
         std::vector<int> ci;
-        ci.reserve(part.dim(1));
+        ci.reserve(loc_parts[k].dim(1));
         int j = 0;
-        
-        int *cf = part.colptr_ptr();
-        int *cn = cf + 1;
-        int *cl = cf + part.dim(1) + 1;
-
-        while(cf != cl){
-            if( !(*cf == *cn) ){
-                ci.push_back(j);
-                cf = cn;
-            }
-            //cf++;
-            cn++;
+        for(int i = 1; i <= loc_parts[k].dim(1); i++) {
+            if(col_ptr[i] != col_ptr[i - 1]) ci.push_back(j);
             j++;
         }
-        //for(int i = 1; i <= loc_parts[k].dim(1); i++) {
-            //if(col_ptr[i] != col_ptr[i - 1]) ci.push_back(j);
-            //j++;
-        //}
         column_index.push_back(ci);
-        tt = MPI_Wtime() - tt;
-        tb += tt;
     }
     cout << ", done in " << MPI_Wtime() - t<< endl;
-    //cout << "ts = " << ts << endl;
-    //cout << "tb = " << tb << endl;
     //
     t= MPI_Wtime();
 
@@ -281,31 +229,27 @@ void abcd::analyseFrame()
         exit(0);
     }
 
-    if(icntl[10] != 0){
-        abcd::augmentMatrix(loc_parts);
-        column_index.clear();
-        cout << "   time to aug : " << MPI_Wtime() -t << endl;
-    }
+    abcd::augmentMatrix(loc_parts);
+    if(icntl[10] != 0) cout << "   time to aug : " << MPI_Wtime() -t << endl;
 
+    column_index.clear();
     for(unsigned k = 0; k < nbparts; k++) {
         double t1, t2;
-        std::vector<int> ci = column_index[k];
-        if(icntl[10] != 0){
-            // Build the column index of part
-            ci.reserve(loc_parts[k].dim(1));
-            int j = 0;
-            for(int i = 1; i <= loc_parts[k].dim(1); i++) {
-                if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
-                    ci.push_back(j);
-                j++;
-            }
-            column_index.push_back(ci);
+        // Build the column index of part
+        std::vector<int> ci;
+        ci.reserve(loc_parts[k].dim(1));
+        int j = 0;
+        for(int i = 1; i <= loc_parts[k].dim(1); i++) {
+            if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
+                ci.push_back(j);
+            j++;
         }
+        column_index.push_back(ci);
         ci_sizes.push_back(ci.size());
 
         //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
         //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
-        int * col_vect_ptr = loc_parts[k].colptr_ptr();
+	int * col_vect_ptr = loc_parts[k].colptr_ptr();
         //cout << col_vect << endl;
         int *last = std::unique(col_vect_ptr, col_vect_ptr + loc_parts[k].dim(1) + 1);
 
