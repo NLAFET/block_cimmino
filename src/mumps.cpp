@@ -39,9 +39,6 @@ void abcd::initializeMumps(bool local)
     setMumpsIcntl(2, -1);
     setMumpsIcntl(3, -1);
 
-    mumps.keep[486] = 1;
-    mumps.dkeep[8]  = 1e-6;
-
     //if(inter_comm.rank() == 0){ 
         //strcpy(mumps.write_problem, "/scratch/mzenadi/pb6.mtx");
         //setMumpsIcntl(1, 6);
