@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <patoh.h>
+#include <mat_utils.h>
 #include <boost/lambda/lambda.hpp>
 
 using namespace boost::lambda;
@@ -196,24 +197,30 @@ void abcd::analyseFrame()
 
     column_index.reserve(nbparts);
     cout << "[+] Creating partitions"<< flush;
-    for(unsigned k = 0; k < nbparts; k++) {
+    
+    for (unsigned k = 0; k < nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         loc_parts.push_back(part);
-        int * col_ptr = loc_parts[k].colptr_ptr();
+        int *col_ptr = loc_parts[k].colptr_ptr();
+        std::vector<int> ci = getColumnIndex(col_ptr, part.dim(1));
+        column_index.push_back( ci );
 
-        std::vector<int> ci;
-        ci.reserve(loc_parts[k].dim(1));
-        int j = 0;
-        for(int i = 1; i <= loc_parts[k].dim(1); i++) {
-            if(col_ptr[i] != col_ptr[i - 1]) ci.push_back(j);
-            j++;
-        }
-        column_index.push_back(ci);
+        int *last = std::unique(col_ptr, col_ptr + part.dim(1) + 1);
+
+        parts[k] =
+            CompRow_Mat_double(
+                CompCol_Mat_double(part.dim(0), ci.size(),
+                                   part.NumNonzeros(),
+                                   part.val_ptr(),
+                                   part.rowind_ptr(), col_ptr
+                                  )
+            );
     }
     cout << ", done in " << MPI_Wtime() - t<< endl;
     //
     t= MPI_Wtime();
 
+    // test augmentation!
     if(icntl[11] == 1) exit(0);
     if(icntl[11] == 2){
         double f = 0;
@@ -229,40 +236,40 @@ void abcd::analyseFrame()
         exit(0);
     }
 
-    abcd::augmentMatrix(loc_parts);
-    if(icntl[10] != 0) cout << "   time to aug : " << MPI_Wtime() -t << endl;
+    if (icntl[10] != 0) {
+        abcd::augmentMatrix(loc_parts);
+        cout << "   time to aug : " << MPI_Wtime() - t << endl;
 
-    column_index.clear();
-    for(unsigned k = 0; k < nbparts; k++) {
-        double t1, t2;
-        // Build the column index of part
-        std::vector<int> ci;
-        ci.reserve(loc_parts[k].dim(1));
-        int j = 0;
-        for(int i = 1; i <= loc_parts[k].dim(1); i++) {
-            if(loc_parts[k].col_ptr(i) != loc_parts[k].col_ptr(i - 1))
-                ci.push_back(j);
-            j++;
+        column_index.clear();
+        for (unsigned k = 0; k < nbparts; k++) {
+
+            CompCol_Mat_double part = loc_parts[k];
+            int *col_vect_ptr = part.colptr_ptr();
+
+            double t1, t2;
+            // Build the column index of part
+            std::vector<int> ci = getColumnIndex(
+                                      part.colptr_ptr(), part.dim(1)
+                                  );
+
+            column_index.push_back(ci);
+            ci_sizes.push_back(ci.size());
+
+            int *last = std::unique(col_vect_ptr, col_vect_ptr + part.dim(1) + 1);
+
+            parts[k] =
+                CompRow_Mat_double(
+                    CompCol_Mat_double(part.dim(0), ci.size(),
+                                       part.NumNonzeros(),
+                                       part.val_ptr(),
+                                       part.rowind_ptr(),
+                                       col_vect_ptr
+                                      )
+                );
         }
-        column_index.push_back(ci);
-        ci_sizes.push_back(ci.size());
-
-        //int *last = std::unique(part.outerIndexPtr(), part.outerIndexPtr() + part.outerSize() + 1);
-        //parts.push_back(SparseMatrix<double, RowMajor>(part.middleCols(0, ci.size())));
-	int * col_vect_ptr = loc_parts[k].colptr_ptr();
-        //cout << col_vect << endl;
-        int *last = std::unique(col_vect_ptr, col_vect_ptr + loc_parts[k].dim(1) + 1);
-
-        parts[k] =  
-                CompRow_Mat_double( 
-                    CompCol_Mat_double( loc_parts[k].dim(0), ci.size(), loc_parts[k].NumNonzeros(),
-                        loc_parts[k].val_ptr(), loc_parts[k].rowind_ptr(), col_vect_ptr 
-                        ) 
-                    )
-                ;
+        if (icntl[10] != 0)
+            cout << "    time to part /w augmentation : " << MPI_Wtime() - t << endl;
     }
-    if(icntl[10] != 0)
-        cout << "    time to part /w augmentation : " << MPI_Wtime() -t << endl;
 
 }
 

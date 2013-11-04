@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.6)
 include(abcdCmake.in)
 project(abcd CXX C Fortran)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 #find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
@@ -31,8 +32,9 @@ file(
     src/*.cpp
 )
 
-
 add_library(abcd STATIC ${source_files})
 
 add_subdirectory(test)
 
+
+add_subdirectory(src/utils)
