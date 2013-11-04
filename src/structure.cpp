@@ -200,21 +200,27 @@ void abcd::analyseFrame()
     
     for (unsigned k = 0; k < nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
-        loc_parts.push_back(part);
-        int *col_ptr = loc_parts[k].colptr_ptr();
+        
+        int *col_ptr = part.colptr_ptr();
         std::vector<int> ci = getColumnIndex(col_ptr, part.dim(1));
         column_index.push_back( ci );
 
-        int *last = std::unique(col_ptr, col_ptr + part.dim(1) + 1);
-
-        parts[k] =
-            CompRow_Mat_double(
-                CompCol_Mat_double(part.dim(0), ci.size(),
-                                   part.NumNonzeros(),
-                                   part.val_ptr(),
-                                   part.rowind_ptr(), col_ptr
-                                  )
-            );
+        // if no augmentation, then create the parts
+        if(icntl[10] == 0)
+        {
+            int *last = std::unique(col_ptr, col_ptr + part.dim(1) + 1);
+            parts[k] =
+                CompRow_Mat_double(
+                    CompCol_Mat_double(part.dim(0), ci.size(),
+                                    part.NumNonzeros(),
+                                    part.val_ptr(),
+                                    part.rowind_ptr(), col_ptr
+                                    )
+                );
+        } else 
+        {
+            loc_parts.push_back(part);
+        }
     }
     cout << ", done in " << MPI_Wtime() - t<< endl;
     //
