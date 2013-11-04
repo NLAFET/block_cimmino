@@ -30,3 +30,47 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     ${LIBS}
 )
+
+
+################################
+# Testing
+################################
+if(test MATCHES ON)
+  # Locate GTest
+  find_package(GTest REQUIRED)
+  find_package(GMock REQUIRED)
+  include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
+
+  # Link runTests with what we want to test and the GTest and pthread library
+  add_executable(runTests src/test.cpp)
+  message("${GMOCK_BOTH_LIBRARIES}")
+  target_link_libraries(runTests
+      ${GTEST_BOTH_LIBRARIES}
+      ${GMOCK_BOTH_LIBRARIES}
+      abcd 
+      ${Boost_LIBRARIES}
+      ${LIBS}
+  )
+
+  enable_testing()
+
+  ##############
+  # Unit Tests
+  ##############
+  #add_executable(runUnitTests src/test_utils.cpp)
+
+  ## Standard linking to gtest stuff.
+  #target_link_libraries(runUnitTests
+      #${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+      #abcd 
+      #${Boost_LIBRARIES}
+      #${LIBS}
+  #)
+
+  # Extra linking for the project.
+  #target_link_libraries(runUnitTests project1_lib)
+
+  # This is so you can do 'make test' to see all your tests run, instead of
+  # manually running the executable runUnitTests to see those specific tests.
+  #add_test(NAME test COMMAND runTests)
+endif()
