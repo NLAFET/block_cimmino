@@ -70,17 +70,17 @@ void abcd::distributePartitions()
                 std::vector<int> sh;
                 sh.push_back(parts[j].dim(0));
                 sh.push_back(parts[j].dim(1));
-                inter_comm.isend(i, 1, parts[j].NumNonzeros());
-                inter_comm.isend(i, 2, sh);
-                inter_comm.isend(i, 21, n);
-                inter_comm.isend(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
-                inter_comm.isend(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
-                inter_comm.isend(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 1, parts[j].NumNonzeros());
+                inter_comm.send(i, 2, sh);
+                inter_comm.send(i, 21, n);
+                inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
+                inter_comm.send(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
 
-                inter_comm.isend(i, 6, column_index[j]);
+                inter_comm.send(i, 6, column_index[j]);
 
 
-                if(icntl[10] > 0) inter_comm.isend(i, 61, stC[j]);
+                if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
             }
 
         }
@@ -90,16 +90,6 @@ void abcd::distributePartitions()
         std::vector<std::vector<int> > group_column_index;
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
-            //std::vector<int> merge_index;
-            //merge_index.reserve(n);
-            //for(int k = 0; k < p_sets[i].size(); k++){
-                //int j = p_sets[i][k];
-                //std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
-            //}
-            //std::sort(merge_index.begin(), merge_index.end());
-            //std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
-            //merge_index.erase(last, merge_index.end());
-            //
             std::vector<std::vector<int> > cis;
             for(int k = 0; k < p_sets[i].size(); k++){
                 int j = p_sets[i][k];
