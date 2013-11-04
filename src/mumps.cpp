@@ -260,7 +260,7 @@ void abcd::factorizeAugmentedSystems()
 //     mumps.dkeep[8]  = 1e-4;
 
     double t = MPI_Wtime();
-    if(inter_comm.rank() == 0){
+    if(inter_comm.rank() == 0 && verbose == true){
         //setMumpsIcntl(4, 2);
         setMumpsIcntl(1, 6);
         setMumpsIcntl(2, 6);

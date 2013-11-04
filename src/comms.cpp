@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include <vect_utils.h>
 
 /// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
 void abcd::createInterComm()
@@ -89,18 +90,23 @@ void abcd::distributePartitions()
         std::vector<std::vector<int> > group_column_index;
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
-            std::vector<int> merge_index;
-            merge_index.reserve(n);
-            //for(int j = st; j <= groups[i] ; j++) {
+            //std::vector<int> merge_index;
+            //merge_index.reserve(n);
+            //for(int k = 0; k < p_sets[i].size(); k++){
+                //int j = p_sets[i][k];
+                //std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
+            //}
+            //std::sort(merge_index.begin(), merge_index.end());
+            //std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
+            //merge_index.erase(last, merge_index.end());
+            //
+            std::vector<std::vector<int> > cis;
             for(int k = 0; k < p_sets[i].size(); k++){
                 int j = p_sets[i][k];
-                std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
+                cis.push_back(column_index[j]);
             }
-            std::sort(merge_index.begin(), merge_index.end());
-            std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
-            merge_index.erase(last, merge_index.end());
+            std::vector<int> merge_index = mergeSortedVectors(cis);
             group_column_index.push_back(merge_index);
-            //st = groups[i] + 1;
         }
 
         cout << "Merge done" << endl;

@@ -1,7 +1,8 @@
 #include "abcd.h"
-#include "vect_utils.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "vect_utils.h"
+
 using ::testing::AtLeast;
 using ::testing::Return;
 using ::testing::Eq;
@@ -56,7 +57,7 @@ TEST (mergeSortedVectors, SingleVector) {
     std::vector<int> vv1(&v1[0], &v1[0]+3);
     std::vector<std::vector<int> > v;
     v.push_back(vv1);
-    
+
     EXPECT_THAT(mergeSortedVectors(v), Eq(vv1));
 }
 
@@ -71,7 +72,7 @@ TEST (mergeSortedVectors, TestMerge) {
     std::vector<std::vector<int> > v;
     v.push_back(vv1); v.push_back(vv2); v.push_back(vv3);
     
-    int r[8] = {1, 2, 3, 5, 6, 8, 9};
+    int r[8] = {1, 2, 3, 4, 5, 6, 8, 9};
     std::vector<int> re(&r[0], &r[0]+8);
     
     EXPECT_THAT(mergeSortedVectors(v), Eq(re));
