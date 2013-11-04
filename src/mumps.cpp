@@ -256,8 +256,8 @@ void abcd::factorizeAugmentedSystems()
     mpi::communicator world;
     mumps.job = 2;
 
-    mumps.keep[486] = 1;
-    mumps.dkeep[8]  = 1e-4;
+//     mumps.keep[486] = 1;
+//     mumps.dkeep[8]  = 1e-4;
 
     double t = MPI_Wtime();
     if(inter_comm.rank() == 0){
