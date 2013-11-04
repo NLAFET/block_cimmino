@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <patoh.h>
-#include <mat_utils.h>
+#include <vect_utils.h>
 #include <boost/lambda/lambda.hpp>
 
 using namespace boost::lambda;

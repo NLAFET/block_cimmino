@@ -1,5 +1,4 @@
-#include "mat_utils.h"
-
+#include "vect_utils.h"
 
 //! \brief Returns the index of non-null columns
 //! @param[in] col_ptr Compressed column array
@@ -24,4 +23,23 @@ std::vector<int> getColumnIndex(int *col_ptr, int _size)
         j++;
     }
     return column_index;
+}
+
+//! \brief Merge sorted vectors and keep the sorting
+//! @param[in] vectors the vectors to be merged
+//! \return The merge
+std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
+{
+    std::vector<int> merge;
+    if(vectors.size() == 1) return vectors[0];
+    
+    std::vector<std::vector<int>::iterator> its(vectors.size());
+    std::vector<std::vector<int>::iterator> eds(vectors.size());
+    for(int i = 0; i < vectors.size(); i++)
+    {
+        its[i] = vectors[i].begin();
+        eds[i] = vectors[i].end();
+    }
+    
+    return merge;
 }
