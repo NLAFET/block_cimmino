@@ -113,15 +113,7 @@ void abcd::distributePartitions()
                     getIntersectionIndices(
                             group_column_index[i], group_column_index[j]
                             );
-                if(i == 0) {
-                    col_interconnections[j] = p.first;
-                } else {
-                    inter_comm.send(i, 7, j);
-                    inter_comm.send(i, 8, p.first);
-                }
-
-                inter_comm.send(j, 7, i);
-                inter_comm.send(j, 8, p.second);
+                col_interconnections[j] = p.first;
             }
         }
 
