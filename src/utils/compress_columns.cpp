@@ -1,6 +1,7 @@
 #include "vect_utils.h"
 #include <climits>
 #include <iostream>
+using namespace std;
 
 //! \brief Returns the index of non-null columns
 //! @param[in] col_ptr Compressed column array
@@ -32,8 +33,8 @@ std::vector<int> getColumnIndex(int *col_ptr, int _size)
 //! \return The merge
 std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
 {
-    std::vector<int> merge;
     if(vectors.size() == 1) return vectors[0];
+    std::vector<int> merge;
     
     std::map<int,std::vector<int>::iterator> its;
     std::map<int,std::vector<int>::iterator> eds;
@@ -68,4 +69,42 @@ std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
         if(to_delete != -1) its.erase(to_delete);
     }
     return merge;
+}
+
+//! \brief Returns the corresponding indices to an intersection
+//! @param[in] v1 first vector 
+//! @param[in] v2 second vector 
+//! \return The indices of intersection
+std::pair<std::vector<int>, std::vector<int> >
+    getIntersectionIndices(std::vector<int> &v1, std::vector<int> &v2)
+{
+
+    std::vector<int> inter1;
+    std::vector<int> inter2;
+    std::vector<int>::iterator it1 = v1.begin();
+    std::vector<int>::iterator it2 = v2.begin();
+
+    inter1.reserve(v1.size());
+    inter2.reserve(v2.size());
+
+    int id1 = 0, id2 = 0;
+
+    while(it1 != v1.end() && it2 != v2.end()) {
+        if(*it1 < *it2) {
+            ++it1;
+            ++id1;
+        } else {
+            if(!(*it2 < *it1)) {
+                inter1.push_back( id1);
+                inter2.push_back( id2);
+
+                ++it1; ++id1;
+            }
+            ++id2;
+            ++it2;
+        }
+    }
+    std::pair<std::vector<int>, std::vector<int> > intersection(inter1, inter2);
+
+    return intersection;
 }
