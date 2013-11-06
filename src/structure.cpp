@@ -168,10 +168,6 @@ void abcd::partitionMatrix()
             break;
     }
 
-    for(unsigned k = 0; k < nbparts; k++) {
-        cout << nbrows[k] << "\n";
-    }
-
     if(write_problem.length() != 0) {
         string parts = write_problem + "_parts";
         ofstream f;
