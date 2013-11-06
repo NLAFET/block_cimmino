@@ -117,13 +117,13 @@ void abcd::distributePartitions()
             }
         }
 
-        for(int i = 1; i < parallel_cg; i++) {
-            inter_comm.send(i, 7, -1);
-            std::map<int, int> l_glob_to_local;
-            for(int j = 0; j < group_column_index[i].size(); j++) {
-                l_glob_to_local[group_column_index[i][j]] = j;
-            }
-        }
+        //for(int i = 1; i < parallel_cg; i++) {
+            //inter_comm.send(i, 7, -1);
+            //std::map<int, int> l_glob_to_local;
+            //for(int j = 0; j < group_column_index[i].size(); j++) {
+                //l_glob_to_local[group_column_index[i][j]] = j;
+            //}
+        //}
 
         //std::map<int, int> l_glob_to_local;
         //for(int j = 0; j < group_column_index[0].size(); j++) {
@@ -466,7 +466,7 @@ void abcd::distributeRhs()
                 }
             }
 
-            IFMASTER diagScaleRhs(B);
+            diagScaleRhs(B);
 
         }
 
@@ -475,7 +475,7 @@ void abcd::distributeRhs()
 
             srand(n_l); 
             for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                rdata[i] = (double)((rand())%100+1)/99.0;
+                rdata[i] = (double)((rand())%10)/99.9 + 1;
                 //rdata[i] = i+1;
             }
             MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
