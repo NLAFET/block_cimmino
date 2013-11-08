@@ -117,23 +117,7 @@ void abcd::distributePartitions()
             }
         }
 
-        //for(int i = 1; i < parallel_cg; i++) {
-            //inter_comm.send(i, 7, -1);
-            //std::map<int, int> l_glob_to_local;
-            //for(int j = 0; j < group_column_index[i].size(); j++) {
-                //l_glob_to_local[group_column_index[i][j]] = j;
-            //}
-        //}
-
-        //std::map<int, int> l_glob_to_local;
-        //for(int j = 0; j < group_column_index[0].size(); j++) {
-            //l_glob_to_local[group_column_index[0][j]] = j;
-        //}
-
-        //glob_to_local = l_glob_to_local;
-
         cout << "sent interconnections to others" << endl;
-
 
         if(parallel_cg != 1){
             //std::map<int, CompRow_Mat_double> tp;
@@ -234,17 +218,6 @@ void abcd::distributePartitions()
                 col_interconnections[j] = p.first;
             }
         }
-
-
-        //while(true) {
-            //int the_other;
-            //std::vector<int> inter;
-            //inter_comm.recv(0, 7, the_other);
-            //if(the_other == -1) break;
-            //inter_comm.recv(0, 8, inter);
-            //col_interconnections[the_other] = inter;
-        //}
-
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
