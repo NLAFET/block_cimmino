@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include <vect_utils.h>
 
 /// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
 void abcd::createInterComm()
@@ -89,80 +90,34 @@ void abcd::distributePartitions()
         std::vector<std::vector<int> > group_column_index;
         int st = 0;
         for(int i = 0; i < parallel_cg ; i++) {
-            std::vector<int> merge_index;
-            merge_index.reserve(n);
-            //for(int j = st; j <= groups[i] ; j++) {
+            std::vector<std::vector<int> > cis;
             for(int k = 0; k < p_sets[i].size(); k++){
                 int j = p_sets[i][k];
-                std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
+                cis.push_back(column_index[j]);
             }
-            std::sort(merge_index.begin(), merge_index.end());
-            std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
-            merge_index.erase(last, merge_index.end());
+            std::vector<int> merge_index = mergeSortedVectors(cis);
             group_column_index.push_back(merge_index);
-            //st = groups[i] + 1;
         }
 
         cout << "Merge done" << endl;
 
+        mpi::broadcast(inter_comm, group_column_index, 0);
+
         // Send those interconnections to the other masters
         std::map<int, std::vector<int> > inter;
-        for(int i = 0; i < parallel_cg; i++) {
+        //for(int i = 0; i < parallel_cg; i++) 
+        {
+            int i = 0;
             for(int j = i + 1; j < parallel_cg; j++) {
-                std::vector<int> inter1;
-                std::vector<int> inter2;
-                std::vector<int>::iterator it1 = group_column_index[i].begin();
-                std::vector<int>::iterator it2 = group_column_index[j].begin();
-
-                inter1.reserve(group_column_index[j].size());
-                inter2.reserve(group_column_index[j].size());
-
-                int id1 = 0, id2 = 0;
-
-                while(it1 != group_column_index[i].end() && it2 != group_column_index[j].end()) {
-                    if(*it1 < *it2) {
-                        ++it1;
-                        ++id1;
-                    } else {
-                        if(!(*it2 < *it1)) {
-                            inter1.push_back( id1);
-                            inter2.push_back( id2);
-
-                            ++it1; ++id1;
-                        }
-                        ++id2;
-                        ++it2;
-                    }
-                }
-                if(i == 0) {
-                    col_interconnections[j] = inter1;
-                } else {
-                    inter_comm.send(i, 7, j);
-                    inter_comm.send(i, 8, inter1);
-                }
-
-                inter_comm.send(j, 7, i);
-                inter_comm.send(j, 8, inter2);
+                std::pair<std::vector<int>, std::vector<int> > p =
+                    getIntersectionIndices(
+                            group_column_index[i], group_column_index[j]
+                            );
+                col_interconnections[j] = p.first;
             }
         }
-
-        for(int i = 1; i < parallel_cg; i++) {
-            inter_comm.send(i, 7, -1);
-            std::map<int, int> l_glob_to_local;
-            for(int j = 0; j < group_column_index[i].size(); j++) {
-                l_glob_to_local[group_column_index[i][j]] = j;
-            }
-        }
-
-        //std::map<int, int> l_glob_to_local;
-        //for(int j = 0; j < group_column_index[0].size(); j++) {
-            //l_glob_to_local[group_column_index[0][j]] = j;
-        //}
-
-        //glob_to_local = l_glob_to_local;
 
         cout << "sent interconnections to others" << endl;
-
 
         if(parallel_cg != 1){
             //std::map<int, CompRow_Mat_double> tp;
@@ -248,15 +203,21 @@ void abcd::distributePartitions()
             snz += l_nz;
         }
 
-        while(true) {
-            int the_other;
-            std::vector<int> inter;
-            inter_comm.recv(0, 7, the_other);
-            if(the_other == -1) break;
-            inter_comm.recv(0, 8, inter);
-            col_interconnections[the_other] = inter;
-        }
+        // Find the interconnections between the different CG_masters
+        std::vector<std::vector<int> > group_column_index;
+        mpi::broadcast(inter_comm, group_column_index, 0);
 
+        {
+            int i = inter_comm.rank();
+            for(int j = 0; j < group_column_index.size(); j++) {
+                if(j == inter_comm.rank()) continue;
+                std::pair<std::vector<int>, std::vector<int> > p =
+                    getIntersectionIndices(
+                            group_column_index[i], group_column_index[j]
+                            );
+                col_interconnections[j] = p.first;
+            }
+        }
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
@@ -478,7 +439,7 @@ void abcd::distributeRhs()
                 }
             }
 
-            IFMASTER diagScaleRhs(B);
+            diagScaleRhs(B);
 
         }
 
@@ -487,7 +448,7 @@ void abcd::distributeRhs()
 
             srand(n_l); 
             for(int i=0; i< m_l*(block_size-nrhs); i++){ 
-                rdata[i] = (double)((rand())%100+1)/99.0;
+                rdata[i] = (double)((rand())%10)/99.9 + 1;
                 //rdata[i] = i+1;
             }
             MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);

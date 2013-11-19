@@ -203,8 +203,8 @@ abcd::diagScaleRhs ( VECTOR_double &b)
     void
 abcd::diagScaleRhs ( MV_ColMat_double &B)
 {
-    for ( int i = 0; i < m; i++ ) {
-        B(i,0) = B(i,0)*drow_(i);
-    }
+    for ( int i = 0; i < B.dim(0); i++ ) 
+        for ( int j = 0; j < B.dim(1); j++ ) 
+            B(i,j) = B(i,j)*drow_(i);
 
 }		/* -----  end of function abcd::scalRhs  ----- */

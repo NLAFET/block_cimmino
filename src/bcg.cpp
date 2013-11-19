@@ -174,6 +174,8 @@ void abcd::bcg(MV_ColMat_double &b)
     IBARRIER;
 
     if(IRANK == 0) {
+        t = MPI_Wtime();
+        cout << "Centralizing solution" << endl;
         MV_ColMat_double sol = MV_ColMat_double(n_o, 1, 0);
         map<int, vector<double> > xo;
         map<int, vector<int> > io;
@@ -194,8 +196,9 @@ void abcd::bcg(MV_ColMat_double &b)
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
             double nrmxf =  infNorm(xf);
-            IFMASTER cout << nrmxf << " " << nrmXf << " --> " <<  nrmxf/nrmXf << endl;
+            IFMASTER cout << nrmxf << " " << nrmXf << " fwd : " <<  nrmxf/nrmXf << endl;
         }
+        cout << "took " << MPI_Wtime() - t << endl;
 
     } else {
         vector<double> x;
