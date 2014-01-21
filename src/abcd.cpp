@@ -141,7 +141,7 @@ int abcd::FactorizeAugmentedSystems()
     }
 
     t = MPI_Wtime();
-    abcd::factorizeAugmentedSystems();
+    abcd::factorizeAugmentedSystems(mumps);
     
     if(IRANK == 0){
         cout << "[-]  Factorization time : " << MPI_Wtime() - t << endl;

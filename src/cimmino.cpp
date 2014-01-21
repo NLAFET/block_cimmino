@@ -13,8 +13,8 @@ void abcd::initializeCimmino()
         if(instance_type == 0) {
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Initializing MUMPS" << endl;
-            initializeMumps(true);
-            createAugmentedSystems();
+            initializeMumps(mumps, true);
+            createAugmentedSystems(mumps);
     /*         if(world.rank() == 0) {
     *             ofstream myfile;
     *             myfile.open("/tmp/m");
@@ -29,7 +29,7 @@ void abcd::initializeCimmino()
     */
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Launching Initial MUMPS analysis" << endl;
-            analyseAugmentedSystems();
+            analyseAugmentedSystems(mumps);
             
             sym_perm = new int[mumps.n];
             std::copy(mumps.sym_perm, mumps.sym_perm + mumps.n, sym_perm);
@@ -44,22 +44,22 @@ void abcd::initializeCimmino()
 
     }
 
-    allocateMumpsSlaves();
-    initializeMumps();
+    allocateMumpsSlaves(mumps);
+    initializeMumps(mumps);
     //ordering given
-    //setMumpsIcntl(7,1);
-    //setMumpsIcntl(6,5);
-    //setMumpsIcntl(8,-2);
-    //setMumpsIcntl(28,2);
+    mumps.setIcntl(7,1);
+    mumps.setIcntl(6,5);
+    mumps.setIcntl(8,-2);
+    mumps.setIcntl(28,2);
 
     if(instance_type == 0) {
-        createAugmentedSystems();
+        createAugmentedSystems(mumps);
         mumps.perm_in = sym_perm;
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)
         cout << "[+] Launching MUMPS analysis" << endl;
-    abcd::analyseAugmentedSystems();
+    abcd::analyseAugmentedSystems(mumps);
 
     //delete[] sym_perm;
 
