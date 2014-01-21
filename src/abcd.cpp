@@ -80,6 +80,9 @@ int abcd::InitializeMatrix()
     }
     A = CompRow_Mat_double(t_A);
     cout << "splib : " << MPI_Wtime() - t << endl;
+
+    // debug
+    delete[] irn, jcn, val;
     
     n_o = n;
     m_o = m;
@@ -102,6 +105,8 @@ int abcd::PreprocessMatrix()
     abcd::preprocess();
     abcd::analyseFrame();
     cout << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess << endl;
+
+    A = CompRow_Mat_double();
     
     return 0;
 }
