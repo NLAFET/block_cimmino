@@ -10,10 +10,10 @@ extern "C"
 
 void abcd::preprocess()
 {
-    if(icntl[9] >= 1) {
-        dcol_ = VECTOR_double(n, double(1));
-        drow_ = VECTOR_double(m, double(1));
+    dcol_ = VECTOR_double(n, double(1));
+    drow_ = VECTOR_double(m, double(1));
 
+    if(icntl[9] >= 1) {
         //drow_ = VECTOR_double(m, double(1));
 
         std::clog << "[-] Scaling with Infinity" << std::endl;
@@ -177,7 +177,6 @@ void abcd::scaleMatrix(int norm)
     void
 abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)
 {
-    if(icntl[9] < 1) return;
     for ( int i = 0; i < A.dim(0); i++ ) {
         for ( int j = A.row_ptr(i); j < A.row_ptr(i+1); j++ ) {
             A.val(j) = drow(i) * A.val(j); 
@@ -196,7 +195,6 @@ abcd::diagScaleMatrix ( VECTOR_double drow, VECTOR_double dcol)
     void
 abcd::diagScaleRhs ( VECTOR_double &b)
 {
-    if(icntl[9] < 1) return;
     for ( int i = 0; i < m; i++ ) {
         b(i) = b(i)*drow_(i);
     }
@@ -205,7 +203,6 @@ abcd::diagScaleRhs ( VECTOR_double &b)
     void
 abcd::diagScaleRhs ( MV_ColMat_double &B)
 {
-    if(icntl[9] < 1) return;
     for ( int i = 0; i < B.dim(0); i++ ) 
         for ( int j = 0; j < B.dim(1); j++ ) 
             B(i,j) = B(i,j)*drow_(i);
