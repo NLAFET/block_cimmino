@@ -73,7 +73,7 @@ abcd::solveS ( MV_ColMat_double &f )
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
     t = MPI_Wtime();
-    DMUMPS_STRUC_C mu;
+    MUMPS mu;
     mpi::communicator world;
     mu.sym = 2;
     mu.par = 1;
@@ -713,8 +713,7 @@ abcd::prodSv ( MV_ColMat_double &V )
  *  Description:  
  * =====================================================================================
  */
-    DMUMPS_STRUC_C 
-abcd::buildM (  )
+MUMPS abcd::buildM (  )
 {
     if(inter_comm.rank() == 0){
         clog << "* Building the preconditioner      *" << endl;
@@ -779,7 +778,7 @@ abcd::buildM (  )
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
     
-    DMUMPS_STRUC_C mu;
+    MUMPS mu;
     mu.sym = 1;
     mu.par = 1;
     mu.job = -1;
@@ -880,7 +879,7 @@ abcd::buildM (  )
  * =====================================================================================
  */
     VECTOR_double
-abcd::solveM (DMUMPS_STRUC_C &mu, VECTOR_double &z )
+abcd::solveM (MUMPS &mu, VECTOR_double &z )
 {
     if(IRANK == 0) {
         mu.rhs = new double[z.size()];
@@ -920,7 +919,7 @@ abcd::pcgS ( VECTOR_double &b )
     //int max_iter = 2;
     int max_iter = size_c;
 
-    DMUMPS_STRUC_C mu;
+    MUMPS mu;
     if(dcntl[15] > 0) mu = buildM();
     double t = MPI_Wtime();
 

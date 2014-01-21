@@ -21,6 +21,7 @@
 #include <map>
 #include "mmio.h"
 
+#include <mumps.h>
 #include "dmumps_c.h"
 
 #include <boost/mpi.hpp>
@@ -108,8 +109,8 @@ private:
     MV_ColMat_double solveS ( MV_ColMat_double &f );
     Coord_Mat_double buildS();
     Coord_Mat_double buildS(std::vector<int>);
-    DMUMPS_STRUC_C buildM();
-    VECTOR_double solveM ( DMUMPS_STRUC_C &mu, VECTOR_double &z );
+    MUMPS buildM();
+    VECTOR_double solveM ( MUMPS &mu, VECTOR_double &z );
     MV_ColMat_double prodSv(MV_ColMat_double &);
     VECTOR_double pcgS ( VECTOR_double &b );
     std::vector<int> selected_S_columns;
@@ -125,13 +126,13 @@ private:
     // MUMPS
     int m_n;
     int m_nz;
-    DMUMPS_STRUC_C mumps;
-    void initializeMumps(bool local);
-    void initializeMumps();
-    void createAugmentedSystems();
-    void analyseAugmentedSystems();
-    void allocateMumpsSlaves();
-    void factorizeAugmentedSystems();
+    MUMPS mumps;
+    void initializeMumps(MUMPS &, bool local);
+    void initializeMumps(MUMPS &);
+    void createAugmentedSystems(MUMPS &);
+    void analyseAugmentedSystems(MUMPS &);
+    void allocateMumpsSlaves(MUMPS &);
+    void factorizeAugmentedSystems(MUMPS &);
     std::vector<int> my_slaves;
     int my_master;
     MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
@@ -228,6 +229,7 @@ public:
     VECTOR_int nbrows; /// The number of rows per partition
     /// A reverse index of columns, contains the original index of each column for each partition
     std::vector<std::vector<int> > column_index;
+    std::vector<std::map<int,int> > column_index_cache;
     /// A merge of col_index vectors, determines non-null columns in all local partitions
     std::vector<std::vector<int> > local_column_index;
     int **fast_local_column_index;
