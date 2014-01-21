@@ -15,8 +15,8 @@ void abcd::bcg(MV_ColMat_double &b)
     }
 
     // temporary solution
-    //MV_ColMat_double u(m, nrhs, 0);
-    //u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
+    MV_ColMat_double u(m, nrhs, 0);
+    u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
 
     MV_ColMat_double p(n, s, 0);
     MV_ColMat_double qp(n, s, 0);
@@ -25,6 +25,8 @@ void abcd::bcg(MV_ColMat_double &b)
     MV_ColMat_double betak(s, s, 0);
     MV_ColMat_double lambdak(s, nrhs, 0);
     MV_ColMat_double prod_gamma(nrhs, nrhs, 0);
+    MV_ColMat_double e1(s, nrhs, 0);
+
 
     double thresh = threshold;
 
@@ -32,11 +34,12 @@ void abcd::bcg(MV_ColMat_double &b)
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
-    double lnrmBs = infNorm(b);
+    double lnrmBs = infNorm(u);
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
     mpi::broadcast(inter_comm, nrmMtx, 0);
 
+    for(int k =0; k < e1.dim(1); k++) e1(0,k) = 1;
     char up = 'U';
     char left = 'L';
     char right = 'R';
@@ -82,7 +85,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double ti = MPI_Wtime();
 
     t2_total = MPI_Wtime();
-    rho = compute_rho(Xk, b, thresh);
+    rho = compute_rho(Xk, u, thresh);
     t2_total = MPI_Wtime() - t2_total;
     if(inter_comm.rank() == 0 && verbose) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
@@ -104,8 +107,7 @@ void abcd::bcg(MV_ColMat_double &b)
             gmgs(p, qp, betak, s, true);
         }
 
-        lambdak = MV_ColMat_double(s, nrhs, 0);
-        for(int k =0; k < lambdak.dim(1); k++) lambdak(0,k) = 1;
+        lambdak = e1;
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
 
@@ -128,26 +130,24 @@ void abcd::bcg(MV_ColMat_double &b)
 
         //if(inter_comm.rank() == 0)
             //cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
-        {
-            MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
-            gu = MV_ColMat_double(upperMat(gu));
+        MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+        gu = MV_ColMat_double(upperMat(gu));
 
-            prod_gamma = gemmColMat(gu, prod_gamma);
-            gammak = upperMat(gammak);
-            MV_ColMat_double bu = upperMat(betak);
+        prod_gamma = gemmColMat(gu, prod_gamma);
+        gammak = upperMat(gammak);
+        MV_ColMat_double bu = upperMat(betak);
 
 
         //MV_ColMat_double gt = gammak.transpose();
         //cout << bu.dim(1) << " " << gt.dim(1) << endl;
 
         // bu * gammak^T
-            betak = gemmColMat(bu, gammak, false, true);
-        }
+        betak = gemmColMat(bu, gammak, false, true);
 
         p = r + gemmColMat(p, betak);
 
         t2 = MPI_Wtime();
-        rho = abcd::compute_rho(Xk, b, thresh);
+        rho = abcd::compute_rho(Xk, u, thresh);
         t2 = MPI_Wtime() - t2;
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
