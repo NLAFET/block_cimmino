@@ -81,7 +81,7 @@ int abcd::InitializeMatrix()
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
         A = CompRow_Mat_double(t_A);
     }
-    cout << "splib : " << MPI_Wtime() - t << endl;
+    //cout << "splib : " << MPI_Wtime() - t << endl;
     
     n_o = n;
     m_o = m;
