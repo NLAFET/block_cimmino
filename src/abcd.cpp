@@ -46,7 +46,6 @@ int abcd::InitializeMatrix()
     }
 
     double t = MPI_Wtime();
-    Coord_Mat_double t_A;
 
     if(sym) {
         //over estimate nz
@@ -69,16 +68,19 @@ int abcd::InitializeMatrix()
             }
         }
         nz = t_nz;
+        Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+        A = CompRow_Mat_double(t_A);
         delete[] t_irn, t_jcn, t_val;
     } else {
         for(int i=0; i<nz; i++){
             irn[i]--;
             jcn[i]--;
         }
+        Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+        A = CompRow_Mat_double(t_A);
     }
-    A = CompRow_Mat_double(t_A);
     cout << "splib : " << MPI_Wtime() - t << endl;
     
     n_o = n;
