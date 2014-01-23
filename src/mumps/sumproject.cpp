@@ -84,10 +84,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         dmumps_c(&mumps);
         t = MPI_Wtime() - t;
 
-        cout << "[" << inter_comm.rank() << "] Time spent in direct solver : " << t << endl;
-
-        //MV_ColMat_double Sol(mumps.rhs, mumps.n, s);
-
         int x_pos = 0;
         double *dpt = Delta.ptr();
         if(partitions.size() > 1)
@@ -116,14 +112,13 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             }
         }
     }
-    //cout << "ti = " << ti <<  "        " << endl;
+
     if(inter_comm.size() == 1) {
         delete[] mumps.rhs;
         return Delta;
     }
 
     // Where the other Deltas are going to be summed
-    //MV_ColMat_double Others(n, s, 0);
 
     std::vector<double *>itcp(nbparts);
     std::vector<double *>otcp(nbparts);
@@ -178,10 +173,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     }
 
-    // Now sum the data to Delta
-    //Delta += Others;
-
-    //clog << "["<< IRANK << "] Time spent merging results : " << MPI_Wtime() -t << " ["<<t1 - t2<<", "<< t2<< "]" << endl;
     for(int i = 0; i < itcp.size(); i ++) {
         delete[] itcp[i];
         delete[] otcp[i];
