@@ -138,7 +138,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
         if(!use_xk){
             int st = 0;
-            for(int p = 0; p < partitions.size(); p++){
+            for(int p = 0; p < nb_local_parts; p++){
                 //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
                         //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
                 MV_ColMat_double sp =  spsmv(partitions[p], local_column_index[p], Xk);
@@ -202,7 +202,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     //if(inter_comm.rank()==0){
         //zrhs = MV_ColMat_double(m, 1, 0);
         //int st = 0;
-        //for(int p = 0; p < partitions.size(); p++){
+        //for(int p = 0; p < nb_local_parts; p++){
             //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
                     //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
             //st += partitions[p].dim(0);

@@ -548,7 +548,7 @@ abcd::buildS ( std::vector<int> cols )
                 Xk(glob_to_local[n_o + i], 0) = 1;
 
                 //int st = 0;
-                //for(int p = 0; p < partitions.size(); p++){
+                //for(int p = 0; p < nb_local_parts; p++){
                     //MV_ColMat_double sp = spsmv(partitions[p], local_column_index[p], Xk);
                     //int pos = 0;
                     //for(int k = st; k < st + partitions[p].dim(0); k++){
