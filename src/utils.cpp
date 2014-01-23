@@ -139,7 +139,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
     double loc_nrmxfmx = 0;
 
-    for(int p = 0; p < partitions.size(); p++) {
+    for(int p = 0; p < nb_local_parts; p++) {
         for(int j = 0; j < x.dim(1); j++) {
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 

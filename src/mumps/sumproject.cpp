@@ -23,11 +23,14 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int dlda = Delta.lda();
 
     if(beta != 0 || alpha != 0){
-        for(int k = 0; k < partitions.size(); k++) {
-            MV_ColMat_double r(partitions[k].dim(0), s, 0);
+        for(int k = 0; k < nb_local_parts; k++) {
+
+            CompRow_Mat_double *part = &partitions[k];
+
+            MV_ColMat_double r(part->dim(0), s, 0);
             double *rpt = r.ptr();
             int rlda = r.lda();
-            MV_ColMat_double compressed_x(partitions[k].dim(1), s, 0);
+            MV_ColMat_double compressed_x(part->dim(1), s, 0);
             double *cxpt = compressed_x.ptr();
             int cxlda = compressed_x.lda();
 
@@ -44,32 +47,32 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
                     x_pos++;
                 }
 
-                r = smv(partitions[k], compressed_x) * beta;
+                r = smv(*part, compressed_x) * beta;
             }
 
             if(alpha != 0 && beta !=0){
-                MV_ColMat_double rr(partitions[k].dim(0), s);
-                rr = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1));
+                MV_ColMat_double rr(part->dim(0), s);
+                rr = Rhs(MV_VecIndex(b_pos, b_pos + part->dim(0) - 1), MV_VecIndex(0, s -1));
                 r = r + rr * alpha;
             }
 
             if(alpha != 0 && beta ==0){
-                r = Rhs(MV_VecIndex(b_pos, b_pos + partitions[k].dim(0) - 1), MV_VecIndex(0, s -1)) * alpha;
+                r = Rhs(MV_VecIndex(b_pos, b_pos + part->dim(0) - 1), MV_VecIndex(0, s -1)) * alpha;
             }
 
-            b_pos += partitions[k].dim(0);
+            b_pos += part->dim(0);
 
             //to = MPI_Wtime();
 
             int j = 0;
-            for(int i = pos + partitions[k].dim(1); i < pos + partitions[k].dim(1) + partitions[k].dim(0); i++) {
+            for(int i = pos + part->dim(1); i < pos + part->dim(1) + part->dim(0); i++) {
                 //for(int r_p = 0; r_p < s; r_p++) mumps_rhs(i, r_p) = r(j, r_p);
                 for(int r_p = 0; r_p < s; r_p++) mumps.rhs[i + r_p * mumps.n] = rpt[j + r_p * rlda];
                 j++;
             }
             //ti += MPI_Wtime() - to;
 
-            pos += partitions[k].dim(1) + partitions[k].dim(0);
+            pos += part->dim(1) + part->dim(0);
 
         }
 
@@ -86,9 +89,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
         int x_pos = 0;
         double *dpt = Delta.ptr();
-        if(partitions.size() > 1)
+        if(nb_local_parts > 1)
         {
-            for(int k = 0; k < partitions.size(); k++) {
+            for(int k = 0; k < nb_local_parts; k++) {
                 for(int i = 0; i < local_column_index[k].size(); i++) {
                     //int ci = local_column_index[k][i];
                     int ci = fast_local_column_index[k][i];

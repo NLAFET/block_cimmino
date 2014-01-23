@@ -67,11 +67,11 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     std::vector<double> rv;
 
     std::vector<CompRow_Mat_double> r;
-    std::vector<std::map<int,int> > loc_cols(partitions.size());
+    std::vector<std::map<int,int> > loc_cols(nb_local_parts);
 
     int nzr_estim = 0;
 
-    for(int k = 0; k < partitions.size(); k++) {
+    for(int k = 0; k < nb_local_parts; k++) {
 
         CompRow_Mat_double Y;
 
@@ -108,7 +108,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         mumps.icntl[20 - 1] = 0;
 
         int pos = 0;
-        for(int k = 0; k < partitions.size(); k++) {
+        for(int k = 0; k < nb_local_parts; k++) {
             for(int r_p = 0; r_p < s; r_p++) {
                 for(int i = pos; i < pos + partitions[k].dim(1); i++) {
                     mumps_rhs(i, r_p) = 0;
@@ -133,7 +133,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             int cnz = 1;
 
 			int pos = 0;
-			for(int k = 0; k < partitions.size(); k++) {
+			for(int k = 0; k < nb_local_parts; k++) {
 				CompRow_Mat_double rtt = r[k];
 				int _dim1 = partitions[k].dim(1);
 				int _dim0 = partitions[k].dim(0);
@@ -181,7 +181,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     int x_pos = 0;
 
-    for(int k = 0; k < partitions.size(); k++) {
+    for(int k = 0; k < nb_local_parts; k++) {
         int start_c = glob_to_part[k][stC[k]];
         x_pos += glob_to_part[k][stC[k]];
 
