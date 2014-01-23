@@ -201,6 +201,7 @@ void abcd::distributePartitions()
 
             sm += l_m;
             snz += l_nz;
+            delete [] l_jcn, l_irst, l_v;
         }
 
         // Find the interconnections between the different CG_masters
@@ -334,32 +335,7 @@ void abcd::distributePartitions()
         }
 
     }
-    /*
-     * ||A||_F
-    nrmA = 0;
-    for(int i=0; i<partitions.size(); i++)
-        nrmA += squaredNorm(partitions[i]);
 
-    mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, std::plus<double>());
-    nrmA = sqrt(nrmA);
-    nrmMtx = sqrt(nrmMtx);
-    */
-
-    /* ||A||_inf */
-    //nrmA = 0;
-    //for(int i=0; i<partitions.size(); i++){
-        //for(int j=0; j<partitions[i].NumNonzeros(); j++){
-            //double cur = abs(partitions[i].val(j));
-            //if(cur > nrmA){
-                //nrmA = cur;
-            //}
-        //}
-    //}
-
-    //mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
-    //nrmA = sqrt(nrmA);
-    //nrmMtx = sqrt(nrmMtx);
-    //
     mpi::broadcast(inter_comm, selected_S_columns, 0);
     mpi::broadcast(inter_comm, skipped_S_columns, 0);
 
