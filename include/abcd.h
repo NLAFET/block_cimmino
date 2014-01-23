@@ -225,6 +225,7 @@ public:
      */
     int partitioning_type;
     int nbparts; /// The number of partitions
+    int nb_local_parts;
     VECTOR_int strow; /// The starting row index of each partition
     VECTOR_int nbrows; /// The number of rows per partition
     /// A reverse index of columns, contains the original index of each column for each partition

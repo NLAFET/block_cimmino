@@ -26,6 +26,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         for(int k = 0; k < nb_local_parts; k++) {
 
             CompRow_Mat_double *part = &partitions[k];
+            std::vector<int> *loc_col_idx  = &local_column_index[k];
+            int *fast_col_idx = fast_local_column_index[k];
 
             MV_ColMat_double r(part->dim(0), s, 0);
             double *rpt = r.ptr();
@@ -37,11 +39,9 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             // avoid useless operations
             if(beta != 0){
                 int x_pos = 0;
-                for(int i = 0; i < local_column_index[k].size(); i++) {
-                    //int ci = local_column_index[k][i];
-                    int ci = fast_local_column_index[k][i];
+                for(int i = 0; i < loc_col_idx->size(); i++) {
+                    int ci = fast_col_idx[i];
                     for(int j = 0; j < s; j++) {
-                        //compressed_x(x_pos, j) = X(ci, j);
                         cxpt[x_pos + j * cxlda] = xpt[ci + j * xlda];
                     }
                     x_pos++;
