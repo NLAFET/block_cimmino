@@ -19,7 +19,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     std::vector<int> rr;
     std::vector<double> rv;
 
-    std::vector<CompRow_Mat_double> r;
+    CompRow_Mat_double *r = new CompRow_Mat_double[nb_local_parts];
     std::vector<std::map<int,int> > loc_cols(nb_local_parts);
 
     int nzr_estim = 0;
@@ -50,9 +50,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
         Y = CompRow_Mat_double(Yt);
 
-        nzr_estim += Y.NumNonzeros();
-
-        r.push_back( spmm(partitions[k], Y) );
+        r[k] = spmm(partitions[k], Y) ;
+        nzr_estim += r[k].NumNonzeros();
     }
 
 
@@ -85,17 +84,16 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
             int cnz = 1;
 
-			int pos = 0;
-			for(int k = 0; k < nb_local_parts; k++) {
-				CompRow_Mat_double rtt = r[k];
-				int _dim1 = partitions[k].dim(1);
-				int _dim0 = partitions[k].dim(0);
 
-				for(int r_p = 0; r_p < s; r_p++) {
-					mumps.irhs_ptr[r_p] = cnz;
+            for(int r_p = 0; r_p < s; r_p++) {
+                mumps.irhs_ptr[r_p] = cnz;
 
-                    // no need to put zeros before!
-                    //
+                int pos = 0;
+                for(int k = 0; k < nb_local_parts; k++) {
+                    CompRow_Mat_double rtt = r[k];
+                    int _dim1 = partitions[k].dim(1);
+                    int _dim0 = partitions[k].dim(0);
+
                     int j = 0;
                     for(int i = pos + _dim1; i < pos + _dim1 + _dim0; i++) {
                         if(rtt(j, r_p) != 0){
@@ -105,8 +103,8 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                         }
                         j++;
                     }
+                    pos += _dim1 + _dim0;
                 }
-				pos += _dim1 + _dim0;
             }
             mumps.irhs_ptr[s] = cnz;
 
@@ -168,6 +166,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     //delete mumps.rhs;
     delete[] mumps.rhs;
+    delete[] r;
 
     return Delta;
 }
