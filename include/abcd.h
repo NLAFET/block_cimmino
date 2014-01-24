@@ -144,13 +144,6 @@ private:
     void waitForSolve();
     std::vector<int> comm_map;
 
-    // MUMPS setters and getters
-    inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
-    inline void setMumpsCntl(int i, double v) { mumps.cntl[ i - 1 ] = v ; }
-    inline int getMumpsInfo(int i) { return mumps.info[ i - 1 ]; }
-    inline double getMumpsRinfo(int i) { return mumps.rinfo[ i - 1 ]; }
-    inline double getMumpsRinfoG(int i) { return mumps.rinfog[ i - 1 ]; }
-
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
     void partitioning(std::vector<std::vector<int> > &, std::vector<int>, int);
