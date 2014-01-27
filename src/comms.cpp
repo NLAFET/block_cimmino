@@ -43,11 +43,16 @@ void abcd::distributePartitions()
         abcd::partitioning(p_sets, m_parts, parallel_cg);
         //exit(0);
 
-        clog << "Groups : [" << p_sets[0].size();
-        for(int k = 1; k < parallel_cg; k++) {
-            clog  << ", "<< p_sets[k].size();
+        clog << "Groups : " ;
+        for(int k = 0; k < parallel_cg; k++) {
+            clog << "{";
+            for(int j = 0; j < p_sets[k].size() - 1; j++)
+                clog << p_sets[k][j] << ", ";
+            clog << p_sets[k][p_sets[k].size() -1 ];
+            clog << "}, ";
+            //clog  << ", "<< p_sets[k].size();
         }
-        clog << "]" << endl;
+        clog << endl;
 
         // first start by the master :
         //for(int i = 0; i <= groups[0] ; i++)

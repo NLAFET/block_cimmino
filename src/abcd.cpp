@@ -128,7 +128,10 @@ int abcd::FactorizeAugmentedSystems()
     }
 
     if(instance_type == 0) {
-        abcd::distributePartitions();
+        //abcd::distributePartitions();
+        abcd::distributeData();
+        abcd::createInterconnections();
+        IBARRIER; exit(0);
     }
     
     abcd::initializeCimmino();

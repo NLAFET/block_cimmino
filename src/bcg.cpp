@@ -120,6 +120,10 @@ void abcd::bcg(MV_ColMat_double &b)
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
         //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
+        if (inter_comm.rank() == 0) {
+            cout << Xk(glob_to_local[160],0) << "\t";
+            cout << Xk(glob_to_local[4991],0) << endl;
+        }
 
         // R = R - QP * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
@@ -176,7 +180,7 @@ void abcd::bcg(MV_ColMat_double &b)
     if(IRANK == 0) {
         t = MPI_Wtime();
         cout << "Centralizing solution" << endl;
-        MV_ColMat_double sol = MV_ColMat_double(n_o, 1, 0);
+        sol = MV_ColMat_double(n_o, 1, 0);
         map<int, vector<double> > xo;
         map<int, vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
@@ -191,6 +195,7 @@ void abcd::bcg(MV_ColMat_double &b)
         }
         for(int i = 0; i < n; i++){
             sol(glob_to_local_ind[i], 0) = Xk(i, 0);
+            //cout << glob_to_local_ind[i] << "\t" << Xk(i, 0) << endl;
         }
         if(Xf.dim(0) != 0) {
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
