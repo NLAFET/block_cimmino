@@ -99,6 +99,9 @@ private:
     // Communication stuffs
     void createInterComm();
     void distributePartitions();
+    void createInterconnections();
+
+    void distributeData();
 
     // Cimmino
     void initializeCimmino();
