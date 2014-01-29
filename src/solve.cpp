@@ -88,17 +88,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f0 = pcgS(f0);
         f.setData(f0);
 
-        //mpi::broadcast(inter_comm, f_ptr, size_c, 0);
-
     } else {
 
-        //ofstream fo;
-        //fo.open("/tmp/z");
-        //for(int i = 0; i < f.dim(0); i++){
-            //fo << f(i,0) << endl;
-        //}
-        //fo.close();
-        
         f = solveS(f);
     }
     if(IRANK == 0) 
@@ -171,6 +162,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;
 
+    cout << f.dim(0) << " " << b.dim(0) << endl;
     double rho = compute_rho(f, b, 0);
     if(IRANK == 0) cout << "rho = " << rho << endl;
     IBARRIER;

@@ -26,8 +26,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         for(int k = 0; k < nb_local_parts; k++) {
 
             CompRow_Mat_double *part = &partitions[k];
-            std::vector<int> *loc_col_idx  = &local_column_index[k];
-            int *fast_col_idx = fast_local_column_index[k];
 
             MV_ColMat_double r(part->dim(0), s, 0);
             double *rpt = r.ptr();
@@ -39,8 +37,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             // avoid useless operations
             if(beta != 0){
                 int x_pos = 0;
-                for(int i = 0; i < loc_col_idx->size(); i++) {
-                    int ci = fast_col_idx[i];
+                for(int i = 0; i < local_column_index[k].size(); i++) {
+                    int ci = local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
                         cxpt[x_pos + j * cxlda] = xpt[ci + j * xlda];
                     }
@@ -94,24 +92,21 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             for(int k = 0; k < nb_local_parts; k++) {
                 for(int i = 0; i < local_column_index[k].size(); i++) {
                     //int ci = local_column_index[k][i];
-                    int ci = fast_local_column_index[k][i];
+                    int ci = local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
-                        if(ci == glob_to_local[4991]) 
-                            cout << IRANK << " sum loc: " << k << "\t"
-                                << dpt[ci + j * dlda] << "\t"
-                                << mumps.rhs[x_pos + j * mumps.n] << endl;
                         //Delta(ci, j) = Delta(ci, j) + mumps_rhs(x_pos, j) ;
                         dpt[ci + j * dlda] += mumps.rhs[x_pos + j * mumps.n];
                     }
                     x_pos++;
                 }
                 x_pos += partitions[k].dim(0);
+                //cout << Delta << endl;
             }
 
         } else
         {
             for(int i = 0; i < local_column_index[0].size(); i++) {
-                int ci = fast_local_column_index[0][i];
+                int ci = local_column_index[0][i];
                 for(int j = 0; j < s; j++) {
                     dpt[ci + j * dlda] = mumps.rhs[x_pos + j * mumps.n];
                 }
@@ -173,18 +168,12 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         for(int j = 0; j < s; j++) {
             for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 //Others(*i, j) += otcp[it->first][p];
-                if(*i == glob_to_local[4991]) cout << otcp[it->first][p] << " " << it->first << endl;
                 Delta(*i, j) += otcp[it->first][p];
                 p++;
             }
         }
 
     }
-                if(IRANK == 0){
-                    cout << Delta(glob_to_local[160], 0)<< endl;
-                    cout << Delta(glob_to_local[4991], 0)<< endl;
-                    exit(0);
-                }
 
     for(int i = 0; i < itcp.size(); i ++) {
         delete[] itcp[i];

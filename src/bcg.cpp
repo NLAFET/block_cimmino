@@ -64,6 +64,7 @@ void abcd::bcg(MV_ColMat_double &b)
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, s);
     }
+
     t1_total = MPI_Wtime() - t1_total;
     // orthogonalize
     // r = r*gamma^-1
@@ -101,6 +102,8 @@ void abcd::bcg(MV_ColMat_double &b)
 
         qp = sumProject(0e0, b, 1e0, p);
 
+
+
         t1 = MPI_Wtime() - t;
 
         if(gqr(p, qp, betak, s, true) != 0){
@@ -111,7 +114,6 @@ void abcd::bcg(MV_ColMat_double &b)
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
 
-
         lambdak = gemmColMat(lambdak, prod_gamma);
 
 
@@ -120,10 +122,6 @@ void abcd::bcg(MV_ColMat_double &b)
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
         //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
-        if (inter_comm.rank() == 0) {
-            cout << Xk(glob_to_local[160],0) << "\t";
-            cout << Xk(glob_to_local[4991],0) << endl;
-        }
 
         // R = R - QP * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
@@ -190,13 +188,13 @@ void abcd::bcg(MV_ColMat_double &b)
         for(int k = 1; k < inter_comm.size(); k++){
             for(int i = 0; i < io[k].size(); i++){
                 int ci = io[k][i];
-                sol(ci, 0) = xo[k][i];
+                sol(ci, 0) = xo[k][i] * dcol_(ci);
             }
         }
-        for(int i = 0; i < n; i++){
-            sol(glob_to_local_ind[i], 0) = Xk(i, 0);
-            //cout << glob_to_local_ind[i] << "\t" << Xk(i, 0) << endl;
+        for(int i = 0; i < glob_to_local_ind.size(); i++){
+            sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
         }
+
         if(Xf.dim(0) != 0) {
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
