@@ -55,8 +55,6 @@ void abcd::distributeData()
 
         m_l = m;
         n_l = n;
-        m = 0;
-        nz = 0;
 
         if(parallel_cg != 1){
             std::vector<std::vector<int> > cis;
@@ -83,11 +81,16 @@ void abcd::distributeData()
         } else {
             for(int i = 0; i < parts.size(); i++){
                 partitions.push_back(parts[i]);
-                m += parts[i].dim(0);
-                nz += parts[i].NumNonzeros();
             }
             parts.clear();
             nb_local_parts = partitions.size();
+        }
+        m = 0;
+        nz = 0;
+
+        for(int i = 0; i < nb_local_parts; i++){
+            m += partitions[i].dim(0);
+            nz += partitions[i].NumNonzeros();
         }
 
 
@@ -148,6 +151,21 @@ void abcd::distributeData()
 
 void abcd::createInterconnections()
 {
+    // Link between the current partition and the global array
+    // is used only in ABCD
+    if (icntl[10] != 0) {
+        for(int k = 0; k < nb_local_parts; k++) {
+            std::map<int, int> gt;
+            std::map<int, int> ptg;
+            for(int j = 0; j < column_index[k].size(); j++) {
+                gt[column_index[k][j]] = j;
+                ptg[j] = column_index[k][j];
+            }
+            part_to_glob.push_back(ptg);
+            glob_to_part.push_back(gt);
+        }
+    }
+
     // we need the merge of column indices 
     std::vector<int> merge_index = mergeSortedVectors(column_index);
 
@@ -182,7 +200,40 @@ void abcd::createInterconnections()
     }
 
 
-    cout << "Merge done" << endl;
+    std::map<int, std::vector<int> > their_cols;
+    std::vector<mpi::request> reqs_c;
+    for (int i = 0; i < parallel_cg; i++) {
+        if (i == inter_comm.rank())
+            continue;
+        reqs_c.push_back(inter_comm.irecv(i, 41, their_cols[i]));
+        reqs_c.push_back(inter_comm.isend(i, 41, merge_index));
+    }
 
-    // first build partitions to local vector
+    mpi::wait_all(reqs_c.begin(), reqs_c.end());
+
+    for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
+            it != their_cols.end(); it++) {
+
+        col_interconnections[it->first] =
+            getIntersectionIndices(
+                merge_index, their_cols[it->first]
+            ).first;
+
+    }
+
+    // Create a Communication map for ddot
+    comm_map.assign(n, 1);
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+            it != col_interconnections.end(); it++) {
+        // if I share data with it->first and I'm after him, let him compute!
+        if(inter_comm.rank() > it->first) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+                if(comm_map[*i] == 1) comm_map[*i] = -1;
+            }
+        }
+    }
+    cout << comm_map.size() << endl;
+
+    if (inter_comm.rank() == 0) 
+        cout << "Merge done " << endl;
 }

@@ -305,8 +305,6 @@ void abcd::distributePartitions()
     }
 
 
-    n = merge_index.size();
-
     // Create a Communication map for ddot
     comm_map.assign(n, 1);
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
@@ -318,6 +316,7 @@ void abcd::distributePartitions()
             }
         }
     }
+    cout << comm_map.size() << endl;
 
     std::map<int, std::vector<int>::iterator > debut;
     std::map<int, int > their_job;

@@ -47,14 +47,14 @@ void abcd::initializeCimmino()
     allocateMumpsSlaves(mumps);
     initializeMumps(mumps);
     //ordering given
-    mumps.setIcntl(7,1);
-    mumps.setIcntl(6,5);
-    mumps.setIcntl(8,-2);
-    mumps.setIcntl(28,2);
+    //mumps.setIcntl(7,1);
+    //mumps.setIcntl(6,5);
+    //mumps.setIcntl(8,-2);
+    //mumps.setIcntl(28,2);
 
     if(instance_type == 0) {
         createAugmentedSystems(mumps);
-        mumps.perm_in = sym_perm;
+        //mumps.perm_in = sym_perm;
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)

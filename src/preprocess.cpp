@@ -81,6 +81,7 @@ void abcd::preprocess()
         }
         if(nrmMtx < rsum) nrmMtx = rsum;
     }
+    cout << nrmMtx << endl;
 
 }
 
