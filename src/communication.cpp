@@ -232,7 +232,6 @@ void abcd::createInterconnections()
             }
         }
     }
-    cout << comm_map.size() << endl;
 
     if (inter_comm.rank() == 0) 
         cout << "Merge done " << endl;

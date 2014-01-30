@@ -165,19 +165,19 @@ void abcd::bcg(MV_ColMat_double &b)
 
 
     if(inter_comm.rank() == 0) {
-        cout << endl;
-        cout << "BCG Rho: " << rho << endl;
-        cout << "BCG Iterations : " << it << endl;
-        cout << "BCG TIME : " << MPI_Wtime() - ti << endl;
-        cout << "SumProject time : " << t1_total << endl;
-        cout << "Rho Computation time : " << t2_total << endl;
-        cout << endl;
+        clog << endl;
+        clog << "BCG Rho: " << rho << endl;
+        clog << "BCG Iterations : " << it << endl;
+        clog << "BCG TIME : " << MPI_Wtime() - ti << endl;
+        clog << "SumProject time : " << t1_total << endl;
+        clog << "Rho Computation time : " << t2_total << endl;
+        clog << endl;
     }
-    IBARRIER;
+    dinfo[0] = rho;
 
     if(IRANK == 0) {
         t = MPI_Wtime();
-        cout << "Centralizing solution" << endl;
+        clog << "Centralizing solution" << endl;
         sol = MV_ColMat_double(n_o, 1, 0);
         map<int, vector<double> > xo;
         map<int, vector<int> > io;
@@ -199,9 +199,9 @@ void abcd::bcg(MV_ColMat_double &b)
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
             double nrmxf =  infNorm(xf);
-            IFMASTER cout << nrmxf << " " << nrmXf << " fwd : " <<  nrmxf/nrmXf << endl;
+            dinfo[1] =  nrmxf/nrmXf;
         }
-        cout << "took " << MPI_Wtime() - t << endl;
+        clog << "took " << MPI_Wtime() - t << endl;
 
     } else {
         vector<double> x;

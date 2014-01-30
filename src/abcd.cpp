@@ -16,8 +16,12 @@ abcd::abcd()
     verbose = false;
     threshold = 1e-12;
     runSolveS = false;
-    for(int i = 0; i < 20; i++) icntl[i] = 0;
-    for(int i = 0; i < 20; i++) dcntl[i] = 0;
+    for (int i = 0; i < 20; i++) {
+        icntl[i] = 0;
+        dcntl[i] = 0;
+        info[i] = 0;
+        dinfo[i] = 0;
+    }
     
     irn = 0;
     jcn = 0;
@@ -179,11 +183,23 @@ int abcd::SolveSystem()
         if(icntl[10] == 0 || icntl[12] != 0 || runSolveS){
             abcd::bcg(B);
         } else{
+            int temp_bs = block_size;
+            block_size = 1;
             abcd::solveABCD(B);
+            block_size = temp_bs;
         }
 
         int job = -1;
         mpi::broadcast(intra_comm, job, 0);
+
+        if(inter_comm.rank() == 0){
+            clog << endl
+                 << "======================================" << endl;
+            clog << "Backward error : " << scientific << dinfo[0] << endl;
+            if (Xf.dim(0) != 0)
+                clog << "Forward error : " << scientific << dinfo[1] << endl;
+            clog << "======================================" << endl << endl;
+        }
 
     } else {
         abcd::waitForSolve();

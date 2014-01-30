@@ -377,13 +377,7 @@ void abcd::distributeRhs()
             Xf = MV_ColMat_double(A.dim(1), nrhs);
             for(int j = 0; j < nrhs; j++){
                 for(int i = 0; i < A.dim(1); i++){
-                    //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
-                    //rhs[i + j * A.dim(1)] = 1;
-                    //rhs[i + j * A.dim(1)] = j+1;
-                    //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
                     rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
-
-                    if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
                 }
             }
 
@@ -391,13 +385,20 @@ void abcd::distributeRhs()
                 VECTOR_double xf_col(A.dim(1));
                 for(int i = 0; i < A.dim(1); i++) {
                     xf_col[i] = rhs[i + j * A.dim(1)];
-                    if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                 }
                 Xf.setCol(xf_col, j);
-
             }
 
             MV_ColMat_double BB = smv(A, Xf);
+
+            for(int j = 0; j < nrhs; j++){
+                double unscaled; 
+                for(int i = 0; i < A.dim(1); i++) {
+                    unscaled = rhs[i + j * A.dim(1)] * dcol_(i);
+                    if(abs(unscaled) > nrmXf) nrmXf = abs(unscaled);
+                    Xf(i, j) = unscaled;
+                }
+            }
 
             for(int j = 0; j < nrhs; j++){
                 //VECTOR_double t(rhs+j*m_l, m_l);

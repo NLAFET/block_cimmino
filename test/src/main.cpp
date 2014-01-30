@@ -163,7 +163,15 @@ int main(int argc, char* argv[])
             clog << "=============================" << endl;
             clog << "LAUNCHING MUMPS ON THE MATRIX" << endl;
             clog << "-----------------------------" << endl;
-            mu.job = 6;
+            mu.job = 4;
+            dmumps_c(&mu);
+
+            //mu.setIcntl(1, 6);
+            //mu.setIcntl(2, 6);
+            //mu.setIcntl(3, 6);
+            //mu.setIcntl(11, 1);
+
+            mu.job = 3;
             dmumps_c(&mu);
             clog << "MUMPS RUN FINISHED" << endl;
             clog << "=============================" << endl;
@@ -277,7 +285,7 @@ int main(int argc, char* argv[])
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);
 
-            cout << "Total time: " << MPI_Wtime() - t << endl;
+            clog << "Total time: " << MPI_Wtime() - t << endl;
         } catch(int e) {
             cout << world.rank() << " Error code : " << e << endl;
             //exit(0);
@@ -288,7 +296,6 @@ int main(int argc, char* argv[])
             f.open("/tmp/out_comp");
             for(int i = 0; i < mu.n; i++) {
                 f << mu.rhs[i] << "\t" << obj.sol(i,0) << "\n";
-                //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
                 if (abs(mu.rhs[i] - obj.sol(i,0)) > infTop) {
                     infTop = abs(mu.rhs[i] - obj.sol(i,0));
                 }
