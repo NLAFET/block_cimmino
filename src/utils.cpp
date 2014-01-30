@@ -111,7 +111,6 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
-    //int rn = x.dim(1);
     int rn = 1;
     int rm = x.dim(0);
 
@@ -140,7 +139,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
     double loc_nrmxfmx = 0;
 
     for(int p = 0; p < nb_local_parts; p++) {
-        for(int j = 0; j < x.dim(1); j++) {
+        for(int j = 0; j < block_size; j++) {
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
@@ -157,7 +156,6 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
         pos += partitions[p].dim(0);
     }
-
 
     loc_r  = b - loc_r;
 

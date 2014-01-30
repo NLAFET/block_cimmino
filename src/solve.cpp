@@ -158,36 +158,76 @@ abcd::solveABCD ( MV_ColMat_double &b )
     use_xk = false;
 
     // the final solution (distributed)
-    f = w + f;
+    Xk = w + f;
+    Xk = w;
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;
 
-    cout << f.dim(0) << " " << b.dim(0) << endl;
-    double rho = compute_rho(f, b, 0);
-    if(IRANK == 0) cout << "rho = " << rho << endl;
-    IBARRIER;
+    double rho = compute_rho(Xk, b, 0);
+    dinfo[0] = rho;
 
-    {
-
-        MV_ColMat_double xfmf(n, 1, 0);
-        MV_ColMat_double lf(n, 1, 0);
-
-        for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
-            if(it->first < n_o){
-                xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
-                lf(it->second , 0) = f(it->second, 0);
+    if(IRANK == 0) {
+        t = MPI_Wtime();
+        cout << "Centralizing solution" << endl;
+        MV_ColMat_double temp_sol(n_o, 1, 0);
+        map<int, vector<double> > xo;
+        map<int, vector<int> > io;
+        for(int k = 1; k < inter_comm.size(); k++){
+            inter_comm.recv(k, 71, xo[k]);
+            inter_comm.recv(k, 72, io[k]);
+        }
+        for(int k = 1; k < inter_comm.size(); k++){
+            for(int i = 0; i < io[k].size() && io[k][i] < n_o; i++){
+                int ci = io[k][i];
+                temp_sol(ci, 0) = xo[k][i] * dcol_(io[k][i]);
             }
         }
 
-        double nf = infNorm(xfmf);
-        double nff = infNorm(lf);
-        
-        double nfa, nfb;
-        mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+        for(int i = 0; i < glob_to_local_ind.size() && glob_to_local_ind[i] < n_o ; i++){
+            temp_sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
+        }
 
-        if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+        sol = temp_sol(MV_VecIndex(0, n_o-1), 0);
+
+        if(Xf.dim(0) != 0) {
+            MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
+            xf = Xf - sol;
+            double nrmxf =  infNorm(xf);
+            dinfo[1] = nrmxf/nrmXf;
+        }
+        cout << "Took " << MPI_Wtime() - t << endl;
+
+    } else {
+        vector<double> x;
+        x.reserve(n);
+        for(int i = 0; i < n; i++){
+            x.push_back(Xk(i, 0));
+        }
+        inter_comm.send(0, 71, x);
+        inter_comm.send(0, 72, glob_to_local_ind);
     }
+
+    //{
+
+        //MV_ColMat_double xfmf(n, 1, 0);
+        //MV_ColMat_double lf(n, 1, 0);
+
+        //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+
+            //if(it->first < n_o){
+                //xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
+                //lf(it->second , 0) = f(it->second, 0);
+            //}
+        //}
+
+        //double nf = infNorm(xfmf);
+        //double nff = infNorm(lf);
+        
+        //double nfa, nfb;
+        //mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+
+        //if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+    //}
 
     //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
     //double rho;

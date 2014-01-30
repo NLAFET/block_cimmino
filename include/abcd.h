@@ -271,6 +271,8 @@ public:
 
     int icntl[20];
     double dcntl[20];
+    int info[20];
+    double dinfo[20];
 
     int InitializeMatrix();
     int PreprocessMatrix();
