@@ -162,7 +162,7 @@ void abcd::bcg(MV_ColMat_double &b)
         t1_total += t1;
         t2_total += t2;
     }
-
+    
 
     if(inter_comm.rank() == 0) {
         clog << endl;
@@ -173,6 +173,10 @@ void abcd::bcg(MV_ColMat_double &b)
         clog << "Rho Computation time : " << t2_total << endl;
         clog << endl;
     }
+    if (icntl[10] != 0)
+        return;
+
+
     dinfo[0] = rho;
 
     if(IRANK == 0) {

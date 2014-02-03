@@ -31,6 +31,15 @@
     void
 abcd::solveABCD ( MV_ColMat_double &b )
 {
+    
+    {
+        MV_ColMat_double u(m, nrhs, 0);
+        u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
+        double lnrmBs = infNorm(u);
+        // Sync B norm :
+        mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
+        mpi::broadcast(inter_comm, nrmMtx, 0);
+    }
 
     double t, tto = MPI_Wtime();
     MV_ColMat_double w;
@@ -124,8 +133,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
+        cout << "HERE" << endl;
         use_xk = false;
-        //itmax = 2;
 
         if(!use_xk){
             int st = 0;
@@ -155,11 +164,12 @@ abcd::solveABCD ( MV_ColMat_double &b )
     if(IRANK == 0) 
         cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
 
-    use_xk = false;
-
     // the final solution (distributed)
+    // w = \Abar^+ b
+    // f = \Wbar^+ b
     Xk = w + f;
-    Xk = w;
+    //Xk = f;
+
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;
 

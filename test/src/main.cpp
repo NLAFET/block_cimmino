@@ -163,15 +163,7 @@ int main(int argc, char* argv[])
             clog << "=============================" << endl;
             clog << "LAUNCHING MUMPS ON THE MATRIX" << endl;
             clog << "-----------------------------" << endl;
-            mu.job = 4;
-            dmumps_c(&mu);
-
-            //mu.setIcntl(1, 6);
-            //mu.setIcntl(2, 6);
-            //mu.setIcntl(3, 6);
-            //mu.setIcntl(11, 1);
-
-            mu.job = 3;
+            mu.job = 6;
             dmumps_c(&mu);
             clog << "MUMPS RUN FINISHED" << endl;
             clog << "=============================" << endl;
@@ -306,6 +298,10 @@ int main(int argc, char* argv[])
             f.close();
             cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
                  << infTop/infBot << endl;
+            //for(int i =0; i < mu.n; i++){
+                //if(abs(mu.rhs[i] - obj.sol(i,0))/abs(mu.rhs[i]) > 10e-1)
+                    //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
+            //}
             mu.job = -2;
             dmumps_c(&mu);
         }
