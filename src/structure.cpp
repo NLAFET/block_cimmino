@@ -491,7 +491,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || dcntl[15] > 0) {
+                if(filter_c != 0 || dcntl[15] != 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 
@@ -544,10 +544,16 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         }
 
                         if(icntl[15] != 0){ 
-                            if(mu_ij_k >= dcntl[15]){
-                                selected_S_columns.push_back( nbcols + k - n_o);
+                            if (dcntl[15] < 0) {
+                                if ((nbcols + k - n_o) % abs((int)dcntl[15]) == 0)
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                else
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
                             } else {
-                                skipped_S_columns.push_back( nbcols + k - n_o);
+                                if (mu_ij_k >= dcntl[15])
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                else
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
                             }
                         }
 
