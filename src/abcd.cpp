@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include <sparse/coo.hpp>
 
 using namespace std;
 
@@ -84,8 +85,15 @@ int abcd::initializeMatrix()
         }
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
     }
+    cout << "before splib : " << MPI_Wtime() - t << endl;
+    t = MPI_Wtime();
     A = CompRow_Mat_double(t_A);
     cout << "splib : " << MPI_Wtime() - t << endl;
+
+    t = MPI_Wtime();
+    CooMatrix<>(m, n, nz, irn, jcn, val);
+    cout << "sparse_ : " << MPI_Wtime() - t << endl;
+    exit(0);
     
     n_o = n;
     m_o = m;

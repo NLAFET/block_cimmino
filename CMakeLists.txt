@@ -36,5 +36,4 @@ add_library(abcd STATIC ${source_files})
 
 add_subdirectory(test)
 
-
 add_subdirectory(src/utils)
