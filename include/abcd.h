@@ -274,10 +274,10 @@ public:
     int info[20];
     double dinfo[20];
 
-    int InitializeMatrix();
-    int PreprocessMatrix();
-    int FactorizeAugmentedSystems();
-    int SolveSystem();
+    int initializeMatrix();
+    int preprocessMatrix();
+    int factorizeAugmentedSystems();
+    int solveSystem();
 
     int bc(int);
     abcd();
