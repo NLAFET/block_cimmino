@@ -235,7 +235,7 @@ void abcd::analyseFrame()
                                     part.rowind_ptr(), col_ptr
                                     )
                 );
-        cout << part << endl;
+        cout << parts[k] << endl;
         } else 
         {
             loc_parts.push_back(part);
