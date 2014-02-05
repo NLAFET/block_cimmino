@@ -108,7 +108,6 @@ int abcd::preprocessMatrix()
     abcd::preprocess();
     abcd::analyseFrame();
     cout << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess << endl;
-    
     return 0;
 }
 

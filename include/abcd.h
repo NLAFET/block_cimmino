@@ -51,6 +51,9 @@
 #define TIC t = MPI_Wtime()
 #define TOC MPI_Wtime() - t
 
+#define inter_rank() inter_comm.rank()
+#define inter_barrier() inter_comm.barrier()
+#define inter_master() if(inter_comm.rank() == 0)
 
 using namespace std;
 using namespace boost;

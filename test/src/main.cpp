@@ -1,4 +1,5 @@
 #include "abcd.h"
+#include "mumps.h"
 
 #include <iostream>
 #include <string>
@@ -216,7 +217,7 @@ int main(int argc, char* argv[])
                 ifstream f;
                 f.open(parts.c_str());
 
-                for(unsigned k = 0; k < obj.nbparts; k++) {
+                for(unsigned k = 0; k < (unsigned int)obj.nbparts; k++) {
                     string l;
                     getline(f, l);
                     nrows.push_back(atoi(l.c_str()));
@@ -225,7 +226,7 @@ int main(int argc, char* argv[])
                 f.close();
             }
 
-            if(nrows.size() != obj.nbparts){
+            if(nrows.size() != (size_t)obj.nbparts){
                 clog << "Error parsing the file, nbparts is different from the partitioning description" << endl;
                 exit(-1);
             }
@@ -254,6 +255,7 @@ int main(int argc, char* argv[])
 
         obj.parallel_cg = pt.get<int>("dist_scheme", obj.nbparts < world.size() ? obj.nbparts : world.size());
 
+        bool error = false;
         try {
             
 
@@ -280,9 +282,11 @@ int main(int argc, char* argv[])
             clog << "Total time: " << MPI_Wtime() - t << endl;
         } catch(int e) {
             cout << world.rank() << " Error code : " << e << endl;
-            //exit(0);
+            mpi::broadcast(world, e, 0);
+            error = true;
         }
-        if(testMumps) {
+
+        if(testMumps && !error) {
             double infTop = 0, infBot = 0;
             ofstream f; 
             f.open("/tmp/out_comp");
