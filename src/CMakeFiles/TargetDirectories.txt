@@ -1,3 +1,0 @@
-/home/mzenadi/projects/abcd/src/CMakeFiles/abcd.dir
-/home/mzenadi/projects/abcd/src/test/CMakeFiles/basic_test.dir
-/home/mzenadi/projects/abcd/src/test/CMakeFiles/test_abcd.dir
