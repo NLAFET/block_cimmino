@@ -37,7 +37,7 @@ abcd::~abcd()
 ///
 /// \brief Creates the internal matrix from user's data
 ///
-int abcd::InitializeMatrix()
+int abcd::initializeMatrix()
 {
     mpi::communicator world;
     
@@ -74,7 +74,9 @@ int abcd::InitializeMatrix()
         }
         nz = t_nz;
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
-        delete[] t_irn, t_jcn, t_val;
+        delete[] t_irn;
+        delete[] t_jcn;
+        delete[] t_val;
     } else {
         for(int i=0; i<nz; i++){
             irn[i]--;
@@ -95,7 +97,7 @@ int abcd::InitializeMatrix()
 ///
 /// \brief Scales, partitions and analyses the structure of partitions
 ///
-int abcd::PreprocessMatrix()
+int abcd::preprocessMatrix()
 {
     mpi::communicator world;
     if(world.rank() != 0) return 0;
@@ -113,7 +115,7 @@ int abcd::PreprocessMatrix()
 ///
 /// \brief Creates augmented systems and factorizes them
 ///
-int abcd::FactorizeAugmentedSystems()
+int abcd::factorizeAugmentedSystems()
 {
     // Create the group of CG instances
     abcd::createInterComm();
@@ -162,7 +164,7 @@ int abcd::FactorizeAugmentedSystems()
 ///
 /// \brief Runs either BCG or ABCD solve depending on what we want
 ///
-int abcd::SolveSystem()
+int abcd::solveSystem()
 {
     mpi::communicator world;
     if(instance_type == 0) inter_comm.barrier();
@@ -216,19 +218,19 @@ int abcd::bc(int job)
     switch(job) {
 
     case -1:
-        InitializeMatrix();
+        initializeMatrix();
         break;
 
     case 1:
-        PreprocessMatrix();
+        preprocessMatrix();
         break;
 
     case 2:
-        FactorizeAugmentedSystems();
+        factorizeAugmentedSystems();
         break;
 
     case 3:
-        SolveSystem();
+        solveSystem();
         break;
 
     default:

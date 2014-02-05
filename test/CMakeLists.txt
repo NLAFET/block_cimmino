@@ -23,6 +23,11 @@ add_executable(
         src/main.cpp
 )
 
+add_executable(
+        basic_test
+        src/basic.cpp
+)
+
 #Configuration de l'édition de liens
 target_link_libraries(
     test_abcd
