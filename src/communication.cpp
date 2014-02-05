@@ -20,7 +20,7 @@ void abcd::distributeData()
         clog << "Groups : " ;
         for(int k = 0; k < parallel_cg; k++) {
             clog << "{";
-            for(int j = 0; j < p_sets[k].size() - 1; j++)
+            for(unsigned int j = 0; j < p_sets[k].size() - 1; j++)
                 clog << p_sets[k][j] << ", ";
             clog << p_sets[k][p_sets[k].size() -1 ];
             clog << "} ";
@@ -31,7 +31,7 @@ void abcd::distributeData()
         for(int i = 1; i < parallel_cg ; i++) {
             inter_comm.send(i, 0, p_sets[i]);
 
-            for(int k = 0; k < p_sets[i].size(); k++){
+            for(unsigned int k = 0; k < p_sets[i].size(); k++){
                 int j = p_sets[i][k];
 
                 std::vector<int> sh;
@@ -60,7 +60,7 @@ void abcd::distributeData()
             std::vector<std::vector<int> > cis;
             std::vector<int> stcs;
 
-            for(int i = 0; i < p_sets[0].size(); i++){
+            for(unsigned int i = 0; i < p_sets[0].size(); i++){
                 int j = p_sets[0][i];
                 partitions.push_back(parts[j]);
                 m += parts[j].dim(0);
@@ -79,7 +79,7 @@ void abcd::distributeData()
                 if(icntl[10] != 0) stC.push_back(stcs[i]);
             }
         } else {
-            for(int i = 0; i < parts.size(); i++){
+            for(unsigned int i = 0; i < parts.size(); i++){
                 partitions.push_back(parts[i]);
             }
             parts.clear();
@@ -98,7 +98,7 @@ void abcd::distributeData()
         std::vector<int> se;
         inter_comm.recv(0, 0, se);
         int sm = 0, snz = 0;
-        for(int i = 0; i < se.size(); i++) {
+        for(unsigned int i = 0; i < se.size(); i++) {
 
 
             // THe partition data
@@ -136,7 +136,9 @@ void abcd::distributeData()
 
             sm += l_m;
             snz += l_nz;
-            delete [] l_jcn, l_irst, l_v;
+            delete[] l_jcn;
+            delete[] l_irst; 
+            delete[] l_v;
         }
         nb_local_parts = partitions.size();
 
@@ -157,7 +159,7 @@ void abcd::createInterconnections()
         for(int k = 0; k < nb_local_parts; k++) {
             std::map<int, int> gt;
             std::map<int, int> ptg;
-            for(int j = 0; j < column_index[k].size(); j++) {
+            for(unsigned int j = 0; j < column_index[k].size(); j++) {
                 gt[column_index[k][j]] = j;
                 ptg[j] = column_index[k][j];
             }
@@ -171,23 +173,24 @@ void abcd::createInterconnections()
 
     // for ABCD, we need a global to local indices so that we can
     // identify which column in C is linked to 
-    for(int j = 0; j < merge_index.size(); j++) {
-        glob_to_local[merge_index[j]] = j;
-        glob_to_local_ind.push_back(merge_index[j]);
+    if (icntl[10] != 0) {
+        for(unsigned int j = 0; j < merge_index.size(); j++) {
+            glob_to_local[merge_index[j]] = j;
+            glob_to_local_ind.push_back(merge_index[j]);
+        }
+        // defines the starting point of C in the local columns
+        st_c_part_it = glob_to_local_ind.end();
+
+        while(*(st_c_part_it - 1) >= n_o) st_c_part_it--;
+
+        st_c_part = st_c_part_it - glob_to_local_ind.begin();
     }
-    // defines the starting point of C in the local columns
-    st_c_part_it = glob_to_local_ind.end();
-
-
-    while(*(st_c_part_it - 1) >= n_o) st_c_part_it--;
-
-    st_c_part = st_c_part_it - glob_to_local_ind.begin();
 
     // for each partition find a local column index for the previous merge
     local_column_index = std::vector<std::vector<int> >(nb_local_parts);
 
     for(int p = 0; p < nb_local_parts; p++) {
-        int i = 0, j = 0;
+        unsigned int i = 0, j = 0;
         while (i < column_index[p].size() && j < merge_index.size()) {
 
             if(column_index[p][i] == merge_index[j]) {
