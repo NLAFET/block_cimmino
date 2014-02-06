@@ -1,5 +1,5 @@
 #include <abcd.h>
-#include <sparse/coo.hpp>
+#include <yasl/coo.hpp>
 
 using namespace std;
 
@@ -50,7 +50,12 @@ int abcd::initializeMatrix()
         throw - 1;
     }
 
+
     double t = MPI_Wtime();
+    CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
+    cout << "sparse_ : " << MPI_Wtime() - t << endl;
+
+    t = MPI_Wtime();
     Coord_Mat_double t_A;
 
     if(sym) {
@@ -90,9 +95,6 @@ int abcd::initializeMatrix()
     A = CompRow_Mat_double(t_A);
     cout << "splib : " << MPI_Wtime() - t << endl;
 
-    t = MPI_Wtime();
-    CooMatrix<>(m, n, nz, irn, jcn, val);
-    cout << "sparse_ : " << MPI_Wtime() - t << endl;
     exit(0);
     
     n_o = n;
