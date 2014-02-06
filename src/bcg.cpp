@@ -1,5 +1,5 @@
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 
 void abcd::bcg(MV_ColMat_double &b)
 {
@@ -323,15 +323,6 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
                     ap.setCol(ap_k, j);
                 }
             }
-            //r.block(k, k + 1, 1, s - (k + 1)) = abcd::ddot(p_k, ap.block(0, k + 1, n, s - (k + 1)));
-
-            //Eigen::MatrixXd tcol = p.col(k);
-            //p.block(0, k + 1, n, s - (k + 1))   -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
-
-            //if(use_a) {
-                //tcol = ap.col(k);
-                //ap.block(0, k + 1, n, s - (k + 1))  -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
-            //}
         }
     }
 }

@@ -17,7 +17,7 @@
  */
 
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 
 //extern "C"
 //{

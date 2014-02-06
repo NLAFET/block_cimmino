@@ -23,6 +23,7 @@ include_directories(
   ${SPARSELIB_DIR}/include
   ${MV_DIR}/include
   ${MUMPS_INCLUDE_DIR}
+  ${YASL}
   )
 
 file(

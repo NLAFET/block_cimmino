@@ -1,5 +1,5 @@
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
 

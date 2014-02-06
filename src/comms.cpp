@@ -492,9 +492,6 @@ void abcd::distributeRhs()
 
         inter_comm.recv(0, 17, nrhs);
 
-        //b = Eigen::MatrixXd(m, nrhs);
-        //b.setZero();
-
         int size_rhs = m*block_size;
         rhs = new double[size_rhs];
         for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
