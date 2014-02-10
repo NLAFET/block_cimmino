@@ -56,11 +56,6 @@ if(test MATCHES ON)
       ${Boost_LIBRARIES}
       ${LIBS}
   )
-  add_executable(runSparseMatrixTests src/test_sparse_matrix.cpp)
-  target_link_libraries(runSparseMatrixTests
-      ${GTEST_BOTH_LIBRARIES}
-      ${GMOCK_BOTH_LIBRARIES}
-  )
 
   enable_testing()
 

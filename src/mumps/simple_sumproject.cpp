@@ -1,5 +1,6 @@
 #include<abcd.h>
 #include<mumps.h>
+using namespace  boost::lambda;
 
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
@@ -133,18 +134,25 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     int x_pos = 0;
 
     for(int k = 0; k < nb_local_parts; k++) {
-        int start_c = glob_to_part[k][stC[k]];
-        x_pos += glob_to_part[k][stC[k]];
+        int start_c;
 
-        for(int i = start_c; i < column_index[k].size(); i++){
+        // find the begining of the C part, if there is no C, set it to the end of the current part
+        if (glob_to_part[k].find(stC[k]) == glob_to_part[k].end()) {
+            start_c = column_index[k].size();
+        }
+        else {
+            start_c = glob_to_part[k][stC[k]];
+        }
 
+        // move the pointer to the end of the current part (excluding C part)
+        x_pos += start_c;
+
+        // the actual sumproject, only on the C part, as it's the needed sum
+        for(size_t i = start_c; i < column_index[k].size(); i++){
             int ci = column_index[k][i] - n_o;
 
-            for(int j = 0; j < s; j++) {
-                //Delta(ci, j) = Delta(ci, j) - mumps_rhs(x_pos, j) ; // Delta = - \sum (sol)
-
+            for(int j = 0; j < s; j++)
                 dpt[ci + j * dlda] -= mumps.rhs[x_pos + j * mumps.n];
-            }
 
             x_pos++;
         }
@@ -153,11 +161,12 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             if(loc_cols[k][j]){
                 int c = mycols[j];
 
-                //Delta(c, j) = 0.5 + Delta(c,j);
+                // as we have two partitions, add a half on each to obtain identity
                 dpt[c + j * dlda] += 0.5;
             }
         }
 
+        // move to the next partition
         x_pos += partitions[k].dim(0);
     }
 

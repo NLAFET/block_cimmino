@@ -168,7 +168,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
     // w = \Abar^+ b
     // f = \Wbar^+ b
     Xk = w + f;
-    //Xk = f;
 
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;

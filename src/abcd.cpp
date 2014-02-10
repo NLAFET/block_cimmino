@@ -1,5 +1,6 @@
 #include <abcd.h>
 #include <yasl/coo.hpp>
+#include <yasl/csr.hpp>
 
 using namespace std;
 
@@ -52,8 +53,6 @@ int abcd::initializeMatrix()
 
 
     double t = MPI_Wtime();
-    CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
-    cout << "sparse_ : " << MPI_Wtime() - t << endl;
 
     t = MPI_Wtime();
     Coord_Mat_double t_A;
@@ -79,23 +78,43 @@ int abcd::initializeMatrix()
             }
         }
         nz = t_nz;
+        t = MPI_Wtime();
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+
+        cout << "before splib : " << MPI_Wtime() - t << endl;
+        t = MPI_Wtime();
+        CooMatrix<> T(m, n, nz, t_irn, t_jcn, t_val);
+        cout << "yasl : " << MPI_Wtime() - t << endl;
+
+        t = MPI_Wtime();
+        CsrMatrix<> M = T.toCSR();
+        cout << "convert yasl : " << MPI_Wtime() - t << endl;
         delete[] t_irn;
         delete[] t_jcn;
         delete[] t_val;
     } else {
+        //t = MPI_Wtime();
+        //CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
+        //cout << "yasl : " << MPI_Wtime() - t << endl;
+
+        //t = MPI_Wtime();
+        //CsrMatrix<> M(T);
+        //cout << "convert yasl : " << MPI_Wtime() - t << endl;
+
+        t = MPI_Wtime();
         for(int i=0; i<nz; i++){
             irn[i]--;
             jcn[i]--;
         }
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+        cout << "before splib : " << MPI_Wtime() - t << endl;
     }
-    cout << "before splib : " << MPI_Wtime() - t << endl;
     t = MPI_Wtime();
     A = CompRow_Mat_double(t_A);
-    cout << "splib : " << MPI_Wtime() - t << endl;
+    cout << "convert splib : " << MPI_Wtime() - t << endl;
 
-    exit(0);
+
+    //exit(0);
     
     n_o = n;
     m_o = m;
