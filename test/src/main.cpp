@@ -303,8 +303,7 @@ int main(int argc, char* argv[])
             cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
                  << infTop/infBot << endl;
             //for(int i =0; i < mu.n; i++){
-                //if(abs(mu.rhs[i] - obj.sol(i,0))/abs(mu.rhs[i]) > 10e-1)
-                    //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
+                //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
             //}
             mu.job = -2;
             dmumps_c(&mu);

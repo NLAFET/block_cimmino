@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include "mat_utils.h"
 #include <iostream>
 #include <fstream>
 #include <patoh.h>
@@ -227,21 +228,12 @@ void abcd::analyseFrame()
         // if no augmentation, then create the parts
         if(icntl[10] == 0)
         {
-            parts[k] =
-                CompRow_Mat_double(
-                    CompCol_Mat_double(part.dim(0), ci.size(),
-                                    part.NumNonzeros(),
-                                    part.val_ptr(),
-                                    part.rowind_ptr(), col_ptr
-                                    )
-                );
-        cout << parts[k] << endl;
+            parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         } else 
         {
             loc_parts.push_back(part);
         }
     }
-    exit(0);
     cout << ", done in " << MPI_Wtime() - t<< endl;
     //
     t= MPI_Wtime();
@@ -270,7 +262,7 @@ void abcd::analyseFrame()
         for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
 
             CompCol_Mat_double part = loc_parts[k];
-            int *col_vect_ptr = part.colptr_ptr();
+            //int *col_vect_ptr = part.colptr_ptr();
 
             // Build the column index of part
             std::vector<int> ci = getColumnIndex(
@@ -280,15 +272,16 @@ void abcd::analyseFrame()
             column_index.push_back(ci);
             ci_sizes.push_back(ci.size());
 
-            parts[k] =
-                CompRow_Mat_double(
-                    CompCol_Mat_double(part.dim(0), ci.size(),
-                                       part.NumNonzeros(),
-                                       part.val_ptr(),
-                                       part.rowind_ptr(),
-                                       col_vect_ptr
-                                      )
-                );
+            //parts[k] =
+                //CompRow_Mat_double(
+                    //CompCol_Mat_double(part.dim(0), ci.size(),
+                                       //part.NumNonzeros(),
+                                       //part.val_ptr(),
+                                       //part.rowind_ptr(),
+                                       //col_vect_ptr
+                                      //)
+                //);
+            parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
         if (icntl[10] != 0)
             cout << "    time to part /w augmentation : " << MPI_Wtime() - t << endl;
@@ -310,6 +303,7 @@ void abcd::analyseFrame()
 abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
     double filter_c = dcntl[10];
+    stC = vector<int>(M.size(), -1);
     /*
      * Which augmentation to use:
      */
@@ -608,7 +602,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         for(size_t k = 0; k < M.size(); k++){
             if(stCols[k].size() == 0) continue;
             // now augment each partition!
-            stC.push_back(stCols[k][0]);
+            stC[k] = stCols[k][0];
             M[k] = concat_columns(M[k], C[k], stCols[k]);
             M[k] = resize_columns(M[k], nbcols);
         }

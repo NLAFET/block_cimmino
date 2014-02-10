@@ -27,6 +27,7 @@
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/progress.hpp>
+#include <boost/lambda/lambda.hpp>
 //#include <boost/range/adaptors.hpp>
 //#include <boost/range/algorithm.hpp>
 

@@ -173,11 +173,11 @@ void abcd::createInterconnections()
 
     // for ABCD, we need a global to local indices so that we can
     // identify which column in C is linked to 
+    for(unsigned int j = 0; j < merge_index.size(); j++) {
+        glob_to_local[merge_index[j]] = j;
+        glob_to_local_ind.push_back(merge_index[j]);
+    }
     if (icntl[10] != 0) {
-        for(unsigned int j = 0; j < merge_index.size(); j++) {
-            glob_to_local[merge_index[j]] = j;
-            glob_to_local_ind.push_back(merge_index[j]);
-        }
         // defines the starting point of C in the local columns
         st_c_part_it = glob_to_local_ind.end();
 
