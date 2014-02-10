@@ -137,11 +137,10 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         int start_c;
 
         // find the begining of the C part, if there is no C, set it to the end of the current part
-        if (glob_to_part[k].find(stC[k]) == glob_to_part[k].end()) {
-            start_c = column_index[k].size();
-        }
-        else {
+        if (stC[k] != -1) {
             start_c = glob_to_part[k][stC[k]];
+        } else {
+            start_c = column_index[k].size();
         }
 
         // move the pointer to the end of the current part (excluding C part)
