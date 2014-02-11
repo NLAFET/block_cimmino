@@ -10,7 +10,8 @@ using namespace boost::lambda;
 
 void abcd::partitionMatrix()
 {
-    unsigned nbrows_per_part;
+    unsigned handled_rows = 0;
+    unsigned ceil_per_part, floor_per_part;
     unsigned row_sum = 0;
 
     if (nbparts == 0){
@@ -34,9 +35,6 @@ void abcd::partitionMatrix()
         partitioning_type = 2;
     }
 
-    nbrows_per_part = ceil(float(m_o)/float(nbparts));
-
-
     switch(partitioning_type){
         
         /*-----------------------------------------------------------------------------
@@ -55,12 +53,26 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with only nbparts as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
         case 2:
+            ceil_per_part = ceil(float(m_o)/float(nbparts));
+            floor_per_part = floor(float(m_o)/float(nbparts));
+
             strow = VECTOR_int(nbparts);
-            nbrows = VECTOR_int(nbparts, nbrows_per_part);
+            nbrows = VECTOR_int(nbparts);
 
-            nbrows(nbparts - 1) = m_o - (nbparts - 1) * nbrows_per_part;
+            // alternate the number of rows, they will not be that equal
+            // but at least we will have simmilar number of row
+            for(unsigned k = 0; k < (unsigned) nbparts; k+=2) {
+                nbrows(k) = ceil_per_part;
+                handled_rows += ceil_per_part;
+            }
+            for(unsigned k = 1; k < (unsigned) nbparts; k+=2) {
+                nbrows(k) = floor_per_part;
+                handled_rows += floor_per_part;
+            }
 
-            for(unsigned int k = 0; k < (unsigned int)nbparts; k++) {
+            nbrows(nbparts - 1) += m_o - handled_rows;
+
+            for(unsigned k = 0; k < (unsigned)nbparts; k++) {
                 strow(k) = row_sum;
                 row_sum += nbrows(k);
             }
