@@ -23,6 +23,7 @@ include_directories(
   ${SPARSELIB_DIR}/include
   ${MV_DIR}/include
   ${MUMPS_INCLUDE_DIR}
+  ${YASL}
   )
 
 file(
@@ -35,6 +36,5 @@ file(
 add_library(abcd STATIC ${source_files})
 
 add_subdirectory(test)
-
 
 add_subdirectory(src/utils)

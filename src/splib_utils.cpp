@@ -17,7 +17,7 @@
  */
 
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 
 //extern "C"
 //{
@@ -122,11 +122,14 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
     int * sub_col_vect = M.colind_ptr() + st_index;
     double * sub_val_vect = M.val_ptr() + st_index;
 
-    return CompRow_Mat_double( nb_rows, M.dim(1), ed_index - st_index + 1,
+    CompRow_Mat_double nM( nb_rows, M.dim(1), ed_index - st_index + 1,
             sub_val_vect,
             sub_row_vect,
             sub_col_vect
             );
+
+    //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
+    return nM;
 }
 
 CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {

@@ -1,5 +1,5 @@
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 
 void abcd::bcg(MV_ColMat_double &b)
 {
@@ -64,6 +64,7 @@ void abcd::bcg(MV_ColMat_double &b)
         MV_ColMat_double sp = sumProject(1e0, b, 0, Xk);
         r.setCols(sp, 0, s);
     }
+
     t1_total = MPI_Wtime() - t1_total;
     // orthogonalize
     // r = r*gamma^-1
@@ -87,6 +88,7 @@ void abcd::bcg(MV_ColMat_double &b)
     t2_total = MPI_Wtime();
     rho = compute_rho(Xk, u, thresh);
     t2_total = MPI_Wtime() - t2_total;
+    cout << "H" << endl;
     if(inter_comm.rank() == 0 && verbose) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
@@ -101,6 +103,8 @@ void abcd::bcg(MV_ColMat_double &b)
 
         qp = sumProject(0e0, b, 1e0, p);
 
+
+
         t1 = MPI_Wtime() - t;
 
         if(gqr(p, qp, betak, s, true) != 0){
@@ -110,7 +114,6 @@ void abcd::bcg(MV_ColMat_double &b)
         lambdak = e1;
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
-
 
         lambdak = gemmColMat(lambdak, prod_gamma);
 
@@ -160,23 +163,27 @@ void abcd::bcg(MV_ColMat_double &b)
         t1_total += t1;
         t2_total += t2;
     }
-
+    
 
     if(inter_comm.rank() == 0) {
-        cout << endl;
-        cout << "BCG Rho: " << rho << endl;
-        cout << "BCG Iterations : " << it << endl;
-        cout << "BCG TIME : " << MPI_Wtime() - ti << endl;
-        cout << "SumProject time : " << t1_total << endl;
-        cout << "Rho Computation time : " << t2_total << endl;
-        cout << endl;
+        clog << endl;
+        clog << "BCG Rho: " << rho << endl;
+        clog << "BCG Iterations : " << it << endl;
+        clog << "BCG TIME : " << MPI_Wtime() - ti << endl;
+        clog << "SumProject time : " << t1_total << endl;
+        clog << "Rho Computation time : " << t2_total << endl;
+        clog << endl;
     }
-    IBARRIER;
+    if (icntl[10] != 0)
+        return;
+
+
+    dinfo[0] = rho;
 
     if(IRANK == 0) {
         t = MPI_Wtime();
-        cout << "Centralizing solution" << endl;
-        MV_ColMat_double sol = MV_ColMat_double(n_o, 1, 0);
+        clog << "Centralizing solution" << endl;
+        sol = MV_ColMat_double(n_o, 1, 0);
         map<int, vector<double> > xo;
         map<int, vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
@@ -186,19 +193,20 @@ void abcd::bcg(MV_ColMat_double &b)
         for(int k = 1; k < inter_comm.size(); k++){
             for(int i = 0; i < io[k].size(); i++){
                 int ci = io[k][i];
-                sol(ci, 0) = xo[k][i];
+                sol(ci, 0) = xo[k][i] * dcol_(ci);
             }
         }
-        for(int i = 0; i < n; i++){
-            sol(glob_to_local_ind[i], 0) = Xk(i, 0);
+        for(int i = 0; i < glob_to_local_ind.size(); i++){
+            sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
         }
+
         if(Xf.dim(0) != 0) {
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
             double nrmxf =  infNorm(xf);
-            IFMASTER cout << nrmxf << " " << nrmXf << " fwd : " <<  nrmxf/nrmXf << endl;
+            dinfo[1] =  nrmxf/nrmXf;
         }
-        cout << "took " << MPI_Wtime() - t << endl;
+        clog << "took " << MPI_Wtime() - t << endl;
 
     } else {
         vector<double> x;
@@ -316,15 +324,6 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
                     ap.setCol(ap_k, j);
                 }
             }
-            //r.block(k, k + 1, 1, s - (k + 1)) = abcd::ddot(p_k, ap.block(0, k + 1, n, s - (k + 1)));
-
-            //Eigen::MatrixXd tcol = p.col(k);
-            //p.block(0, k + 1, n, s - (k + 1))   -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
-
-            //if(use_a) {
-                //tcol = ap.col(k);
-                //ap.block(0, k + 1, n, s - (k + 1))  -=  tcol * r.block(k, k + 1, 1, s - (k + 1));
-            //}
         }
     }
 }

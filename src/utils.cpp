@@ -1,14 +1,13 @@
 #include <abcd.h>
-#include <Eigen/src/misc/blas.h>
+#include "blas.h"
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
+#include "mat_utils.h"
 
 using namespace std;
 using namespace boost::lambda;
 
 void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weights, int nb_parts){
-    int total_size = std::accumulate(weights.begin(), weights.end(), 0);
-    int mean = floor((double)total_size / nb_parts);
     vector<int> sets(nb_parts);
     map<int, vector<int> > pts;
 
@@ -111,7 +110,6 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
     mpi::communicator world;
-    //int rn = x.dim(1);
     int rn = 1;
     int rm = x.dim(0);
 
@@ -137,10 +135,9 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
     pos = 0;
 
-    double loc_nrmxfmx = 0;
 
-    for(int p = 0; p < partitions.size(); p++) {
-        for(int j = 0; j < x.dim(1); j++) {
+    for(int p = 0; p < nb_local_parts; p++) {
+        for(int j = 0; j < rn; j++) {
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
@@ -150,14 +147,17 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
                 x_pos++;
             }
-            VECTOR_double vj = loc_r(j);
-            vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
-            loc_r.setCol(vj, j);
+            VECTOR_double vj =  partitions[p] * compressed_x;
+            int c = 0;
+            for(int i = pos; i < pos + partitions[p].dim(0); i++)
+                loc_r(i, j) = vj[c++];
+            //VECTOR_double vj = loc_r(j);
+            //vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
+            //loc_r.setCol(vj, j);
         }
 
         pos += partitions[p].dim(0);
     }
-
 
     loc_r  = b - loc_r;
 
@@ -232,3 +232,4 @@ vector<int> sort_indexes(const vector<T> &v) {
     //transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
     return idx;
 }
+

@@ -1,4 +1,5 @@
 #include "abcd.h"
+#include "mumps.h"
 
 #include <iostream>
 #include <string>
@@ -122,6 +123,56 @@ int main(int argc, char* argv[])
             //
             fclose(rhs_f);
         }
+
+        bool testMumps = pt.get<bool>("testMumps", false);
+        MUMPS mu;
+        if(testMumps && obj.rhs != NULL){
+            mpi::broadcast(world, testMumps, 0);
+
+            if(obj.sym) {
+                mu.sym = 2;
+            } else {
+                mu.sym = 0;
+            }
+            mu.par = 1;
+            mu.job = -1;
+            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+
+            dmumps_c(&mu);
+
+            mu.setIcntl(1, -1);
+            mu.setIcntl(2, -1);
+            mu.setIcntl(3, -1);
+
+            mu.setIcntl(6, 5);
+            mu.setIcntl(7, 5);
+            mu.setIcntl(8, -2);
+            mu.setIcntl(12, 2);
+            mu.setIcntl(14, 90);
+
+            mu.n = obj.n;
+            mu.nz = obj.nz;
+            mu.irn = obj.irn;
+            mu.jcn = obj.jcn;
+            mu.a = obj.val;
+
+            mu.nrhs = 1;
+            mu.rhs = new double[mu.n];
+            for(int i = 0; i < mu.n; i++)
+                mu.rhs[i] = obj.rhs[i];
+
+            clog << "=============================" << endl;
+            clog << "LAUNCHING MUMPS ON THE MATRIX" << endl;
+            clog << "-----------------------------" << endl;
+            mu.job = 6;
+            dmumps_c(&mu);
+            clog << "MUMPS RUN FINISHED" << endl;
+            clog << "=============================" << endl;
+        } else {
+            testMumps = false;
+            mpi::broadcast(world, testMumps, 0);
+        }
+
         //
         /*  DONE READING THE MATRIX AND THE RHS */
 
@@ -166,7 +217,7 @@ int main(int argc, char* argv[])
                 ifstream f;
                 f.open(parts.c_str());
 
-                for(unsigned k = 0; k < obj.nbparts; k++) {
+                for(unsigned k = 0; k < (unsigned int)obj.nbparts; k++) {
                     string l;
                     getline(f, l);
                     nrows.push_back(atoi(l.c_str()));
@@ -175,7 +226,7 @@ int main(int argc, char* argv[])
                 f.close();
             }
 
-            if(nrows.size() != obj.nbparts){
+            if(nrows.size() != (size_t)obj.nbparts){
                 clog << "Error parsing the file, nbparts is different from the partitioning description" << endl;
                 exit(-1);
             }
@@ -204,6 +255,7 @@ int main(int argc, char* argv[])
 
         obj.parallel_cg = pt.get<int>("dist_scheme", obj.nbparts < world.size() ? obj.nbparts : world.size());
 
+        bool error = false;
         try {
             
 
@@ -227,12 +279,49 @@ int main(int argc, char* argv[])
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);
 
-            cout << "Total time: " << MPI_Wtime() - t << endl;
+            clog << "Total time: " << MPI_Wtime() - t << endl;
         } catch(int e) {
             cout << world.rank() << " Error code : " << e << endl;
-            //exit(0);
+            mpi::broadcast(world, e, 0);
+            error = true;
         }
+
+        if(testMumps && !error) {
+            double infTop = 0, infBot = 0;
+            ofstream f; 
+            f.open("/tmp/out_comp");
+            for(int i = 0; i < mu.n; i++) {
+                f << mu.rhs[i] << "\t" << obj.sol(i,0) << "\n";
+                if (abs(mu.rhs[i] - obj.sol(i,0)) > infTop) {
+                    infTop = abs(mu.rhs[i] - obj.sol(i,0));
+                }
+                if (abs(mu.rhs[i]) > infBot) {
+                    infBot = abs(mu.rhs[i]);
+                }
+            }
+            f.close();
+            cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
+                 << infTop/infBot << endl;
+            //for(int i =0; i < mu.n; i++){
+                //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
+            //}
+            mu.job = -2;
+            dmumps_c(&mu);
+        }
+
     } else {
+        bool testMumps;
+        mpi::broadcast(world, testMumps, 0);
+        MUMPS mu;
+        if(testMumps) {
+            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+            mu.par = 1;
+            mu.job = -1;
+            dmumps_c(&mu);
+
+            mu.job = 6;
+            dmumps_c(&mu);
+        }
         try {
             obj.bc(-1);
             obj.bc(1);
@@ -242,6 +331,11 @@ int main(int argc, char* argv[])
             cout << world.rank() << " Error code : " << e << endl;
             if(world.rank() == 6) 
             exit(0);
+        }
+
+        if(testMumps) {
+            mu.job = -2;
+            dmumps_c(&mu);
         }
     }
     world.barrier();
