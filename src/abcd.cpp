@@ -1,3 +1,14 @@
+/*!
+ * \mainpage The Augmented Block Cimmino Distributed Solver (ABCD Solver)
+ * \section Description
+ * The ABCD Solver is a hybrid (iterative/direct) sparse linear solver.
+ * It allows to have different levels of iterative/direct usage, you can
+ * make it fully iterative by using a stabilized block-CG combined with
+ * a direct solution to compute the matrix-vector products, or you can
+ * use a pseudo-direct solution scheme that will provide the solution in
+ * a single step.
+ */
+
 #include <abcd.h>
 #include <yasl/coo.hpp>
 #include <yasl/csr.hpp>
