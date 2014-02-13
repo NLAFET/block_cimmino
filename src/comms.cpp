@@ -43,11 +43,16 @@ void abcd::distributePartitions()
         abcd::partitioning(p_sets, m_parts, parallel_cg);
         //exit(0);
 
-        clog << "Groups : [" << p_sets[0].size();
-        for(int k = 1; k < parallel_cg; k++) {
-            clog  << ", "<< p_sets[k].size();
+        clog << "Groups : " ;
+        for(int k = 0; k < parallel_cg; k++) {
+            clog << "{";
+            for(int j = 0; j < p_sets[k].size() - 1; j++)
+                clog << p_sets[k][j] << ", ";
+            clog << p_sets[k][p_sets[k].size() -1 ];
+            clog << "}, ";
+            //clog  << ", "<< p_sets[k].size();
         }
-        clog << "]" << endl;
+        clog << endl;
 
         // first start by the master :
         //for(int i = 0; i <= groups[0] ; i++)
@@ -133,8 +138,9 @@ void abcd::distributePartitions()
             }
             parts.clear();
             column_index.clear();
+            nb_local_parts = partitions.size();
             if(icntl[10] != 0) stC.clear();
-            for(int i = 0; i < partitions.size(); i++){
+            for(int i = 0; i < nb_local_parts; i++){
                 //partitions[i] = tp[i];
                 column_index.push_back(cis[i]);
                 if(icntl[10] != 0) stC.push_back(stcs[i]);
@@ -144,13 +150,14 @@ void abcd::distributePartitions()
                 partitions.push_back(parts[i]);
             }
             parts.clear();
+            nb_local_parts = partitions.size();
         }
 
         m_l = m;
         n_l = n;
         m = 0;
         nz = 0;
-        for(int i = 0; i < partitions.size(); i++){
+        for(int i = 0; i < nb_local_parts; i++){
             m += partitions[i].dim(0);
             nz += partitions[i].NumNonzeros();
         }
@@ -201,7 +208,9 @@ void abcd::distributePartitions()
 
             sm += l_m;
             snz += l_nz;
+            delete [] l_jcn, l_irst, l_v;
         }
+        nb_local_parts = partitions.size();
 
         // Find the interconnections between the different CG_masters
         std::vector<std::vector<int> > group_column_index;
@@ -228,7 +237,7 @@ void abcd::distributePartitions()
 
     // Create a merge of the column indices
     std::vector<int> merge_index;
-    for(int j = 0; j < partitions.size(); j++) {
+    for(int j = 0; j < nb_local_parts; j++) {
         std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
     }
     std::sort(merge_index.begin(), merge_index.end());
@@ -249,7 +258,7 @@ void abcd::distributePartitions()
         glob_to_local_c[*iti - n_o] = iti - glob_to_local_ind.begin();
     }
 
-    for(int k = 0; k < partitions.size(); k++) {
+    for(int k = 0; k < nb_local_parts; k++) {
         std::map<int, int> gt;
         std::map<int, int> ptg;
         for(int j = 0; j < column_index[k].size(); j++) {
@@ -261,11 +270,11 @@ void abcd::distributePartitions()
     }
 
     // for each partition find a local column index for the previous merge
-    std::vector<int> indices(partitions.size(), 0);
+    std::vector<int> indices(nb_local_parts, 0);
 
-    local_column_index = std::vector<std::vector<int> >(partitions.size());
+    local_column_index = std::vector<std::vector<int> >(nb_local_parts);
 
-    for(int i = 0; i < partitions.size(); i++) {
+    for(int i = 0; i < nb_local_parts; i++) {
         for(int j = 0; j < merge_index.size(); j++) {
             if(indices[i] >= column_index[i].size()) continue;
             if(column_index[i][indices[i]] == merge_index[j] &&
@@ -278,8 +287,8 @@ void abcd::distributePartitions()
     }
 
     // test!
-    fast_local_column_index = new int *[partitions.size()];
-    for(int i = 0; i < partitions.size(); i++) {
+    fast_local_column_index = new int *[nb_local_parts];
+    for(int i = 0; i < nb_local_parts; i++) {
         indices[i] = 0;
         int p = 0;
         fast_local_column_index[i] = new int[local_column_index[i].size()];
@@ -296,8 +305,6 @@ void abcd::distributePartitions()
     }
 
 
-    n = merge_index.size();
-
     // Create a Communication map for ddot
     comm_map.assign(n, 1);
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
@@ -309,6 +316,7 @@ void abcd::distributePartitions()
             }
         }
     }
+    cout << comm_map.size() << endl;
 
     std::map<int, std::vector<int>::iterator > debut;
     std::map<int, int > their_job;
@@ -334,32 +342,7 @@ void abcd::distributePartitions()
         }
 
     }
-    /*
-     * ||A||_F
-    nrmA = 0;
-    for(int i=0; i<partitions.size(); i++)
-        nrmA += squaredNorm(partitions[i]);
 
-    mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, std::plus<double>());
-    nrmA = sqrt(nrmA);
-    nrmMtx = sqrt(nrmMtx);
-    */
-
-    /* ||A||_inf */
-    //nrmA = 0;
-    //for(int i=0; i<partitions.size(); i++){
-        //for(int j=0; j<partitions[i].NumNonzeros(); j++){
-            //double cur = abs(partitions[i].val(j));
-            //if(cur > nrmA){
-                //nrmA = cur;
-            //}
-        //}
-    //}
-
-    //mpi::all_reduce(inter_comm, &nrmA, 1,  &nrmMtx, mpi::maximum<double>());
-    //nrmA = sqrt(nrmA);
-    //nrmMtx = sqrt(nrmMtx);
-    //
     mpi::broadcast(inter_comm, selected_S_columns, 0);
     mpi::broadcast(inter_comm, skipped_S_columns, 0);
 
@@ -380,7 +363,7 @@ void abcd::distributeRhs()
         // Build my part of the RHS
         //int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
         int r = 0;
-        for(int i = 0; i < partitions.size(); i++){
+        for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
 
@@ -394,13 +377,7 @@ void abcd::distributeRhs()
             Xf = MV_ColMat_double(A.dim(1), nrhs);
             for(int j = 0; j < nrhs; j++){
                 for(int i = 0; i < A.dim(1); i++){
-                    //rhs[i + j * A.dim(1)] = 1 / dcol_[i];
-                    //rhs[i + j * A.dim(1)] = 1;
-                    //rhs[i + j * A.dim(1)] = j+1;
-                    //rhs[i + j * n_l] = ((rand()%n_l)+j+1)/((double) n_l); 
                     rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
-
-                    if(nrmXf < abs(rhs[i + j * n_l])) nrmXf = abs(rhs[i + j * n_l]);
                 }
             }
 
@@ -408,13 +385,20 @@ void abcd::distributeRhs()
                 VECTOR_double xf_col(A.dim(1));
                 for(int i = 0; i < A.dim(1); i++) {
                     xf_col[i] = rhs[i + j * A.dim(1)];
-                    if(abs(xf_col[i]) > nrmXf) nrmXf = abs(xf_col[i]);
                 }
                 Xf.setCol(xf_col, j);
-
             }
 
             MV_ColMat_double BB = smv(A, Xf);
+
+            for(int j = 0; j < nrhs; j++){
+                double unscaled; 
+                for(int i = 0; i < A.dim(1); i++) {
+                    unscaled = rhs[i + j * A.dim(1)] * dcol_(i);
+                    if(abs(unscaled) > nrmXf) nrmXf = abs(unscaled);
+                    Xf(i, j) = unscaled;
+                }
+            }
 
             for(int j = 0; j < nrhs; j++){
                 //VECTOR_double t(rhs+j*m_l, m_l);
@@ -508,9 +492,6 @@ void abcd::distributeRhs()
 
         inter_comm.recv(0, 17, nrhs);
 
-        //b = Eigen::MatrixXd(m, nrhs);
-        //b.setZero();
-
         int size_rhs = m*block_size;
         rhs = new double[size_rhs];
         for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
@@ -518,7 +499,7 @@ void abcd::distributeRhs()
         B = MV_ColMat_double(m, block_size, 0);
         for(int j = 0; j < block_size; j++) {
             int p = 0;
-            for(int k = 0; k < partitions.size(); k++){
+            for(int k = 0; k < nb_local_parts; k++){
                 inter_comm.recv(0, 18, rhs + p + j * m, partitions[k].dim(0));
                 p+= partitions[k].dim(0);
             }
@@ -547,7 +528,7 @@ void abcd::distributeNewRhs()
         // Build my part of the RHS
         //int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
         int r = 0;
-        for(int i = 0; i < partitions.size(); i++){
+        for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
 

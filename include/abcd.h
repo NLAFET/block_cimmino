@@ -27,6 +27,7 @@
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/progress.hpp>
+#include <boost/lambda/lambda.hpp>
 //#include <boost/range/adaptors.hpp>
 //#include <boost/range/algorithm.hpp>
 
@@ -51,6 +52,9 @@
 #define TIC t = MPI_Wtime()
 #define TOC MPI_Wtime() - t
 
+#define inter_rank() inter_comm.rank()
+#define inter_barrier() inter_comm.barrier()
+#define inter_master() if(inter_comm.rank() == 0)
 
 using namespace std;
 using namespace boost;
@@ -99,6 +103,9 @@ private:
     // Communication stuffs
     void createInterComm();
     void distributePartitions();
+    void createInterconnections();
+
+    void distributeData();
 
     // Cimmino
     void initializeCimmino();
@@ -143,13 +150,6 @@ private:
 
     void waitForSolve();
     std::vector<int> comm_map;
-
-    // MUMPS setters and getters
-    inline void setMumpsIcntl(int i, int v) { mumps.icntl[ i - 1 ] = v ; }
-    inline void setMumpsCntl(int i, double v) { mumps.cntl[ i - 1 ] = v ; }
-    inline int getMumpsInfo(int i) { return mumps.info[ i - 1 ]; }
-    inline double getMumpsRinfo(int i) { return mumps.rinfo[ i - 1 ]; }
-    inline double getMumpsRinfoG(int i) { return mumps.rinfog[ i - 1 ]; }
 
     // SOme utilities
     void partitionWeights(std::vector<int> &, std::vector<int>, int);
@@ -225,6 +225,7 @@ public:
      */
     int partitioning_type;
     int nbparts; /// The number of partitions
+    int nb_local_parts;
     VECTOR_int strow; /// The starting row index of each partition
     VECTOR_int nbrows; /// The number of rows per partition
     /// A reverse index of columns, contains the original index of each column for each partition
@@ -274,11 +275,13 @@ public:
 
     int icntl[20];
     double dcntl[20];
+    int info[20];
+    double dinfo[20];
 
-    int InitializeMatrix();
-    int PreprocessMatrix();
-    int FactorizeAugmentedSystems();
-    int SolveSystem();
+    int initializeMatrix();
+    int preprocessMatrix();
+    int factorizeAugmentedSystems();
+    int solveSystem();
 
     int bc(int);
     abcd();

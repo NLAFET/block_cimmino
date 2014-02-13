@@ -6,7 +6,7 @@ void abcd::createAugmentedSystems(MUMPS &mu)
     m_n = 0;
     m_nz = 0;
 
-    for(int j = 0; j < partitions.size(); j++) {
+    for(int j = 0; j < nb_local_parts; j++) {
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
         m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
     }
@@ -23,7 +23,7 @@ void abcd::createAugmentedSystems(MUMPS &mu)
     int j_pos = 1;
     int st = 0;
 
-    for(int p = 0; p < partitions.size(); p++) {
+    for(int p = 0; p < nb_local_parts; p++) {
 
         // fill the identity
         for(int i = 0; i < partitions[p].dim(1); i++) {

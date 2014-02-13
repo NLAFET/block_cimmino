@@ -1,4 +1,6 @@
 #include <abcd.h>
+#include <yasl/coo.hpp>
+#include <yasl/csr.hpp>
 
 using namespace std;
 
@@ -16,8 +18,12 @@ abcd::abcd()
     verbose = false;
     threshold = 1e-12;
     runSolveS = false;
-    for(int i = 0; i < 20; i++) icntl[i] = 0;
-    for(int i = 0; i < 20; i++) dcntl[i] = 0;
+    for (int i = 0; i < 20; i++) {
+        icntl[i] = 0;
+        dcntl[i] = 0;
+        info[i] = 0;
+        dinfo[i] = 0;
+    }
     
     irn = 0;
     jcn = 0;
@@ -33,7 +39,7 @@ abcd::~abcd()
 ///
 /// \brief Creates the internal matrix from user's data
 ///
-int abcd::InitializeMatrix()
+int abcd::initializeMatrix()
 {
     mpi::communicator world;
     
@@ -45,8 +51,8 @@ int abcd::InitializeMatrix()
         throw - 1;
     }
 
-    double t = MPI_Wtime();
 
+    double t = MPI_Wtime();
     if(sym) {
         //over estimate nz
         int     *t_irn = new int[2*nz];
@@ -70,18 +76,31 @@ int abcd::InitializeMatrix()
         nz = t_nz;
         Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+        t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
+        cout << "convert splib : " << MPI_Wtime() - t << endl;
         delete[] t_irn, t_jcn, t_val;
     } else {
+        //t = MPI_Wtime();
+        //CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
+        //cout << "yasl : " << MPI_Wtime() - t << endl;
+
+        //t = MPI_Wtime();
+        //CsrMatrix<> M(T);
+        //cout << "convert yasl : " << MPI_Wtime() - t << endl;
+
+        t = MPI_Wtime();
         for(int i=0; i<nz; i++){
             irn[i]--;
             jcn[i]--;
         }
         Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+        cout << "before splib : " << MPI_Wtime() - t << endl;
+        t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
+        cout << "convert splib : " << MPI_Wtime() - t << endl;
     }
-    cout << "splib : " << MPI_Wtime() - t << endl;
     
     n_o = n;
     m_o = m;
@@ -93,7 +112,7 @@ int abcd::InitializeMatrix()
 ///
 /// \brief Scales, partitions and analyses the structure of partitions
 ///
-int abcd::PreprocessMatrix()
+int abcd::preprocessMatrix()
 {
     mpi::communicator world;
     if(world.rank() != 0) return 0;
@@ -104,14 +123,13 @@ int abcd::PreprocessMatrix()
     abcd::preprocess();
     abcd::analyseFrame();
     cout << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess << endl;
-    
     return 0;
 }
 
 ///
 /// \brief Creates augmented systems and factorizes them
 ///
-int abcd::FactorizeAugmentedSystems()
+int abcd::factorizeAugmentedSystems()
 {
     // Create the group of CG instances
     abcd::createInterComm();
@@ -130,7 +148,12 @@ int abcd::FactorizeAugmentedSystems()
     }
 
     if(instance_type == 0) {
-        abcd::distributePartitions();
+        //abcd::distributePartitions();
+        //IBARRIER; exit(0);
+
+        abcd::distributeData();
+        abcd::createInterconnections();
+        //IBARRIER; exit(0);
     }
     
     abcd::initializeCimmino();
@@ -155,7 +178,7 @@ int abcd::FactorizeAugmentedSystems()
 ///
 /// \brief Runs either BCG or ABCD solve depending on what we want
 ///
-int abcd::SolveSystem()
+int abcd::solveSystem()
 {
     mpi::communicator world;
     if(instance_type == 0) inter_comm.barrier();
@@ -176,11 +199,23 @@ int abcd::SolveSystem()
         if(icntl[10] == 0 || icntl[12] != 0 || runSolveS){
             abcd::bcg(B);
         } else{
+            int temp_bs = block_size;
+            block_size = 1;
             abcd::solveABCD(B);
+            block_size = temp_bs;
         }
 
         int job = -1;
         mpi::broadcast(intra_comm, job, 0);
+
+        if(inter_comm.rank() == 0){
+            clog << endl
+                 << "======================================" << endl;
+            clog << "Backward error : " << scientific << dinfo[0] << endl;
+            if (Xf.dim(0) != 0)
+                clog << "Forward error : " << scientific << dinfo[1] << endl;
+            clog << "======================================" << endl << endl;
+        }
 
     } else {
         abcd::waitForSolve();
@@ -197,19 +232,19 @@ int abcd::bc(int job)
     switch(job) {
 
     case -1:
-        InitializeMatrix();
+        initializeMatrix();
         break;
 
     case 1:
-        PreprocessMatrix();
+        preprocessMatrix();
         break;
 
     case 2:
-        FactorizeAugmentedSystems();
+        factorizeAugmentedSystems();
         break;
 
     case 3:
-        SolveSystem();
+        solveSystem();
         break;
 
     default:

@@ -96,9 +96,9 @@ abcd::solveS ( MV_ColMat_double &f )
     if(inter_comm.rank() == 0){ 
         if(write_s.length() != 0)
             strcpy(mu.write_problem, write_s.c_str());
-        mu.icntl[0] = 6;
-        mu.icntl[1] = 6;
-        mu.icntl[2] = 6;
+        mu.icntl[0] = -1;
+        mu.icntl[1] = -1;
+        mu.icntl[2] = -1;
         //mu.icntl[3] = 2;
     }
 
@@ -548,7 +548,7 @@ abcd::buildS ( std::vector<int> cols )
                 Xk(glob_to_local[n_o + i], 0) = 1;
 
                 //int st = 0;
-                //for(int p = 0; p < partitions.size(); p++){
+                //for(int p = 0; p < nb_local_parts; p++){
                     //MV_ColMat_double sp = spsmv(partitions[p], local_column_index[p], Xk);
                     //int pos = 0;
                     //for(int k = st; k < st + partitions[p].dim(0); k++){
@@ -730,7 +730,7 @@ MUMPS abcd::buildM (  )
 
     double t = MPI_Wtime();
     //t = MPI_Wtime();
-    S = buildS(skipped_S_columns);
+    //S = buildS(skipped_S_columns);
     //clog << " Time to build S : " << MPI_Wtime() - t << endl;
 
     Coord_Mat_double M = buildS(selected_S_columns);
@@ -757,9 +757,9 @@ MUMPS abcd::buildM (  )
 
             mr.push_back(ro);
             mc.push_back(ro);
-            mv.push_back(S(ro,ro));
+            //mv.push_back(S(ro,ro));
 
-            //mv.push_back(1);
+            mv.push_back(1);
         }
 
         for(int i = 0; i < M.NumNonzeros(); i++){
@@ -914,13 +914,13 @@ abcd::solveM (MUMPS &mu, VECTOR_double &z )
     VECTOR_double
 abcd::pcgS ( VECTOR_double &b )
 {
-    double resid, tol = 1e-4;
+    double resid, tol = 1e-5;
 
     //int max_iter = 2;
     int max_iter = size_c;
 
     MUMPS mu;
-    if(dcntl[15] > 0) mu = buildM();
+    if(dcntl[15] != 0) mu = buildM();
     double t = MPI_Wtime();
 
     VECTOR_double p, z, q;
@@ -946,7 +946,7 @@ abcd::pcgS ( VECTOR_double &b )
 
     for (int i = 1; i <= max_iter; i++) {
         TIC;
-        if(dcntl[15] > 0) { 
+        if(dcntl[15] != 0) { 
             z = solveM(mu, r);
         } else {
             z = r;

@@ -31,6 +31,15 @@
     void
 abcd::solveABCD ( MV_ColMat_double &b )
 {
+    
+    {
+        MV_ColMat_double u(m, nrhs, 0);
+        u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
+        double lnrmBs = infNorm(u);
+        // Sync B norm :
+        mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
+        mpi::broadcast(inter_comm, nrmMtx, 0);
+    }
 
     double t, tto = MPI_Wtime();
     MV_ColMat_double w;
@@ -88,17 +97,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f0 = pcgS(f0);
         f.setData(f0);
 
-        //mpi::broadcast(inter_comm, f_ptr, size_c, 0);
-
     } else {
 
-        //ofstream fo;
-        //fo.open("/tmp/z");
-        //for(int i = 0; i < f.dim(0); i++){
-            //fo << f(i,0) << endl;
-        //}
-        //fo.close();
-        
         f = solveS(f);
     }
     if(IRANK == 0) 
@@ -133,12 +133,12 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
+        cout << "HERE" << endl;
         use_xk = false;
-        //itmax = 2;
 
         if(!use_xk){
             int st = 0;
-            for(int p = 0; p < partitions.size(); p++){
+            for(int p = 0; p < nb_local_parts; p++){
                 //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
                         //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
                 MV_ColMat_double sp =  spsmv(partitions[p], local_column_index[p], Xk);
@@ -164,45 +164,86 @@ abcd::solveABCD ( MV_ColMat_double &b )
     if(IRANK == 0) 
         cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
 
-    use_xk = false;
-
     // the final solution (distributed)
-    f = w + f;
+    // w = \Abar^+ b
+    // f = \Wbar^+ b
+    Xk = w + f;
+
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;
 
-    double rho = compute_rho(f, b, 0);
-    if(IRANK == 0) cout << "rho = " << rho << endl;
-    IBARRIER;
+    double rho = compute_rho(Xk, b, 0);
+    dinfo[0] = rho;
 
-    {
-
-        MV_ColMat_double xfmf(n, 1, 0);
-        MV_ColMat_double lf(n, 1, 0);
-
-        for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
-            if(it->first < n_o){
-                xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
-                lf(it->second , 0) = f(it->second, 0);
+    if(IRANK == 0) {
+        t = MPI_Wtime();
+        cout << "Centralizing solution" << endl;
+        MV_ColMat_double temp_sol(n_o, 1, 0);
+        map<int, vector<double> > xo;
+        map<int, vector<int> > io;
+        for(int k = 1; k < inter_comm.size(); k++){
+            inter_comm.recv(k, 71, xo[k]);
+            inter_comm.recv(k, 72, io[k]);
+        }
+        for(int k = 1; k < inter_comm.size(); k++){
+            for(int i = 0; i < io[k].size() && io[k][i] < n_o; i++){
+                int ci = io[k][i];
+                temp_sol(ci, 0) = xo[k][i] * dcol_(io[k][i]);
             }
         }
 
-        double nf = infNorm(xfmf);
-        double nff = infNorm(lf);
-        
-        double nfa, nfb;
-        mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+        for(int i = 0; i < glob_to_local_ind.size() && glob_to_local_ind[i] < n_o ; i++){
+            temp_sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
+        }
 
-        if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+        sol = temp_sol(MV_VecIndex(0, n_o-1), 0);
+
+        if(Xf.dim(0) != 0) {
+            MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
+            xf = Xf - sol;
+            double nrmxf =  infNorm(xf);
+            dinfo[1] = nrmxf/nrmXf;
+        }
+        cout << "Took " << MPI_Wtime() - t << endl;
+
+    } else {
+        vector<double> x;
+        x.reserve(n);
+        for(int i = 0; i < n; i++){
+            x.push_back(Xk(i, 0));
+        }
+        inter_comm.send(0, 71, x);
+        inter_comm.send(0, 72, glob_to_local_ind);
     }
+
+    //{
+
+        //MV_ColMat_double xfmf(n, 1, 0);
+        //MV_ColMat_double lf(n, 1, 0);
+
+        //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+
+            //if(it->first < n_o){
+                //xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
+                //lf(it->second , 0) = f(it->second, 0);
+            //}
+        //}
+
+        //double nf = infNorm(xfmf);
+        //double nff = infNorm(lf);
+        
+        //double nfa, nfb;
+        //mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
+
+        //if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
+    //}
 
     //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
     //double rho;
     //if(inter_comm.rank()==0){
         //zrhs = MV_ColMat_double(m, 1, 0);
         //int st = 0;
-        //for(int p = 0; p < partitions.size(); p++){
+        //for(int p = 0; p < nb_local_parts; p++){
             //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
                     //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
             //st += partitions[p].dim(0);

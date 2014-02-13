@@ -60,12 +60,15 @@ std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
                 min_it = it->second;
                 min = *it->second;
                 idx = it->first;
-
-                if(it->second + 1 == eds[it->first])
+            }
+        }
+        for(std::map<int,std::vector<int>::iterator>::iterator it = its.begin();
+                it != its.end(); it++)
+        {
+                if(*it->second == min && it->second + 1 == eds[it->first])
                 {
                     to_delete.push_back(it->first);
                 }
-            }
         }
 
 #ifdef DEBUG_ASSERTS

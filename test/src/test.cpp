@@ -62,11 +62,11 @@ TEST (mergeSortedVectors, SingleVector) {
 }
 
 TEST (mergeSortedVectors, TestMerge) { 
-    int v1[3] = {1, 3, 5};
+    int v1[3] = {1, 2, 5};
     std::vector<int> vv1(&v1[0], &v1[0]+3);
     int v2[4] = {2, 4, 6, 8};
     std::vector<int> vv2(&v2[0], &v2[0]+4);
-    int v3[7] = {1, 2, 3, 5, 6, 8, 9};
+    int v3[7] = {1, 2, 3, 4, 6, 8, 9};
     std::vector<int> vv3(&v3[0], &v3[0]+7);
     
     std::vector<std::vector<int> > v;

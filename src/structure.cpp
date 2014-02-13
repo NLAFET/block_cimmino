@@ -1,4 +1,5 @@
 #include <abcd.h>
+#include "mat_utils.h"
 #include <iostream>
 #include <fstream>
 #include <patoh.h>
@@ -7,18 +8,32 @@
 
 using namespace boost::lambda;
 
-///@TODO Add the case of manual partitioning
 void abcd::partitionMatrix()
 {
-    unsigned nbrows_per_part;
+    unsigned handled_rows = 0;
+    unsigned ceil_per_part, floor_per_part;
     unsigned row_sum = 0;
 
-    if(nbparts == 0)
-        throw - 13;
-    if(nbparts < parallel_cg)
-        throw - 101;
-
-    nbrows_per_part = ceil(float(m_o)/float(nbparts));
+    if (nbparts == 0){
+        cerr << "FATAL ERROR: Number of partitions is zero" << endl;
+        throw -1;
+    }
+    if (nbparts < parallel_cg) {
+        cerr << "ERROR: Number of partitions is smaller than the number of parallel_cg" << endl;
+        cerr << "WARNING: Increasing the number of partitions from " << nbparts
+            << " up to " << parallel_cg << endl;
+        nbparts = parallel_cg;
+    }
+    if(nbparts > m) {
+        cerr << "ERROR: Number of partitions is larger than the number of rows" << endl;
+        cerr << "WARNING: Decreasing the number of partitions from " << nbparts
+            << " down to " << m << endl;
+        nbparts = parallel_cg;
+    }
+    if (nbparts == 1 && partitioning_type == 3) {
+        cerr << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning" << endl;
+        partitioning_type = 2;
+    }
 
     switch(partitioning_type){
         
@@ -28,7 +43,7 @@ void abcd::partitionMatrix()
         case 1:
             strow = VECTOR_int(nbparts);
 
-            for(unsigned k = 0; k < nbparts; k++) {
+            for(unsigned int k = 0; k < (unsigned int)nbparts; k++) {
                 strow(k) = row_sum;
                 row_sum += nbrows(k);
             }
@@ -38,12 +53,26 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with only nbparts as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
         case 2:
+            ceil_per_part = ceil(float(m_o)/float(nbparts));
+            floor_per_part = floor(float(m_o)/float(nbparts));
+
             strow = VECTOR_int(nbparts);
-            nbrows = VECTOR_int(nbparts, nbrows_per_part);
+            nbrows = VECTOR_int(nbparts);
 
-            nbrows(nbparts - 1) = m_o - (nbparts - 1) * nbrows_per_part;
+            // alternate the number of rows, they will not be that equal
+            // but at least we will have simmilar number of row
+            for(unsigned k = 0; k < (unsigned) nbparts; k+=2) {
+                nbrows(k) = ceil_per_part;
+                handled_rows += ceil_per_part;
+            }
+            for(unsigned k = 1; k < (unsigned) nbparts; k+=2) {
+                nbrows(k) = floor_per_part;
+                handled_rows += floor_per_part;
+            }
 
-            for(unsigned k = 0; k < nbparts; k++) {
+            nbrows(nbparts - 1) += m_o - handled_rows;
+
+            for(unsigned k = 0; k < (unsigned)nbparts; k++) {
                 strow(k) = row_sum;
                 row_sum += nbrows(k);
             }
@@ -91,7 +120,7 @@ void abcd::partitionMatrix()
 
             if( ret = PaToH_Alloc(&args, _c, _n, _nconst, cwghts, nwghts, xpins, pins) ){
                 cerr << "Error : PaToH Allocation problem : " << ret << endl;
-                throw -102;
+                throw -1;
             }
 
 
@@ -106,6 +135,13 @@ void abcd::partitionMatrix()
 
             PaToH_Part(&args, _c, _n, _nconst, 0, cwghts, nwghts,
                             xpins, pins, NULL, partvec, partweights, &cut);
+            for (int i = 0; i < nbparts; i++) {
+                if (partweights[i] == 0) {
+                    cerr << "FATAL ERROR: PaToH produced an empty partition" << endl
+                        << "Try to reduce the imbalancing factor" << endl;
+                    throw -1;
+                }
+            }
 
             row_perm = sort_indexes(partvec, _c);
 
@@ -173,7 +209,7 @@ void abcd::partitionMatrix()
         ofstream f;
         f.open(parts.c_str());
 
-        for(unsigned k = 0; k < nbparts; k++) {
+        for(unsigned int k = 0; k < (unsigned int)nbparts; k++) {
             f << nbrows[k] << "\n";
         }
 
@@ -194,7 +230,7 @@ void abcd::analyseFrame()
     column_index.reserve(nbparts);
     cout << "[+] Creating partitions"<< flush;
     
-    for (unsigned k = 0; k < nbparts; k++) {
+    for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         
         int *col_ptr = part.colptr_ptr();
@@ -204,15 +240,7 @@ void abcd::analyseFrame()
         // if no augmentation, then create the parts
         if(icntl[10] == 0)
         {
-            int *last = std::unique(col_ptr, col_ptr + part.dim(1) + 1);
-            parts[k] =
-                CompRow_Mat_double(
-                    CompCol_Mat_double(part.dim(0), ci.size(),
-                                    part.NumNonzeros(),
-                                    part.val_ptr(),
-                                    part.rowind_ptr(), col_ptr
-                                    )
-                );
+            parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         } else 
         {
             loc_parts.push_back(part);
@@ -243,12 +271,11 @@ void abcd::analyseFrame()
         cout << "   time to aug : " << MPI_Wtime() - t << endl;
 
         column_index.clear();
-        for (unsigned k = 0; k < nbparts; k++) {
+        for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
 
             CompCol_Mat_double part = loc_parts[k];
-            int *col_vect_ptr = part.colptr_ptr();
+            //int *col_vect_ptr = part.colptr_ptr();
 
-            double t1, t2;
             // Build the column index of part
             std::vector<int> ci = getColumnIndex(
                                       part.colptr_ptr(), part.dim(1)
@@ -257,20 +284,23 @@ void abcd::analyseFrame()
             column_index.push_back(ci);
             ci_sizes.push_back(ci.size());
 
-            int *last = std::unique(col_vect_ptr, col_vect_ptr + part.dim(1) + 1);
-
-            parts[k] =
-                CompRow_Mat_double(
-                    CompCol_Mat_double(part.dim(0), ci.size(),
-                                       part.NumNonzeros(),
-                                       part.val_ptr(),
-                                       part.rowind_ptr(),
-                                       col_vect_ptr
-                                      )
-                );
+            //parts[k] =
+                //CompRow_Mat_double(
+                    //CompCol_Mat_double(part.dim(0), ci.size(),
+                                       //part.NumNonzeros(),
+                                       //part.val_ptr(),
+                                       //part.rowind_ptr(),
+                                       //col_vect_ptr
+                                      //)
+                //);
+            parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
         if (icntl[10] != 0)
             cout << "    time to part /w augmentation : " << MPI_Wtime() - t << endl;
+        if (size_c == 0) {
+            cerr << "WARNING: Size of C is zero, switching to classical cg" << endl;
+            icntl[10] = 0;
+        }
     }
 
 }
@@ -285,6 +315,7 @@ void abcd::analyseFrame()
 abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
     double filter_c = dcntl[10];
+    stC = vector<int>(M.size(), -1);
     /*
      * Which augmentation to use:
      */
@@ -303,8 +334,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         std::map<int,std::vector<int> > stCols;
 
         //Eigen::SparseMatrix<double> Ti, Tj;
-        for( int i = 0; i < M.size() - 1; i++ ){
-            for ( int j = i+1; j < M.size(); j++ ) {
+        for( size_t i = 0; i < M.size() - 1; i++ ){
+            for ( size_t j = i+1; j < M.size(); j++ ) {
                 std::vector<int> intersect;
                 std::set_intersection(column_index[i].begin(), column_index[i].end(),
                                         column_index[j].begin(), column_index[j].end(),
@@ -407,9 +438,6 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                 int n_cij_before = C_ij.dim(1);
 
-                int *last = std::unique(C_ij.colptr_ptr(),
-                        C_ij.colptr_ptr() + C_ij.dim(1) + 1);
-
 
                 C_ij = CompCol_Mat_double(C_ij.dim(0), ci.size(), C_ij.NumNonzeros(),
                         C_ij.val(MV_VecIndex()), C_ij.row_ind(MV_VecIndex()),
@@ -458,7 +486,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         if(icntl[11] != 0) return;
 
         // Augment the matrices
-        for(int k = 0; k < M.size(); k++){
+        for(size_t k = 0; k < M.size(); k++){
             if(stCols[k].size() == 0) continue;
             // now augment each partition!
             stC.push_back(stCols[k][0]);
@@ -476,8 +504,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         std::map<int,std::vector<int> > stCols;
 
 
-        for( int i = 0; i < M.size() - 1; i++ ){
-            for ( int j = i+1; j < M.size(); j++ ) {
+        for( size_t i = 0; i < M.size() - 1; i++ ){
+            for ( size_t j = i+1; j < M.size(); j++ ) {
                 std::vector<int> intersect;
                 std::set_intersection(column_index[i].begin(), column_index[i].end(),
                                         column_index[j].begin(), column_index[j].end(),
@@ -491,7 +519,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || dcntl[15] > 0) {
+                if(filter_c != 0 || dcntl[15] != 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 
@@ -544,10 +572,16 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         }
 
                         if(icntl[15] != 0){ 
-                            if(mu_ij_k >= dcntl[15]){
-                                selected_S_columns.push_back( nbcols + k - n_o);
+                            if (dcntl[15] < 0) {
+                                if ((nbcols + k - n_o) % abs((int)dcntl[15]) == 0)
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                else
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
                             } else {
-                                skipped_S_columns.push_back( nbcols + k - n_o);
+                                if (mu_ij_k >= dcntl[15])
+                                    selected_S_columns.push_back( nbcols + k - n_o);
+                                else
+                                    skipped_S_columns.push_back( nbcols + k - n_o);
                             }
                         }
 
@@ -577,10 +611,10 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         if(icntl[11] != 0) return;
 
         // Augment the matrices
-        for(int k = 0; k < M.size(); k++){
+        for(size_t k = 0; k < M.size(); k++){
             if(stCols[k].size() == 0) continue;
             // now augment each partition!
-            stC.push_back(stCols[k][0]);
+            stC[k] = stCols[k][0];
             M[k] = concat_columns(M[k], C[k], stCols[k]);
             M[k] = resize_columns(M[k], nbcols);
         }
