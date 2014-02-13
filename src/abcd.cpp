@@ -47,9 +47,7 @@ abcd::~abcd()
 {
 }
 
-///
-/// \brief Creates the internal matrix from user's data
-///
+/// Creates the internal matrix from user's data
 int abcd::initializeMatrix()
 {
     mpi::communicator world;
@@ -120,9 +118,7 @@ int abcd::initializeMatrix()
     return 0; 
 }
 
-///
-/// \brief Scales, partitions and analyses the structure of partitions
-///
+/// Scales, partitions and analyses the structure of partitions
 int abcd::preprocessMatrix()
 {
     mpi::communicator world;
@@ -137,9 +133,7 @@ int abcd::preprocessMatrix()
     return 0;
 }
 
-///
-/// \brief Creates augmented systems and factorizes them
-///
+/// Creates augmented systems and factorizes them
 int abcd::factorizeAugmentedSystems()
 {
     // Create the group of CG instances
@@ -186,9 +180,7 @@ int abcd::factorizeAugmentedSystems()
     return 0;
 }
 
-///
-/// \brief Runs either BCG or ABCD solve depending on what we want
-///
+/// Runs either BCG or ABCD solve depending on what we want
 int abcd::solveSystem()
 {
     mpi::communicator world;
@@ -235,9 +227,7 @@ int abcd::solveSystem()
     return 0;
 }
     
-/// 
-/// \brief The gateway function that launches all other options
-///
+///  The gateway function that launches all other options
 int abcd::bc(int job)
 {
     switch(job) {
