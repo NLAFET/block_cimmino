@@ -10,8 +10,6 @@
  */
 
 #include <abcd.h>
-#include <yasl/coo.hpp>
-#include <yasl/csr.hpp>
 
 using namespace std;
 
