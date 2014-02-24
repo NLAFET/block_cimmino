@@ -7,6 +7,7 @@
  * a direct solution to compute the matrix-vector products, or you can
  * use a pseudo-direct solution scheme that will provide the solution in
  * a single step.
+ * \section Usage
  */
 
 #include <abcd.h>
