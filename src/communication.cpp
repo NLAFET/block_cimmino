@@ -142,7 +142,6 @@ void abcd::distributeData()
         }
         nb_local_parts = partitions.size();
 
-
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
         nz = snz;
