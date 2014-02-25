@@ -251,7 +251,6 @@ void abcd::analyseFrame()
     t= MPI_Wtime();
 
     // test augmentation!
-    if(icntl[11] == 1) exit(0);
     if(icntl[11] == 2){
         double f = 0;
         size_c = 1;
@@ -302,6 +301,8 @@ void abcd::analyseFrame()
             icntl[10] = 0;
         }
     }
+    // print only the size of C
+    if(icntl[11] == 1) exit(0);
 
 }
 
