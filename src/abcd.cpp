@@ -1,6 +1,16 @@
+/*!
+ * \mainpage The Augmented Block Cimmino Distributed Solver (ABCD Solver)
+ * \section Description
+ * The ABCD Solver is a hybrid (iterative/direct) sparse linear solver.
+ * It allows to have different levels of iterative/direct usage, you can
+ * make it fully iterative by using a stabilized block-CG combined with
+ * a direct solution to compute the matrix-vector products, or you can
+ * use a pseudo-direct solution scheme that will provide the solution in
+ * a single step.
+ * \section Usage
+ */
+
 #include <abcd.h>
-#include <yasl/coo.hpp>
-#include <yasl/csr.hpp>
 
 using namespace std;
 
@@ -37,9 +47,7 @@ abcd::~abcd()
 {
 }
 
-///
-/// \brief Creates the internal matrix from user's data
-///
+/// Creates the internal matrix from user's data
 int abcd::initializeMatrix()
 {
     mpi::communicator world;
@@ -54,10 +62,6 @@ int abcd::initializeMatrix()
 
 
     double t = MPI_Wtime();
-
-    t = MPI_Wtime();
-    Coord_Mat_double t_A;
-
     if(sym) {
         //over estimate nz
         int     *t_irn = new int[2*nz];
@@ -79,20 +83,12 @@ int abcd::initializeMatrix()
             }
         }
         nz = t_nz;
-        t = MPI_Wtime();
+        Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
-
-        cout << "before splib : " << MPI_Wtime() - t << endl;
         t = MPI_Wtime();
-        CooMatrix<> T(m, n, nz, t_irn, t_jcn, t_val);
-        cout << "yasl : " << MPI_Wtime() - t << endl;
-
-        t = MPI_Wtime();
-        CsrMatrix<> M = T.toCSR();
-        cout << "convert yasl : " << MPI_Wtime() - t << endl;
-        delete[] t_irn;
-        delete[] t_jcn;
-        delete[] t_val;
+        A = CompRow_Mat_double(t_A);
+        cout << "convert splib : " << MPI_Wtime() - t << endl;
+        delete[] t_irn, t_jcn, t_val;
     } else {
         //t = MPI_Wtime();
         //CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
@@ -107,15 +103,13 @@ int abcd::initializeMatrix()
             irn[i]--;
             jcn[i]--;
         }
+        Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
         cout << "before splib : " << MPI_Wtime() - t << endl;
+        t = MPI_Wtime();
+        A = CompRow_Mat_double(t_A);
+        cout << "convert splib : " << MPI_Wtime() - t << endl;
     }
-    t = MPI_Wtime();
-    A = CompRow_Mat_double(t_A);
-    cout << "convert splib : " << MPI_Wtime() - t << endl;
-
-
-    //exit(0);
     
     n_o = n;
     m_o = m;
@@ -124,9 +118,7 @@ int abcd::initializeMatrix()
     return 0; 
 }
 
-///
-/// \brief Scales, partitions and analyses the structure of partitions
-///
+/// Scales, partitions and analyses the structure of partitions
 int abcd::preprocessMatrix()
 {
     mpi::communicator world;
@@ -141,9 +133,7 @@ int abcd::preprocessMatrix()
     return 0;
 }
 
-///
-/// \brief Creates augmented systems and factorizes them
-///
+/// Creates augmented systems and factorizes them
 int abcd::factorizeAugmentedSystems()
 {
     // Create the group of CG instances
@@ -190,9 +180,7 @@ int abcd::factorizeAugmentedSystems()
     return 0;
 }
 
-///
-/// \brief Runs either BCG or ABCD solve depending on what we want
-///
+/// Runs either BCG or ABCD solve depending on what we want
 int abcd::solveSystem()
 {
     mpi::communicator world;
@@ -239,9 +227,7 @@ int abcd::solveSystem()
     return 0;
 }
     
-/// 
-/// \brief The gateway function that launches all other options
-///
+///  The gateway function that launches all other options
 int abcd::bc(int job)
 {
     switch(job) {
