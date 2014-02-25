@@ -53,9 +53,6 @@ int main(int argc, char* argv[])
             exit(-2);
         }
 
-        cout << pt.get<int>("jobtype") << endl;
-        cout << pt.get<int>("partitioning.nbparts") << endl;
-
         /* READING THE MATRIX AND THE RHS */
         string matrix_file;
         try {
@@ -184,7 +181,7 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        if(argc <= 2) obj.nbparts = pt.get<int>("partitioning.nbparts");
+        if(argc <= 3) obj.nbparts = pt.get<int>("partitioning.nbparts");
         else obj.nbparts = atoi(argv[3]);
 
         if(obj.nbparts < 0 && obj.nbparts <= obj.m) {
@@ -193,6 +190,7 @@ int main(int argc, char* argv[])
         }
 
         obj.partitioning_type = pt.get<int>("partitioning.type", 2);
+        obj.guessPartitionsNumber = pt.get<int>("partitioning.guess", 0);
         obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
@@ -270,7 +268,7 @@ int main(int argc, char* argv[])
             obj.nrhs = 1;
             obj.use_xf = false;
 
-            if(argc <= 3) obj.block_size = pt.get<int>("system.block_size", 1);
+            if(argc <= 4) obj.block_size = pt.get<int>("system.block_size", 1);
             else obj.block_size = atoi(argv[4]);
 
             obj.itmax = pt.get<int>("system.itmax", 2000);
