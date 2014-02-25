@@ -35,6 +35,20 @@ void abcd::partitionMatrix()
         partitioning_type = 2;
     }
 
+    if(guessPartitionsNumber == 1 && partitioning_type > 1){
+        // if the number of rows is less than 10k
+        if (m_o <= 10000) {
+            nbparts = 8;
+        // if the number of rows is between 10k and 100k
+        } else if (m_o <= 100000) {
+            nbparts = 16;
+        // if the number of rows is larger than 100k
+        } else if (m_o <= 1000000) {
+            nbparts = ceil(m_o / 15000);
+        }
+        cout << "Estimated number of partitions: " << nbparts  << endl;
+    }
+
     switch(partitioning_type){
         
         /*-----------------------------------------------------------------------------

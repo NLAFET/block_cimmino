@@ -18,6 +18,7 @@ abcd::abcd()
     verbose = false;
     threshold = 1e-12;
     runSolveS = false;
+    guessPartitionsNumber = 0;
     for (int i = 0; i < 20; i++) {
         icntl[i] = 0;
         dcntl[i] = 0;
