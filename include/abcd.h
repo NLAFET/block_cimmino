@@ -94,6 +94,12 @@ private:
      * Compresses the  and analyses the interconnections between them
      */
     void analyseFrame();
+
+    /*! The type of process
+     * - 0 the process will behave as a CG master
+     * - 1 the process will be a  MUMPS Slave
+     */
+    int instance_type;
     
     /*-----------------------------------------------------------------------------
      *  Build the augmented version of the matrix (ABCD)
@@ -152,7 +158,7 @@ private:
     std::vector<int> comm_map;
 
     // SOme utilities
-    void partitionWeights(std::vector<int> &, std::vector<int>, int);
+    void partitionWeights(std::vector<std::vector<int> > &, std::vector<int>, int);
     void partitioning(std::vector<std::vector<int> > &, std::vector<int>, int);
     double ddot(VECTOR_double &p, VECTOR_double &ap);
     void get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX);
@@ -192,7 +198,9 @@ public:
     int n_l, m_l, nz_l;
     int n_o, m_o, nz_o;
 
+    //! The path where to write the matrix \f$PD_rAD_cP^T\f$
     std::string write_problem;
+    //! The path where to write the matrix \f$S\f$ 
     std::string write_s;
 
 
@@ -218,12 +226,19 @@ public:
      * Partitioning informations
     ***************************************************************************/
 
-    /**
+    /*!
      * Defines the type of partitioning :
      * * 1 for manual partitioning (nbparts and nbrows are suplied)
      * * 2 for automatic partitioning (nbparts only is needed)
      */
     int partitioning_type;
+
+    /*!
+     * Guess the number of partitions
+     * * 1 based on the number of rows
+     */
+    int guessPartitionsNumber;
+
     int nbparts; /// The number of partitions
     int nb_local_parts;
     VECTOR_int strow; /// The starting row index of each partition
@@ -266,13 +281,27 @@ public:
     /***************************************************************************
      * Communication info
     ***************************************************************************/
-    int instance_type; /// The type of process : 0 for CG, 1 for MUMPS Slave
-    int parallel_cg; /// The number of parallel CG instances
+    /// The number of parallel CG instances
+    int parallel_cg;
 
-    mpi::communicator inter_comm; /// The communicator shared by CG masters
-    mpi::communicator intra_comm; /// The communicator of local slaves
+    /// The communicator shared by CG masters
+    mpi::communicator inter_comm;
+    /// The communicator of local slaves
+    mpi::communicator intra_comm; 
 
 
+    /*! Control parameters
+     *
+     *  - __icntl[10]__: augmentation type
+     *      - 0 : No augmentation, classical Block Cimmino will be used
+     *      - 1 : \f$C_{i,j}/-I\f$ based augmentation
+     *      - 2 : \f$A_{i,j}/-A_{j,i}\f$ based augmentation
+     *  - __icntl[11]__: augmentation analysis
+     *  - __icntl[12]__: compute \f$\bar{A}^+w\f$ only
+     *  - __icntl[13]__: use dense right-hand sides when building \f$S\f$
+     *  - __icntl[14]__: the blocking-factor used when building \f$S\f$
+     *  - __icntl[15]__: solve \f$Sz =f\f$ iteratively
+     */
     int icntl[20];
     double dcntl[20];
     int info[20];

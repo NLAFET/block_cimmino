@@ -7,6 +7,7 @@
  * a direct solution to compute the matrix-vector products, or you can
  * use a pseudo-direct solution scheme that will provide the solution in
  * a single step.
+ * \section Usage
  */
 
 #include <abcd.h>
@@ -27,6 +28,7 @@ abcd::abcd()
     verbose = false;
     threshold = 1e-12;
     runSolveS = false;
+    guessPartitionsNumber = 0;
     for (int i = 0; i < 20; i++) {
         icntl[i] = 0;
         dcntl[i] = 0;

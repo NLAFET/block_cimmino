@@ -35,6 +35,28 @@ void abcd::partitionMatrix()
         partitioning_type = 2;
     }
 
+    if(guessPartitionsNumber == 1 && partitioning_type > 1){
+        // if the number of rows is less than 1k
+        if (m_o <= 1000) {
+            nbparts = 4;
+        }
+        // if the number of rows is less than 10k
+        else if (m_o <= 10000) {
+            nbparts = 8;
+        // if the number of rows is between 10k and 160k
+        } else if (m_o <= 100000) {
+            nbparts = 16;
+        } else if (m_o <= 200000) {
+            nbparts = 32;
+        // if the number of rows is larger than 100k
+        } else {
+            nbparts = ceil(m_o / 15000);
+        }
+        cout << "Estimated number of partitions: " << nbparts  << endl;
+        mpi::communicator world;
+        parallel_cg =  nbparts < world.size() ? nbparts : world.size();
+    }
+
     switch(partitioning_type){
         
         /*-----------------------------------------------------------------------------
@@ -251,7 +273,6 @@ void abcd::analyseFrame()
     t= MPI_Wtime();
 
     // test augmentation!
-    if(icntl[11] == 1) exit(0);
     if(icntl[11] == 2){
         double f = 0;
         size_c = 1;
@@ -302,6 +323,8 @@ void abcd::analyseFrame()
             icntl[10] = 0;
         }
     }
+    // print only the size of C
+    if(icntl[11] == 1) exit(0);
 
 }
 
