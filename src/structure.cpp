@@ -44,10 +44,12 @@ void abcd::partitionMatrix()
         else if (m_o <= 10000) {
             nbparts = 8;
         // if the number of rows is between 10k and 160k
-        } else if (m_o <= 160000) {
+        } else if (m_o <= 100000) {
             nbparts = 16;
+        } else if (m_o <= 200000) {
+            nbparts = 32;
         // if the number of rows is larger than 100k
-        } else if (m_o <= 1000000) {
+        } else {
             nbparts = ceil(m_o / 15000);
         }
         cout << "Estimated number of partitions: " << nbparts  << endl;
