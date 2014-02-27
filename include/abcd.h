@@ -158,7 +158,7 @@ private:
     std::vector<int> comm_map;
 
     // SOme utilities
-    void partitionWeights(std::vector<int> &, std::vector<int>, int);
+    void partitionWeights(std::vector<std::vector<int> > &, std::vector<int>, int);
     void partitioning(std::vector<std::vector<int> > &, std::vector<int>, int);
     double ddot(VECTOR_double &p, VECTOR_double &ap);
     void get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX);

@@ -123,6 +123,9 @@ int main(int argc, char* argv[])
         }
 
         bool testMumps = pt.get<bool>("testMumps", false);
+        double minMumps = pt.get<double>("minMumps", 10);
+        double *mumps_rhs;
+        int mumps_n = obj.n;
         MUMPS mu;
         if(testMumps){
 
@@ -153,7 +156,7 @@ int main(int argc, char* argv[])
             mu.setIcntl(7, 5);
             mu.setIcntl(8, -2);
             mu.setIcntl(12, 2);
-            mu.setIcntl(14, 90);
+            mu.setIcntl(14, 200);
 
             mu.n = obj.n;
             mu.nz = obj.nz;
@@ -178,6 +181,20 @@ int main(int argc, char* argv[])
             dmumps_c(&mu);
             clog << "MUMPS RUN FINISHED in " << MPI_Wtime() - t << endl;
             clog << "=============================" << endl;
+
+            if (obj.rhs != NULL){
+                mumps_rhs = new double[mu.n];
+                std::copy(mu.rhs, mu.rhs + mu.n, mumps_rhs);
+            }
+
+            mu.job = -2;
+            dmumps_c(&mu);
+
+
+            if(MPI_Wtime() - t < minMumps && mu.getInfo(1) == 0){
+                clog << "MUMPS WAS TOO FAST, RUN!!!!" << endl;
+                exit(0);
+            }
         } else {
             testMumps = 0;
             mpi::broadcast(world, testMumps, 0);
@@ -299,16 +316,16 @@ int main(int argc, char* argv[])
 
         if(testMumps && !error) {
             double infTop = 0, infBot = 0;
-            if(mu.job == 6){
+            if(mumps_rhs != NULL){
                 ofstream f; 
                 f.open("/tmp/out_comp");
-                for(int i = 0; i < mu.n; i++) {
-                    f << mu.rhs[i] << "\t" << obj.sol(i,0) << "\n";
-                    if (abs(mu.rhs[i] - obj.sol(i,0)) > infTop) {
-                        infTop = abs(mu.rhs[i] - obj.sol(i,0));
+                for(int i = 0; i < mumps_n; i++) {
+                    f << mumps_rhs[i] << "\t" << obj.sol(i,0) << "\n";
+                    if (abs(mumps_rhs[i] - obj.sol(i,0)) > infTop) {
+                        infTop = abs(mumps_rhs[i] - obj.sol(i,0));
                     }
-                    if (abs(mu.rhs[i]) > infBot) {
-                        infBot = abs(mu.rhs[i]);
+                    if (abs(mumps_rhs[i]) > infBot) {
+                        infBot = abs(mumps_rhs[i]);
                     }
                 }
                 f.close();
@@ -318,8 +335,6 @@ int main(int argc, char* argv[])
                     //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
                 //}
             }
-            mu.job = -2;
-            dmumps_c(&mu);
         }
 
     } else {
@@ -337,6 +352,8 @@ int main(int argc, char* argv[])
             else
                 mu.job = 4;
             dmumps_c(&mu);
+            mu.job = -2;
+            dmumps_c(&mu);
         }
         try {
             obj.bc(-1);
@@ -347,11 +364,6 @@ int main(int argc, char* argv[])
             cout << world.rank() << " Error code : " << e << endl;
             if(world.rank() == 6) 
             exit(0);
-        }
-
-        if(testMumps) {
-            mu.job = -2;
-            dmumps_c(&mu);
         }
     }
     world.barrier();

@@ -15,7 +15,8 @@ void abcd::distributeData()
             m_parts.push_back(parts[k].dim(0));
         }
 
-        abcd::partitioning(p_sets, m_parts, parallel_cg);
+        //abcd::partitioning(p_sets, m_parts, parallel_cg);
+        abcd::partitionWeights(p_sets, m_parts, parallel_cg);
 
         clog << "Groups : " ;
         for(int k = 0; k < parallel_cg; k++) {
