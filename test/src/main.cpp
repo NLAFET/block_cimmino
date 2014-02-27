@@ -148,9 +148,9 @@ int main(int argc, char* argv[])
 
             dmumps_c(&mu);
 
-            mu.setIcntl(1, -1);
-            mu.setIcntl(2, -1);
-            mu.setIcntl(3, -1);
+            mu.setIcntl(1, 6);
+            mu.setIcntl(2, 6);
+            mu.setIcntl(3, 6);
 
             mu.setIcntl(6, 5);
             mu.setIcntl(7, 5);

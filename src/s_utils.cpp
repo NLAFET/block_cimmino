@@ -364,7 +364,7 @@ abcd::buildS ( std::vector<int> cols )
             if(iti!=glob_to_local.end()) my_cols.push_back(i);
         }
     } else {
-        for( int i = 0; i < cols.size(); i++){
+        for( size_t i = 0; i < cols.size(); i++){
             std::map<int,int>::iterator iti = glob_to_local.find(n_o + cols[i]);
             if(iti!=glob_to_local.end()) my_cols.push_back(cols[i]);
         }
@@ -501,7 +501,7 @@ abcd::buildS ( std::vector<int> cols )
             t_sum += MPI_Wtime() - t;
 #endif
 
-            for( int j = 0; j < cur_cols.size(); j++){
+            for( size_t j = 0; j < cur_cols.size(); j++){
                 int c = cur_cols[j];
                 for( int i = c; i < size_c; i++){
                     if(sptr[i + j * slda] != 0){
@@ -738,7 +738,6 @@ MUMPS abcd::buildM (  )
 
     //if(IRANK == 0) clog << "* -----------  DONE  ------------- * " << endl;
 
-    double max = 0;
     std::vector<int> dropped;
 
     {
@@ -746,10 +745,8 @@ MUMPS abcd::buildM (  )
         std::vector<double> mv;
 
         std::vector<int>::iterator it;
-        int r, c;
-        double v;
 
-        for(int i = 0; i < skipped_S_columns.size(); i++){
+        for(size_t i = 0; i < skipped_S_columns.size(); i++){
             std::map<int,int>::iterator iti = glob_to_local.find(n_o + skipped_S_columns[i]);
             if(iti == glob_to_local.end()) continue;
 
