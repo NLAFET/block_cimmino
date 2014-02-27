@@ -15,18 +15,6 @@ void abcd::initializeCimmino()
                 cout << "[+] Initializing MUMPS" << endl;
             initializeMumps(mumps, true);
             createAugmentedSystems(mumps);
-    /*         if(world.rank() == 0) {
-    *             ofstream myfile;
-    *             myfile.open("/tmp/m");
-    *             myfile << "%%MatrixMarket matrix coordinate real general" << endl;
-    *             myfile << mumps.n << " " << mumps.n << " " << mumps.nz << endl;
-    * 
-    *             for(int i = 0; i < mumps.nz; i++) {
-    *                 myfile << mumps.irn[i] << " " << mumps.jcn[i] << " " << scientific << mumps.a[i] << endl;
-    *             }
-    *             myfile.close();
-    *         }
-    */
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Launching Initial MUMPS analysis" << endl;
             analyseAugmentedSystems(mumps);
