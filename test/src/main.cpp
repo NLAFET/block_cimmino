@@ -9,6 +9,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
 #include <boost/property_tree/exceptions.hpp>
+#include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 
 
@@ -52,9 +53,6 @@ int main(int argc, char* argv[])
             clog << "Error while opening config file" << endl;
             exit(-2);
         }
-
-        cout << pt.get<int>("jobtype") << endl;
-        cout << pt.get<int>("partitioning.nbparts") << endl;
 
         /* READING THE MATRIX AND THE RHS */
         string matrix_file;
@@ -125,9 +123,11 @@ int main(int argc, char* argv[])
         }
 
         bool testMumps = pt.get<bool>("testMumps", false);
+        double minMumps = pt.get<double>("minMumps", 10);
+        double *mumps_rhs;
+        int mumps_n = obj.n;
         MUMPS mu;
-        if(testMumps && obj.rhs != NULL){
-            mpi::broadcast(world, testMumps, 0);
+        if(testMumps){
 
             if(obj.sym) {
                 mu.sym = 2;
@@ -136,6 +136,14 @@ int main(int argc, char* argv[])
             }
             mu.par = 1;
             mu.job = -1;
+
+            if (obj.rhs != NULL){
+                int todo = 6;
+                mpi::broadcast(world, todo, 0);
+            } else {
+                int todo = 4;
+                mpi::broadcast(world, todo, 0);
+            }
             mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
 
             dmumps_c(&mu);
@@ -148,7 +156,7 @@ int main(int argc, char* argv[])
             mu.setIcntl(7, 5);
             mu.setIcntl(8, -2);
             mu.setIcntl(12, 2);
-            mu.setIcntl(14, 90);
+            mu.setIcntl(14, 200);
 
             mu.n = obj.n;
             mu.nz = obj.nz;
@@ -156,20 +164,39 @@ int main(int argc, char* argv[])
             mu.jcn = obj.jcn;
             mu.a = obj.val;
 
-            mu.nrhs = 1;
-            mu.rhs = new double[mu.n];
-            for(int i = 0; i < mu.n; i++)
-                mu.rhs[i] = obj.rhs[i];
+            if (obj.rhs != NULL){
+                mu.job = 6;
+                mu.nrhs = 1;
+                mu.rhs = new double[mu.n];
+                for(int i = 0; i < mu.n; i++)
+                    mu.rhs[i] = obj.rhs[i];
+            } else {
+                mu.job = 4;
+            }
 
-            clog << "=============================" << endl;
-            clog << "LAUNCHING MUMPS ON THE MATRIX" << endl;
-            clog << "-----------------------------" << endl;
-            mu.job = 6;
+            cout << "=============================" << endl;
+            cout << "LAUNCHING MUMPS ON THE MATRIX" << endl;
+            cout << "-----------------------------" << endl;
+            double t = MPI_Wtime();
             dmumps_c(&mu);
-            clog << "MUMPS RUN FINISHED" << endl;
+            clog << "MUMPS RUN FINISHED in " << MPI_Wtime() - t << endl;
             clog << "=============================" << endl;
+
+            if (obj.rhs != NULL){
+                mumps_rhs = new double[mu.n];
+                std::copy(mu.rhs, mu.rhs + mu.n, mumps_rhs);
+            }
+
+            mu.job = -2;
+            dmumps_c(&mu);
+
+
+            if(MPI_Wtime() - t < minMumps && mu.getInfo(1) == 0){
+                clog << "MUMPS WAS TOO FAST, RUN!!!!" << endl;
+                exit(0);
+            }
         } else {
-            testMumps = false;
+            testMumps = 0;
             mpi::broadcast(world, testMumps, 0);
         }
 
@@ -184,7 +211,7 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        if(argc <= 2) obj.nbparts = pt.get<int>("partitioning.nbparts");
+        if(argc <= 3) obj.nbparts = pt.get<int>("partitioning.nbparts");
         else obj.nbparts = atoi(argv[3]);
 
         if(obj.nbparts < 0 && obj.nbparts <= obj.m) {
@@ -193,6 +220,7 @@ int main(int argc, char* argv[])
         }
 
         obj.partitioning_type = pt.get<int>("partitioning.type", 2);
+        obj.guessPartitionsNumber = pt.get<int>("partitioning.guess", 0);
         obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
@@ -270,7 +298,7 @@ int main(int argc, char* argv[])
             obj.nrhs = 1;
             obj.use_xf = false;
 
-            if(argc <= 3) obj.block_size = pt.get<int>("system.block_size", 1);
+            if(argc <= 4) obj.block_size = pt.get<int>("system.block_size", 1);
             else obj.block_size = atoi(argv[4]);
 
             obj.itmax = pt.get<int>("system.itmax", 2000);
@@ -288,38 +316,43 @@ int main(int argc, char* argv[])
 
         if(testMumps && !error) {
             double infTop = 0, infBot = 0;
-            ofstream f; 
-            f.open("/tmp/out_comp");
-            for(int i = 0; i < mu.n; i++) {
-                f << mu.rhs[i] << "\t" << obj.sol(i,0) << "\n";
-                if (abs(mu.rhs[i] - obj.sol(i,0)) > infTop) {
-                    infTop = abs(mu.rhs[i] - obj.sol(i,0));
+            if(mumps_rhs != NULL){
+                ofstream f; 
+                f.open("/tmp/out_comp");
+                for(int i = 0; i < mumps_n; i++) {
+                    f << mumps_rhs[i] << "\t" << obj.sol(i,0) << "\n";
+                    if (abs(mumps_rhs[i] - obj.sol(i,0)) > infTop) {
+                        infTop = abs(mumps_rhs[i] - obj.sol(i,0));
+                    }
+                    if (abs(mumps_rhs[i]) > infBot) {
+                        infBot = abs(mumps_rhs[i]);
+                    }
                 }
-                if (abs(mu.rhs[i]) > infBot) {
-                    infBot = abs(mu.rhs[i]);
-                }
+                f.close();
+                cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
+                    << infTop/infBot << endl;
+                //for(int i =0; i < mu.n; i++){
+                    //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
+                //}
             }
-            f.close();
-            cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
-                 << infTop/infBot << endl;
-            //for(int i =0; i < mu.n; i++){
-                //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;
-            //}
-            mu.job = -2;
-            dmumps_c(&mu);
         }
 
     } else {
-        bool testMumps;
+        int testMumps;
         mpi::broadcast(world, testMumps, 0);
         MUMPS mu;
-        if(testMumps) {
+        if(testMumps > 0) {
             mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
             mu.par = 1;
             mu.job = -1;
             dmumps_c(&mu);
 
-            mu.job = 6;
+            if (testMumps == 6)
+                mu.job = 6;
+            else
+                mu.job = 4;
+            dmumps_c(&mu);
+            mu.job = -2;
             dmumps_c(&mu);
         }
         try {
@@ -331,11 +364,6 @@ int main(int argc, char* argv[])
             cout << world.rank() << " Error code : " << e << endl;
             if(world.rank() == 6) 
             exit(0);
-        }
-
-        if(testMumps) {
-            mu.job = -2;
-            dmumps_c(&mu);
         }
     }
     world.barrier();

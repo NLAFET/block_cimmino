@@ -18,7 +18,7 @@ void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weigh
     
     int cur = 0;
     int ls = 0;
-    while(cur != weights.size()){
+    while(cur != (int)weights.size()){
         int sm = ls;
         for(int i = 0; i < nb_parts; i++){
             if(sets[i] < sets[sm]) sm = i;
@@ -35,42 +35,73 @@ void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weigh
 }
 
 /// Partition weigts
-void abcd::partitionWeights(std::vector<int> &parts, std::vector<int> weights, int nb_parts)
+void abcd::partitionWeights(std::vector<vector<int> > &parts, std::vector<int> weights, int nb_parts)
 {
-    int total_size = std::accumulate(weights.begin(), weights.end(), 0);
-    int mean = floor((double)total_size / nb_parts);
-    int cum = 0;
-    int precum = 0;
+    vector<int> sets(nb_parts);
+    map<int, vector<int> > pts;
 
-    if(nb_parts == weights.size()){
-        for(int i = 0; i < weights.size(); i++){
-            parts.push_back(i); 
-        }
-        return;
+    for(int i = 0; i < nb_parts; i++){
+        sets[i] = 0;
+        pts[i];
     }
 
-    for(int c = 0; c < weights.size(); c++) {
-        precum = cum;
-        cum += weights[c];
+    if (nb_parts == (int)weights.size()) {
+        for(int i = 0; i < nb_parts; i++)
+            pts[i].push_back(i);
+        return;
+    } else {
+        int avg = accumulate(weights.begin(), weights.end(), 0);
+        avg = floor(avg / nb_parts);
 
-        if(cum > mean) {
-            if((mean - precum) > 1.5*(cum - mean)) {
-                parts.push_back(c);
-                cum = 0;
-            } else {
-                parts.push_back(c - 1);
-                cum = weights[c];
+        float fix = 1.0;
+        int weight_index = weights.size() + 1;
+        while (weight_index >= (int)weights.size()){
+            weight_index = 0;
+            pts.clear();
+            int current_partiton = 0;
+            int current_weight = 0;
+
+            // Share everything sequentially
+            while(current_partiton < nb_parts) {
+                if(weights[weight_index] > avg * (fix - 0.1)){
+                    current_partiton++;
+                    current_weight = 0;
+                } else {
+                    current_weight += weights[weight_index];
+                    pts[current_partiton].push_back(weight_index);
+                    weight_index++;
+                    if(current_weight > avg * fix){
+                        current_partiton++;
+                        current_weight = 0;
+                    }
+                }
+            }
+            fix -= 0.1;
+        }
+
+        // if there are some weights left, go greedy
+        if (weight_index < (int)weights.size()) {
+            int cur = weight_index;
+            int ls = 0;
+            while(cur != (int)weights.size()){
+                int sm = ls;
+                for(int i = 0; i < nb_parts; i++){
+                    if(sets[i] < sets[sm]) sm = i;
+                }
+                sets[sm] = sets[sm] + weights[cur];
+                pts[sm].push_back(cur);
+                cur++;
+                ls = sm;
             }
         }
     }
-    // the last partitions were not taken as they are less than the mean
-    if(parts.size() == nb_parts) {
-        if(parts[nb_parts - 1 ] < weights.size())
-            parts[nb_parts - 1 ] = weights.size() - 1;
-    } else {
-        parts.push_back(weights.size() - 1);
+
+    for(int i = 0; i < nb_parts; i++){
+        parts.push_back(pts[i]);
     }
+
 }
+
 ///DDOT
 double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 {
