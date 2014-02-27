@@ -54,7 +54,7 @@ void abcd::partitionWeights(std::vector<vector<int> > &parts, std::vector<int> w
 
         float fix = 1.0;
         int weight_index = weights.size() + 1;
-        while (weight_index >= (int)weights.size()){
+        while (weight_index > (int)weights.size()){
             weight_index = 0;
             pts.clear();
             int current_partiton = 0;

@@ -18,13 +18,13 @@ void abcd::distributeData()
         //abcd::partitioning(p_sets, m_parts, parallel_cg);
         abcd::partitionWeights(p_sets, m_parts, parallel_cg);
 
-        clog << "Groups : " ;
+        clog << "Groups : " <<endl;
         for(int k = 0; k < parallel_cg; k++) {
-            clog << "{";
+            clog << k+1 << "\t{";
             for(unsigned int j = 0; j < p_sets[k].size() - 1; j++)
                 clog << p_sets[k][j] << ", ";
             clog << p_sets[k][p_sets[k].size() -1 ];
-            clog << "} ";
+            clog << "} " << endl;
             //clog  << ", "<< p_sets[k].size();
         }
         clog << endl;
