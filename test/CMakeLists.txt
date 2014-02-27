@@ -23,10 +23,6 @@ add_executable(
         src/main.cpp
 )
 
-add_executable(
-        basic_test
-        src/basic.cpp
-)
 
 #Configuration de l'édition de liens
 target_link_libraries(
@@ -41,6 +37,10 @@ target_link_libraries(
 # Testing
 ################################
 if(test MATCHES ON)
+add_executable(
+        basic_test
+        src/basic.cpp
+)
   # Locate GTest
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)
