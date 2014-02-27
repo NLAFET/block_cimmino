@@ -83,9 +83,9 @@ abcd::solveS ( MV_ColMat_double &f )
     mpi::broadcast(intra_comm, job, 0);
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
     //
-	/*
+    /*
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) inter_comm);
-	*/
+    */
 
     dmumps_c(&mu);
 
@@ -331,7 +331,7 @@ abcd::solveS ( MV_ColMat_double &f )
     mpi::broadcast(inter_comm, f_ptr, size_c, 0);
 
     return f;
-}		/* -----  end of function abcd::solveS  ----- */
+}       /* -----  end of function abcd::solveS  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -373,8 +373,8 @@ abcd::buildS ( std::vector<int> cols )
     int maxcols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::maximum<int>());
     int mincols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::minimum<int>());
     int total = mpi::all_reduce(inter_comm, (int) my_cols.size(), std::plus<int>());
-	IFMASTER clog << "Max number of cols is " << maxcols << " ,  min is " << mincols <<
-	   "and average is " << total/parallel_cg <<	endl;
+    IFMASTER clog << "Max number of cols is " << maxcols << " ,  min is " << mincols <<
+       "and average is " << total/parallel_cg <<    endl;
 
 #ifdef EXPLICIT_SUM
     double t_sum = MPI_Wtime();
@@ -451,7 +451,7 @@ abcd::buildS ( std::vector<int> cols )
 
             //int mumps_share = share > 32 ? share : 16;
             int mumps_share = share;
-			mumps.icntl[27 - 1] = mumps_share;
+            mumps.icntl[27 - 1] = mumps_share;
 
             MV_ColMat_double sp = spSimpleProject(cur_cols);
 
@@ -662,7 +662,7 @@ abcd::buildS ( std::vector<int> cols )
     use_xk = false;
 
     return shur;
-}		/* -----  end of function abcd::buildS  ----- */
+}       /* -----  end of function abcd::buildS  ----- */
 
 
 
@@ -704,7 +704,7 @@ abcd::prodSv ( MV_ColMat_double &V )
     }
 
     return R;
-}		/* -----  end of function abcd::prodSv  ----- */
+}       /* -----  end of function abcd::prodSv  ----- */
 
 
 /* 
@@ -865,7 +865,7 @@ MUMPS abcd::buildM (  )
      *  END MUMPS part
      *-----------------------------------------------------------------------------*/
     return mu;
-}		/* -----  end of function abcd::buildM  ----- */
+}       /* -----  end of function abcd::buildM  ----- */
 
 
 
@@ -899,7 +899,7 @@ abcd::solveM (MUMPS &mu, VECTOR_double &z )
         return sol;
     }
 
-}		/* -----  end of function abcd::solveM  ----- */
+}       /* -----  end of function abcd::solveM  ----- */
 
 
 /* 
@@ -1005,4 +1005,4 @@ abcd::pcgS ( VECTOR_double &b )
     }
 
     return x;
-}		/* -----  end of function abcd::pcgS  ----- */
+}       /* -----  end of function abcd::pcgS  ----- */
