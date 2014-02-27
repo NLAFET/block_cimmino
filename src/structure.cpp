@@ -50,7 +50,7 @@ void abcd::partitionMatrix()
             nbparts = 32;
         // if the number of rows is larger than 100k
         } else {
-            nbparts = ceil(m_o / 15000);
+            nbparts = ceil((double)m_o / 15000);
         }
         cout << "Estimated number of partitions: " << nbparts  << endl;
         mpi::communicator world;
