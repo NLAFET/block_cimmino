@@ -81,7 +81,7 @@ abcd::solveS ( MV_ColMat_double &f )
         //mu.icntl[3] = 2;
     }
 
-    mu.n = S.dim(0);
+    mu.n = size_c;
 
     // parallel analysis if the S is large enough
     //if(mu.n >= 200) {

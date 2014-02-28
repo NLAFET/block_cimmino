@@ -126,7 +126,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
             continue;
         }
     }
-
     f = MV_ColMat_double(n, 1, 0);
 
     if(dcntl[10] == 0){
@@ -163,6 +162,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     }
     if(IRANK == 0) 
         cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
+
 
     // the final solution (distributed)
     // w = \Abar^+ b

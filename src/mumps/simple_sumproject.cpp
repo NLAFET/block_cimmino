@@ -8,15 +8,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     //dense_rhs = true;
 
     int s = mycols.size();
-    // Build the mumps rhs
-
-    mumps.rhs = new double[mumps.n * s];
-    for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
-
-    MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
-
-    CompCol_Mat_double mumps_comp_rhs;
-
     std::vector<int> rr;
     std::vector<double> rv;
 
@@ -35,7 +26,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         int c;
 
         int ct = 0;
-        for(int i = 0; i < mycols.size(); i++){
+        for(size_t i = 0; i < mycols.size(); i++){
             c = mycols[i];
             if(glob_to_part[k].find(n_o + c) != glob_to_part[k].end()){
                 yr[ct] = glob_to_part[k][n_o + c];
@@ -57,6 +48,11 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
 
     if(dense_rhs){
+        // Build the mumps rhs
+        mumps.rhs = new double[mumps.n * s];
+        for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
+        MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
+
         // dense mumps rhs
         mumps.icntl[20 - 1] = 0;
 
@@ -76,7 +72,12 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         }
     } else {
         // sparse mumps rhs
-        mumps.icntl[20 - 1] = 1;
+        mumps.setIcntl(20, 1);
+
+        // Build the mumps rhs
+        mumps.rhs = new double[mumps.n * s];
+        for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
+        MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
 
         {
             mumps.irhs_ptr      = new int[s + 1];
@@ -126,7 +127,9 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     dmumps_c(&mumps);
 
-    MV_ColMat_double Delta(size_c, s, 0);
+    MV_ColMat_double Delta;
+
+    Delta = MV_ColMat_double(size_c, s, 0);
 
     int dlda = Delta.lda();
     double *dpt = Delta.ptr();
@@ -172,7 +175,6 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     // disable sparse mumps rhs
     mumps.icntl[20 - 1] = 0;
 
-    //delete mumps.rhs;
     delete[] mumps.rhs;
     delete[] r;
 
