@@ -62,7 +62,8 @@ void abcd::partitionWeights(std::vector<vector<int> > &parts, std::vector<int> w
 
             // Share everything sequentially
             while(current_partiton < nb_parts) {
-                if(weights[weight_index] > avg * (fix - 0.1)){
+                if((weights[weight_index] > avg * (fix - 0.1))
+                    && (pts[current_partiton].size() != 0)){
                     current_partiton++;
                     current_weight = 0;
                 } else {
