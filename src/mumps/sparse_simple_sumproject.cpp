@@ -50,18 +50,11 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     // sparse mumps rhs
     mumps.setIcntl(20, 1);
 
-    if (intra_comm.size() > 1) {
-        // distributed solution
-        mumps.setIcntl(21, 1);
-        mumps.lsol_loc = mumps.getInfo(23);
-        mumps.sol_loc = new double[mumps.lsol_loc * s];
-        mumps.isol_loc = new int[mumps.lsol_loc];
-    } else {
-        // Build the mumps rhs
-        mumps.rhs = new double[mumps.n * s];
-        for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
-        MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
-    }
+    // distributed solution
+    mumps.setIcntl(21, 1);
+    mumps.lsol_loc = mumps.getInfo(23);
+    mumps.sol_loc = new double[mumps.lsol_loc * s];
+    mumps.isol_loc = new int[mumps.lsol_loc];
 
     {
         mumps.irhs_ptr      = new int[s + 1];
