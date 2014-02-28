@@ -103,7 +103,7 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share;
             mumps.icntl[27 - 1] = mumps_share;
 
-            //if(intra_comm.size() == 1){
+            if(intra_comm.size() == 1){
                 MV_ColMat_double sp = spSimpleProject(cur_cols);
 
                 double *sptr = sp.ptr();
@@ -122,9 +122,13 @@ abcd::buildS ( std::vector<int> cols )
                         }
                     }
                 }
-            //} else {
-                //spSimpleProject(cur_cols, vr, vc, vv);
-            //}
+            } else {
+                vector<int> target_idx;
+                vector<int> target;
+                target.reserve(size_c);
+                target_idx.reserve(size_c);
+                spSimpleProject(cur_cols, vr, vc, vv, target, target_idx);
+            }
             pos = end_pos;
         }
 

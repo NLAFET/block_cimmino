@@ -4,7 +4,8 @@
 using namespace  boost::lambda;
 
 void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
-        std::vector<int> &vcols, std::vector<double> &vvals)
+        std::vector<int> &vcols, std::vector<double> &vvals,
+        std::vector<int> &target, std::vector<int> &target_idx)
 {
     int s = mycols.size();
     std::vector<int> rr;
@@ -148,20 +149,17 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     x_pos = start_c;
     int end_c = column_index[part].size();
     int i_loc = 0;
-    vector<int> target_idx;
-    vector<int> target;
-    target.reserve(size_c);
-    target_idx.reserve(size_c);
 
-    while (i_loc < mumps.lsol_loc){
-        int isol = mumps.isol_loc[i_loc] - 1;
-        if (isol >= start_c && isol < end_c){
-            int ci = column_index[part][isol] - n_o; 
-            target.push_back(i_loc);
-            target_idx.push_back(ci);
+    if(target.size() == 0)
+        while (i_loc < mumps.lsol_loc){
+            int isol = mumps.isol_loc[i_loc] - 1;
+            if (isol >= start_c && isol < end_c){
+                int ci = column_index[part][isol] - n_o; 
+                target.push_back(i_loc);
+                target_idx.push_back(ci);
+            }
+            i_loc++;
         }
-        i_loc++;
-    }
 
     for (int j = 0; j < s; j++) {
         int col = mycols[j];

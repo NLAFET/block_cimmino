@@ -152,9 +152,12 @@ private:
     MV_ColMat_double coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int my_bro);
 
     MV_ColMat_double simpleProject(MV_ColMat_double &X);
+
     MV_ColMat_double spSimpleProject(std::vector<int> mycols);
+
     void spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
-            std::vector<int> &vcols, std::vector<double> &vvals);
+            std::vector<int> &vcols, std::vector<double> &vvals,
+            std::vector<int> &target, std::vector<int> &target_idx);
 
     void waitForSolve();
     std::vector<int> comm_map;

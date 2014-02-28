@@ -15,6 +15,11 @@ abcd::waitForSolve()
     vector<int> vrows, vcols;
     vector<double> vvals;
 
+    vector<int> target;
+    vector<int> target_idx;
+    target.reserve(size_c);
+    target_idx.reserve(size_c);
+
     int job = 0;
     do{
         mpi::broadcast(intra_comm, job, 0);
@@ -81,20 +86,17 @@ abcd::waitForSolve()
             x_pos = start_c;
             int end_c = column_index[part].size();
             int i_loc = 0;
-            vector<int> target;
-            vector<int> target_idx;
-            target.reserve(size_c);
-            target_idx.reserve(size_c);
 
-            while (i_loc < mumps.lsol_loc){
-                int isol = mumps.isol_loc[i_loc] - 1;
-                if (isol >= start_c && isol < end_c){
-                    int ci = column_index[part][isol] - n_o; 
-                    target.push_back(i_loc);
-                    target_idx.push_back(ci);
+            if(target.size() == 0)
+                while (i_loc < mumps.lsol_loc){
+                    int isol = mumps.isol_loc[i_loc] - 1;
+                    if (isol >= start_c && isol < end_c){
+                        int ci = column_index[part][isol] - n_o; 
+                        target.push_back(i_loc);
+                        target_idx.push_back(ci);
+                    }
+                    i_loc++;
                 }
-                i_loc++;
-            }
 
             for (int j = 0; j < s; j++) {
                 int col = mycols[j];
