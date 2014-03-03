@@ -120,6 +120,10 @@ private:
     void bcg(MV_ColMat_double &b);
     void solveABCD(MV_ColMat_double &b);
     MV_ColMat_double solveS ( MV_ColMat_double &f );
+
+    void buildS(vector<int> &rows, vector<int> &cols, vector<double> &vals);
+    void buildS(vector<int> &rows, vector<int> &cols, vector<double> &vals, vector<int> &columns_to_build);
+
     Coord_Mat_double buildS();
     Coord_Mat_double buildS(std::vector<int>);
     MUMPS buildM();
@@ -179,6 +183,13 @@ private:
      * The matrix object itself
     ***************************************************************************/
     Coord_Mat_double S;
+    std::vector<int> S_rows;
+    std::vector<int> S_cols;
+    std::vector<double> S_vals;
+    inline int S_nbrows() { return size_c; }
+    inline int S_nbcols() { return size_c; }
+    inline int S_nnz() { return S_vals.size(); }
+
     std::map<int, CompRow_Mat_double> parts;
     std::vector<CompRow_Mat_double> partitions;
     std::vector<vector<int> > p_sets;
