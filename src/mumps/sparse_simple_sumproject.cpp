@@ -138,60 +138,60 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     dmumps_c(&mumps);
 
     double *sol_ptr;
-    int sol_lda;
-    vector<pair<int,int> > st_stop(nb_local_parts);
-
+    int sol_lda, ci, col, x_pos = 0, start_c;
+    double val;
     if(intra_comm.size() > 1){
         int part = 0;
-        int x_pos = 0;
-        int start_c;
         sol_lda = mumps.lsol_loc;
+        vector<int> &civ = column_index[part];
 
         // get where we should look for the current part
         if (stC[part] != -1) {
             start_c = glob_to_part[part][stC[part]];
         } else {
-            start_c = column_index[part].size();
+            start_c = civ.size();
         }
         x_pos = start_c;
-        int end_c = column_index[part].size();
-        int i_loc = 0;
+        int end_c = civ.size();
 
-        while (i_loc < mumps.lsol_loc){
-            int isol = mumps.isol_loc[i_loc] - 1;
-            if (isol >= start_c && isol < end_c){
-                int ci = column_index[part][isol] - n_o; 
-                target.push_back(i_loc);
-                target_idx.push_back(ci);
+        if(target.size() == 0){
+            for(int i_loc = 0; i_loc < mumps.lsol_loc; i_loc++) {
+                int isol = mumps.isol_loc[i_loc] - 1;
+                int ci = civ[isol] - n_o; 
+                if (isol >= start_c && isol < end_c){
+                    target.push_back(i_loc);
+                    target_idx.push_back(ci);
+                }
             }
-            i_loc++;
         }
+
         sol_ptr = mumps.sol_loc;
         for (int j = 0; j < s; j++) {
-            int col = mycols[j];
-            for (int i = 0; i < (int)target_idx.size(); i++) {
-                double val = sol_ptr[target[i] + j * sol_lda];
-                if(target_idx[i] < col || val == 0)
-                    continue;
-                else if ( target_idx[i] == col){
-                    vvals.push_back(0.5 - val);
+            col = mycols[j];
+            for (int i = 0; i < (int)target.size(); i++) {
+
+                val = -sol_ptr[target[i] + j * sol_lda];
+                ci = target_idx[i];
+
+                if(ci >= col && val != 0){
+                    if ( ci == col){
+                        val += 0.5;
+                    }
+
+                    vvals.push_back(val);
+                    vrows.push_back(ci + 1);
+                    vcols.push_back(col + 1);
                 }
-                else{
-                    vvals.push_back(-val);
-                }
-                vrows.push_back(target_idx[i]);
-                vcols.push_back(col);
             }
         }
     } else {
-        int x_pos = 0;
         sol_lda = mumps.lrhs;
         sol_ptr = mumps.rhs;
 
         for(int part = 0; part < nb_local_parts; part++){
             int start_c;
 
-            vector<int> civ = column_index[part];
+            vector<int> &civ = column_index[part];
 
             // get where we should look for the current part
             if (stC[part] != -1) {
@@ -205,32 +205,23 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             vcols.reserve((civ.size() - start_c)*s);
             vvals.reserve((civ.size() - start_c)*s);
 
-            int ci, col, start_from = start_c;
-            double val;
             int old_x = x_pos;
             for(int j = 0; j < s; j++){
                 col = mycols[j];
                 x_pos = old_x;
-                start_from = min(start_c, start_from);
-                bool first_time = true;
 
-                for(size_t i = start_from; i < civ.size(); i++){
+                for(size_t i = start_c; i < civ.size(); i++){
                     ci = civ[i] - n_o;
 
-                    val = sol_ptr[x_pos + j * sol_lda];
+                    val =  - sol_ptr[x_pos + j * sol_lda];
 
                     if(ci >= col && val != 0){
-                        // equivalent to an if/else statement
-                        val = 0.5 * (ci == col) - val;
+                        if ( ci == col)
+                            val += 0.5;
 
                         vvals.push_back(val);
-                        vrows.push_back(ci);
-                        vcols.push_back(col);
-
-                        if(first_time){
-                            start_from = i;
-                            first_time = false;
-                        }
+                        vrows.push_back(ci + 1);
+                        vcols.push_back(col + 1);
                     }
 
 
