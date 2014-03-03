@@ -14,27 +14,6 @@ void abcd::partitionMatrix()
     unsigned ceil_per_part, floor_per_part;
     unsigned row_sum = 0;
 
-    if (nbparts == 0){
-        cerr << "FATAL ERROR: Number of partitions is zero" << endl;
-        throw -1;
-    }
-    if (nbparts < parallel_cg) {
-        cerr << "ERROR: Number of partitions is smaller than the number of parallel_cg" << endl;
-        cerr << "WARNING: Increasing the number of partitions from " << nbparts
-            << " up to " << parallel_cg << endl;
-        nbparts = parallel_cg;
-    }
-    if(nbparts > m) {
-        cerr << "ERROR: Number of partitions is larger than the number of rows" << endl;
-        cerr << "WARNING: Decreasing the number of partitions from " << nbparts
-            << " down to " << m << endl;
-        nbparts = parallel_cg;
-    }
-    if (nbparts == 1 && partitioning_type == 3) {
-        cerr << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning" << endl;
-        partitioning_type = 2;
-    }
-
     if(guessPartitionsNumber == 1 && partitioning_type > 1){
         // if the number of rows is less than 1k
         if (m_o <= 1000) {
@@ -56,6 +35,28 @@ void abcd::partitionMatrix()
         mpi::communicator world;
         parallel_cg =  nbparts < world.size() ? nbparts : world.size();
     }
+
+    if (nbparts == 0){
+        cerr << "FATAL ERROR: Number of partitions is zero" << endl;
+        throw -1;
+    }
+    if (nbparts < parallel_cg) {
+        cerr << "ERROR: Number of partitions is smaller than the number of parallel_cg" << endl;
+        cerr << "WARNING: Increasing the number of partitions from " << nbparts
+            << " up to " << parallel_cg << endl;
+        nbparts = parallel_cg;
+    }
+    if(nbparts > m) {
+        cerr << "ERROR: Number of partitions is larger than the number of rows" << endl;
+        cerr << "WARNING: Decreasing the number of partitions from " << nbparts
+            << " down to " << m << endl;
+        nbparts = parallel_cg;
+    }
+    if (nbparts == 1 && partitioning_type == 3) {
+        cerr << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning" << endl;
+        partitioning_type = 2;
+    }
+
 
     switch(partitioning_type){
         

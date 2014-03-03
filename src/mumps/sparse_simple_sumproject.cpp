@@ -50,11 +50,19 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     // sparse mumps rhs
     mumps.setIcntl(20, 1);
 
-    // distributed solution
-    mumps.setIcntl(21, 1);
-    mumps.lsol_loc = mumps.getInfo(23);
-    mumps.sol_loc = new double[mumps.lsol_loc * s];
-    mumps.isol_loc = new int[mumps.lsol_loc];
+    if(intra_comm.size() > 1){
+        // distributed solution
+        mumps.setIcntl(21, 1);
+        mumps.lsol_loc = mumps.getInfo(23);
+        mumps.sol_loc = new double[mumps.lsol_loc * s];
+        mumps.isol_loc = new int[mumps.lsol_loc];
+    } else {
+        // Build the mumps rhs
+        mumps.rhs = new double[mumps.n * s];
+        mumps.lrhs = mumps.n;
+        for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
+        MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
+    }
 
     {
         mumps.irhs_ptr      = new int[s + 1];
@@ -129,21 +137,26 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
     dmumps_c(&mumps);
 
-    int part = 0;
-    int x_pos = 0;
-    int start_c;
+    double *sol_ptr;
+    int sol_lda;
+    vector<pair<int,int> > st_stop(nb_local_parts);
 
-    // get where we should look for the current part
-    if (stC[part] != -1) {
-        start_c = glob_to_part[part][stC[part]];
-    } else {
-        start_c = column_index[part].size();
-    }
-    x_pos = start_c;
-    int end_c = column_index[part].size();
-    int i_loc = 0;
+    if(intra_comm.size() > 1){
+        int part = 0;
+        int x_pos = 0;
+        int start_c;
+        sol_lda = mumps.lsol_loc;
 
-    if(target.size() == 0)
+        // get where we should look for the current part
+        if (stC[part] != -1) {
+            start_c = glob_to_part[part][stC[part]];
+        } else {
+            start_c = column_index[part].size();
+        }
+        x_pos = start_c;
+        int end_c = column_index[part].size();
+        int i_loc = 0;
+
         while (i_loc < mumps.lsol_loc){
             int isol = mumps.isol_loc[i_loc] - 1;
             if (isol >= start_c && isol < end_c){
@@ -153,31 +166,95 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             }
             i_loc++;
         }
-
-    for (int j = 0; j < s; j++) {
-        int col = mycols[j];
-        for (int i = 0; i < (int)target_idx.size(); i++) {
-            double val = mumps.sol_loc[target[i] + j * mumps.lsol_loc];
-            if(target_idx[i] < col || val == 0)
-                continue;
-            else if ( target_idx[i] == col){
-                vvals.push_back(0.5 - val);
+        sol_ptr = mumps.sol_loc;
+        for (int j = 0; j < s; j++) {
+            int col = mycols[j];
+            for (int i = 0; i < (int)target_idx.size(); i++) {
+                double val = sol_ptr[target[i] + j * sol_lda];
+                if(target_idx[i] < col || val == 0)
+                    continue;
+                else if ( target_idx[i] == col){
+                    vvals.push_back(0.5 - val);
+                }
+                else{
+                    vvals.push_back(-val);
+                }
+                vrows.push_back(target_idx[i]);
+                vcols.push_back(col);
             }
-            else{
-                vvals.push_back(-val);
-            }
-            vrows.push_back(target_idx[i]);
-            vcols.push_back(col);
+        }
+    } else {
+        int x_pos = 0;
+        sol_lda = mumps.lrhs;
+        sol_ptr = mumps.rhs;
 
+        for(int part = 0; part < nb_local_parts; part++){
+            int start_c;
+
+            vector<int> civ = column_index[part];
+
+            // get where we should look for the current part
+            if (stC[part] != -1) {
+                start_c = glob_to_part[part][stC[part]];
+            } else {
+                start_c = civ.size();
+            }
+            x_pos += start_c;
+
+            vrows.reserve((civ.size() - start_c)*s);
+            vcols.reserve((civ.size() - start_c)*s);
+            vvals.reserve((civ.size() - start_c)*s);
+
+            int ci, col, start_from = start_c;
+            double val;
+            int old_x = x_pos;
+            for(int j = 0; j < s; j++){
+                col = mycols[j];
+                x_pos = old_x;
+                start_from = min(start_c, start_from);
+                bool first_time = true;
+
+                for(size_t i = start_from; i < civ.size(); i++){
+                    ci = civ[i] - n_o;
+
+                    val = sol_ptr[x_pos + j * sol_lda];
+
+                    if(ci >= col && val != 0){
+                        // equivalent to an if/else statement
+                        val = 0.5 * (ci == col) - val;
+
+                        vvals.push_back(val);
+                        vrows.push_back(ci);
+                        vcols.push_back(col);
+
+                        if(first_time){
+                            start_from = i;
+                            first_time = false;
+                        }
+                    }
+
+
+                    x_pos++;
+                }
+
+            }
+
+            // move to the next partition
+            x_pos += partitions[part].dim(0);
         }
     }
+
 
 
     // disable sparse mumps rhs
     mumps.setIcntl(20, 0);
     mumps.setIcntl(21, 0);
+    if(intra_comm.size() > 1){
+        delete[] mumps.isol_loc;
+        delete[] mumps.sol_loc;
+    } else {
+        delete[] mumps.rhs;
+    }
 
-    delete[] mumps.isol_loc;
-    delete[] mumps.sol_loc;
     delete[] r;
 }

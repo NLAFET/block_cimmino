@@ -103,7 +103,8 @@ abcd::buildS ( std::vector<int> cols )
             int mumps_share = share;
             mumps.icntl[27 - 1] = mumps_share;
 
-            if(intra_comm.size() == 1){
+            bool dense_build = false;
+            if(dense_build){
                 MV_ColMat_double sp = spSimpleProject(cur_cols);
 
                 double *sptr = sp.ptr();
@@ -116,8 +117,8 @@ abcd::buildS ( std::vector<int> cols )
                         if(sptr[i + j * slda] != 0){
                         //if(sp(i,j)!=0){
                         //if(abs(sp(i,j))>1e-16){
-                            vc.push_back(c);
                             vr.push_back(i);
+                            vc.push_back(c);
                             vv.push_back(sptr[i + j * slda]);
                         }
                     }
