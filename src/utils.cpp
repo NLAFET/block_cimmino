@@ -1,7 +1,5 @@
 #include <abcd.h>
 #include "blas.h"
-#include <boost/lambda/lambda.hpp>
-#include <boost/lambda/bind.hpp>
 #include "mat_utils.h"
 
 using namespace std;

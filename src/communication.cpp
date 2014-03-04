@@ -48,7 +48,7 @@ void abcd::distributeData()
                 inter_comm.send(i, 6, column_index[j]);
 
 
-                if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
+                if(icntl[Controls::aug_type] > 0) inter_comm.send(i, 61, stC[j]);
             }
 
         }
@@ -68,16 +68,16 @@ void abcd::distributeData()
                 nz += parts[j].NumNonzeros();
 
                 cis.push_back(column_index[j]);
-                if(icntl[10] != 0) stcs.push_back(stC[j]);
+                if(icntl[Controls::aug_type] != 0) stcs.push_back(stC[j]);
             }
             parts.clear();
             column_index.clear();
             nb_local_parts = partitions.size();
-            if(icntl[10] != 0) stC.clear();
+            if(icntl[Controls::aug_type] != 0) stC.clear();
             for(int i = 0; i < nb_local_parts; i++){
                 //partitions[i] = tp[i];
                 column_index.push_back(cis[i]);
-                if(icntl[10] != 0) stC.push_back(stcs[i]);
+                if(icntl[Controls::aug_type] != 0) stC.push_back(stcs[i]);
             }
         } else {
             for(unsigned int i = 0; i < parts.size(); i++){
@@ -125,7 +125,7 @@ void abcd::distributeData()
             column_index.push_back(ci);
 
             int stc;
-            if(icntl[10] > 0){
+            if(icntl[Controls::aug_type] > 0){
                 inter_comm.recv(0, 61, stc);
                 stC.push_back(stc);
             }
@@ -155,7 +155,7 @@ void abcd::createInterconnections()
 {
     // Link between the current partition and the global array
     // is used only in ABCD
-    if (icntl[10] != 0) {
+    if (icntl[Controls::aug_type] != 0) {
         for(int k = 0; k < nb_local_parts; k++) {
             std::map<int, int> gt;
             std::map<int, int> ptg;
@@ -177,7 +177,7 @@ void abcd::createInterconnections()
         glob_to_local[merge_index[j]] = j;
         glob_to_local_ind.push_back(merge_index[j]);
     }
-    if (icntl[10] != 0) {
+    if (icntl[Controls::aug_type] != 0) {
         // defines the starting point of C in the local columns
         st_c_part_it = glob_to_local_ind.end();
 

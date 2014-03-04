@@ -31,7 +31,6 @@
     void
 abcd::solveABCD ( MV_ColMat_double &b )
 {
-    
     {
         MV_ColMat_double u(m, nrhs, 0);
         u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
@@ -50,7 +49,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     }
 
     t = MPI_Wtime();
-    if(dcntl[10] == 0){
+    if(dcntl[Controls::aug_filter] == 0){
         w = sumProject(1e0, b, 0e0, Xk);
     } else {
         bcg(b);
@@ -87,11 +86,9 @@ abcd::solveABCD ( MV_ColMat_double &b )
     }
 
     t = MPI_Wtime();
-    if(icntl[15] != 0){
+    if(icntl[Controls::aug_iterative] != 0){
         if(inter_comm.rank() == 0)
             cout << "* ITERATIVELY                      *" << endl;
-
-        double *f_ptr = f.ptr();
 
         VECTOR_double f0 = f.data();
         f0 = pcgS(f0);
@@ -128,7 +125,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     }
     f = MV_ColMat_double(n, 1, 0);
 
-    if(dcntl[10] == 0){
+    if(dcntl[Controls::aug_filter] == 0){
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
@@ -173,7 +170,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     IBARRIER;
 
     double rho = compute_rho(Xk, b, 0);
-    dinfo[0] = rho;
+    dinfo[Controls::residual] = rho;
 
     if(IRANK == 0) {
         t = MPI_Wtime();
@@ -186,13 +183,13 @@ abcd::solveABCD ( MV_ColMat_double &b )
             inter_comm.recv(k, 72, io[k]);
         }
         for(int k = 1; k < inter_comm.size(); k++){
-            for(int i = 0; i < io[k].size() && io[k][i] < n_o; i++){
+            for(size_t i = 0; i < io[k].size() && io[k][i] < n_o; i++){
                 int ci = io[k][i];
                 temp_sol(ci, 0) = xo[k][i] * dcol_(io[k][i]);
             }
         }
 
-        for(int i = 0; i < glob_to_local_ind.size() && glob_to_local_ind[i] < n_o ; i++){
+        for(size_t i = 0; i < glob_to_local_ind.size() && glob_to_local_ind[i] < n_o ; i++){
             temp_sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
         }
 
@@ -202,7 +199,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
             double nrmxf =  infNorm(xf);
-            dinfo[1] = nrmxf/nrmXf;
+            dinfo[Controls::forward_error] = nrmxf/nrmXf;
         }
         cout << "Took " << MPI_Wtime() - t << endl;
 

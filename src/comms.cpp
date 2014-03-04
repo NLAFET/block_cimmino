@@ -23,339 +23,14 @@ void abcd::createInterComm()
 
 }
 
-/// Distribute the partitions over CG processes
-void abcd::distributePartitions()
-{
-    mpi::communicator world;
-
-    if(world.rank() == 0) {
-        std::vector<int> nnz_parts;
-        std::vector<int> m_parts;
-        std::vector<int> groups;
-
-        for(int k = 0; k < nbparts; k++) {
-            nnz_parts.push_back(parts[k].NumNonzeros());
-            m_parts.push_back(parts[k].dim(0));
-        }
-
-        //abcd::partitionWeights(groups, nnz_parts, parallel_cg);
-        //abcd::partitionWeights(groups, m_parts, parallel_cg);
-        abcd::partitioning(p_sets, m_parts, parallel_cg);
-        //exit(0);
-
-        clog << "Groups : " ;
-        for(int k = 0; k < parallel_cg; k++) {
-            clog << "{";
-            for(int j = 0; j < p_sets[k].size() - 1; j++)
-                clog << p_sets[k][j] << ", ";
-            clog << p_sets[k][p_sets[k].size() -1 ];
-            clog << "}, ";
-            //clog  << ", "<< p_sets[k].size();
-        }
-        clog << endl;
-
-        // first start by the master :
-        //for(int i = 0; i <= groups[0] ; i++)
-            //parts_id.push_back(i);
-
-        for(int i = 1; i < parallel_cg ; i++) {
-            // send to each CG-Master its starting and ending partitions ids
-            //std::vector<int> se;
-            //se.push_back(groups[i - 1]);
-            //se.push_back(groups[i]);
-
-            //inter_comm.send(i, 0, se);
-            inter_comm.send(i, 0, p_sets[i]);
-
-            // send to each CG-Master the corresponding col_index and partitions
-            //for(int j = se[0] + 1; j <= se[1]; j++) {
-            for(int k = 0; k < p_sets[i].size(); k++){
-                int j = p_sets[i][k];
-
-                std::vector<int> sh;
-                sh.push_back(parts[j].dim(0));
-                sh.push_back(parts[j].dim(1));
-                inter_comm.send(i, 1, parts[j].NumNonzeros());
-                inter_comm.send(i, 2, sh);
-                inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
-                inter_comm.send(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
-                inter_comm.send(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
-
-                inter_comm.send(i, 6, column_index[j]);
-
-
-                if(icntl[10] > 0) inter_comm.send(i, 61, stC[j]);
-            }
-
-        }
-        cout << "sent partitions" << endl;
-
-        // Find the interconnections between the different CG_masters
-        std::vector<std::vector<int> > group_column_index;
-        int st = 0;
-        for(int i = 0; i < parallel_cg ; i++) {
-            std::vector<std::vector<int> > cis;
-            for(int k = 0; k < p_sets[i].size(); k++){
-                int j = p_sets[i][k];
-                cis.push_back(column_index[j]);
-            }
-            std::vector<int> merge_index = mergeSortedVectors(cis);
-            group_column_index.push_back(merge_index);
-        }
-
-        cout << "Merge done" << endl;
-
-        mpi::broadcast(inter_comm, group_column_index, 0);
-
-        // Send those interconnections to the other masters
-        std::map<int, std::vector<int> > inter;
-        //for(int i = 0; i < parallel_cg; i++) 
-        {
-            int i = 0;
-            for(int j = i + 1; j < parallel_cg; j++) {
-                std::pair<std::vector<int>, std::vector<int> > p =
-                    getIntersectionIndices(
-                            group_column_index[i], group_column_index[j]
-                            );
-                col_interconnections[j] = p.first;
-            }
-        }
-
-        cout << "sent interconnections to others" << endl;
-
-        if(parallel_cg != 1){
-            //std::map<int, CompRow_Mat_double> tp;
-            std::vector<std::vector<int> > cis;
-            std::vector<int> stcs;
-
-            for(int i = 0; i < p_sets[0].size(); i++){
-                int j = p_sets[0][i];
-                //tp[i] = partitions[j];
-                partitions.push_back(parts[j]);
-                cis.push_back(column_index[j]);
-                if(icntl[10] != 0) stcs.push_back(stC[j]);
-            }
-            parts.clear();
-            column_index.clear();
-            nb_local_parts = partitions.size();
-            if(icntl[10] != 0) stC.clear();
-            for(int i = 0; i < nb_local_parts; i++){
-                //partitions[i] = tp[i];
-                column_index.push_back(cis[i]);
-                if(icntl[10] != 0) stC.push_back(stcs[i]);
-            }
-        } else {
-            for(int i = 0; i < parts.size(); i++){
-                partitions.push_back(parts[i]);
-            }
-            parts.clear();
-            nb_local_parts = partitions.size();
-        }
-
-        m_l = m;
-        n_l = n;
-        m = 0;
-        nz = 0;
-        for(int i = 0; i < nb_local_parts; i++){
-            m += partitions[i].dim(0);
-            nz += partitions[i].NumNonzeros();
-        }
-        //m = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
-        //nz = std::accumulate(partitions.begin(), partitions.end(), 0, sum_nnz);
-    } else {
-        std::vector<int> se;
-        inter_comm.recv(0, 0, se);
-        int sm = 0, snz = 0;
-        //for(int i = se[0] + 1; i <= se[1]; i++) {
-        for(int i = 0; i < se.size(); i++) {
-
-            // The partition number to be added
-            //parts_id.push_back(i);
-
-            // THe partition data
-            std::vector<int> sh;
-            int l_nz, l_m, l_n;
-            inter_comm.recv(0, 1, l_nz);
-            inter_comm.recv(0, 2, sh);
-            inter_comm.recv(0, 21, n);
-            l_m = sh[0];
-            l_n = sh[1];
-
-            int *l_jcn = new int[l_nz];
-            int *l_irst = new int[l_m + 1];
-            double *l_v = new double[l_nz];
-
-            inter_comm.recv(0, 3, l_jcn, l_nz);
-            inter_comm.recv(0, 4, l_irst, l_m + 1);
-            inter_comm.recv(0, 5, l_v, l_nz);
-
-            // Continue the communications and let the initialization of the matrix at the end
-            std::vector<int> ci;
-            inter_comm.recv(0, 6, ci);
-            column_index.push_back(ci);
-
-            int stc;
-            if(icntl[10] > 0){
-                inter_comm.recv(0, 61, stc);
-                stC.push_back(stc);
-            }
-
-
-            // Create the matrix and push it in!
-            CompRow_Mat_double mat(l_m, l_n, l_nz, l_v, l_irst, l_jcn);
-            partitions.push_back(mat);
-
-            sm += l_m;
-            snz += l_nz;
-            delete [] l_jcn, l_irst, l_v;
-        }
-        nb_local_parts = partitions.size();
-
-        // Find the interconnections between the different CG_masters
-        std::vector<std::vector<int> > group_column_index;
-        mpi::broadcast(inter_comm, group_column_index, 0);
-
-        {
-            int i = inter_comm.rank();
-            for(int j = 0; j < group_column_index.size(); j++) {
-                if(j == inter_comm.rank()) continue;
-                std::pair<std::vector<int>, std::vector<int> > p =
-                    getIntersectionIndices(
-                            group_column_index[i], group_column_index[j]
-                            );
-                col_interconnections[j] = p.first;
-            }
-        }
-
-        // Set the number of rows and nnz handled by this CG Instance
-        m = sm;
-        nz = snz;
-    }
-    mpi::broadcast(inter_comm, m_l, 0);
-    mpi::broadcast(inter_comm, n_l, 0);
-
-    // Create a merge of the column indices
-    std::vector<int> merge_index;
-    for(int j = 0; j < nb_local_parts; j++) {
-        std::copy(column_index[j].begin(), column_index[j].end(), back_inserter(merge_index));
-    }
-    std::sort(merge_index.begin(), merge_index.end());
-    std::vector<int>::iterator last = std::unique(merge_index.begin(), merge_index.end());
-    merge_index.erase(last, merge_index.end());
-
-    for(int j = 0; j < merge_index.size(); j++) {
-        glob_to_local[merge_index[j]] = j;
-        glob_to_local_ind.push_back(merge_index[j]);
-    }
-    st_c_part_it = glob_to_local_ind.end();
-
-    while(*(st_c_part_it - 1) >= n_o) st_c_part_it--;
-
-    st_c_part = st_c_part_it - glob_to_local_ind.begin();
-
-    for(std::vector<int>::iterator iti = st_c_part_it; iti != glob_to_local_ind.end(); iti++){
-        glob_to_local_c[*iti - n_o] = iti - glob_to_local_ind.begin();
-    }
-
-    for(int k = 0; k < nb_local_parts; k++) {
-        std::map<int, int> gt;
-        std::map<int, int> ptg;
-        for(int j = 0; j < column_index[k].size(); j++) {
-            gt[column_index[k][j]] = j;
-            ptg[j] = column_index[k][j];
-        }
-        part_to_glob.push_back(ptg);
-        glob_to_part.push_back(gt);
-    }
-
-    // for each partition find a local column index for the previous merge
-    std::vector<int> indices(nb_local_parts, 0);
-
-    local_column_index = std::vector<std::vector<int> >(nb_local_parts);
-
-    for(int i = 0; i < nb_local_parts; i++) {
-        for(int j = 0; j < merge_index.size(); j++) {
-            if(indices[i] >= column_index[i].size()) continue;
-            if(column_index[i][indices[i]] == merge_index[j] &&
-                    indices[i] < column_index[i].size() ) {
-
-                local_column_index[i].push_back(j);
-                indices[i]++;
-            }
-        }
-    }
-
-    // test!
-    fast_local_column_index = new int *[nb_local_parts];
-    for(int i = 0; i < nb_local_parts; i++) {
-        indices[i] = 0;
-        int p = 0;
-        fast_local_column_index[i] = new int[local_column_index[i].size()];
-        for(int j = 0; j < merge_index.size(); j++) {
-            if(indices[i] >= column_index[i].size()) continue;
-            if(column_index[i][indices[i]] == merge_index[j] &&
-                    indices[i] < column_index[i].size() ) {
-
-                fast_local_column_index[i][p] = j;
-                p++;
-                indices[i]++;
-            }
-        }
-    }
-
-
-    // Create a Communication map for ddot
-    comm_map.assign(n, 1);
-    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); it++) {
-        // if I share data with it->first and I'm after him, let him compute!
-        if(inter_comm.rank() > it->first) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
-                if(comm_map[*i] == 1) comm_map[*i] = -1;
-            }
-        }
-    }
-    cout << comm_map.size() << endl;
-
-    std::map<int, std::vector<int>::iterator > debut;
-    std::map<int, int > their_job;
-    {
-        std::map<int, std::vector<int> > their_cols;
-        std::vector<mpi::request> reqs_c;
-        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-                it != col_interconnections.end(); it++) {
-            reqs_c.push_back(inter_comm.irecv(it->first, 40, their_cols[it->first]));
-            reqs_c.push_back(inter_comm.isend(it->first, 40, glob_to_local_ind));
-        }
-        mpi::wait_all(reqs_c.begin(), reqs_c.end());
-        reqs_c.clear();
-
-        for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
-                it != their_cols.end(); it++) {
-            their_job[it->first] = it->second.size();
-            set_intersection(
-                    glob_to_local_ind.begin(), glob_to_local_ind.end(),
-                    it->second.begin(), it->second.end(),
-                    back_inserter(col_inter[it->first])
-                    );
-        }
-
-    }
-
-    mpi::broadcast(inter_comm, selected_S_columns, 0);
-    mpi::broadcast(inter_comm, skipped_S_columns, 0);
-
-}
-
 void abcd::distributeRhs()
 {
     mpi::communicator world;
 
     mpi::broadcast(inter_comm, use_xf, 0);
 
-    if(block_size < nrhs) block_size = nrhs;
-    mpi::broadcast(inter_comm, block_size, 0);
+    if(icntl[Controls::block_size] < nrhs) icntl[Controls::block_size] = nrhs;
+    mpi::broadcast(inter_comm, icntl[Controls::block_size], 0);
 
     if(world.rank() == 0) {
 
@@ -371,7 +46,7 @@ void abcd::distributeRhs()
             rhs = new double[n_l * nrhs];
 
             srand(10); 
-            B = MV_ColMat_double(m_l, block_size);
+            B = MV_ColMat_double(m_l, icntl[Controls::block_size]);
 
             nrmXf = 0;
             Xf = MV_ColMat_double(A.dim(1), nrhs);
@@ -407,7 +82,7 @@ void abcd::distributeRhs()
                 B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
             }
         } else {
-            B = MV_ColMat_double(m_l, block_size, 0);
+            B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
             if(row_perm.size() != 0){
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < m_l; i++) {
@@ -427,19 +102,19 @@ void abcd::distributeRhs()
 
         }
 
-        if(block_size > nrhs) {
-            double *rdata = new double[m_l * (block_size - nrhs)];
+        if(icntl[Controls::block_size] > nrhs) {
+            double *rdata = new double[m_l * (icntl[Controls::block_size] - nrhs)];
 
             srand(n_l); 
-            for(int i=0; i< m_l*(block_size-nrhs); i++){ 
+            for(int i=0; i< m_l*(icntl[Controls::block_size]-nrhs); i++){ 
                 rdata[i] = (double)((rand())%10)/99.9 + 1;
                 //rdata[i] = i+1;
             }
-            MV_ColMat_double BR(rdata, m_l, block_size - nrhs, MV_Matrix_::ref);
+            MV_ColMat_double BR(rdata, m_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);
             MV_ColMat_double RR = smv(A, BR);
 
-            B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,block_size-1)) = 
-                RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, block_size-nrhs - 1));
+            B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,icntl[Controls::block_size]-1)) = 
+                RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, icntl[Controls::block_size]-nrhs - 1));
             delete[] rdata;
         }
 
@@ -462,8 +137,8 @@ void abcd::distributeRhs()
         }
 
         for(int k = 1; k < parallel_cg; k++) {
-            for(int j = 0; j < block_size; j++) {
-                for(int i = 0; i < p_sets[k].size(); i++){
+            for(int j = 0; j < icntl[Controls::block_size]; j++) {
+                for(size_t i = 0; i < p_sets[k].size(); i++){
                     int p = p_sets[k][i];
                     inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
                 }
@@ -473,12 +148,12 @@ void abcd::distributeRhs()
         if(!use_xf){
             MV_ColMat_double BB(B);
 
-            B = MV_ColMat_double(m, block_size, 0);
+            B = MV_ColMat_double(m, icntl[Controls::block_size], 0);
             int pos = 0;
-            for(int i = 0; i < p_sets[0].size(); i++){
+            for(size_t i = 0; i < p_sets[0].size(); i++){
                 int p = p_sets[0][i];
                 for(int j = 0; j < nbrows[p]; j++){
-                    for(int k = 0; k < block_size; k++){
+                    for(int k = 0; k < icntl[Controls::block_size]; k++){
                         B(pos, k) = BB(strow[p] + j, k);
                     }
                     pos++;
@@ -492,12 +167,12 @@ void abcd::distributeRhs()
 
         inter_comm.recv(0, 17, nrhs);
 
-        int size_rhs = m*block_size;
+        int size_rhs = m*icntl[Controls::block_size];
         rhs = new double[size_rhs];
-        for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
+        for(int i = 0; i < m * icntl[Controls::block_size]; i++) rhs[i] = 0;
 
-        B = MV_ColMat_double(m, block_size, 0);
-        for(int j = 0; j < block_size; j++) {
+        B = MV_ColMat_double(m, icntl[Controls::block_size], 0);
+        for(int j = 0; j < icntl[Controls::block_size]; j++) {
             int p = 0;
             for(int k = 0; k < nb_local_parts; k++){
                 inter_comm.recv(0, 18, rhs + p + j * m, partitions[k].dim(0));
@@ -509,9 +184,9 @@ void abcd::distributeRhs()
         }
     }
     // and distribute max iterations
-    mpi::broadcast(inter_comm, itmax, 0);
-    mpi::broadcast(inter_comm, threshold, 0);
-    mpi::broadcast(inter_comm, dcntl[10], 0);
+    mpi::broadcast(inter_comm, icntl[Controls::itmax], 0);
+    mpi::broadcast(inter_comm, dcntl[Controls::threshold], 0);
+    mpi::broadcast(inter_comm, dcntl[Controls::aug_filter], 0);
 
     delete[] rhs;
     A = CompRow_Mat_double();
@@ -542,7 +217,7 @@ void abcd::distributeNewRhs()
             int rows_for_k;
             inter_comm.recv(k, 16, rows_for_k);
             inter_comm.send(k, 17, nrhs);
-            for(int j = 0; j < block_size; j++) {
+            for(int j = 0; j < icntl[Controls::block_size]; j++) {
                 inter_comm.send(k, 18, b_ptr + r_pos + j * m_l, rows_for_k);
             }
 
@@ -556,12 +231,12 @@ void abcd::distributeNewRhs()
         //b = Eigen::MatrixXd(m, nrhs);
         //b.setZero();
 
-        int size_rhs = m*block_size;
+        int size_rhs = m*icntl[Controls::block_size];
         rhs = new double[size_rhs];
-        for(int i = 0; i < m * block_size; i++) rhs[i] = 0;
+        for(int i = 0; i < m * icntl[Controls::block_size]; i++) rhs[i] = 0;
 
-        B = MV_ColMat_double(m, block_size);
-        for(int j = 0; j < block_size; j++) {
+        B = MV_ColMat_double(m, icntl[Controls::block_size]);
+        for(int j = 0; j < icntl[Controls::block_size]; j++) {
 
             inter_comm.recv(0, 18, rhs + j * m, m);
             VECTOR_double t(rhs+j*m, m);

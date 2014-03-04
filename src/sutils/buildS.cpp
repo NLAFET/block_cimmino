@@ -59,12 +59,12 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
        "and average is " << total/parallel_cg <<    endl;
 
 #ifdef MUMPS_ES
-    mumps.keep[235 - 1] = icntl[8];
-    mumps.keep[261 - 1] = icntl[8];
-    mumps.keep[495 - 1] = icntl[8];
-    mumps.keep[497 - 1] = icntl[8];
+    mumps.keep[235 - 1] = icntl[Controls::exploit_sparcity];
+    mumps.keep[261 - 1] = icntl[Controls::exploit_sparcity];
+    mumps.keep[495 - 1] = icntl[Controls::exploit_sparcity];
+    mumps.keep[497 - 1] = icntl[Controls::exploit_sparcity];
 #endif
-    if(dcntl[10] == 0 || icntl[15] == 2){
+    if(dcntl[Controls::aug_type] == 0 || icntl[Controls::aug_iterative] == 2){
 
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
@@ -73,7 +73,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
         vr.reserve(my_cols.size() * my_cols.size());
         vv.reserve(my_cols.size() * my_cols.size());
 
-        int share = icntl[14];
+        int share = icntl[Controls::aug_blocking];
         vector<int> target_idx;
         vector<int> target;
 
@@ -127,7 +127,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
         for( int i = 0; i < size_c; i++){
             if(inter_comm.rank() == 0) clog << " Column " << i << " out of " << size_c << endl;
 
-            block_size = 1;
+            icntl[Controls::block_size] = 1;
             Xk = MV_ColMat_double(n, 1, 0);
             MV_ColMat_double b(m, 1, 0); 
 

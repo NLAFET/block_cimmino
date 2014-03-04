@@ -4,6 +4,11 @@
 void abcd::bcg(MV_ColMat_double &b)
 {
     double t, t1, t2, t1_total, t2_total;
+
+    int itmax = icntl[Controls::itmax];
+    double threshold = dcntl[Controls::threshold];
+    int block_size = icntl[Controls::block_size];
+
     mpi::communicator world;
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
@@ -174,11 +179,11 @@ void abcd::bcg(MV_ColMat_double &b)
         clog << "Rho Computation time : " << t2_total << endl;
         clog << endl;
     }
-    if (icntl[10] != 0)
+    if (icntl[Controls::aug_type] != 0)
         return;
 
 
-    dinfo[0] = rho;
+    dinfo[Controls::status] = rho;
 
     if(IRANK == 0) {
         t = MPI_Wtime();
@@ -191,12 +196,12 @@ void abcd::bcg(MV_ColMat_double &b)
             inter_comm.recv(k, 72, io[k]);
         }
         for(int k = 1; k < inter_comm.size(); k++){
-            for(int i = 0; i < io[k].size(); i++){
+            for(size_t i = 0; i < io[k].size(); i++){
                 int ci = io[k][i];
                 sol(ci, 0) = xo[k][i] * dcol_(ci);
             }
         }
-        for(int i = 0; i < glob_to_local_ind.size(); i++){
+        for(size_t i = 0; i < glob_to_local_ind.size(); i++){
             sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
         }
 
@@ -204,7 +209,7 @@ void abcd::bcg(MV_ColMat_double &b)
             MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
             xf = Xf - sol;
             double nrmxf =  infNorm(xf);
-            dinfo[1] =  nrmxf/nrmXf;
+            dinfo[Controls::residual] =  nrmxf/nrmXf;
         }
         clog << "took " << MPI_Wtime() - t << endl;
 

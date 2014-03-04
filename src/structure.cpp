@@ -13,23 +13,17 @@ void abcd::partitionMatrix()
     unsigned handled_rows = 0;
     unsigned ceil_per_part, floor_per_part;
     unsigned row_sum = 0;
+    int guessPartitionsNumber = icntl[Controls::part_guess];
 
     if(guessPartitionsNumber == 1 && partitioning_type > 1){
-        // if the number of rows is less than 1k
         if (m_o <= 1000) {
             nbparts = 4;
-        }
-        // if the number of rows is less than 10k
-        else if (m_o <= 10000) {
+        } else if (m_o <= 50000) {
             nbparts = 8;
-        // if the number of rows is between 10k and 160k
         } else if (m_o <= 100000) {
             nbparts = 16;
-        } else if (m_o <= 200000) {
-            nbparts = 32;
-        // if the number of rows is larger than 100k
         } else {
-            nbparts = ceil((double)m_o / 15000);
+            nbparts = ceil((double)m_o / 25000);
         }
         cout << "Estimated number of partitions: " << nbparts  << endl;
         mpi::communicator world;
@@ -120,7 +114,7 @@ void abcd::partitionMatrix()
             _c = m_o;
             _n = n_o;
             _nconst = 1;
-            _imba   = dcntl[8];
+            _imba   = dcntl[Controls::part_imbalance];
             _ne     = nz_o;
 
             //xpins   = t_A.colptr_ptr();
@@ -261,7 +255,7 @@ void abcd::analyseFrame()
         column_index.push_back( ci );
 
         // if no augmentation, then create the parts
-        if(icntl[10] == 0)
+        if(icntl[Controls::aug_type] == 0)
         {
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         } else 
@@ -274,12 +268,12 @@ void abcd::analyseFrame()
     t= MPI_Wtime();
 
     // test augmentation!
-    if(icntl[11] == 2){
+    if(dcntl[Controls::aug_analysis] == 2){
         double f = 0;
         size_c = 1;
         cout << endl;
         while(size_c > 0 && f < 0.9){
-            dcntl[10] = f;
+            dcntl[Controls::aug_filter] = f;
             cout << "filter value : " << fixed << setprecision(5) << f << " gives : ";
             abcd::augmentMatrix(loc_parts);
             cout << endl << endl;
@@ -288,7 +282,7 @@ void abcd::analyseFrame()
         exit(0);
     }
 
-    if (icntl[10] != 0) {
+    if (icntl[Controls::aug_type] != 0) {
         abcd::augmentMatrix(loc_parts);
         cout << "   time to aug : " << MPI_Wtime() - t << endl;
 
@@ -317,15 +311,15 @@ void abcd::analyseFrame()
                 //);
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
-        if (icntl[10] != 0)
+        if (icntl[Controls::aug_type] != 0)
             cout << "    time to part /w augmentation : " << MPI_Wtime() - t << endl;
         if (size_c == 0) {
             cerr << "WARNING: Size of C is zero, switching to classical cg" << endl;
-            icntl[10] = 0;
+            icntl[Controls::aug_type] = 0;
         }
     }
     // print only the size of C
-    if(icntl[11] == 1) exit(0);
+    if(dcntl[Controls::aug_analysis] == 1) exit(0);
 
 }
 
@@ -338,15 +332,15 @@ void abcd::analyseFrame()
     void
 abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
-    double filter_c = dcntl[10];
+    double filter_c = dcntl[Controls::aug_filter];
     stC = vector<int>(M.size(), -1);
     /*
      * Which augmentation to use:
      */
-    if(icntl[10] == 0){
+    if(icntl[Controls::aug_type] == 0){
         //[> No augmentation <]
         return;
-    } else if (icntl[10] == 1){
+    } else if (icntl[Controls::aug_type] == 1){
         /*
          * C_ij/-I augmentation
          */
@@ -391,8 +385,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         bool valid = false;
                         int coli = C_ij.col_ptr(k-1);
                         while(coli < C_ij.col_ptr(k)){
-                            if(icntl[15] != 0){ 
-                                if(abs(C_ij.val(coli)) >= dcntl[15]){
+                            if(icntl[Controls::aug_iterative] != 0){ 
+                                if(abs(C_ij.val(coli)) >= dcntl[Controls::aug_precond]){
                                     selected_S_columns.push_back( nbcols + k - n_o);
                                 } else {
                                     skipped_S_columns.push_back( nbcols + k - n_o);
@@ -404,7 +398,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                                 break;
                             }
 
-                            if( icntl[15] != 2 ){ // don't reduce, we just need the selected columns!
+                            if( icntl[Controls::aug_iterative] != 2 ){ // don't reduce, we just need the selected columns!
                                 valid = true; // let the force be with you, always!
                                 break;
                             }
@@ -424,8 +418,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                         bool valid = false;
                         int coli = CT_ij.col_ptr(k-1);
                         while(coli < CT_ij.col_ptr(k)){
-                            if(icntl[15] != 0){ 
-                                if(abs(CT_ij.val(coli)) >= dcntl[15]){
+                            if(icntl[Controls::aug_iterative] != 0){ 
+                                if(abs(CT_ij.val(coli)) >= dcntl[Controls::aug_precond]){
                                     selected_S_columns.push_back( nbcols + k - n_o);
                                 } else {
                                     skipped_S_columns.push_back( nbcols + k - n_o);
@@ -437,7 +431,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                                 break;
                             }
 
-                            if( icntl[15] != 2 ){ // don't reduce, we just need the selected columns!
+                            if( icntl[Controls::aug_iterative] != 2 ){ // don't reduce, we just need the selected columns!
                                 valid = true; // let the force be with you, always!
                                 break;
                             }
@@ -507,7 +501,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
-        if(icntl[11] != 0) return;
+        if(icntl[Controls::aug_analysis] != 0) return;
 
         // Augment the matrices
         for(size_t k = 0; k < M.size(); k++){
@@ -519,7 +513,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         }
 
 
-    } else if (icntl[10] == 2){
+    } else if (icntl[Controls::aug_type] == 2){
         /*
          * A_ij/-A_ji augmentation
          */
@@ -543,7 +537,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || dcntl[15] != 0) {
+                if(filter_c != 0 || dcntl[Controls::aug_iterative] != 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 
@@ -595,14 +589,14 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                             selected_cols.push_back(k);
                         }
 
-                        if(icntl[15] != 0){ 
-                            if (dcntl[15] < 0) {
-                                if ((nbcols + k - n_o) % abs((int)dcntl[15]) == 0)
+                        if(icntl[Controls::aug_iterative] != 0){ 
+                            if (dcntl[Controls::aug_precond] < 0) {
+                                if ((nbcols + k - n_o) % abs((int)dcntl[Controls::aug_precond]) == 0)
                                     selected_S_columns.push_back( nbcols + k - n_o);
                                 else
                                     skipped_S_columns.push_back( nbcols + k - n_o);
                             } else {
-                                if (mu_ij_k >= dcntl[15])
+                                if (mu_ij_k >= dcntl[Controls::aug_precond])
                                     selected_S_columns.push_back( nbcols + k - n_o);
                                 else
                                     skipped_S_columns.push_back( nbcols + k - n_o);
@@ -613,7 +607,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                     if (selected_cols.size() == 0) continue;
 
-                    if( icntl[15] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
+                    if( dcntl[Controls::aug_iterative] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
                         A_ij = sub_matrix(A_ij, selected_cols);
                         A_ji = sub_matrix(A_ji, selected_cols);
                     }
@@ -632,7 +626,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
-        if(icntl[11] != 0) return;
+        if(dcntl[Controls::aug_analysis] != 0) return;
 
         // Augment the matrices
         for(size_t k = 0; k < M.size(); k++){
@@ -643,7 +637,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
             M[k] = resize_columns(M[k], nbcols);
         }
 
-    } else if (icntl[10] == 3){
+    } else if (icntl[Controls::aug_type] == 3){
         /*
          * SVD augmentation
          */

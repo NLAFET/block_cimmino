@@ -27,9 +27,10 @@
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/progress.hpp>
-#include <boost/lambda/lambda.hpp>
 //#include <boost/range/adaptors.hpp>
 //#include <boost/range/algorithm.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/lambda/bind.hpp>
 
 /*
  * A small hack to make Sparselib++ work with openmpi
@@ -43,6 +44,7 @@
 #include "mvm.h"
 
 #include "splib_utils.h"
+#include "defaults.h"
 
 /* Some macros*/
 #define IRANK inter_comm.rank()
@@ -59,6 +61,7 @@
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;
+using namespace boost::lambda;
 //using namespace boost::adaptors;
 
 class abcd
@@ -249,12 +252,6 @@ public:
      */
     int partitioning_type;
 
-    /*!
-     * Guess the number of partitions
-     * * 1 based on the number of rows
-     */
-    int guessPartitionsNumber;
-
     int nbparts; /// The number of partitions
     int nb_local_parts;
     VECTOR_int strow; /// The starting row index of each partition
@@ -287,10 +284,6 @@ public:
     /// Contains the partitions that are handled by this instance
     std::vector<int> parts_id;
 
-    int block_size;
-    int itmax;
-    double threshold;
-
     bool verbose;
 
 
@@ -318,10 +311,10 @@ public:
      *  - __icntl[14]__: the blocking-factor used when building \f$S\f$
      *  - __icntl[15]__: solve \f$Sz =f\f$ iteratively
      */
-    int icntl[20];
-    double dcntl[20];
-    int info[20];
-    double dinfo[20];
+    std::vector<int> icntl;
+    std::vector<double> dcntl;
+    std::vector<int> info;
+    std::vector<double> dinfo;
 
     int initializeMatrix();
     int preprocessMatrix();

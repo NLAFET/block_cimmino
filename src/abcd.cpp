@@ -11,6 +11,7 @@
  */
 
 #include <abcd.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,27 +21,39 @@ abcd::abcd()
 {
     nrhs = 1;
     start_index = 0;
-    block_size = 1;
     use_xk = false;
     use_xf = false;
     rhs = NULL;
     size_c = 0;
     verbose = false;
-    threshold = 1e-12;
     runSolveS = false;
-    guessPartitionsNumber = 0;
-    for (int i = 0; i < 20; i++) {
-        icntl[i] = 0;
-        dcntl[i] = 0;
-        info[i] = 0;
-        dinfo[i] = 0;
-    }
-    
-    irn = 0;
-    jcn = 0;
-    val = 0;
 
-    icntl[14] = 16;
+    irn = nullptr;
+    jcn = nullptr;
+    val = nullptr;
+
+    verbose = 0;
+
+    icntl.assign(20, 0);
+    dcntl.assign(20, 0);
+    info.assign(2, 0);
+    dinfo.assign(2, 0);
+
+    partitioning_type = 2;
+    icntl[Controls::aug_blocking] = 256;
+
+    icntl[Controls::nbparts] = 4;
+    icntl[Controls::part_type] = 2;
+    dcntl[Controls::part_imbalance] = 0.5;
+    icntl[Controls::part_guess] = 1;
+    icntl[Controls::scaling] = 2;
+    icntl[Controls::itmax] = 1000;
+    icntl[Controls::block_size] = 1;
+    dcntl[Controls::threshold] = 1e-12;
+
+    icntl[Controls::verbose_level] = 0;
+    info[Controls::status] = 0;
+
 }
 
 abcd::~abcd()
@@ -88,7 +101,9 @@ int abcd::initializeMatrix()
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
         cout << "convert splib : " << MPI_Wtime() - t << endl;
-        delete[] t_irn, t_jcn, t_val;
+        delete[] t_irn;
+        delete[] t_jcn;
+        delete[] t_val;
     } else {
         //t = MPI_Wtime();
         //CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
@@ -146,19 +161,17 @@ int abcd::factorizeAugmentedSystems()
         mpi::broadcast(inter_comm, m_o, 0);
         mpi::broadcast(inter_comm, n_o, 0);
         mpi::broadcast(inter_comm, nz_o, 0);
-        mpi::broadcast(inter_comm, icntl, 20, 0);
-        mpi::broadcast(inter_comm, dcntl, 20, 0);
-        if( icntl[10] != 0 )
+
+        mpi::broadcast(inter_comm, icntl, 0);
+        mpi::broadcast(inter_comm, dcntl, 0);
+
+        if( icntl[Controls::aug_type] != 0 )
             mpi::broadcast(inter_comm, size_c, 0);
     }
 
     if(instance_type == 0) {
-        //abcd::distributePartitions();
-        //IBARRIER; exit(0);
-
         abcd::distributeData();
         abcd::createInterconnections();
-        //IBARRIER; exit(0);
     }
     
     abcd::initializeCimmino();
@@ -190,22 +203,22 @@ int abcd::solveSystem()
     }
     if(instance_type == 0) {
 
-        mpi::broadcast(inter_comm, icntl, 20, 0);
-        mpi::broadcast(inter_comm, dcntl, 20, 0);
+        mpi::broadcast(inter_comm, icntl, 0);
+        mpi::broadcast(inter_comm, dcntl, 0);
 
-        if(size_c == 0 && inter_comm.rank() == 0 && icntl[10] != 0){
+        if(size_c == 0 && inter_comm.rank() == 0 && icntl[Controls::aug_type] != 0){
             cout << "Size of S is 0, therefore launching bcg" << endl;
-            icntl[10] = 0;
+            icntl[Controls::aug_type] = 0;
         }
 
         abcd::distributeRhs();
-        if(icntl[10] == 0 || icntl[12] != 0 || runSolveS){
+        if(icntl[Controls::aug_type] == 0 || icntl[Controls::aug_project] != 0 || runSolveS){
             abcd::bcg(B);
         } else{
-            int temp_bs = block_size;
-            block_size = 1;
+            int temp_bs = icntl[Controls::block_size];
+            icntl[Controls::block_size] = 1;
             abcd::solveABCD(B);
-            block_size = temp_bs;
+            icntl[Controls::block_size] = temp_bs;
         }
 
         int job = -1;
@@ -214,9 +227,9 @@ int abcd::solveSystem()
         if(inter_comm.rank() == 0){
             clog << endl
                  << "======================================" << endl;
-            clog << "Backward error : " << scientific << dinfo[0] << endl;
+            clog << "Backward error : " << scientific << dinfo[Controls::residual] << endl;
             if (Xf.dim(0) != 0)
-                clog << "Forward error : " << scientific << dinfo[1] << endl;
+                clog << "Forward error : " << scientific << dinfo[Controls::forward_error] << endl;
             clog << "======================================" << endl << endl;
         }
 

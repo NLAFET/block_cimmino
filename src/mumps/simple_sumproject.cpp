@@ -4,7 +4,7 @@ using namespace  boost::lambda;
 
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
-    bool dense_rhs = (icntl[13] == 1);
+    bool dense_rhs = (icntl[Controls::aug_dense] == 1);
     //dense_rhs = true;
 
     int s = mycols.size();

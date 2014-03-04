@@ -13,7 +13,7 @@ void abcd::preprocess()
     dcol_ = VECTOR_double(n, double(1));
     drow_ = VECTOR_double(m, double(1));
 
-    if(icntl[9] >= 1) {
+    if(icntl[Controls::scaling] >= 1) {
         //drow_ = VECTOR_double(m, double(1));
 
         std::clog << "[-] Scaling with Infinity" << std::endl;
@@ -37,7 +37,7 @@ void abcd::preprocess()
     }
 
 
-    if(icntl[9] == 2) {
+    if(dcntl[Controls::scaling] == 2) {
         std::cout << "[-] Scaling with Norm 1" << std::endl;
         abcd::scaleMatrix(1);
 

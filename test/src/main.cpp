@@ -1,5 +1,3 @@
-#include "abcd.h"
-#include "mumps.h"
 
 #include <iostream>
 #include <string>
@@ -12,6 +10,8 @@
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 
+#include "abcd.h"
+#include "mumps.h"
 
 using namespace std;
 using namespace boost::property_tree;
@@ -219,9 +219,9 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        obj.partitioning_type = pt.get<int>("partitioning.type", 2);
-        obj.guessPartitionsNumber = pt.get<int>("partitioning.guess", 0);
-        obj.dcntl[8] = pt.get<double>("partitioning.imba", 0.5);
+        obj.icntl[Controls::part_type] = pt.get<int>("partitioning.type", 2);
+        obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.guess", 0);
+        obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.imba", 0.5);
 
         if(obj.partitioning_type == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
@@ -264,20 +264,20 @@ int main(int argc, char* argv[])
 
         obj.write_problem   = pt.get<string>("write_problem", "");
 
-        obj.icntl[8]    = pt.get<int>("esparse", 0);
-        obj.icntl[9]    = pt.get<int>("scaling", 2);
+        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("esparse", 0);
+        obj.icntl[Controls::scaling]    = pt.get<int>("scaling", 2);
 
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
 
         if(augmentation){
-            obj.icntl[10]   = pt.get<int>("augmentation.type", 2);
-            obj.dcntl[10]   = pt.get<double>("augmentation.filtering", 0.0);
-            obj.icntl[11]   = pt.get<int>("augmentation.analysis", 0);
-            obj.icntl[12]   = pt.get<int>("augmentation.project_only", 0);
-            obj.icntl[13]   = pt.get<int>("augmentation.denserhs", 0);
-            obj.icntl[14]   = pt.get<int>("augmentation.multirhs", 256);
-            obj.icntl[15]   = pt.get<int>("augmentation.iterative", 0);
-            obj.dcntl[15]   = pt.get<double>("augmentation.precond", 0.0);
+            obj.icntl[Controls::aug_type]   = pt.get<int>("augmentation.type", 2);
+            obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
+            obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
+            obj.icntl[Controls::aug_project]   = pt.get<int>("augmentation.project_only", 0);
+            obj.icntl[Controls::aug_dense]   = pt.get<int>("augmentation.denserhs", 0);
+            obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.multirhs", 256);
+            obj.icntl[Controls::aug_iterative]   = pt.get<int>("augmentation.iterative", 0);
+            obj.dcntl[Controls::aug_precond]   = pt.get<double>("augmentation.precond", 0.0);
             obj.write_s     = pt.get<string>("augmentation.write_s", "");
         }
 
@@ -298,11 +298,11 @@ int main(int argc, char* argv[])
             obj.nrhs = 1;
             obj.use_xf = false;
 
-            if(argc <= 4) obj.block_size = pt.get<int>("system.block_size", 1);
-            else obj.block_size = atoi(argv[4]);
+            if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
+            else obj.icntl[Controls::block_size] = atoi(argv[4]);
 
-            obj.itmax = pt.get<int>("system.itmax", 2000);
-            obj.threshold = pt.get<double>("system.threshold", 1e-12);
+            obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
+            obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
 
             obj.verbose =  pt.get<int>("solve_verbose", 0);
             obj.bc(3);

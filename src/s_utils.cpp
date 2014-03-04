@@ -272,7 +272,7 @@ abcd::pcgS ( VECTOR_double &b )
     int max_iter = size_c;
 
     MUMPS mu;
-    if(dcntl[15] != 0) mu = buildM();
+    if(dcntl[Controls::aug_precond] != 0) mu = buildM();
     double t = MPI_Wtime();
 
     VECTOR_double p, z, q;
@@ -298,7 +298,7 @@ abcd::pcgS ( VECTOR_double &b )
 
     for (int i = 1; i <= max_iter; i++) {
         TIC;
-        if(dcntl[15] != 0) { 
+        if(dcntl[Controls::aug_precond] != 0) { 
             z = solveM(mu, r);
         } else {
             z = r;
