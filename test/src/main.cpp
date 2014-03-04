@@ -211,10 +211,10 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        if(argc <= 3) obj.nbparts = pt.get<int>("partitioning.nbparts");
-        else obj.nbparts = atoi(argv[3]);
+        if(argc <= 3) obj.icntl[Controls::nbparts] = pt.get<int>("partitioning.nbparts");
+        else obj.icntl[Controls::nbparts] = atoi(argv[3]);
 
-        if(obj.nbparts < 0 && obj.nbparts <= obj.m) {
+        if(obj.icntl[Controls::nbparts] < 0 && obj.icntl[Controls::nbparts] <= obj.m) {
             clog << "Error parsing the file, the number of partitions has to be positive and smaller than the number of rows" << endl;
             exit(-1);
         }
@@ -223,7 +223,7 @@ int main(int argc, char* argv[])
         obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.guess", 0);
         obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.imba", 0.5);
 
-        if(obj.partitioning_type == 1){
+        if(obj.icntl[Controls::part_type] == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
             std::vector<int> nrows;
 
@@ -245,7 +245,7 @@ int main(int argc, char* argv[])
                 ifstream f;
                 f.open(parts.c_str());
 
-                for(unsigned k = 0; k < (unsigned int)obj.nbparts; k++) {
+                for(unsigned k = 0; k < (unsigned int)obj.icntl[Controls::nbparts]; k++) {
                     string l;
                     getline(f, l);
                     nrows.push_back(atoi(l.c_str()));
@@ -254,12 +254,12 @@ int main(int argc, char* argv[])
                 f.close();
             }
 
-            if(nrows.size() != (size_t)obj.nbparts){
+            if(nrows.size() != (size_t)obj.icntl[Controls::nbparts]){
                 clog << "Error parsing the file, nbparts is different from the partitioning description" << endl;
                 exit(-1);
             }
 
-            obj.nbrows = VECTOR_int(&nrows[0], obj.nbparts);
+            obj.nbrows = VECTOR_int(&nrows[0], obj.icntl[Controls::nbparts]);
         }
 
         obj.write_problem   = pt.get<string>("write_problem", "");
@@ -281,7 +281,7 @@ int main(int argc, char* argv[])
             obj.write_s     = pt.get<string>("augmentation.write_s", "");
         }
 
-        obj.parallel_cg = pt.get<int>("dist_scheme", obj.nbparts < world.size() ? obj.nbparts : world.size());
+        obj.parallel_cg = pt.get<int>("dist_scheme", obj.icntl[Controls::nbparts] < world.size() ? obj.icntl[Controls::nbparts] : world.size());
 
         bool error = false;
         try {

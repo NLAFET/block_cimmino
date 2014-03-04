@@ -245,13 +245,6 @@ public:
      * Partitioning informations
     ***************************************************************************/
 
-    /*!
-     * Defines the type of partitioning :
-     * * 1 for manual partitioning (nbparts and nbrows are suplied)
-     * * 2 for automatic partitioning (nbparts only is needed)
-     */
-    int partitioning_type;
-
     int nbparts; /// The number of partitions
     int nb_local_parts;
     VECTOR_int strow; /// The starting row index of each partition

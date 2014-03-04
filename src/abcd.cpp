@@ -39,7 +39,6 @@ abcd::abcd()
     info.assign(2, 0);
     dinfo.assign(2, 0);
 
-    partitioning_type = 2;
     icntl[Controls::aug_blocking] = 256;
 
     icntl[Controls::nbparts] = 4;
@@ -138,6 +137,8 @@ int abcd::preprocessMatrix()
 {
     mpi::communicator world;
     if(world.rank() != 0) return 0;
+
+    nbparts = icntl[Controls::nbparts];
     
     abcd::partitionMatrix();
     

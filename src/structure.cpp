@@ -15,7 +15,7 @@ void abcd::partitionMatrix()
     unsigned row_sum = 0;
     int guessPartitionsNumber = icntl[Controls::part_guess];
 
-    if(guessPartitionsNumber == 1 && partitioning_type > 1){
+    if(guessPartitionsNumber == 1 && icntl[Controls::part_type] > 1){
         if (m_o <= 1000) {
             nbparts = 4;
         } else if (m_o <= 50000) {
@@ -46,13 +46,13 @@ void abcd::partitionMatrix()
             << " down to " << m << endl;
         nbparts = parallel_cg;
     }
-    if (nbparts == 1 && partitioning_type == 3) {
+    if (nbparts == 1 && icntl[Controls::part_type] == 3) {
         cerr << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning" << endl;
-        partitioning_type = 2;
+        icntl[Controls::part_type] = 2;
     }
 
 
-    switch(partitioning_type){
+    switch(icntl[Controls::part_type]){
         
         /*-----------------------------------------------------------------------------
          *  Uniform partitioning with a given nbrows
@@ -268,7 +268,7 @@ void abcd::analyseFrame()
     t= MPI_Wtime();
 
     // test augmentation!
-    if(dcntl[Controls::aug_analysis] == 2){
+    if(icntl[Controls::aug_analysis] == 2){
         double f = 0;
         size_c = 1;
         cout << endl;
@@ -319,7 +319,7 @@ void abcd::analyseFrame()
         }
     }
     // print only the size of C
-    if(dcntl[Controls::aug_analysis] == 1) exit(0);
+    if(icntl[Controls::aug_analysis] == 1) exit(0);
 
 }
 
@@ -537,7 +537,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     A_ji.val(k) *= double(-1);
 
 
-                if(filter_c != 0 || dcntl[Controls::aug_iterative] != 0) {
+                if(filter_c != 0 || icntl[Controls::aug_iterative] != 0) {
                     std::vector<int> selected_cols;
                     std::vector<double> frob_ij, mu;
 
@@ -607,7 +607,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                     if (selected_cols.size() == 0) continue;
 
-                    if( dcntl[Controls::aug_iterative] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
+                    if( icntl[Controls::aug_iterative] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
                         A_ij = sub_matrix(A_ij, selected_cols);
                         A_ji = sub_matrix(A_ji, selected_cols);
                     }
@@ -626,7 +626,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
         size_c = nbcols - A.dim(1);
         n = nbcols;
 
-        if(dcntl[Controls::aug_analysis] != 0) return;
+        if(icntl[Controls::aug_analysis] != 0) return;
 
         // Augment the matrices
         for(size_t k = 0; k < M.size(); k++){

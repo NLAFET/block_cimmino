@@ -37,7 +37,7 @@ void abcd::preprocess()
     }
 
 
-    if(dcntl[Controls::scaling] == 2) {
+    if(icntl[Controls::scaling] == 2) {
         std::cout << "[-] Scaling with Norm 1" << std::endl;
         abcd::scaleMatrix(1);
 
