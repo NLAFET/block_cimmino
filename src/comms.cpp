@@ -12,7 +12,10 @@ void abcd::createInterComm()
 
     mpi::broadcast(world, parallel_cg, 0);
 
-    if(parallel_cg > world.size()) throw - 14;
+    if(parallel_cg > world.size()){
+        info[Controls::status] = -8;
+        throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
+    }
 
     inter_comm = world.split(world.rank() < parallel_cg);
 

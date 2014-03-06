@@ -31,8 +31,8 @@ void abcd::partitionMatrix()
     }
 
     if (nbparts == 0){
-        cerr << "FATAL ERROR: Number of partitions is zero" << endl;
-        throw -1;
+        info[Controls::status] = -3;
+        throw std::runtime_error("FATAL ERROR: Number of partitions is zero");
     }
     if (nbparts < parallel_cg) {
         cerr << "ERROR: Number of partitions is smaller than the number of parallel_cg" << endl;
@@ -136,8 +136,10 @@ void abcd::partitionMatrix()
             nwghts  = NULL;
 
             if( ret = PaToH_Alloc(&args, _c, _n, _nconst, cwghts, nwghts, xpins, pins) ){
-                cerr << "Error : PaToH Allocation problem : " << ret << endl;
-                throw -1;
+                info[Controls::status] = -4;
+                stringstream err; 
+                err <<"Error : PaToH Allocation problem : " << ret;
+                throw std::runtime_error(err.str());
             }
 
 
@@ -154,9 +156,8 @@ void abcd::partitionMatrix()
                             xpins, pins, NULL, partvec, partweights, &cut);
             for (int i = 0; i < nbparts; i++) {
                 if (partweights[i] == 0) {
-                    cerr << "FATAL ERROR: PaToH produced an empty partition" << endl
-                        << "Try to reduce the imbalancing factor" << endl;
-                    throw -1;
+                    info[Controls::status] = -5;
+                    throw std::runtime_error("FATAL ERROR: PaToH produced an empty partition, Try to reduce the imbalancing factor");
                 }
             }
 
@@ -216,7 +217,8 @@ void abcd::partitionMatrix()
             PaToH_Free();
             t_A = CompCol_Mat_double();
 #else
-	    throw -99;
+            info[Controls::status] = -6;
+            throw std::runtime_error("Trying to use PaToH while it is not available");
 #endif
             break;
     }

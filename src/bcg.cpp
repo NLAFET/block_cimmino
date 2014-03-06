@@ -12,7 +12,10 @@ void abcd::bcg(MV_ColMat_double &b)
     mpi::communicator world;
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
-    if(s < 1) throw - 51;
+    if(s < 1){
+        info[Controls::status] = -10;
+        throw std::runtime_error("Block size should be at least one (1)");
+    } 
 
     //exit(0);
     if(!use_xk) {
@@ -57,10 +60,6 @@ void abcd::bcg(MV_ColMat_double &b)
     // ITERATION k = 0                                 *
     // **************************************************
 
-    //for(int k = 0; k < B.dim(1); k++){
-        //VECTOR_double vt = B(k);
-        //u.setCol(vt, k);
-    //}
     t1_total = MPI_Wtime();
     if(use_xk) {
         MV_ColMat_double sp = sumProject(1e0, b, -1e0, Xk);
@@ -91,7 +90,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double ti = MPI_Wtime();
 
     t2_total = MPI_Wtime();
-    rho = compute_rho(Xk, u, thresh);
+    rho = compute_rho(Xk, u);
     t2_total = MPI_Wtime() - t2_total;
     cout << "H" << endl;
     if(inter_comm.rank() == 0 && verbose) {
@@ -99,10 +98,6 @@ void abcd::bcg(MV_ColMat_double &b)
     }
 
     while((rho > thresh) && (it < itmax)) {
-        //if(inter_comm.rank() == inter_comm.size() - 1) {
-            //// a simple hack to clear the screen on unix systems
-            //cout << "ITERATION " << it + 1 << " Rho = " << rho << endl;
-        //}
         it++;
         t = MPI_Wtime();
 
@@ -127,7 +122,6 @@ void abcd::bcg(MV_ColMat_double &b)
 
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
-        //xk.block(0, 0, n, nrhs) += (p * lambdak).block(0, 0, n, nrhs);
 
         // R = R - QP * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
@@ -136,8 +130,6 @@ void abcd::bcg(MV_ColMat_double &b)
         if(gqr(r, r, gammak, s, false) != 0)
             gmgs(r, r, gammak, s, false);
 
-        //if(inter_comm.rank() == 0)
-            //cout << "Time : " << MPI_Wtime() - tc << endl << endl;;
         MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
         gu = MV_ColMat_double(upperMat(gu));
 
@@ -145,17 +137,13 @@ void abcd::bcg(MV_ColMat_double &b)
         gammak = upperMat(gammak);
         MV_ColMat_double bu = upperMat(betak);
 
-
-        //MV_ColMat_double gt = gammak.transpose();
-        //cout << bu.dim(1) << " " << gt.dim(1) << endl;
-
         // bu * gammak^T
         betak = gemmColMat(bu, gammak, false, true);
 
         p = r + gemmColMat(p, betak);
 
         t2 = MPI_Wtime();
-        rho = abcd::compute_rho(Xk, u, thresh);
+        rho = abcd::compute_rho(Xk, u);
         t2 = MPI_Wtime() - t2;
         normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
@@ -224,7 +212,7 @@ void abcd::bcg(MV_ColMat_double &b)
     }
 }
 
-double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u, double thresh)
+double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
 {
     double nrmXfmX;
     double nrmR, nrmX, rho;
@@ -382,13 +370,11 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
         dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, ap_ptr, &lda_ap, &beta, l_r_ptr, &s);
 
-        //loc_r = MV_ColMat_double(r_ptr, s, s);
     } else{
         int lda_p = loc_p.lda();
         int loc_n = p.dim(0);
 
         dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, p_ptr, &lda_p, &beta, l_r_ptr, &s);
-        //loc_r = MV_ColMat_double(r_ptr, s, s);
     }
 
 
@@ -396,32 +382,19 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     char right = 'R';
 
     double *r_ptr = r.ptr();
-    //int rsz = s* s;
 
-
-    //double tt = MPI_Wtime();
-    //mpi::reduce(inter_comm, l_r_ptr, rsz,  r_ptr, std::plus<double>(), 0);
-    //mpi::broadcast(inter_comm, r_ptr, rsz , 0);
-    
     mpi::all_reduce(inter_comm, l_r_ptr, s * s,  r_ptr, std::plus<double>());
-    //cout << "sub time " << MPI_Wtime() - tt << endl;
-    //
-    // AVOID PROBLEMS : TEST :
-     //TEST!
-    if(abs(r_ptr[0]) < 1e-16 && r_ptr[0] < -1e-16){
-        cout << "Magic applied in GQR : " << r_ptr[0] << endl;
-        r_ptr[0] = abs(r_ptr[0]);
-    }
 
     // P = PR^-1    <=> P^T = R^-T P^T
     dpotrf_(&up, &s, r_ptr, &s, &ierr);
 
-//     For the moment if there is an error, just crash!
     if(ierr != 0){
-        cout << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
-        //exit(0);
-        return ierr;
+        stringstream err;
+        err << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
+        info[Controls::status] = -11;
+        throw std::runtime_error(err.str());
     }
+
     p_ptr = p.ptr();
     ap_ptr = ap.ptr();
 
@@ -429,7 +402,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     if(use_a){
         dtrsm_(&right, &up, &no, &no, &n, &s, &alpha, r_ptr, &s, ap_ptr, &n);
     }
-    //r = MV_ColMat_double(r_ptr, r.dim(0), r.dim(1));
 
     return 0;
 }

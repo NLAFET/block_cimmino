@@ -12,6 +12,7 @@
 
 #include <abcd.h>
 #include <algorithm>
+#include <exception>
 
 using namespace std;
 
@@ -69,9 +70,14 @@ int abcd::initializeMatrix()
     // Check that the matrix data is present
     if(irn == 0 || jcn == 0 || val == 0) {
         // Hey!! where is my data?
-        throw - 1;
+        info[Controls::status] = -1;
+        throw std::runtime_error("Unallocated matrix vectors");
     }
-
+    cout << m << '\t' << n << '\t' << nz << endl;
+    if(m <= 0 || n <= 0 || nz <= 0){
+        info[Controls::status] = -2;
+        throw std::range_error("Errornous information about the matrix");
+    }
 
     double t = MPI_Wtime();
     if(sym) {
@@ -104,21 +110,13 @@ int abcd::initializeMatrix()
         delete[] t_jcn;
         delete[] t_val;
     } else {
-        //t = MPI_Wtime();
-        //CooMatrix<> T(m, n, nz, irn, jcn, val, false, true);
-        //cout << "yasl : " << MPI_Wtime() - t << endl;
-
-        //t = MPI_Wtime();
-        //CsrMatrix<> M(T);
-        //cout << "convert yasl : " << MPI_Wtime() - t << endl;
-
         t = MPI_Wtime();
         for(int i=0; i<nz; i++){
             irn[i]--;
             jcn[i]--;
         }
         Coord_Mat_double t_A;
-        t_A = Coord_Mat_double(m, n, nz, val, irn, jcn);
+        t_A = Coord_Mat_double(m, n, nz, val, irn, jcn, MV_Matrix_::ref);
         cout << "before splib : " << MPI_Wtime() - t << endl;
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
@@ -242,6 +240,9 @@ int abcd::solveSystem()
 }
     
 ///  The gateway function that launches all other options
+///
+/// \param job The job id
+/// \return Status code
 int abcd::bc(int job)
 {
     switch(job) {

@@ -139,7 +139,7 @@ private:
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
     void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U, double thresh);
+    double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U);
     std::vector<double> normres;
     int size_c;
 

@@ -169,7 +169,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
     IBARRIER;
 
-    double rho = compute_rho(Xk, b, 0);
+    double rho = compute_rho(Xk, b);
     dinfo[Controls::residual] = rho;
 
     if(IRANK == 0) {
