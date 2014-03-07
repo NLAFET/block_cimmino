@@ -21,9 +21,9 @@ void abcd::partitionMatrix()
         } else if (m_o <= 50000) {
             nbparts = 8;
         } else if (m_o <= 100000) {
-            nbparts = 16;
+            nbparts = ceil((double)m_o / 10000);
         } else {
-            nbparts = ceil((double)m_o / 25000);
+            nbparts = ceil((double)m_o / 20000);
         }
         cout << "Estimated number of partitions: " << nbparts  << endl;
         mpi::communicator world;
