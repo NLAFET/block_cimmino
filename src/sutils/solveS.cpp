@@ -71,9 +71,9 @@ abcd::solveS ( MV_ColMat_double &f )
     if(inter_comm.rank() == 0){ 
         if(write_s.length() != 0)
             strcpy(mu.write_problem, write_s.c_str());
-        mu.icntl[0] = -1;
-        mu.icntl[1] = -1;
-        mu.icntl[2] = -1;
+        mu.icntl[0] = 6;
+        mu.icntl[1] = 6;
+        mu.icntl[2] = 6;
     }
 
     mu.n = size_c;

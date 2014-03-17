@@ -8,6 +8,7 @@
  * use a pseudo-direct solution scheme that will provide the solution in
  * a single step.
  * \section Usage
+ * usage here, so fun
  */
 
 #include <abcd.h>

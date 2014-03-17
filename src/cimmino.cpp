@@ -14,7 +14,14 @@ void abcd::initializeCimmino()
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Initializing MUMPS" << endl;
             initializeMumps(mumps, true);
-            createAugmentedSystems(mumps);
+            createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
+
+            mumps.n = n_aug;
+            mumps.nz = nz_aug;
+            mumps.irn = &irn_aug[0];
+            mumps.jcn = &jcn_aug[0];
+            mumps.a = &val_aug[0];
+
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Launching Initial MUMPS analysis" << endl;
             analyseAugmentedSystems(mumps);
@@ -26,23 +33,27 @@ void abcd::initializeCimmino()
 
 
         if(instance_type == 0) {
-//            mumps.job = -2;
-//            dmumps_c(&mumps);
+            mumps.job = -2;
+            dmumps_c(&mumps);
         }
+
+        allocateMumpsSlaves(mumps);
+        initializeMumps(mumps);
+
+    } else {
+        allocateMumpsSlaves(mumps);
+        initializeMumps(mumps);
+
+        createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
     }
 
-    allocateMumpsSlaves(mumps);
-    initializeMumps(mumps);
-    //ordering given
-    //mumps.setIcntl(7,1);
-    //mumps.setIcntl(6,5);
-    //mumps.setIcntl(8,-2);
-    //mumps.setIcntl(28,2);
-
     if(instance_type == 0) {
-        createAugmentedSystems(mumps);
-        //mumps.perm_in = sym_perm;
+        mumps.n = n_aug;
+        mumps.nz = nz_aug;
+        mumps.irn = &irn_aug[0];
+        mumps.jcn = &jcn_aug[0];
+        mumps.a = &val_aug[0];
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)

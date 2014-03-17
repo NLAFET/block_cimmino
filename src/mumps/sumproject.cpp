@@ -17,7 +17,6 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     int pos = 0;
     int b_pos = 0;
     MV_ColMat_double Delta(n, s, 0);
-    double ti = 0, to;
     double *xpt = X.ptr();
     int xlda = X.lda();
     int dlda = Delta.lda();
@@ -37,7 +36,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
             // avoid useless operations
             if(beta != 0){
                 int x_pos = 0;
-                for(int i = 0; i < local_column_index[k].size(); i++) {
+                for(size_t i = 0; i < local_column_index[k].size(); i++) {
                     int ci = local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
                         cxpt[x_pos + j * cxlda] = xpt[ci + j * xlda];
@@ -90,7 +89,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         if(nb_local_parts > 1)
         {
             for(int k = 0; k < nb_local_parts; k++) {
-                for(int i = 0; i < local_column_index[k].size(); i++) {
+                for(size_t i = 0; i < local_column_index[k].size(); i++) {
                     //int ci = local_column_index[k][i];
                     int ci = local_column_index[k][i];
                     for(int j = 0; j < s; j++) {
@@ -105,7 +104,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
         } else
         {
-            for(int i = 0; i < local_column_index[0].size(); i++) {
+            for(size_t i = 0; i < local_column_index[0].size(); i++) {
                 int ci = local_column_index[0][i];
                 for(int j = 0; j < s; j++) {
                     dpt[ci + j * dlda] = mumps.rhs[x_pos + j * mumps.n];
@@ -127,13 +126,12 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     std::vector<mpi::status> sts;
     std::vector<mpi::request> reqs;
-    int id_to = 0;
 
     double t = MPI_Wtime();
     double t1 = t;
     double t2 = 0;
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); it++) {
+            it != col_interconnections.end(); ++it) {
 
         if(it->second.size() == 0) continue;
         // Prepare the data to be sent
@@ -145,7 +143,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
         double t3 = MPI_Wtime();
         int kp = 0;
         for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
                 //itc[it->first].push_back(Delta(*i, j));
                 itcp[it->first][kp] = Delta(*i,j);
                 kp++;
@@ -161,12 +159,12 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
     t1 = MPI_Wtime() - t1;
 
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); it++) {
+            it != col_interconnections.end(); ++it) {
 
         if(it->second.size() == 0) continue;
         int p = 0;
         for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
                 //Others(*i, j) += otcp[it->first][p];
                 Delta(*i, j) += otcp[it->first][p];
                 p++;
@@ -175,7 +173,7 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     }
 
-    for(int i = 0; i < itcp.size(); i ++) {
+    for(size_t i = 0; i < itcp.size(); i ++) {
         delete[] itcp[i];
         delete[] otcp[i];
     }

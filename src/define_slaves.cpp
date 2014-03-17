@@ -66,7 +66,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
             }
         }
         // Now that the slaves know who's their daddy, tell who are their brothers
-        for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); slave++) {
+        for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); ++slave) {
             world.send(*slave, 12, my_slaves);
         }
 

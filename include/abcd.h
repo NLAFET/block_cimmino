@@ -146,10 +146,15 @@ private:
     // MUMPS
     int m_n;
     int m_nz;
+
+    int n_aug, nz_aug;
+    vector<int> irn_aug, jcn_aug;
+    vector<double> val_aug;
+
     MUMPS mumps;
     void initializeMumps(MUMPS &, bool local);
     void initializeMumps(MUMPS &);
-    void createAugmentedSystems(MUMPS &);
+    void createAugmentedSystems(int &n_aug, int &nz_aug, vector<int> &irn_aug, vector<int> &jcn_aug, vector<double> &val_aug);
     void analyseAugmentedSystems(MUMPS &);
     void allocateMumpsSlaves(MUMPS &);
     void factorizeAugmentedSystems(MUMPS &);

@@ -109,7 +109,7 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 
     VECTOR_double loc_p(lm, 0);
     VECTOR_double loc_ap(rm, 0);
-    double loc_r, r;
+    double loc_r = 0, r = 0;
 
     int pos = 0;
     for(int i = 0; i < lm; i++) {
@@ -170,7 +170,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
 
             int x_pos = 0;
-            for(int i = 0; i < local_column_index[p].size(); i++) {
+            for(size_t i = 0; i < local_column_index[p].size(); i++) {
                 int ci = local_column_index[p][i];
                 compressed_x(x_pos) = x(ci, j);
 

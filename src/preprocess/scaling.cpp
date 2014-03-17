@@ -126,7 +126,11 @@ void abcd::scaleMatrix(int norm)
         a_cp[k]++;
     }
 
-    if(norm < 0) throw - 12;
+    if(norm < 0){
+        delete[] iw;
+        delete[] dw;
+        throw std::runtime_error("Problem when computing the scaling, got a negative norm.");
+    }
 
     mc77_icntl[6] = 10;
 

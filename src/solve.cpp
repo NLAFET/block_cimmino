@@ -65,7 +65,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     t = MPI_Wtime();
     MV_ColMat_double f(size_c, 1, 0);
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); ++it){
         if(it->first >= n_o){
             f(it->first - n_o, 0) = -1 * w(it->second, 0);
         }

@@ -140,7 +140,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
             bcg(b);
             use_xk = false;
 
-            for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
+            for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); ++it){
 
                 if(it->first >= n_o && comm_map[it->second] == 1){
                     vc.push_back(i);

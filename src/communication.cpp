@@ -215,7 +215,7 @@ void abcd::createInterconnections()
     mpi::wait_all(reqs_c.begin(), reqs_c.end());
 
     for(std::map<int, std::vector<int> >::iterator it = their_cols.begin();
-            it != their_cols.end(); it++) {
+            it != their_cols.end(); ++it) {
 
         col_interconnections[it->first] =
             getIntersectionIndices(
@@ -227,10 +227,10 @@ void abcd::createInterconnections()
     // Create a Communication map for ddot
     comm_map.assign(n, 1);
     for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); it++) {
+            it != col_interconnections.end(); ++it) {
         // if I share data with it->first and I'm after him, let him compute!
         if(inter_comm.rank() > it->first) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
                 if(comm_map[*i] == 1) comm_map[*i] = -1;
             }
         }

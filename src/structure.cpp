@@ -292,7 +292,6 @@ void abcd::analyseFrame()
         for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
 
             CompCol_Mat_double part = loc_parts[k];
-            //int *col_vect_ptr = part.colptr_ptr();
 
             // Build the column index of part
             std::vector<int> ci = getColumnIndex(
@@ -302,15 +301,6 @@ void abcd::analyseFrame()
             column_index.push_back(ci);
             ci_sizes.push_back(ci.size());
 
-            //parts[k] =
-                //CompRow_Mat_double(
-                    //CompCol_Mat_double(part.dim(0), ci.size(),
-                                       //part.NumNonzeros(),
-                                       //part.val_ptr(),
-                                       //part.rowind_ptr(),
-                                       //col_vect_ptr
-                                      //)
-                //);
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
         if (icntl[Controls::aug_type] != 0)
@@ -360,7 +350,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 std::set_intersection(column_index[i].begin(), column_index[i].end(),
                                         column_index[j].begin(), column_index[j].end(),
                                         std::back_inserter(intersect));
-                if (intersect.size() == 0) continue;
+                if (intersect.empty()) continue;
 
                 CompCol_Mat_double C_ij;
                 {
@@ -454,7 +444,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                     reversed = true;
                 }
 
-                if(ci.size() == 0) continue;
+                if(ci.empty()) continue;
 
                 int n_cij_before = C_ij.dim(1);
 
@@ -530,7 +520,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
                 std::set_intersection(column_index[i].begin(), column_index[i].end(),
                                         column_index[j].begin(), column_index[j].end(),
                                         std::back_inserter(intersect));
-                if (intersect.size() == 0) continue;
+                if (intersect.empty()) continue;
 
                 CompCol_Mat_double A_ij = sub_matrix(M[i], intersect);
                 CompCol_Mat_double A_ji = sub_matrix(M[j], intersect);
@@ -607,7 +597,7 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 
                     }
 
-                    if (selected_cols.size() == 0) continue;
+                    if (selected_cols.empty()) continue;
 
                     if( icntl[Controls::aug_iterative] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
                         A_ij = sub_matrix(A_ij, selected_cols);
@@ -639,11 +629,8 @@ abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
             M[k] = resize_columns(M[k], nbcols);
         }
 
-    } else if (icntl[Controls::aug_type] == 3){
-        /*
-         * SVD augmentation
-         */
-
+    } else {
+        throw std::runtime_error("Unkown augmentation scheme.");
     }
 
 }// [> -----  end of function abcd::augmentMatrix  ----- <]
