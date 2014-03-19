@@ -108,6 +108,8 @@ private:
      *  Build the augmented version of the matrix (ABCD)
      *-----------------------------------------------------------------------------*/
     void augmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
+    void cijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
+    void aijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
 
     // Communication stuffs
     void createInterComm();

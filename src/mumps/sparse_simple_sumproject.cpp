@@ -217,7 +217,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
                     if(ci >= col && val != 0){
                         if ( ci == col)
-                            val += 0.5;
+                          val += (double)0.5;
 
                         vvals.push_back(val);
                         vrows.push_back(ci + 1);

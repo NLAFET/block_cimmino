@@ -65,7 +65,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
 
     t = MPI_Wtime();
     MV_ColMat_double f(size_c, 1, 0);
-    for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); ++it){
+    for(std::map<int,int>::iterator it = glob_to_local.begin();
+        it != glob_to_local.end(); ++it){
         if(it->first >= n_o){
             f(it->first - n_o, 0) = -1 * w(it->second, 0);
         }
@@ -135,8 +136,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
         if(!use_xk){
             int st = 0;
             for(int p = 0; p < nb_local_parts; p++){
-                //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                        //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], Xk);
                 MV_ColMat_double sp =  spsmv(partitions[p], local_column_index[p], Xk);
                 int pos = 0;
                 for(int k = st; k < st + partitions[p].dim(0); k++){
@@ -161,9 +160,9 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
 
 
-    // the final solution (distributed)
-    // w = \Abar^+ b
-    // f = \Wbar^+ b
+    //! the final solution (distributed)
+    //! w = \Abar^+ b
+    //! f = \Wbar^+ b
     Xk = w + f;
 
     if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
@@ -212,44 +211,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
         inter_comm.send(0, 71, x);
         inter_comm.send(0, 72, glob_to_local_ind);
     }
-
-    //{
-
-        //MV_ColMat_double xfmf(n, 1, 0);
-        //MV_ColMat_double lf(n, 1, 0);
-
-        //for(std::map<int,int>::iterator it = glob_to_local.begin(); it != glob_to_local.end(); it++){
-
-            //if(it->first < n_o){
-                //xfmf(it->second , 0) = Xf(it->first,0) - f(it->second, 0);
-                //lf(it->second , 0) = f(it->second, 0);
-            //}
-        //}
-
-        //double nf = infNorm(xfmf);
-        //double nff = infNorm(lf);
-        
-        //double nfa, nfb;
-        //mpi::all_reduce(inter_comm, &nf, 1, &nfa, mpi::maximum<double>());
-
-        //if(IRANK == 0) cout << "fwd : " <<  nfa << endl;
-    //}
-
-    //if(IRANK == 0) cout << std::setprecision(16) << f << endl;
-    //double rho;
-    //if(inter_comm.rank()==0){
-        //zrhs = MV_ColMat_double(m, 1, 0);
-        //int st = 0;
-        //for(int p = 0; p < nb_local_parts; p++){
-            //zrhs(MV_VecIndex(st, st + partitions[p].dim(0) - 1),
-                    //MV_VecIndex(0, 0)) = spsmv(partitions[p], local_column_index[p], f);
-            //st += partitions[p].dim(0);
-        //}
-        //zrhs = zrhs - b;
-        //cout << "||\\bar{A}z - b||_2 = " << sqrt(zrhs.squaredSum()) << endl;
-    //}
-
-
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

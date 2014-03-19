@@ -95,6 +95,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
             int mumps_share = share;
             mumps.icntl[27 - 1] = mumps_share;
 
+            // debug
             bool dense_build = false;
             if(dense_build){
                 MV_ColMat_double sp = spSimpleProject(cur_cols);

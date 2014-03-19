@@ -13,8 +13,6 @@ abcd::solveS ( MV_ColMat_double &f )
 {
     double t;
 
-    // debug right now:
-    bool write_sub_s = false;
 
     if(inter_comm.rank() == 0){
         clog << "*      ----------------------      *" << endl;
@@ -34,18 +32,22 @@ abcd::solveS ( MV_ColMat_double &f )
         clog << "*                                  *" << endl;
     }
 
+    // debug right now:
+    bool write_sub_s = false;
     if(write_sub_s) {
         ofstream f;
         ostringstream ff;
+        cout << "Writing" << endl;
         ff << "/tmp/m";
         ff << IRANK << ".mtx";
         f.open(ff.str().c_str());
         f << "%%MatrixMarket matrix coordinate real general\n";
-        f << S.dim(0) << " " << S.dim(1) << " " << S.NumNonzeros() << "\n";
-        for(int i = 0; i < S.NumNonzeros(); i++){
-            f << S.row_ind(i) + 1 << " " << S.col_ind(i) + 1 << " " << S.val(i) << "\n";
+        f << size_c << " " << size_c << " " << S_rows.size() << "\n";
+        for(size_t i = 0; i < S_vals.size(); i++){
+            f << S_rows[i] << " " << S_cols[i] << " " << S_vals[i] << "\n";
         }
         f.close();
+        exit(0);
     }
 
     
@@ -54,7 +56,7 @@ abcd::solveS ( MV_ColMat_double &f )
      *-----------------------------------------------------------------------------*/
     MUMPS mu;
     mpi::communicator world;
-    mu.sym = 2;
+    mu.sym = 1;
     mu.par = 1;
     mu.job = -1;
 
@@ -138,6 +140,7 @@ abcd::solveS ( MV_ColMat_double &f )
     if(inter_comm.rank() == 0){
         mu.rhs = f.ptr();
         mu.nrhs = 1;
+        mu.lrhs = size_c;
     }
 
     if(inter_comm.rank() == 0){
