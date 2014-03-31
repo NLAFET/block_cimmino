@@ -244,7 +244,7 @@ int abcd::solveSystem()
 ///
 /// \param job The job id
 /// \return Status code
-int abcd::bc(int job)
+int abcd::operator()(int job)
 {
     switch(job) {
 

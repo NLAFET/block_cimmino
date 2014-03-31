@@ -321,7 +321,7 @@ public:
     int factorizeAugmentedSystems();
     int solveSystem();
 
-    int bc(int);
+    int operator() (int job);
     abcd();
     ~abcd();
 

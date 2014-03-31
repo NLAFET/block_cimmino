@@ -289,11 +289,11 @@ int main(int argc, char* argv[])
 
             obj.verbose =  pt.get<int>("all_verbose", 0);
 
-            obj.bc(-1);
+            obj(-1);
 
             double t = MPI_Wtime();
-            obj.bc(1);
-            obj.bc(2);
+            obj(1);
+            obj(2);
 
             obj.nrhs = 1;
             obj.use_xf = false;
@@ -305,7 +305,7 @@ int main(int argc, char* argv[])
             obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
 
             obj.verbose =  pt.get<int>("solve_verbose", 0);
-            obj.bc(3);
+            obj(3);
 
             clog << "Total time: " << MPI_Wtime() - t << endl;
         } catch(int e) {
@@ -356,10 +356,10 @@ int main(int argc, char* argv[])
             dmumps_c(&mu);
         }
         try {
-            obj.bc(-1);
-            obj.bc(1);
-            obj.bc(2);
-            obj.bc(3);
+            obj(-1);
+            obj(1);
+            obj(2);
+            obj(3);
         } catch(int e) {
             cout << world.rank() << " Error code : " << e << endl;
             if(world.rank() == 6) 
