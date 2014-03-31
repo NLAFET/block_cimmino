@@ -32,6 +32,21 @@ target_link_libraries(
     ${LIBS}
 )
 
+add_executable(
+        test_abcd_c_interface
+        src/c_test.c
+        src/c_interface.cc
+)
+
+
+#Configuration de l'édition de liens
+target_link_libraries(
+    test_abcd_c_interface
+    abcd 
+    ${Boost_LIBRARIES}
+    ${LIBS}
+)
+
 
 ################################
 # Testing
