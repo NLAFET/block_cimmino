@@ -47,6 +47,20 @@ target_link_libraries(
     ${LIBS}
 )
 
+add_executable(
+        cpp_example
+        src/example.cc
+)
+
+
+#Configuration de l'édition de liens
+target_link_libraries(
+    cpp_example
+    abcd 
+    ${Boost_LIBRARIES}
+    ${LIBS}
+)
+
 
 ################################
 # Testing

@@ -264,7 +264,7 @@ int main(int argc, char* argv[])
 
         obj.write_problem   = pt.get<string>("write_problem", "");
 
-        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("esparse", 0);
+        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("esparse", 1);
         obj.icntl[Controls::scaling]    = pt.get<int>("scaling", 2);
 
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
