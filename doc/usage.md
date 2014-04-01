@@ -27,6 +27,94 @@ solver and `member` is the corresponding member, similarly, we refer
 to the public methods by `obj.method()`. Finally, arrays will have `[]`
 appended to them, if we specify a size then the array is pre-initialized at construction, otherwise it is either allocated by the user (such as the linear system entries) or by the solver (such as the solution).
 
+## An introductory example ##
+
+To see how the solver can be used, we expose a basic example that uses
+the regular block Cimmino scheme. We comment the interesting parts,
+and explain how they fit together, the details regarding the members of
+the `abcd` class are explained in [The linear system] and the controls 
+are detailed in [The Controls].
+
+```cpp
+    #include "abcd.h"
+    // use boost::mpi for simplicity, the user can use which ever he wants
+    #include "mpi.h"
+    #include <boost/mpi.hpp>
+
+    int main(int argc, char* argv[]) 
+    {
+        mpi::environment env(argc, argv);
+        // obtain the WORLD communicator, by default the solver uses it
+        mpi::communicator world;
+
+        // create one instance of the abcd solver per mpi-process
+        abcd obj;
+
+        if(world.rank() == 0) { // the master
+            // we create a 5x5 matrix for a 1D mesh + three-point stencil 
+            obj.sym = true; // the matrix is symmetric
+            obj.m = 10; // number of rows
+            obj.n = obj.m; // number of columns
+            obj.nz = 2*obj.m - 1; // number of nnz in the lower-triangular part
+
+            // allocate the arrays
+            obj.irn = new int[obj.nz];
+            obj.jcn = new int[obj.nz];
+            obj.val = new double[obj.nz];
+
+            // initialize the matrix
+            // Notice that the matrix is stored in 1-based format
+            size_t pos = 0;
+            for (size_t i = 1; i < obj.m; i++) {
+                // the diagonal
+                obj.irn[pos] = i;
+                obj.jcn[pos] = i;
+                obj.val[pos] = 2.0;
+                pos++;
+
+                // the lower-triangular part
+                obj.irn[pos] = i + 1;
+                obj.jcn[pos] = i;
+                obj.val[pos] = -1.0;
+                pos++;
+            }
+
+            // the last diagonal element
+            obj.irn[pos] = obj.m;
+            obj.jcn[pos] = obj.m;
+            obj.val[pos] = 2.0;
+
+            pos++;
+
+            // set the rhs
+            obj.rhs = new double[obj.m];
+            for (size_t i = 0; i < obj.m; i++) {
+                obj.rhs[i] = ((double) i + 1)/obj.m;
+            }
+
+            // ask the solver to guess the number of partitions
+            obj.icntl[Controls::part_guess] = 1;
+        }
+
+        try {
+            // We call the solver directly using the object itself
+            // (the abcd class is a functor)
+            obj(-1); // initialize the object with defaults
+            obj(5); // equivalent to running 1, 2 and 3 successively
+            // the solution is stored in obj.sol
+        } catch (runtime_error err) {
+            // In case there is a critical error, we throw a runtime_error exception
+            cout << "An error occured: " << err.what() << endl;
+        }
+        
+        delete[] obj.irn;
+        delete[] obj.jcn;
+        delete[] obj.val;
+
+      return 0;
+    }
+```
+
 ## The linear system ##
 The definition of the linear system uses 7 members:
 
@@ -77,7 +165,8 @@ with `icntl` to handle the scaling of the linear system.
     ```
 
 - `obj.icntl[Controls::part_type]` or `obj.icntl[2]` defines the partitioning type. It can have the values:
-    * `1`, manual partitioning, the *nbparts* partitions can be provided into the STL vector `obj.nbrows[]`. Example:
+
+    ~ `1`, manual partitioning, the *nbparts* partitions can be provided into the STL vector `obj.nbrows[]`. Example:
 
     ```cpp
     // use manual partitioning
@@ -92,14 +181,14 @@ with `icntl` to handle the scaling of the linear system.
     //...
     ```
 
-    * `2` *(default)*, automatic uniform partitioning, creates *nbparts* partitions of similar size.
+    ~ `2` *(default)*, automatic uniform partitioning, creates *nbparts* partitions of similar size.
 
     ```cpp
     // use patoh partitioning
     obj.icntl[Controls::part_type] = 2;
     ```
 
-    * `3`, automatic hypergraph partitioning, creates *nbparts* partitions using the hypergraph partitioner `PaToH`. The imbalance between the partitions is handled using `obj.dcntl[Controls::part_imbalance]`. Example:
+    ~ `3`, automatic hypergraph partitioning, creates *nbparts* partitions using the hypergraph partitioner `PaToH`. The imbalance between the partitions is handled using `obj.dcntl[Controls::part_imbalance]`. Example:
 
     ```cpp
     // use patoh partitioning
@@ -110,20 +199,29 @@ with `icntl` to handle the scaling of the linear system.
 
 - `obj.icntl[3]` reserved for a future use.
 - `obj.icntl[Controls::part_guess]` or `obj.icntl[4]` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
-    * `0` *(default)*, no guess
-    * `1`, guess
+
+    ~ `0` *(default)*, no guess
+
+    ~ `1`, guess
 - `obj.icntl[Controls::scaling]` or `obj.icntl[5]` defines the type of scaling to be used.
-    * `0`, no scaling
-    * `1`, infinity norm `MC77` based scaling
-    * `2` *(default)*, combination of one norm and two norm `MC77` based scaling
+
+    ~ `0`, no scaling
+
+    ~ `1`, infinity norm `MC77` based scaling
+
+    ~ `2` *(default)*, combination of one norm and two norm `MC77` based scaling
 - `obj.icntl[Controls::itmax]` or `obj.icntl[6]` defines the maximum number of iterations in block-CG acceleration, default is `1000`
 - `obj.icntl[Controls::block_size]` or `obj.icntl[7]` defines the block-size to be used by the block-CG acceleration, default is `1` for classical CG acceleration
 - `obj.icntl[Controls::verbose_level]` or `obj.icntl[8]` **Not Yet Implemented**, defines how verbose the solver has to be. 
 - `obj.icntl[9]` reserved for a future use.
 - `obj.icntl[Controls::aug_type]` or `obj.icntl[10]` defines the augmentation type.
-* `0` *(default)*, no augmentation. This makes the solver run in **regular block Cimmino** mode.
-* `1`, makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $C_{ij}/-I$ technique. For numerical stability, this augmentation technique has to be used with a scaling.
-* `2`,  makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $A_{ij}/-A_{ji}$ technique. This is the prefered augmentation technique. 
+
+    ~ `0` *(default)*, no augmentation. This makes the solver run in **regular block Cimmino** mode.
+
+    ~ `1`, makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $C_{ij}/-I$ technique. For numerical stability, this augmentation technique has to be used with a scaling.
+
+    ~ `2`,  makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $A_{ij}/-A_{ji}$ technique. This is the prefered augmentation technique. 
+
 - `obj.icntl[Controls::aug_blocking]` or `obj.icntl[11]` defines the blocking factor when building the auxiliary matrix $S$, default is `128`. 
 - `obj.icntl[Controls::aug_analysis]` or `obj.icntl[12]`, when set to a value different than `0`, analyses the number of columns in the augmentation.
 - `obj.icntl[13]` to `obj.icntl[16]` are for development and testing purposes only.
