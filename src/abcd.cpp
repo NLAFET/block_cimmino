@@ -138,6 +138,9 @@ int abcd::preprocessMatrix()
     if(world.rank() != 0) return 0;
 
     nbparts = icntl[Controls::nbparts];
+    if (parallel_cg == 0) {
+        parallel_cg = nbparts < world.size() ? nbparts : world.size();
+    }
     
     abcd::partitionMatrix();
     
