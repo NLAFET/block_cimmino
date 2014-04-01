@@ -127,7 +127,6 @@ void abcd::bcg(MV_ColMat_double &b)
         t2 = MPI_Wtime() - t2;
         normres.push_back(rho);
 
-        cout << "RHO: " << rho << endl;
         if((rho < thresh) || (it >= itmax)) break;
 
         // R = R - QP * B^-T
