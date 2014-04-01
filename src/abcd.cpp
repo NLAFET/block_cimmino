@@ -267,6 +267,17 @@ int abcd::operator()(int job)
         solveSystem();
         break;
 
+    case 4:
+        preprocessMatrix();
+        factorizeAugmentedSystems();
+        break;
+
+    case 5:
+        preprocessMatrix();
+        factorizeAugmentedSystems();
+        solveSystem();
+        break;
+
     default:
         // Wrong job id
         return -1;
