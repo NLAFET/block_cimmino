@@ -4,3 +4,4 @@ build
 abcdCmake.in
 src/tags
 doc/doxy/*
+*.log
