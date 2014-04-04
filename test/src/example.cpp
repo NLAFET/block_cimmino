@@ -1,17 +1,21 @@
-// the solver's header file
+// A simple working example of
+// =======================
+
+
+// We include the ABCD solver header file, it contains the `abcd` class definition
 #include "abcd.h"
 
-// use boost::mpi for simplicity, the user can use which ever he wants
+// Use `boost::mpi` for simplicity, the user can use which ever MPI library he wants
 #include "mpi.h"
 #include <boost/mpi.hpp>
 
-/// we create a matrix for a regular 2D mesh + 5-point stencil 
+// A simple matrix generator for a regular 2D mesh + 5-point stencil 
 void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh_size);
 void init_2d_lap(abcd &o, int mesh_size);
 
 int main(int argc, char* argv[]) 
 {
-    // equivalent to MPI_Initialize
+    // Equivalent to MPI_Initialize
     mpi::environment env(argc, argv);
 
     // obtain the WORLD communicator, by default the solver uses it

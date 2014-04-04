@@ -26,9 +26,22 @@ code > span.al { color: #ef2929; }
 code > span.fu { color: #000000; }
 code > span.er { font-weight: bold; }
   </style>
+  <link rel="stylesheet" href="linear/docco.css" type="text/css" />
   <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
 <body>
+<div id="TOC">
+<ul>
+<li><a href="#the-abcd-solver">The ABCD Solver</a><ul>
+<li><a href="#an-introductory-example">An introductory example</a></li>
+<li><a href="#the-linear-system">The linear system</a></li>
+<li><a href="#the-controls">The Controls</a><ul>
+<li><a href="#the-integer-control-array">The integer control array</a></li>
+<li><a href="#the-double-precision-control-array">The double precision control array</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
 <h1 id="the-abcd-solver">The ABCD Solver</h1>
 <p>The package <code>ABCD Solver</code> is a distributed hybrid (iterative/direct) solver for sparse linear systems <span class="math">\(Ax = b\)</span> where <span class="math">\(A\)</span> is a double precision <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> square <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> matrix with any structure. <code>ABCD Solver</code> uses two methods to solve the linear system:</p>
 <ul>
@@ -140,7 +153,7 @@ code > span.er { font-weight: bold; }
 <h2 id="the-controls">The Controls</h2>
 <p>Define the general behavior of the solver. They are split into two arrays, <code>icntl</code> and <code>dcntl</code>. <code>icntl</code> is an <em>integer</em> array and defines the options that control the specific parts of the solver, such as the scaling, the type of algorithm to run and so on. <code>dcntl</code> is a <em>double precision</em> array and defines some of the options required by the algorithms we use such as the imbalance between the partition sizes and the stopping criteria of the solver.</p>
 <p>To access each of the control options we can either use the indices <code>0, 1, ..</code> or, preferably, use the <em>enums</em> defined in the header <code>defaults.h</code>. To access them, the user can use the namespace <code>Controls</code>, eg. <code>Controls::scaling</code> has a value of <code>5</code> and is used with <code>icntl</code> to handle the scaling of the linear system.</p>
-<h3 id="the-integer-control-array-obj.icntl20">The integer control array <code>obj.icntl[20]</code></h3>
+<h3 id="the-integer-control-array">The integer control array</h3>
 <ul>
 <li><p><code>obj.icntl[Controls::nbparts]</code> or <code>obj.icntl[1]</code> defines the number of partitions in our linear system, can be from <code>1</code> to <code>m</code> (the number of rows in the matrix)</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// we have 8 partitions</span>
@@ -186,13 +199,12 @@ obj.dcntl[Controls::part_imbalance] = <span class="fl">0.3</span>;</code></pre><
 <li><code>obj.icntl[13]</code> to <code>obj.icntl[16]</code> are for development and testing purposes only.</li>
 <li><p><code>obj.icntl[17]</code> to <code>obj.icntl[19]</code> are reserved for a future use.</p></li>
 </ul>
-<h3 id="the-real-control-array-obj.dcntl20">The real control array <code>obj.dcntl[20]</code></h3>
+<h3 id="the-double-precision-control-array">The double precision control array</h3>
 <ul>
 <li><code>obj.dcntl[Controls::part_imbalance]</code> or <code>obj.dcntl[1]</code> defines the imbalance between the partitions when using <code>PaToH</code> (<code>obj.icntl[Controls::part_imbalance] = 3</code>).</li>
 <li><code>obj.dcntl[Controls::threshold]</code> or <code>obj.dcntl[2]</code> defines the stopping threshold for the block-CG acceleration, default is <code>1e-12</code>.</li>
 <li><code>obj.dcnlt[3]</code> to <code>obj.dcntl[20]</code> are reserved for future use.</li>
 </ul>
-<h2 id="methods">Methods</h2>
 <div class="footnotes">
 <hr />
 <ol>

@@ -1,5 +1,5 @@
 The ABCD Solver
-==========
+=============
 
 The package `ABCD Solver` is a distributed hybrid (iterative/direct)
 solver for sparse linear systems $Ax = b$ where $A$ is a double
@@ -156,7 +156,8 @@ To access each of the control options we can either use the indices
 `Controls`, eg. `Controls::scaling` has a value of `5` and is used
 with `icntl` to handle the scaling of the linear system.
 
-### The integer control array `obj.icntl[20]` ###
+### The integer control array###
+
 - `obj.icntl[Controls::nbparts]` or `obj.icntl[1]` defines the number of partitions in our linear system, can be from `1` to `m` (the number of rows in the matrix)
 
     ```cpp
@@ -227,10 +228,7 @@ with `icntl` to handle the scaling of the linear system.
 - `obj.icntl[13]` to `obj.icntl[16]` are for development and testing purposes only.
 - `obj.icntl[17]` to `obj.icntl[19]` are reserved for a future use.
 
-### The real control array `obj.dcntl[20]` ###
+### The double precision control array ###
 - `obj.dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`obj.icntl[Controls::part_imbalance] = 3`).
 - `obj.dcntl[Controls::threshold]` or `obj.dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
 - `obj.dcnlt[3]` to `obj.dcntl[20]` are reserved for future use.
-
-## Methods ##
-
