@@ -58,7 +58,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
     IFMASTER clog << "Max number of cols is " << maxcols << " ,  min is " << mincols <<
        "and average is " << total/parallel_cg <<    endl;
 
-#ifdef MUMPS_ES
+#ifndef NO_MUMPS_ES
     mumps.keep[235 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[261 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[495 - 1] = icntl[Controls::exploit_sparcity];

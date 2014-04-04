@@ -6,10 +6,10 @@ project(abcd CXX C Fortran)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-#find_package (Boost COMPONENTS mpi serialization REQUIRED)
+find_package (Boost COMPONENTS mpi serialization log REQUIRED)
 
 # the library
-#set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
@@ -23,7 +23,6 @@ include_directories(
   ${SPARSELIB_DIR}/include
   ${MV_DIR}/include
   ${MUMPS_INCLUDE_DIR}
-  ${YASL}
   )
 
 file(

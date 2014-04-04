@@ -4,11 +4,6 @@ project(Test_abcd)
 
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
 
-#find_package (Boost COMPONENTS mpi REQUIRED)
-
-message(STATUS "ABCD_PROJECT_DIR=${ABCD_PROJECT_DIR}")
-message(STATUS "ABCD_PROJECT_BINARY_DIR=${ABCD_PROJECT_BINARY_DIR}")
-
 link_directories(
     ${ABCD_PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
     ${ABCD_PROJECT_DIR}/lib
@@ -53,7 +48,7 @@ add_executable(
 )
 
 
-#Configuration de l'édition de liens
+###Configuration de l'édition de liens
 target_link_libraries(
     cpp_example
     abcd 
