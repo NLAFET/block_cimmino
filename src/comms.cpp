@@ -105,6 +105,17 @@ void abcd::distributeRhs()
 
         }
 
+        bool good_rhs = true;
+        if (infNorm(B) == 0) {
+            good_rhs = false;
+            mpi::broadcast(inter_comm, good_rhs, 0);
+            stringstream err_msg;
+            err_msg << "On process [" << world.rank() << "], the given right-hand side is zero";
+            throw std::runtime_error(err_msg.str());
+        }
+        
+        mpi::broadcast(inter_comm, good_rhs, 0);
+
         if(icntl[Controls::block_size] > nrhs) {
             double *rdata = new double[m_l * (icntl[Controls::block_size] - nrhs)];
 
@@ -164,6 +175,14 @@ void abcd::distributeRhs()
             }
         }
     } else {
+        bool good_rhs;
+        mpi::broadcast(inter_comm, good_rhs, 0);
+        if (!good_rhs) {
+            stringstream err_msg;
+            err_msg << "On process [" << world.rank() << "], leaving due to an error on the master";
+            throw std::runtime_error(err_msg.str());
+        }
+
         Xf = MV_ColMat_double(n_o, 1, 0);
         double *xf_ptr = Xf.ptr();
         inter_comm.recv(0, 171, xf_ptr, n_o);

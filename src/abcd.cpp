@@ -138,6 +138,9 @@ int abcd::preprocessMatrix()
     if(world.rank() != 0) return 0;
 
     nbparts = icntl[Controls::nbparts];
+    if (parallel_cg == 0) {
+        parallel_cg = nbparts < world.size() ? nbparts : world.size();
+    }
     
     abcd::partitionMatrix();
     
@@ -261,6 +264,17 @@ int abcd::operator()(int job)
         break;
 
     case 3:
+        solveSystem();
+        break;
+
+    case 4:
+        preprocessMatrix();
+        factorizeAugmentedSystems();
+        break;
+
+    case 5:
+        preprocessMatrix();
+        factorizeAugmentedSystems();
         solveSystem();
         break;
 

@@ -16,7 +16,11 @@ void abcd::partitionMatrix()
     int guessPartitionsNumber = icntl[Controls::part_guess];
 
     if(guessPartitionsNumber == 1 && icntl[Controls::part_type] > 1){
-        if (m_o <= 1000) {
+        if (m_o == 1) {
+            nbparts = 1;
+        } else if (m_o <= 8) {
+            nbparts = 2;
+        } else if (m_o <= 1000) {
             nbparts = 4;
         } else if (m_o <= 50000) {
             nbparts = 8;

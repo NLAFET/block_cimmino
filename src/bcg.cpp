@@ -43,6 +43,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double *l_ptr = lambdak.ptr();
 
     double lnrmBs = infNorm(u);
+
     // Sync B norm :
     mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
     mpi::broadcast(inter_comm, nrmMtx, 0);
@@ -69,6 +70,7 @@ void abcd::bcg(MV_ColMat_double &b)
         r.setCols(sp, 0, s);
     }
 
+
     t1_total = MPI_Wtime() - t1_total;
     // orthogonalize
     // r = r*gamma^-1
@@ -92,18 +94,15 @@ void abcd::bcg(MV_ColMat_double &b)
     t2_total = MPI_Wtime();
     rho = compute_rho(Xk, u);
     t2_total = MPI_Wtime() - t2_total;
-    cout << "H" << endl;
     if(inter_comm.rank() == 0 && verbose) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
 
-    while((rho > thresh) && (it < itmax)) {
+    while(true) {
         it++;
         t = MPI_Wtime();
 
         qp = sumProject(0e0, b, 1e0, p);
-
-
 
         t1 = MPI_Wtime() - t;
 
@@ -122,6 +121,13 @@ void abcd::bcg(MV_ColMat_double &b)
 
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
+
+        t2 = MPI_Wtime();
+        rho = abcd::compute_rho(Xk, u);
+        t2 = MPI_Wtime() - t2;
+        normres.push_back(rho);
+
+        if((rho < thresh) || (it >= itmax)) break;
 
         // R = R - QP * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
@@ -142,10 +148,6 @@ void abcd::bcg(MV_ColMat_double &b)
 
         p = r + gemmColMat(p, betak);
 
-        t2 = MPI_Wtime();
-        rho = abcd::compute_rho(Xk, u);
-        t2 = MPI_Wtime() - t2;
-        normres.push_back(rho);
         //mpi::all_gather(inter_comm, rho, grho);
         //mrho = *std::max_element(grho.begin(), grho.end());
         //
@@ -376,6 +378,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
         dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, p_ptr, &lda_p, &beta, l_r_ptr, &s);
     }
+
 
 
     char up = 'U';
