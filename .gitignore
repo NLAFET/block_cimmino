@@ -1,7 +1,7 @@
 *\~
 build
 \.*
-./abcdCmake.in
+abcdCmake.in
 src/tags
 docs/doxy/*
 *.log
