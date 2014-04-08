@@ -44,7 +44,7 @@ target_link_libraries(
 
 add_executable(
         cpp_example
-        src/example.cc
+        src/example.cpp
 )
 
 

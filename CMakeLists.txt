@@ -6,7 +6,7 @@ project(abcd CXX C Fortran)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-find_package (Boost COMPONENTS mpi serialization log REQUIRED)
+find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
