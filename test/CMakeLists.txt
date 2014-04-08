@@ -4,9 +4,23 @@ project(Test_abcd)
 
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
 
+if(NOT PATOH MATCHES OFF)
+    set(LIBS ${LIBS} patoh)
+endif()
+
+set(LIBS ${LIBS}
+    dmumps
+    mumps_common
+
+    sparse
+    spblas
+    mv
+)
+
 link_directories(
     ${ABCD_PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
     ${ABCD_PROJECT_DIR}/lib
+    ${ABCD_PROJECT_DIR}/lib/sparselib/lib/
     ${Boost_LIBRARY_DIRS}
     ${LIB_DIRS}
 )
@@ -61,10 +75,19 @@ target_link_libraries(
 # Testing
 ################################
 if(test MATCHES ON)
-add_executable(
-        basic_test
-        src/basic.cpp
-)
+    add_executable(
+            basic_test
+            src/basic.cpp
+    )
+
+    set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
+    set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
+    set(GTEST_INCLUDE_DIR $ENV{HOME}/.local/include/)
+
+    set(GMOCK_LIBRARY $ENV{HOME}/.local/lib/libgmock.a)
+    set(GMOCK_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgmock_main.a)
+    set(GMOCK_INCLUDE_DIR $ENV{HOME}/.local/include/)
+
   # Locate GTest
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)

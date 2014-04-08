@@ -16,12 +16,20 @@ set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
 #add_definitions(-DCOMPLEX="std::complex<double>")
 
+if(NOT PATOH MATCHES OFF)
+    add_definitions(-DPATOH)
+endif()
+
+if(MUMPS_ES MATCHES OFF)
+    add_definitions(-DNO_MUMPS_ES)
+endif()
+
 include_directories(
   include
+  lib/sparselib/include
+  lib/sparselib/mv/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
-  ${SPARSELIB_DIR}/include
-  ${MV_DIR}/include
   ${MUMPS_INCLUDE_DIR}
   )
 
