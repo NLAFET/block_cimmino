@@ -173,11 +173,9 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
                 val = -sol_ptr[target[i] + j * sol_lda];
                 ci = target_idx[i];
 
-                if(ci >= col && val != 0){
-                    if ( ci == col){
-                        val += 0.5;
-                    }
+                if (ci == col) val += (double)0.5;
 
+                if(ci >= col && val != 0){
                     vvals.push_back(val);
                     vrows.push_back(ci + 1);
                     vcols.push_back(col + 1);
