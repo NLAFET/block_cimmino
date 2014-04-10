@@ -319,32 +319,20 @@ void abcd::analyseFrame()
 
 }
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::augmentMatrix
- *  Description:  Augments the matrix and build the C part in [A C]
- * =====================================================================================
- */
     void
 abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
     double filter_c = dcntl[Controls::aug_filter];
     stC = vector<int>(M.size(), -1);
-    /*
-     * Which augmentation to use:
-     */
+
     if(icntl[Controls::aug_type] == 0){
-        //[> No augmentation <]
+        // No augmentation 
         return;
     } else if (icntl[Controls::aug_type] == 1){
-        /*
-         * C_ij/-I augmentation
-         */
+        // C_ij/-I augmentation
         cijAugmentMatrix(M);
     } else if (icntl[Controls::aug_type] == 2){
-        /*
-         * A_ij/-A_ji augmentation
-         */
+        // A_ij/-A_ji augmentation
         aijAugmentMatrix(M);
 
     } else {

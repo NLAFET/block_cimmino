@@ -74,8 +74,6 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
         vv.reserve(my_cols.size() * my_cols.size());
 
         int share = icntl[Controls::aug_blocking];
-        vector<int> target_idx;
-        vector<int> target;
 
         while(pos != my_cols.end()){
             if(pos + share < my_cols.end()) end_pos = pos + share;
@@ -115,9 +113,7 @@ void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<i
                     }
                 }
             } else {
-                target.reserve(size_c);
-                target_idx.reserve(size_c);
-                spSimpleProject(cur_cols, vr, vc, vv, target, target_idx);
+                spSimpleProject(cur_cols, vr, vc, vv);
             }
             pos = end_pos;
         }

@@ -4,12 +4,12 @@
 using namespace  boost::lambda;
 
 void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
-        std::vector<int> &vcols, std::vector<double> &vvals,
-        std::vector<int> &target, std::vector<int> &target_idx)
+                           std::vector<int> &vcols, std::vector<double> &vvals)
 {
     int s = mycols.size();
     std::vector<int> rr;
     std::vector<double> rv;
+    std::vector<int> target, target_idx;
 
     CompRow_Mat_double *r = new CompRow_Mat_double[nb_local_parts];
     std::vector<std::map<int,int> > loc_cols(nb_local_parts);
@@ -168,6 +168,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
         sol_ptr = mumps.sol_loc;
         for (int j = 0; j < s; j++) {
             col = mycols[j];
+            cout << col << endl;
             for (int i = 0; i < (int)target.size(); i++) {
 
                 val = -sol_ptr[target[i] + j * sol_lda];
@@ -215,9 +216,10 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
                     val =  - sol_ptr[x_pos + j * sol_lda];
 
+                    if (ci == col)
+                      val += (double)0.5;
+
                     if(ci >= col && val != 0){
-                        if ( ci == col)
-                          val += (double)0.5;
 
                         vvals.push_back(val);
                         vrows.push_back(ci + 1);

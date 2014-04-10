@@ -170,8 +170,7 @@ private:
     MV_ColMat_double spSimpleProject(std::vector<int> mycols);
 
     void spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
-            std::vector<int> &vcols, std::vector<double> &vvals,
-            std::vector<int> &target, std::vector<int> &target_idx);
+                         std::vector<int> &vcols, std::vector<double> &vvals);
 
     void waitForSolve();
     std::vector<int> comm_map;
