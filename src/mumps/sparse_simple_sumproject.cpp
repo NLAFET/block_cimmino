@@ -168,7 +168,6 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
         sol_ptr = mumps.sol_loc;
         for (int j = 0; j < s; j++) {
             col = mycols[j];
-            cout << col << endl;
             for (int i = 0; i < (int)target.size(); i++) {
 
                 val = -sol_ptr[target[i] + j * sol_lda];
