@@ -30,9 +30,9 @@ if(MUMPS_ES MATCHES OFF)
 endif()
 
 include_directories(
-  include
-  lib/sparselib/include
-  lib/sparselib/mv/include
+  ${ABCD_PROJECT_DIR}/include
+  ${ABCD_PROJECT_DIR}/lib/sparselib/include
+  ${ABCD_PROJECT_DIR}/lib/sparselib/mv/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
