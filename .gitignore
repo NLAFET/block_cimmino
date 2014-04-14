@@ -1,7 +1,43 @@
-*\~
 build
-\.*
 abcdCmake.in
-src/tags
 docs/doxy/*
 *.log
+\.*
+
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#CMAKE
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+#emacs
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+auto-save-list
+tramp
+.\#*
