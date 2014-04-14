@@ -39,6 +39,7 @@ code > span.er { font-weight: bold; }
 <li><a href="#the-integer-control-array">The integer control array</a></li>
 <li><a href="#the-double-precision-control-array">The double precision control array</a></li>
 </ul></li>
+<li><a href="#installation">Installation</a></li>
 </ul></li>
 </ul>
 </div>
@@ -205,6 +206,83 @@ obj.dcntl[Controls::part_imbalance] = <span class="fl">0.3</span>;</code></pre><
 <li><code>obj.dcntl[Controls::threshold]</code> or <code>obj.dcntl[2]</code> defines the stopping threshold for the block-CG acceleration, default is <code>1e-12</code>.</li>
 <li><code>obj.dcnlt[3]</code> to <code>obj.dcntl[20]</code> are reserved for future use.</li>
 </ul>
+<h2 id="installation">Installation</h2>
+<p>The ABCD Solver depends on a few libraries: <code>MUMPS 5.0 (custom)</code>, <code>Sparselib++ (custom)</code>, <code>PaToH</code>, <code>lapack</code> and <code>Boost::MPI</code>.</p>
+<p>First, clone the latest version of the <code>ABCD Solver</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
+    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    <span class="co"># get the dev version</span>
+    <span class="kw">git</span> checkout dev</code></pre>
+<ul>
+<li><code>MUMPS 5.0 (custom)</code>: a modified version of <code>MUMPS</code> to suits our needs, it is distributed with our solver in the <code>lib/mumps/</code> directory. The distributed version is compiled in <code>x86_64</code> compilers, a <code>i686</code> version can be distributed on request. Moreover,</li>
+<li><p><code>Sparselib++ (custom)</code>: a modified version of <code>SparseLib++</code> to suits our needs, to download it run the following commands from the root of your</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="kw">cd</span> abcd
+    <span class="kw">git</span> submodule init
+    <span class="co"># clone the sparselib repository into lib/sparselib</span>
+    <span class="kw">git</span> submodule update</code></pre></li>
+<li><p><code>PaToH</code>: Can be downloaded from <a href="http://bmi.osu.edu/~umit/software.html">Ümit V. Çatalyürek</a> webpage. The file <code>libpatoh.a</code> has to be copied into the <code>lib/</code> directory and the header <code>patho.h</code> has to be copied into the <code>include</code> directory.</p></li>
+</ul>
+<p>To summarize, here is a simple script that will do everything:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
+    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    <span class="co"># get the dev version</span>
+    <span class="kw">git</span> checkout dev
+
+    <span class="kw">cd</span> abcd
+    <span class="kw">git</span> submodule init
+    <span class="kw">git</span> submodule update
+    
+    <span class="kw">cd</span> lib
+    <span class="co"># download the appropriate version of patoh</span>
+    <span class="kw">wget</span> http://bmi.osu.edu/~umit/PaToH/...tar.gz
+    <span class="co"># extract </span>
+    <span class="kw">tar</span> xvzf patoh-....tar.gz
+    <span class="kw">cp</span> build/*/libpatoh.a .
+    <span class="kw">cp</span> build/*/patoh.h ../include/
+    <span class="kw">rm</span> -rf build patoh-....tar.gz
+    <span class="kw">cd</span> ..</code></pre>
+<p>Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the <code>cmake.in</code> directory, suppose we are going to use the <code>ACML</code> library (provides <code>blas</code> and <code>lapack</code>).</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># get the appropriate configuration file</span>
+    <span class="kw">cp</span> cmake.in/abcdCmake.in.ACML ./abcdCmake.in</code></pre>
+<p>Edit that file to suite your configuration</p>
+<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="co"># where to find Boost?</span>
+    <span class="kw">set</span>(BOOST_ROOT /path/to/boost/headers)
+    <span class="kw">set</span>(BOOST_LIBRARYDIR /path/to/boost/libraries)
+
+    <span class="co"># the compilers </span>
+    <span class="kw">set</span>(<span class="dv">CMAKE_CXX_COMPILER</span> mpic++)
+    <span class="kw">set</span>(<span class="dv">CMAKE_C_COMPILER</span> mpicc)
+    <span class="kw">set</span>(<span class="dv">CMAKE_FC_COMPILER</span> mpif90)
+
+    <span class="co"># where to find ACML, scalapack and blacs?</span>
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/acml/gfortran64/lib
+                                   /path/to/scalapack-acml
+                                   /path/to/blacs
+        )
+    <span class="co"># the different libraries</span>
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS acml
+        blacsF77init blacsCinit blacs blacsF77init blacsCinit
+        scalapack
+        )
+
+    <span class="co"># where to find Openmpi (or any mpi distributuion)</span>
+    <span class="kw">set</span>(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
+    <span class="kw">set</span>(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
+    <span class="co"># the corresponding libraries</span>
+    <span class="kw">set</span>(MPI_LIBRARIES 
+        mpi
+        mpi_f90
+        mpi_f77
+        mpi_cxx
+        dl
+    )</code></pre>
+<p>Notice that we link against <code>scalapack</code> and <code>blacs</code>, these are required libraries by <code>MUMPS</code>. If we want to use <code>MKL</code>, just change this part:</p>
+<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/mkl)
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
+        mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
+        mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
+        )</code></pre>
+<p>In this example we used the non-threaded version of these libraries, for the <code>ACML</code> library use the <code>_mp</code> suffix, for <code>MKL</code> use the <a href="https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor">Intel® Math Kernel Library Link Line Advisor</a> to obtain the correct set of libraries.</p>
 <div class="footnotes">
 <hr />
 <ol>
