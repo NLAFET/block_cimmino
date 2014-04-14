@@ -1,0 +1,42 @@
+set(BOOST_ROOT $ENV{BOOST_ROOT})
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/../lib)
+
+set(CMAKE_CXX_COMPILER mpic++)
+set(CMAKE_C_COMPILER mpicc)
+set(CMAKE_FC_COMPILER mpif90)
+
+set(BLAS_LAPACK_SCALAPACK_DIRS /opt/acml-5.3.1-gnu/gfortran64_mp/lib/
+                               /opt/scalapack-acml/
+                               /opt/blacs-gnu/
+    )
+set(BLAS_LAPACK_SCALAPACK_LIBS acml_mp
+    blacsF77init blacsCinit blacs blacsF77init blacsCinit
+    scalapack
+    )
+
+set(MUMPS_DIR $ENV{HOME}/opt/mumps_5_b/)
+set(MUMPS_INCLUDE_DIR ${MUMPS_DIR}/include)
+set(MUMPS_LIBRARY_DIR ${MUMPS_DIR}/lib)
+
+set(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
+set(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
+set(MPI_LIBRARIES 
+    mpi
+    mpi_f90
+    mpi_f77
+    mpi_cxx
+    dl
+)
+
+set(LIB_DIRS 
+    ##Put here other mumps dependencies paths
+    ##such as scotch, if you compiled mumps with -Dscotch
+    # /path/to/scotch/lib/
+)
+set(LIBS
+    ##Put here other mumps dependencies libs
+    ##if you used -Dscotch in mumps, uncomment the following
+    # esmumps
+    # scotch
+    # scotcherr
+)
