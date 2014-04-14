@@ -22,6 +22,9 @@ link_directories(
     ${ABCD_PROJECT_DIR}/lib
     ${ABCD_PROJECT_DIR}/lib/sparselib/lib/
     ${Boost_LIBRARY_DIRS}
+    ${MUMPS_LIBRARY_DIR}
+    ${BLAS_LAPACK_SCALAPACK_DIRS}
+    ${MPI_LIB_DIR}
     ${LIB_DIRS}
 )
 
@@ -38,6 +41,7 @@ target_link_libraries(
     test_abcd
     abcd 
     ${Boost_LIBRARIES}
+    ${MPI_LIBRARIES}
     ${LIBS}
 )
 

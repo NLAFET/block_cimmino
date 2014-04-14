@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
 
+set(BUILD_TYPE "Release")
+
+if(DEBUG MATCHES ON)
+    set(BUILD_TYPE "Debug")
+endif()
 
 include(abcdCmake.in)
 project(abcd CXX C Fortran)
@@ -31,6 +36,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
+  ${MPI_INC_DIR}
   )
 
 file(
@@ -40,7 +46,7 @@ file(
     src/*.cpp
 )
 
-add_library(abcd STATIC ${source_files})
+add_library(abcd ${source_files})
 
 add_subdirectory(test)
 
