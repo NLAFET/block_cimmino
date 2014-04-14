@@ -9,6 +9,9 @@ if(NOT PATOH MATCHES OFF)
 endif()
 
 set(LIBS ${LIBS}
+    ${Boost_LIBRARIES}
+    ${MPI_LIBRARIES}
+    ${BLAS_LAPACK_SCALAPACK_LIBS}
     dmumps
     mumps_common
 
@@ -40,8 +43,6 @@ add_executable(
 target_link_libraries(
     test_abcd
     abcd 
-    ${Boost_LIBRARIES}
-    ${MPI_LIBRARIES}
     ${LIBS}
 )
 
@@ -56,7 +57,6 @@ add_executable(
 target_link_libraries(
     test_abcd_c_interface
     abcd 
-    ${Boost_LIBRARIES}
     ${LIBS}
 )
 
@@ -70,7 +70,6 @@ add_executable(
 target_link_libraries(
     cpp_example
     abcd 
-    ${Boost_LIBRARIES}
     ${LIBS}
 )
 
@@ -104,7 +103,6 @@ if(test MATCHES ON)
       ${GTEST_BOTH_LIBRARIES}
       ${GMOCK_BOTH_LIBRARIES}
       abcd 
-      ${Boost_LIBRARIES}
       ${LIBS}
   )
 
