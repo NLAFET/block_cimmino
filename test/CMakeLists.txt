@@ -33,32 +33,6 @@ link_directories(
 
 include_directories(../include ${Boost_INCLUDE_DIRS})
 
-add_executable(
-        test_abcd
-        src/main.cpp
-)
-
-
-#Configuration de l'édition de liens
-target_link_libraries(
-    test_abcd
-    abcd 
-    ${LIBS}
-)
-
-add_executable(
-        test_abcd_c_interface
-        src/c_test.c
-        src/c_interface.cc
-)
-
-
-#Configuration de l'édition de liens
-target_link_libraries(
-    test_abcd_c_interface
-    abcd 
-    ${LIBS}
-)
 
 add_executable(
         cpp_example
@@ -78,6 +52,33 @@ target_link_libraries(
 # Testing
 ################################
 if(test MATCHES ON)
+    add_executable(
+            test_abcd
+            src/main.cpp
+    )
+
+
+    #Configuration de l'édition de liens
+    target_link_libraries(
+        test_abcd
+        abcd 
+        ${LIBS}
+    )
+
+    add_executable(
+            test_abcd_c_interface
+            src/c_test.c
+            src/c_interface.cc
+    )
+
+
+    #Configuration de l'édition de liens
+    target_link_libraries(
+        test_abcd_c_interface
+        abcd 
+        ${LIBS}
+    )
+
     add_executable(
             basic_test
             src/basic.cpp
