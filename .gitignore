@@ -3,6 +3,8 @@ abcdCmake.in
 docs/doxy/*
 *.log
 \.*
+!.gitignore
+!.gitmodules
 
 
 # Compiled Object files

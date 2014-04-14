@@ -1,0 +1,3 @@
+[submodule "sparselib"]
+    path = lib/sparselib
+    url = git@bitbucket.org:MocoPolox/sparselib.git
