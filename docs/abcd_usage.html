@@ -33,13 +33,16 @@ code > span.er { font-weight: bold; }
 <div id="TOC">
 <ul>
 <li><a href="#the-abcd-solver">The ABCD Solver</a><ul>
+<li><a href="#introduction-to-the-methods">Introduction to the methods</a><ul>
+<li><a href="#the-regular-block-cimmino">The regular block Cimmino</a></li>
+<li><a href="#the-augmented-block-cimmino">The augmented block Cimmino</a></li>
+</ul></li>
+<li><a href="#the-solver">The solver</a><ul>
 <li><a href="#an-introductory-example">An introductory example</a></li>
 <li><a href="#the-linear-system">The linear system</a></li>
-<li><a href="#the-controls">The Controls</a><ul>
-<li><a href="#the-integer-control-array">The integer control array</a></li>
-<li><a href="#the-double-precision-control-array">The double precision control array</a></li>
-</ul></li>
+<li><a href="#the-controls">The Controls</a></li>
 <li><a href="#installation">Installation</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -49,8 +52,59 @@ code > span.er { font-weight: bold; }
 <li><em>Regular Block Cimmino</em>: A block-projection technique that iterates to solve the linear system. During the iterations it solves a set of small problems (augmented systems built using the partitions of the original system).</li>
 <li><em>Augmented Block Cimmino</em>: A pseudo-direct technique that augments the original system and through a succession of direct solves finds the solution.</li>
 </ul>
+<h2 id="introduction-to-the-methods">Introduction to the methods</h2>
+<h3 id="the-regular-block-cimmino">The regular block Cimmino</h3>
+<p>The block Cimmino method is an iterative method that uses block-row projections. To solve the <span class="math">\(Ax = b\)</span>,<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> where <span class="math">\(A\)</span> is an <span class="math">\(m\times n\)</span> sparse matrix, <span class="math">\(x\)</span> is an <span class="math">\(n\)</span>-vector and <span class="math">\(b\)</span> is an <span class="math">\(m\)</span>-vector, we subdivide the system into strips of rows as follows: <span class="math">\[
+  \left(
+    \begin{array}{c}
+      A_1 \\ A_2 \\ \vdots \\ A_p
+    \end{array}
+  \right)
+  x =
+  \left(
+    \begin{array}{c}
+      b_1 \\ b_2 \\ \vdots \\ b_p
+    \end{array}
+  \right).
+\]</span></p>
+<p>Let <span class="math">\(P_{\mathcal{R}(A_i^T)}\)</span> be the projector onto the range of <span class="math">\(A_i^T\)</span> and <span class="math">\({A_i}^+\)</span> be the Moore-Penrose pseudo-inverse of the partition <span class="math">\(A_i\)</span>. The block Cimmino algorithm then computes a solution iteratively from an initial estimate <span class="math">\(x^{(0)}\)</span> according to: <span class="math">\[
+\begin{array}{ccl}
+u_{i}  &amp; = &amp; A_i^+ \left ( {b_i - A_i x^{(k)}} \right ) ~~~ i = 1, .... p \\
+x^{(k+1)}  &amp; = &amp; x^{(k)} + \omega \sum_{i=1}^p{u_i}
+\end{array}
+\]</span> where we see the independence of the set of <span class="math">\(p\)</span> equations, which is why the method is so attractive in a parallel environment.</p>
+<p>With the above notations, the iteration equations are thus: <span class="math">\[
+    \begin{array}{ccl}
+        x^{(k+1)} &amp; = &amp; x^{(k)} + \omega \sum_{i=1}^p{A_i^+ \left ( {b_i - A_i x^{(k)}} \right )} \\
+          &amp; = &amp; \left( {I - \omega \sum_{i=1}^p{A_i^+ A_i}} \right) x^{(k)}
+        + \omega \sum_{i=1}^p{A_i^+ b_i} \\
+          &amp; = &amp; Q x^{(k)} + \omega \sum_{i=1}^p{A_i^+ b_i}.
+          \label{something}
+    \end{array}
+\]</span></p>
+<p>The iteration matrix for block Cimmino, <span class="math">\(H = I - Q\)</span>, is then a sum of projectors <span class="math">\(H = \omega \sum_{i=1}^p{\mathcal{P}_{\mathcal{R}(A_i^T)}}\)</span>.<br />It is thus symmetric and positive definite and so we can solve <span class="math">\[
+    H x ~=~ \xi, 
+\]</span> where <span class="math">\(\xi = \omega \sum_{i=1}^p{A_i^+ b_i}\)</span> using conjugate gradient or block conjugate gradient methods. As <span class="math">\(\omega\)</span> appears on both sides of the equation, we can set it to one.</p>
+<p>At each step of the conjugate gradient algorithm we must solve for the <span class="math">\(p\)</span> projections viz. <span class="math">\[
+    A_i u_i ~=~ r_i, ~~~~  (r_i = {b_i - A_i x^{(k)}}),~~~ i = 1, .... p.
+\]</span></p>
+<p>In our approach we choose to solve these equations using the augmented system <span class="math">\[
+    \left ( \begin{array}{cc} I &amp; A_i^T \\ A_i &amp; 0 \end{array} \right )
+      \left ( \begin{array}{l} u_i \\ v_i \end{array} \right )
+    ~=~  \left ( \begin{array}{l} 0 \\ r_i \end{array} \right )
+\]</span> that we will solve, at each iteration, using a direct method and gives <span class="math">\(u_i = A_i^+ r_i\)</span> the projection we need for the partition <span class="math">\(A_i\)</span>.</p>
+<p>We use the multifrontal parallel solver ()  to do this. The main other techniques for solving equation () are using normal equations or a QR factorization. The former has numerical and storage issues while the latter lacks a good distributed solver. We avoid both problems with our approach.</p>
+<p>Running our solver in the regular mode will go through the following steps:</p>
+<ul>
+<li>Partition the system into strips of rows (<span class="math">\(A_i\)</span> and <span class="math">\(b_i\)</span> for <span class="math">\(i = 1, \dots p\)</span>)</li>
+<li>Create the augmented systems</li>
+<li>Analyze and factorize the augmented systems using the direct solver <code>MUMPS</code></li>
+<li>Run a block conjugate gradient with an implicit matrix <span class="math">\(H\)</span>, and at each iteration compute the matrix-vector product as a sum of projections. These projects being a set of solves using the direct solver.</li>
+</ul>
+<h3 id="the-augmented-block-cimmino">The augmented block Cimmino</h3>
+<h2 id="the-solver">The solver</h2>
 <p>The solver is in the form of a class called <code>abcd</code> and an instance of it represents an instance of the solver with its own linear system. In the following we will use the <code>Boost::MPI</code> syntax for <code>MPI</code> specefic commands. Moreover, in the following description we refer to the members of the class by <code>obj.member</code> where <code>obj</code> is an instance of the solver and <code>member</code> is the corresponding member, similarly, we refer to the public methods by <code>obj.method()</code>. Finally, arrays will have <code>[]</code> appended to them, if we specify a size then the array is pre-initialized at construction, otherwise it is either allocated by the user (such as the linear system entries) or by the solver (such as the solution).</p>
-<h2 id="an-introductory-example">An introductory example</h2>
+<h3 id="an-introductory-example">An introductory example</h3>
 <p>To see how the solver can be used, we expose a basic example that uses the regular block Cimmino scheme. We comment the interesting parts, and explain how they fit together, the details regarding the members of the <code>abcd</code> class are explained in <a href="#the-linear-system">The linear system</a> and the controls are detailed in <a href="#the-controls">The Controls</a>.</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp">    <span class="ot">#include &quot;abcd.h&quot;</span>
     <span class="co">// use boost::mpi for simplicity, the user can use which ever he wants</span>
@@ -129,7 +183,7 @@ code > span.er { font-weight: bold; }
 
       <span class="kw">return</span> <span class="dv">0</span>;
     }</code></pre>
-<h2 id="the-linear-system">The linear system</h2>
+<h3 id="the-linear-system">The linear system</h3>
 <p>The definition of the linear system uses 7 members:</p>
 <ul>
 <li><code>obj.m</code> (type: <code>int</code>), the number of rows.</li>
@@ -151,10 +205,10 @@ code > span.er { font-weight: bold; }
     <span class="co">// put the data in the arrays</span>
     obj.irn[<span class="dv">0</span>] = <span class="dv">1</span>;
     <span class="co">//..</span></code></pre>
-<h2 id="the-controls">The Controls</h2>
+<h3 id="the-controls">The Controls</h3>
 <p>Define the general behavior of the solver. They are split into two arrays, <code>icntl</code> and <code>dcntl</code>. <code>icntl</code> is an <em>integer</em> array and defines the options that control the specific parts of the solver, such as the scaling, the type of algorithm to run and so on. <code>dcntl</code> is a <em>double precision</em> array and defines some of the options required by the algorithms we use such as the imbalance between the partition sizes and the stopping criteria of the solver.</p>
 <p>To access each of the control options we can either use the indices <code>0, 1, ..</code> or, preferably, use the <em>enums</em> defined in the header <code>defaults.h</code>. To access them, the user can use the namespace <code>Controls</code>, eg. <code>Controls::scaling</code> has a value of <code>5</code> and is used with <code>icntl</code> to handle the scaling of the linear system.</p>
-<h3 id="the-integer-control-array">The integer control array</h3>
+<h4 id="the-integer-control-array">The integer control array</h4>
 <ul>
 <li><p><code>obj.icntl[Controls::nbparts]</code> or <code>obj.icntl[1]</code> defines the number of partitions in our linear system, can be from <code>1</code> to <code>m</code> (the number of rows in the matrix)</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// we have 8 partitions</span>
@@ -200,13 +254,13 @@ obj.dcntl[Controls::part_imbalance] = <span class="fl">0.3</span>;</code></pre><
 <li><code>obj.icntl[13]</code> to <code>obj.icntl[16]</code> are for development and testing purposes only.</li>
 <li><p><code>obj.icntl[17]</code> to <code>obj.icntl[19]</code> are reserved for a future use.</p></li>
 </ul>
-<h3 id="the-double-precision-control-array">The double precision control array</h3>
+<h4 id="the-double-precision-control-array">The double precision control array</h4>
 <ul>
 <li><code>obj.dcntl[Controls::part_imbalance]</code> or <code>obj.dcntl[1]</code> defines the imbalance between the partitions when using <code>PaToH</code> (<code>obj.icntl[Controls::part_imbalance] = 3</code>).</li>
 <li><code>obj.dcntl[Controls::threshold]</code> or <code>obj.dcntl[2]</code> defines the stopping threshold for the block-CG acceleration, default is <code>1e-12</code>.</li>
 <li><code>obj.dcnlt[3]</code> to <code>obj.dcntl[20]</code> are reserved for future use.</li>
 </ul>
-<h2 id="installation">Installation</h2>
+<h3 id="installation">Installation</h3>
 <p>The ABCD Solver depends on a few libraries: <code>MUMPS 5.0 (custom)</code>, <code>Sparselib++ (custom)</code>, <code>PaToH</code>, <code>lapack</code> and <code>Boost::MPI</code>.</p>
 <p>First, clone the latest version of the <code>ABCD Solver</code>:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
@@ -288,6 +342,7 @@ obj.dcntl[Controls::part_imbalance] = <span class="fl">0.3</span>;</code></pre><
 <ol>
 <li id="fn1"><p>The current implementation is double precision only.<a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>In reality the system can rectangular, but this case is not fully tested yet.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>We assume the system is consistent and for simplicity we suppose that <span class="math">\(A\)</span> has full rank.<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
 </body>

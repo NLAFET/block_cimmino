@@ -18,6 +18,95 @@ Solver` uses two methods to solve the linear system:
 
 [^square]: In reality the system can rectangular, but this case is not fully tested yet.
 
+## Introduction to the methods ##
+
+### The regular block Cimmino ###
+
+The block Cimmino method is an iterative method that uses block-row
+projections. To solve the $Ax = b$,[^consistency] where $A$ is an
+$m\times n$ sparse matrix, $x$ is an $n$-vector and $b$ is an
+$m$-vector, we subdivide the system into strips of rows as follows:
+$$
+  \left(
+    \begin{array}{c}
+      A_1 \\ A_2 \\ \vdots \\ A_p
+    \end{array}
+  \right)
+  x =
+  \left(
+    \begin{array}{c}
+      b_1 \\ b_2 \\ \vdots \\ b_p
+    \end{array}
+  \right).
+$$
+
+[^consistency]: We assume the system is consistent and for simplicity we suppose that $A$ has full rank.
+
+
+Let $P_{\mathcal{R}(A_i^T)}$ be the projector onto the range of
+$A_i^T$ and ${A_i}^+$ be the Moore-Penrose pseudo-inverse of the
+partition $A_i$. The block Cimmino algorithm then computes a solution
+iteratively from an initial estimate $x^{(0)}$ according to:
+$$
+\begin{array}{ccl}
+u_{i}  & = & A_i^+ \left ( {b_i - A_i x^{(k)}} \right ) ~~~ i = 1, .... p \\
+x^{(k+1)}  & = & x^{(k)} + \omega \sum_{i=1}^p{u_i}
+\end{array}
+$$
+where we see the independence of the set of $p$ equations, which is why
+the method is so attractive in a parallel environment.
+
+With the above notations, the iteration equations are thus:
+$$
+    \begin{array}{ccl}
+        x^{(k+1)} & = & x^{(k)} + \omega \sum_{i=1}^p{A_i^+ \left ( {b_i - A_i x^{(k)}} \right )} \\
+          & = & \left( {I - \omega \sum_{i=1}^p{A_i^+ A_i}} \right) x^{(k)}
+        + \omega \sum_{i=1}^p{A_i^+ b_i} \\
+          & = & Q x^{(k)} + \omega \sum_{i=1}^p{A_i^+ b_i}.
+          \label{something}
+    \end{array}
+$$
+
+The iteration matrix for block Cimmino, $H = I - Q$, is then 
+a sum of projectors $H = \omega \sum_{i=1}^p{\mathcal{P}_{\mathcal{R}(A_i^T)}}$.  
+It is thus symmetric and positive definite
+and so we can solve 
+$$
+    H x ~=~ \xi, 
+$$
+where $\xi = \omega \sum_{i=1}^p{A_i^+ b_i}$
+using conjugate gradient or block conjugate gradient methods.  As $\omega$ appears on both sides of the equation, we can set it to one.
+
+At each step of the conjugate gradient algorithm we must solve for the 
+$p$ projections viz.
+$$
+    A_i u_i ~=~ r_i, ~~~~  (r_i = {b_i - A_i x^{(k)}}),~~~ i = 1, .... p.
+$$
+
+In our approach we choose to solve these equations using the augmented system
+$$
+    \left ( \begin{array}{cc} I & A_i^T \\ A_i & 0 \end{array} \right )
+      \left ( \begin{array}{l} u_i \\ v_i \end{array} \right )
+    ~=~  \left ( \begin{array}{l} 0 \\ r_i \end{array} \right )
+$$
+that we will solve, at each iteration, using a direct method and gives $u_i = A_i^+ r_i$ the projection we need for the partition $A_i$.
+
+ We use the
+multifrontal parallel solver
+(\texttt{MUMPS}) \cite{adek:01} to do this. The main other techniques for solving equation (\ref{eqn:projections}) are using normal equations or a QR factorization. The former has numerical and storage issues while the latter lacks a good distributed solver. We avoid both problems with our approach.
+
+Running our solver in the regular mode will go through the following steps:
+
+- Partition the system into strips of rows ($A_i$ and $b_i$ for $i = 1, \dots p$)
+- Create the augmented systems
+- Analyze and factorize the augmented systems using the direct solver `MUMPS`
+- Run a block conjugate gradient with an implicit matrix $H$, and at each iteration compute the matrix-vector product as a sum of projections. These projects being a set of solves using the direct solver.
+
+### The augmented block Cimmino ###
+
+
+## The solver ##
+
 The solver is in the form of a class called `abcd` and an instance of
 it represents an instance of the solver with its own linear system. In
 the following we will use the `Boost::MPI` syntax for `MPI` specefic
@@ -30,7 +119,7 @@ pre-initialized at construction, otherwise it is either allocated by
 the user (such as the linear system entries) or by the solver (such as
 the solution).
 
-## An introductory example ##
+### An introductory example ###
 
 To see how the solver can be used, we expose a basic example that uses
 the regular block Cimmino scheme. We comment the interesting parts,
@@ -118,7 +207,7 @@ are detailed in [The Controls].
     }
 ```
 
-## The linear system ##
+### The linear system ###
 The definition of the linear system uses 7 members:
 
 - `obj.m` (type: `int`), the number of rows.
@@ -143,7 +232,7 @@ If either of the row and column indices start with `0` the arrays are supposed t
     obj.irn[0] = 1;
     //..
 ```
-## The Controls ##
+### The Controls ###
 
 Define the general behavior of the solver. They are split into two
 arrays, `icntl` and `dcntl`. `icntl` is an *integer* array and defines
@@ -159,7 +248,7 @@ To access each of the control options we can either use the indices
 `Controls`, eg. `Controls::scaling` has a value of `5` and is used
 with `icntl` to handle the scaling of the linear system.
 
-### The integer control array###
+#### The integer control array####
 
 - `obj.icntl[Controls::nbparts]` or `obj.icntl[1]` defines the number of partitions in our linear system, can be from `1` to `m` (the number of rows in the matrix)
 
@@ -231,12 +320,12 @@ with `icntl` to handle the scaling of the linear system.
 - `obj.icntl[13]` to `obj.icntl[16]` are for development and testing purposes only.
 - `obj.icntl[17]` to `obj.icntl[19]` are reserved for a future use.
 
-### The double precision control array ###
+#### The double precision control array ####
 - `obj.dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`obj.icntl[Controls::part_imbalance] = 3`).
 - `obj.dcntl[Controls::threshold]` or `obj.dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
 - `obj.dcnlt[3]` to `obj.dcntl[20]` are reserved for future use.
 
-## Installation ##
+### Installation ###
 
 The ABCD Solver depends on a few libraries: `MUMPS 5.0 (custom)`, `Sparselib++ (custom)`, `PaToH`, `lapack` and `Boost::MPI`.
 

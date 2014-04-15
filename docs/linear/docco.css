@@ -46,8 +46,9 @@ body {
   font-family: "aller-light";
   background: url('public/images/gray.png') #fff;
   background-size: 322px;
-  margin: 10px auto;
-  max-width: 640px;
+  margin-top: 30px;
+  margin-left: 320px;
+  max-width: 880px;
 }
 
 hr {
@@ -70,6 +71,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   h2 {
     font-size: 1.3em;
+    color: #d6604d;
+  }
+  h3 {
+    color: #b2182b;
   }
   h1:after {
     content: "8";
@@ -169,33 +174,67 @@ ul.sections {
 }
 
 #TOC {
-  max-height: 0;
-  overflow: hidden;
-  text-align: center;
-  font-size: 13px;
-  line-height: 20px;
-  -moz-transition: max-height 1s;
-  -webkit-transition: max-height 1s;
-  transition: max-height 1s;
+    position: fixed;
+    height: 100%;
+    width: 280px;
+    background-color: #4d4d4d;
+    color: white;
+    margin: 0;
+    left: 0;
+    top : 0;
 }
-  .header:hover #TOC {
-    max-height: 500px;
-  }
-  #TOC h3 {
-    margin-top: 20px;
-  }
-  #TOC ol {
-    margin: 0 0 20px 0;
-    display: inline-block;
-    text-align: left;
-    list-style-type: upper-roman;
-  }
-    #TOC li {
-      font-family: 'novecento-bold';
+    #TOC ul {
+        padding: 0;
+        margin: 0;
+        float: left;
+        width: 100%;
     }
-      #TOC li a {
-        font-family: 'aller-light';
-      }
+    #TOC ul li {
+        list-style: none;
+        padding: 0;
+        margin-left: 0;
+        font-family: 'novecento-bold';
+        line-height: 20px;
+        color: white;
+    }
+        #TOC ul li a {
+            font-family: 'aller-light';
+            text-decoration: none;
+            padding: 4px;
+            display: block;
+            color: white;
+            -moz-transition: all .5s;
+            -webkit-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+            line-height: 20px;
+        }
+
+        #TOC>ul>li>a{
+            background-color: #67001f;
+        }
+        #TOC>ul>li>ul>li>a{
+            padding-left:10px;
+            background-color: #d6604d;
+        }
+        #TOC>ul>li>ul>li>a:hover{
+            padding-left:20px;
+        }
+        #TOC>ul>li>ul>li>ul>li>a{
+            padding-left:20px;
+            background-color: #b2182b;
+        }
+        #TOC>ul>li>ul>li>ul>li>a:hover{
+            padding-left:30px;
+        }
+
+        #TOC ul li a:hover {
+            background: #276419;
+            -moz-transition: all .5s;
+            -webkit-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+        }
 
 
 /*---------------------- Syntax Highlighting -----------------------------*/
