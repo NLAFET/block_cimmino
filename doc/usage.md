@@ -104,6 +104,36 @@ Running our solver in the regular mode will go through the following steps:
 
 ### The augmented block Cimmino ###
 
+To understand the algorith, suppose that we have a matrix $A$ with three partitions, described as follow:
+$$
+    A = 
+    \begin{bmatrix}
+        A_{1,1} & A_{1,2} &&&&  A_{1,3}\\
+        & A_{2,1} & A_{2,2} & A_{2,3} && \\
+        &&& A_{3,2} & A_{3,3} &  A_{3,1}\\
+    \end{bmatrix}
+$$
+Where $A_{i,j}$ is the sub-part of $A_i$, the $i$-th partition, that is interconnected algebraically to the partition $A_j$, and vice versa.
+
+The goal of the augmented block Cimmino algorithm is to make these
+three partitions mutually orthogonal to each other, meaning that the
+product of each couple of partitions is zero. We consider two
+different ways to augment the matrix to obtain these zero matrix products. 
+
+- One can repeat the submatrices $A_{ij}$ and $A_{ji}$, reversing the signs of one of them to obtain the augmented matrix $\bar{A}$ as in the following
+$$
+    \bar{A} = 
+    \begin{bmatrix}
+        A_{1,1} & A_{1,2} &&&&  A_{1,3}  &\vline& A_{1,2}  & A_{1,3}\\
+        & A_{2,1} & A_{2,2} & A_{2,3}  &&&\vline& -A_{2,1} && A_{2,3}\\
+        &&& A_{3,2} & A_{3,3} &  A_{3,1} &\vline&& -A_{3,1} & -A_{3,2}\\
+    \end{bmatrix}.
+$$
+Notice that we augment the matrix upper-down and shift the
+augmentation at each step. This way, we do not create any new
+interconnections between the new partitions. A simple check shows that
+$\bar{A}_i \bar{A}_j^T$ is zero for any couple $i/j$.
+
 
 ## The solver ##
 
@@ -199,13 +229,118 @@ are detailed in [The Controls].
             cout << "An error occured: " << err.what() << endl;
         }
         
-        delete[] obj.irn;
-        delete[] obj.jcn;
-        delete[] obj.val;
+        if(world.rank() == 0) { // the master
+            delete[] obj.irn;
+            delete[] obj.jcn;
+            delete[] obj.val;
+        }
 
       return 0;
     }
 ```
+### Installation ###
+
+The ABCD Solver depends on a few libraries: `MUMPS 5.0 (custom)`, `Sparselib++ (custom)`, `PaToH`, `lapack` and `Boost::MPI`.
+
+First, clone the latest version of the `ABCD Solver`:
+
+```bash
+    # download the latest stable version
+    git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    # get the dev version
+    git checkout dev
+```
+
+- `MUMPS 5.0 (custom)`: a modified version of `MUMPS` to suits our needs, it is distributed with our solver in the `lib/mumps/` directory. The distributed version is compiled in `x86_64` compilers, a `i686` version can be distributed on request.
+- `Sparselib++ (custom)`: a modified version of `SparseLib++` to suits our needs, to download it run the following commands:
+
+    ```bash
+        # get into the solver root directory
+        cd abcd
+        git submodule init
+        # clone the sparselib repository into lib/sparselib
+        git submodule update
+    ```
+- `PaToH`: Can be downloaded from [Ümit V. Çatalyürek](http://bmi.osu.edu/~umit/software.html) webpage. The file `libpatoh.a` has to be copied into the `lib/` directory and the header `patho.h` has to be copied into the `include` directory.
+
+To summarize, here is a simple script that will do everything:
+
+```bash
+    # download the latest stable version
+    git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    # get the dev version
+    git checkout dev
+
+    cd abcd
+    git submodule init
+    git submodule update
+    
+    cd lib
+    # download the appropriate version of patoh
+    wget http://bmi.osu.edu/~umit/PaToH/...tar.gz
+    # extract 
+    tar xvzf patoh-....tar.gz
+    cp build/*/libpatoh.a .
+    cp build/*/patoh.h ../include/
+    rm -rf build patoh-....tar.gz
+    cd ..
+```
+
+Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the `cmake.in` directory, suppose we are going to use the `ACML` library (provides `blas` and `lapack`). 
+
+```bash
+    # get the appropriate configuration file
+    cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
+```
+
+Edit that file to suite your configuration
+
+```cmake
+    # where to find Boost?
+    set(BOOST_ROOT /path/to/boost/headers)
+    set(BOOST_LIBRARYDIR /path/to/boost/libraries)
+
+    # the compilers 
+    set(CMAKE_CXX_COMPILER mpic++)
+    set(CMAKE_C_COMPILER mpicc)
+    set(CMAKE_FC_COMPILER mpif90)
+
+    # where to find ACML, scalapack and blacs?
+    set(BLAS_LAPACK_SCALAPACK_DIRS /path/to/acml/gfortran64/lib
+                                   /path/to/scalapack-acml
+                                   /path/to/blacs
+        )
+    # the different libraries
+    set(BLAS_LAPACK_SCALAPACK_LIBS acml
+        blacsF77init blacsCinit blacs blacsF77init blacsCinit
+        scalapack
+        )
+
+    # where to find Openmpi (or any mpi distributuion)
+    set(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
+    set(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
+    # the corresponding libraries
+    set(MPI_LIBRARIES 
+        mpi
+        mpi_f90
+        mpi_f77
+        mpi_cxx
+        dl
+    )
+```
+
+Notice that we link against `scalapack` and `blacs`, these are required libraries by `MUMPS`. If we want to use `MKL`, just change this part:
+
+```cmake
+    set(BLAS_LAPACK_SCALAPACK_DIRS /path/to/mkl)
+    set(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
+        mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
+        mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
+        )
+```
+
+In this example we used the non-threaded version of these libraries, for the `ACML` library use the `_mp` suffix, for `MKL` use the [Intel® Math Kernel Library Link Line Advisor](https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor) to obtain the correct set of libraries.
+
 
 ### The linear system ###
 The definition of the linear system uses 7 members:
@@ -324,106 +459,4 @@ with `icntl` to handle the scaling of the linear system.
 - `obj.dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`obj.icntl[Controls::part_imbalance] = 3`).
 - `obj.dcntl[Controls::threshold]` or `obj.dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
 - `obj.dcnlt[3]` to `obj.dcntl[20]` are reserved for future use.
-
-### Installation ###
-
-The ABCD Solver depends on a few libraries: `MUMPS 5.0 (custom)`, `Sparselib++ (custom)`, `PaToH`, `lapack` and `Boost::MPI`.
-
-First, clone the latest version of the `ABCD Solver`:
-
-```bash
-    # download the latest stable version
-    git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    # get the dev version
-    git checkout dev
-```
-
-- `MUMPS 5.0 (custom)`: a modified version of `MUMPS` to suits our needs, it is distributed with our solver in the `lib/mumps/` directory. The distributed version is compiled in `x86_64` compilers, a `i686` version can be distributed on request. Moreover, 
-- `Sparselib++ (custom)`: a modified version of `SparseLib++` to suits our needs, to download it run the following commands from the root of your
-
-    ```bash
-        cd abcd
-        git submodule init
-        # clone the sparselib repository into lib/sparselib
-        git submodule update
-    ```
-- `PaToH`: Can be downloaded from [Ümit V. Çatalyürek](http://bmi.osu.edu/~umit/software.html) webpage. The file `libpatoh.a` has to be copied into the `lib/` directory and the header `patho.h` has to be copied into the `include` directory.
-
-To summarize, here is a simple script that will do everything:
-
-```bash
-    # download the latest stable version
-    git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    # get the dev version
-    git checkout dev
-
-    cd abcd
-    git submodule init
-    git submodule update
-    
-    cd lib
-    # download the appropriate version of patoh
-    wget http://bmi.osu.edu/~umit/PaToH/...tar.gz
-    # extract 
-    tar xvzf patoh-....tar.gz
-    cp build/*/libpatoh.a .
-    cp build/*/patoh.h ../include/
-    rm -rf build patoh-....tar.gz
-    cd ..
-```
-
-Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the `cmake.in` directory, suppose we are going to use the `ACML` library (provides `blas` and `lapack`). 
-
-```bash
-    # get the appropriate configuration file
-    cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
-```
-
-Edit that file to suite your configuration
-
-```cmake
-    # where to find Boost?
-    set(BOOST_ROOT /path/to/boost/headers)
-    set(BOOST_LIBRARYDIR /path/to/boost/libraries)
-
-    # the compilers 
-    set(CMAKE_CXX_COMPILER mpic++)
-    set(CMAKE_C_COMPILER mpicc)
-    set(CMAKE_FC_COMPILER mpif90)
-
-    # where to find ACML, scalapack and blacs?
-    set(BLAS_LAPACK_SCALAPACK_DIRS /path/to/acml/gfortran64/lib
-                                   /path/to/scalapack-acml
-                                   /path/to/blacs
-        )
-    # the different libraries
-    set(BLAS_LAPACK_SCALAPACK_LIBS acml
-        blacsF77init blacsCinit blacs blacsF77init blacsCinit
-        scalapack
-        )
-
-    # where to find Openmpi (or any mpi distributuion)
-    set(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
-    set(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
-    # the corresponding libraries
-    set(MPI_LIBRARIES 
-        mpi
-        mpi_f90
-        mpi_f77
-        mpi_cxx
-        dl
-    )
-```
-
-Notice that we link against `scalapack` and `blacs`, these are required libraries by `MUMPS`. If we want to use `MKL`, just change this part:
-
-```cmake
-    set(BLAS_LAPACK_SCALAPACK_DIRS /path/to/mkl)
-    set(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
-        mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
-        mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
-        )
-```
-
-In this example we used the non-threaded version of these libraries, for the `ACML` library use the `_mp` suffix, for `MKL` use the [Intel® Math Kernel Library Link Line Advisor](https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor) to obtain the correct set of libraries.
 

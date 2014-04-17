@@ -39,9 +39,9 @@ code > span.er { font-weight: bold; }
 </ul></li>
 <li><a href="#the-solver">The solver</a><ul>
 <li><a href="#an-introductory-example">An introductory example</a></li>
+<li><a href="#installation">Installation</a></li>
 <li><a href="#the-linear-system">The linear system</a></li>
 <li><a href="#the-controls">The Controls</a></li>
-<li><a href="#installation">Installation</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -102,6 +102,25 @@ x^{(k+1)}  &amp; = &amp; x^{(k)} + \omega \sum_{i=1}^p{u_i}
 <li>Run a block conjugate gradient with an implicit matrix <span class="math">\(H\)</span>, and at each iteration compute the matrix-vector product as a sum of projections. These projects being a set of solves using the direct solver.</li>
 </ul>
 <h3 id="the-augmented-block-cimmino">The augmented block Cimmino</h3>
+<p>To understand the algorith, suppose that we have a matrix <span class="math">\(A\)</span> with three partitions, described as follow: <span class="math">\[
+    A = 
+    \begin{bmatrix}
+        A_{1,1} &amp; A_{1,2} &amp;&amp;&amp;&amp;  A_{1,3}\\
+        &amp; A_{2,1} &amp; A_{2,2} &amp; A_{2,3} &amp;&amp; \\
+        &amp;&amp;&amp; A_{3,2} &amp; A_{3,3} &amp;  A_{3,1}\\
+    \end{bmatrix}
+\]</span> Where <span class="math">\(A_{i,j}\)</span> is the sub-part of <span class="math">\(A_i\)</span>, the <span class="math">\(i\)</span>-th partition, that is interconnected algebraically to the partition <span class="math">\(A_j\)</span>, and vice versa.</p>
+<p>The goal of the augmented block Cimmino algorithm is to make these three partitions mutually orthogonal to each other, meaning that the product of each couple of partitions is zero. We consider two different ways to augment the matrix to obtain these zero matrix products.</p>
+<ul>
+<li>One can repeat the submatrices <span class="math">\(A_{ij}\)</span> and <span class="math">\(A_{ji}\)</span>, reversing the signs of one of them to obtain the augmented matrix <span class="math">\(\bar{A}\)</span> as in the following <span class="math">\[
+    \bar{A} = 
+    \begin{bmatrix}
+        A_{1,1} &amp; A_{1,2} &amp;&amp;&amp;&amp;  A_{1,3}  &amp;\vline&amp; A_{1,2}  &amp; A_{1,3}\\
+        &amp; A_{2,1} &amp; A_{2,2} &amp; A_{2,3}  &amp;&amp;&amp;\vline&amp; -A_{2,1} &amp;&amp; A_{2,3}\\
+        &amp;&amp;&amp; A_{3,2} &amp; A_{3,3} &amp;  A_{3,1} &amp;\vline&amp;&amp; -A_{3,1} &amp; -A_{3,2}\\
+    \end{bmatrix}.
+\]</span> Notice that we augment the matrix upper-down and shift the augmentation at each step. This way, we do not create any new interconnections between the new partitions. A simple check shows that <span class="math">\(\bar{A}_i \bar{A}_j^T\)</span> is zero for any couple <span class="math">\(i/j\)</span>.</li>
+</ul>
 <h2 id="the-solver">The solver</h2>
 <p>The solver is in the form of a class called <code>abcd</code> and an instance of it represents an instance of the solver with its own linear system. In the following we will use the <code>Boost::MPI</code> syntax for <code>MPI</code> specefic commands. Moreover, in the following description we refer to the members of the class by <code>obj.member</code> where <code>obj</code> is an instance of the solver and <code>member</code> is the corresponding member, similarly, we refer to the public methods by <code>obj.method()</code>. Finally, arrays will have <code>[]</code> appended to them, if we specify a size then the array is pre-initialized at construction, otherwise it is either allocated by the user (such as the linear system entries) or by the solver (such as the solution).</p>
 <h3 id="an-introductory-example">An introductory example</h3>
@@ -177,12 +196,92 @@ x^{(k+1)}  &amp; = &amp; x^{(k)} + \omega \sum_{i=1}^p{u_i}
             cout &lt;&lt; <span class="st">&quot;An error occured: &quot;</span> &lt;&lt; err.what() &lt;&lt; endl;
         }
         
-        <span class="kw">delete</span>[] obj.irn;
-        <span class="kw">delete</span>[] obj.jcn;
-        <span class="kw">delete</span>[] obj.val;
+        <span class="kw">if</span>(world.rank() == <span class="dv">0</span>) { <span class="co">// the master</span>
+            <span class="kw">delete</span>[] obj.irn;
+            <span class="kw">delete</span>[] obj.jcn;
+            <span class="kw">delete</span>[] obj.val;
+        }
 
       <span class="kw">return</span> <span class="dv">0</span>;
     }</code></pre>
+<h3 id="installation">Installation</h3>
+<p>The ABCD Solver depends on a few libraries: <code>MUMPS 5.0 (custom)</code>, <code>Sparselib++ (custom)</code>, <code>PaToH</code>, <code>lapack</code> and <code>Boost::MPI</code>.</p>
+<p>First, clone the latest version of the <code>ABCD Solver</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
+    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    <span class="co"># get the dev version</span>
+    <span class="kw">git</span> checkout dev</code></pre>
+<ul>
+<li><code>MUMPS 5.0 (custom)</code>: a modified version of <code>MUMPS</code> to suits our needs, it is distributed with our solver in the <code>lib/mumps/</code> directory. The distributed version is compiled in <code>x86_64</code> compilers, a <code>i686</code> version can be distributed on request.</li>
+<li><p><code>Sparselib++ (custom)</code>: a modified version of <code>SparseLib++</code> to suits our needs, to download it run the following commands:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># get into the solver root directory</span>
+    <span class="kw">cd</span> abcd
+    <span class="kw">git</span> submodule init
+    <span class="co"># clone the sparselib repository into lib/sparselib</span>
+    <span class="kw">git</span> submodule update</code></pre></li>
+<li><p><code>PaToH</code>: Can be downloaded from <a href="http://bmi.osu.edu/~umit/software.html">Ümit V. Çatalyürek</a> webpage. The file <code>libpatoh.a</code> has to be copied into the <code>lib/</code> directory and the header <code>patho.h</code> has to be copied into the <code>include</code> directory.</p></li>
+</ul>
+<p>To summarize, here is a simple script that will do everything:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
+    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
+    <span class="co"># get the dev version</span>
+    <span class="kw">git</span> checkout dev
+
+    <span class="kw">cd</span> abcd
+    <span class="kw">git</span> submodule init
+    <span class="kw">git</span> submodule update
+    
+    <span class="kw">cd</span> lib
+    <span class="co"># download the appropriate version of patoh</span>
+    <span class="kw">wget</span> http://bmi.osu.edu/~umit/PaToH/...tar.gz
+    <span class="co"># extract </span>
+    <span class="kw">tar</span> xvzf patoh-....tar.gz
+    <span class="kw">cp</span> build/*/libpatoh.a .
+    <span class="kw">cp</span> build/*/patoh.h ../include/
+    <span class="kw">rm</span> -rf build patoh-....tar.gz
+    <span class="kw">cd</span> ..</code></pre>
+<p>Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the <code>cmake.in</code> directory, suppose we are going to use the <code>ACML</code> library (provides <code>blas</code> and <code>lapack</code>).</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># get the appropriate configuration file</span>
+    <span class="kw">cp</span> cmake.in/abcdCmake.in.ACML ./abcdCmake.in</code></pre>
+<p>Edit that file to suite your configuration</p>
+<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="co"># where to find Boost?</span>
+    <span class="kw">set</span>(BOOST_ROOT /path/to/boost/headers)
+    <span class="kw">set</span>(BOOST_LIBRARYDIR /path/to/boost/libraries)
+
+    <span class="co"># the compilers </span>
+    <span class="kw">set</span>(<span class="dv">CMAKE_CXX_COMPILER</span> mpic++)
+    <span class="kw">set</span>(<span class="dv">CMAKE_C_COMPILER</span> mpicc)
+    <span class="kw">set</span>(<span class="dv">CMAKE_FC_COMPILER</span> mpif90)
+
+    <span class="co"># where to find ACML, scalapack and blacs?</span>
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/acml/gfortran64/lib
+                                   /path/to/scalapack-acml
+                                   /path/to/blacs
+        )
+    <span class="co"># the different libraries</span>
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS acml
+        blacsF77init blacsCinit blacs blacsF77init blacsCinit
+        scalapack
+        )
+
+    <span class="co"># where to find Openmpi (or any mpi distributuion)</span>
+    <span class="kw">set</span>(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
+    <span class="kw">set</span>(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
+    <span class="co"># the corresponding libraries</span>
+    <span class="kw">set</span>(MPI_LIBRARIES 
+        mpi
+        mpi_f90
+        mpi_f77
+        mpi_cxx
+        dl
+    )</code></pre>
+<p>Notice that we link against <code>scalapack</code> and <code>blacs</code>, these are required libraries by <code>MUMPS</code>. If we want to use <code>MKL</code>, just change this part:</p>
+<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/mkl)
+    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
+        mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
+        mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
+        )</code></pre>
+<p>In this example we used the non-threaded version of these libraries, for the <code>ACML</code> library use the <code>_mp</code> suffix, for <code>MKL</code> use the <a href="https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor">Intel® Math Kernel Library Link Line Advisor</a> to obtain the correct set of libraries.</p>
 <h3 id="the-linear-system">The linear system</h3>
 <p>The definition of the linear system uses 7 members:</p>
 <ul>
@@ -260,83 +359,6 @@ obj.dcntl[Controls::part_imbalance] = <span class="fl">0.3</span>;</code></pre><
 <li><code>obj.dcntl[Controls::threshold]</code> or <code>obj.dcntl[2]</code> defines the stopping threshold for the block-CG acceleration, default is <code>1e-12</code>.</li>
 <li><code>obj.dcnlt[3]</code> to <code>obj.dcntl[20]</code> are reserved for future use.</li>
 </ul>
-<h3 id="installation">Installation</h3>
-<p>The ABCD Solver depends on a few libraries: <code>MUMPS 5.0 (custom)</code>, <code>Sparselib++ (custom)</code>, <code>PaToH</code>, <code>lapack</code> and <code>Boost::MPI</code>.</p>
-<p>First, clone the latest version of the <code>ABCD Solver</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
-    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    <span class="co"># get the dev version</span>
-    <span class="kw">git</span> checkout dev</code></pre>
-<ul>
-<li><code>MUMPS 5.0 (custom)</code>: a modified version of <code>MUMPS</code> to suits our needs, it is distributed with our solver in the <code>lib/mumps/</code> directory. The distributed version is compiled in <code>x86_64</code> compilers, a <code>i686</code> version can be distributed on request. Moreover,</li>
-<li><p><code>Sparselib++ (custom)</code>: a modified version of <code>SparseLib++</code> to suits our needs, to download it run the following commands from the root of your</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="kw">cd</span> abcd
-    <span class="kw">git</span> submodule init
-    <span class="co"># clone the sparselib repository into lib/sparselib</span>
-    <span class="kw">git</span> submodule update</code></pre></li>
-<li><p><code>PaToH</code>: Can be downloaded from <a href="http://bmi.osu.edu/~umit/software.html">Ümit V. Çatalyürek</a> webpage. The file <code>libpatoh.a</code> has to be copied into the <code>lib/</code> directory and the header <code>patho.h</code> has to be copied into the <code>include</code> directory.</p></li>
-</ul>
-<p>To summarize, here is a simple script that will do everything:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># download the latest stable version</span>
-    <span class="kw">git</span> clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    <span class="co"># get the dev version</span>
-    <span class="kw">git</span> checkout dev
-
-    <span class="kw">cd</span> abcd
-    <span class="kw">git</span> submodule init
-    <span class="kw">git</span> submodule update
-    
-    <span class="kw">cd</span> lib
-    <span class="co"># download the appropriate version of patoh</span>
-    <span class="kw">wget</span> http://bmi.osu.edu/~umit/PaToH/...tar.gz
-    <span class="co"># extract </span>
-    <span class="kw">tar</span> xvzf patoh-....tar.gz
-    <span class="kw">cp</span> build/*/libpatoh.a .
-    <span class="kw">cp</span> build/*/patoh.h ../include/
-    <span class="kw">rm</span> -rf build patoh-....tar.gz
-    <span class="kw">cd</span> ..</code></pre>
-<p>Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the <code>cmake.in</code> directory, suppose we are going to use the <code>ACML</code> library (provides <code>blas</code> and <code>lapack</code>).</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">    <span class="co"># get the appropriate configuration file</span>
-    <span class="kw">cp</span> cmake.in/abcdCmake.in.ACML ./abcdCmake.in</code></pre>
-<p>Edit that file to suite your configuration</p>
-<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="co"># where to find Boost?</span>
-    <span class="kw">set</span>(BOOST_ROOT /path/to/boost/headers)
-    <span class="kw">set</span>(BOOST_LIBRARYDIR /path/to/boost/libraries)
-
-    <span class="co"># the compilers </span>
-    <span class="kw">set</span>(<span class="dv">CMAKE_CXX_COMPILER</span> mpic++)
-    <span class="kw">set</span>(<span class="dv">CMAKE_C_COMPILER</span> mpicc)
-    <span class="kw">set</span>(<span class="dv">CMAKE_FC_COMPILER</span> mpif90)
-
-    <span class="co"># where to find ACML, scalapack and blacs?</span>
-    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/acml/gfortran64/lib
-                                   /path/to/scalapack-acml
-                                   /path/to/blacs
-        )
-    <span class="co"># the different libraries</span>
-    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS acml
-        blacsF77init blacsCinit blacs blacsF77init blacsCinit
-        scalapack
-        )
-
-    <span class="co"># where to find Openmpi (or any mpi distributuion)</span>
-    <span class="kw">set</span>(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
-    <span class="kw">set</span>(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
-    <span class="co"># the corresponding libraries</span>
-    <span class="kw">set</span>(MPI_LIBRARIES 
-        mpi
-        mpi_f90
-        mpi_f77
-        mpi_cxx
-        dl
-    )</code></pre>
-<p>Notice that we link against <code>scalapack</code> and <code>blacs</code>, these are required libraries by <code>MUMPS</code>. If we want to use <code>MKL</code>, just change this part:</p>
-<pre class="sourceCode cmake"><code class="sourceCode cmake">    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_DIRS /path/to/mkl)
-    <span class="kw">set</span>(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
-        mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
-        mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
-        )</code></pre>
-<p>In this example we used the non-threaded version of these libraries, for the <code>ACML</code> library use the <code>_mp</code> suffix, for <code>MKL</code> use the <a href="https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor">Intel® Math Kernel Library Link Line Advisor</a> to obtain the correct set of libraries.</p>
 <div class="footnotes">
 <hr />
 <ol>
