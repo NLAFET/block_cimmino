@@ -1,8 +1,8 @@
-The ABCD Solver
+The Augmented Block Cimmino Distributed Solver {#mainpage}
 =============
 
 The package `ABCD Solver` is a distributed hybrid (iterative/direct)
-solver for sparse linear systems $Ax = b$ where $A$ is a double
+solver for sparse linear systems \f$Ax = b\f$ where \f$A\f$ is a double
 precision [^double] square [^square] matrix with any structure. `ABCD
 Solver` uses two methods to solve the linear system:
 
@@ -18,27 +18,28 @@ Solver` uses two methods to solve the linear system:
 
 [^square]: In reality the system can rectangular, but this case is not fully tested yet.
 
-## Introduction to the methods ##
+# Introduction to the methods #
 
-### The regular block Cimmino ###
+## The regular block Cimmino ##
 
 The block Cimmino method is an iterative method that uses block-row
-projections. To solve the $Ax = b$,[^consistency] where $A$ is an
-$m\times n$ sparse matrix, $x$ is an $n$-vector and $b$ is an
-$m$-vector, we subdivide the system into strips of rows as follows:
-$$
+projections. To solve the \f$Ax = b\f$,[^consistency] where \f$A\f$ is an
+\f$m\times n\f$ sparse matrix, \f$x\f$ is an \f$n\f$-vector and \f$b\f$ is an
+\f$m\f$-vector, we subdivide the system into strips of rows as follows:
+
+\f{eqnarray*}
   \left(
     \begin{array}{c}
       A_1 \\ A_2 \\ \vdots \\ A_p
     \end{array}
   \right)
-  x =
+  x &=&
   \left(
     \begin{array}{c}
       b_1 \\ b_2 \\ \vdots \\ b_p
     \end{array}
   \right).
-$$
+\f}
 
 [^consistency]: We assume the system is consistent and for simplicity we suppose that $A$ has full rank.
 
@@ -47,12 +48,12 @@ Let $P_{\mathcal{R}(A_i^T)}$ be the projector onto the range of
 $A_i^T$ and ${A_i}^+$ be the Moore-Penrose pseudo-inverse of the
 partition $A_i$. The block Cimmino algorithm then computes a solution
 iteratively from an initial estimate $x^{(0)}$ according to:
-$$
+\f{eqnarray*}
 \begin{array}{ccl}
 u_{i}  & = & A_i^+ \left ( {b_i - A_i x^{(k)}} \right ) ~~~ i = 1, .... p \\
 x^{(k+1)}  & = & x^{(k)} + \omega \sum_{i=1}^p{u_i}
 \end{array}
-$$
+\f}
 where we see the independence of the set of $p$ equations, which is why
 the method is so attractive in a parallel environment.
 
@@ -84,16 +85,19 @@ $$
 $$
 
 In our approach we choose to solve these equations using the augmented system
-$$
+\f{eqnarray*}
     \left ( \begin{array}{cc} I & A_i^T \\ A_i & 0 \end{array} \right )
       \left ( \begin{array}{l} u_i \\ v_i \end{array} \right )
-    ~=~  \left ( \begin{array}{l} 0 \\ r_i \end{array} \right )
-$$
+    &=&  \left ( \begin{array}{l} 0 \\ r_i \end{array} \right )
+\f}
 that we will solve, at each iteration, using a direct method and gives $u_i = A_i^+ r_i$ the projection we need for the partition $A_i$.
 
- We use the
-multifrontal parallel solver
-(\texttt{MUMPS}) \cite{adek:01} to do this. The main other techniques for solving equation (\ref{eqn:projections}) are using normal equations or a QR factorization. The former has numerical and storage issues while the latter lacks a good distributed solver. We avoid both problems with our approach.
+ We use the multifrontal parallel solver (\texttt{MUMPS})
+\cite{adek:01} to do this. The main other techniques for solving
+equation (\ref{eqn:projections}) are using normal equations or a QR
+factorization. The former has numerical and storage issues while the
+latter lacks a good distributed solver. We avoid both problems with
+our approach.
 
 Running our solver in the regular mode will go through the following steps:
 
@@ -102,17 +106,18 @@ Running our solver in the regular mode will go through the following steps:
 - Analyze and factorize the augmented systems using the direct solver `MUMPS`
 - Run a block conjugate gradient with an implicit matrix $H$, and at each iteration compute the matrix-vector product as a sum of projections. These projects being a set of solves using the direct solver.
 
-### The augmented block Cimmino ###
+## The augmented block Cimmino ##
 
 To understand the algorith, suppose that we have a matrix $A$ with three partitions, described as follow:
-$$
+\f[
     A = 
     \begin{bmatrix}
         A_{1,1} & A_{1,2} &&&&  A_{1,3}\\
         & A_{2,1} & A_{2,2} & A_{2,3} && \\
         &&& A_{3,2} & A_{3,3} &  A_{3,1}\\
     \end{bmatrix}
-$$
+\f]
+
 Where $A_{i,j}$ is the sub-part of $A_i$, the $i$-th partition, that is interconnected algebraically to the partition $A_j$, and vice versa.
 
 The goal of the augmented block Cimmino algorithm is to make these
@@ -135,7 +140,7 @@ interconnections between the new partitions. A simple check shows that
 $\bar{A}_i \bar{A}_j^T$ is zero for any couple $i/j$.
 
 
-## The solver ##
+# The solver #
 
 The solver is in the form of a class called `abcd` and an instance of
 it represents an instance of the solver with its own linear system. In
@@ -157,7 +162,7 @@ and explain how they fit together, the details regarding the members of
 the `abcd` class are explained in [The linear system] and the controls 
 are detailed in [The Controls].
 
-```cpp
+~~~~~~~~~~~{.cpp}
     #include "abcd.h"
     // use boost::mpi for simplicity, the user can use which ever he wants
     #include "mpi.h"
@@ -237,7 +242,7 @@ are detailed in [The Controls].
 
       return 0;
     }
-```
+~~~~~~~~~~~
 ### Installation ###
 
 The ABCD Solver depends on a few libraries: `MUMPS 5.0 (custom)`, `Sparselib++ (custom)`, `PaToH`, `lapack` and `Boost::MPI`.
