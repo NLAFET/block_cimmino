@@ -117,14 +117,14 @@ void abcd::distributeRhs()
         mpi::broadcast(inter_comm, good_rhs, 0);
 
         if(icntl[Controls::block_size] > nrhs) {
-            double *rdata = new double[m_l * (icntl[Controls::block_size] - nrhs)];
+            double *rdata = new double[n_l * (icntl[Controls::block_size] - nrhs)];
 
             srand(n_l); 
-            for(int i=0; i< m_l*(icntl[Controls::block_size]-nrhs); i++){ 
+            for(int i=0; i< n_l*(icntl[Controls::block_size]-nrhs); i++){ 
                 rdata[i] = (double)((rand())%10)/99.9 + 1;
                 //rdata[i] = i+1;
             }
-            MV_ColMat_double BR(rdata, m_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);
+            MV_ColMat_double BR(rdata, n_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);
             MV_ColMat_double RR = smv(A, BR);
 
             B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,icntl[Controls::block_size]-1)) = 

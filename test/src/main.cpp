@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
             fclose(rhs_f);
         }
 
-        bool testMumps = pt.get<bool>("testMumps", false);
+        int testMumps =(int) pt.get<bool>("testMumps", false);
         double minMumps = pt.get<double>("minMumps", 10);
         double *mumps_rhs;
         int mumps_n = obj.n;
@@ -174,9 +174,9 @@ int main(int argc, char* argv[])
                 mu.job = 4;
             }
 
-            cout << "=============================" << endl;
-            cout << "LAUNCHING MUMPS ON THE MATRIX" << endl;
-            cout << "-----------------------------" << endl;
+            clog << "=============================" << endl;
+            clog << "LAUNCHING MUMPS ON THE MATRIX" << endl;
+            clog << "-----------------------------" << endl;
             double t = MPI_Wtime();
             dmumps_c(&mu);
             clog << "MUMPS RUN FINISHED in " << MPI_Wtime() - t << endl;
