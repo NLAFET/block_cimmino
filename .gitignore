@@ -5,6 +5,7 @@ docs/doxy/*
 \.*
 !.gitignore
 !.gitmodules
+doc_output/*
 
 
 # Compiled Object files
