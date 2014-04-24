@@ -21,25 +21,36 @@ int main(int argc, char* argv[])
     // obtain the WORLD communicator, by default the solver uses it
     mpi::communicator world;
 
-    // create one instance of the abcd solver per mpi-process
-    abcd obj;
+    std::vector<int> r;
+    if(world.rank() % 2 == 0) r.push_back(world.rank());
 
-    if(world.rank() == 0) { // the master
-        init_2d_lap(obj, 10);
+    mpi::group grp = world.group().include(r.begin(), r.end());
+    mpi::communicator com(world, grp);
 
-        // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
+    /*
+    if(world.rank() % 2 == 0) {
+        // create one instance of the abcd solver per mpi-process
+        abcd obj;
+        obj.comm = com;
+
+        if(com.rank() == 0) { // the master
+            init_2d_lap(obj, 10);
+
+            // set the rhs
+            obj.rhs = new double[obj.m];
+            for (size_t i = 0; i < obj.m; i++) {
+                obj.rhs[i] = ((double) i + 1)/obj.m;
+            }
+        }
+
+        try {
+            obj(-1);
+            obj(5); // equivalent to running 1, 2 and 3 successively
+        } catch (runtime_error err) {
+            cout << "An error occured: " << err.what() << endl;
         }
     }
-
-    try {
-        obj(-1);
-        obj(5); // equivalent to running 1, 2 and 3 successively
-    } catch (runtime_error err) {
-        cout << "An error occured: " << err.what() << endl;
-    }
+    */
 
   return 0;
 }

@@ -9,7 +9,6 @@ void abcd::bcg(MV_ColMat_double &b)
     double threshold = dcntl[Controls::threshold];
     int block_size = icntl[Controls::block_size];
 
-    mpi::communicator world;
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
     if(s < 1){
@@ -152,7 +151,7 @@ void abcd::bcg(MV_ColMat_double &b)
         //mrho = *std::max_element(grho.begin(), grho.end());
         //
         t = MPI_Wtime() - t;
-        if(world.rank() == 0 && verbose){
+        if(comm.rank() == 0 && verbose){
             clog << "ITERATION " << it << " rho = " << rho << "  Timings: " << t << "\n" << flush;
         }
         t1_total += t1;

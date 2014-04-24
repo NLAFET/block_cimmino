@@ -3,13 +3,12 @@
 
 void abcd::initializeCimmino()
 {
-    mpi::communicator world;
     int *sym_perm;
 
-    mpi::broadcast(world, nbparts, 0);
+    mpi::broadcast(comm, nbparts, 0);
 
     
-    if(world.size() > parallel_cg) {
+    if(comm.size() > parallel_cg) {
         if(instance_type == 0) {
             if(inter_comm.rank() == 0 && instance_type == 0)
                 cout << "[+] Initializing MUMPS" << endl;

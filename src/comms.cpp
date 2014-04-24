@@ -4,22 +4,21 @@
 /// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
 void abcd::createInterComm()
 {
-    mpi::communicator world;
-    mpi::group grp = world.group();
+    mpi::group grp = comm.group();
 
     mpi::communicator cm;
     mpi::group gp;
 
-    mpi::broadcast(world, parallel_cg, 0);
+    mpi::broadcast(comm, parallel_cg, 0);
 
-    if(parallel_cg > world.size()){
+    if(parallel_cg > comm.size()){
         info[Controls::status] = -8;
         throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
     }
 
-    inter_comm = world.split(world.rank() < parallel_cg);
+    inter_comm = comm.split(comm.rank() < parallel_cg);
 
-    if(world.rank() < parallel_cg)
+    if(comm.rank() < parallel_cg)
         instance_type = 0;
     else
         instance_type = 1;
@@ -28,14 +27,13 @@ void abcd::createInterComm()
 
 void abcd::distributeRhs()
 {
-    mpi::communicator world;
 
     mpi::broadcast(inter_comm, use_xf, 0);
 
     if(icntl[Controls::block_size] < nrhs) icntl[Controls::block_size] = nrhs;
     mpi::broadcast(inter_comm, icntl[Controls::block_size], 0);
 
-    if(world.rank() == 0) {
+    if(comm.rank() == 0) {
 
         int r_pos = 0;
         // Build my part of the RHS
@@ -110,7 +108,7 @@ void abcd::distributeRhs()
             good_rhs = false;
             mpi::broadcast(inter_comm, good_rhs, 0);
             stringstream err_msg;
-            err_msg << "On process [" << world.rank() << "], the given right-hand side is zero";
+            err_msg << "On process [" << comm.rank() << "], the given right-hand side is zero";
             throw std::runtime_error(err_msg.str());
         }
         
@@ -179,7 +177,7 @@ void abcd::distributeRhs()
         mpi::broadcast(inter_comm, good_rhs, 0);
         if (!good_rhs) {
             stringstream err_msg;
-            err_msg << "On process [" << world.rank() << "], leaving due to an error on the master";
+            err_msg << "On process [" << comm.rank() << "], leaving due to an error on the master";
             throw std::runtime_error(err_msg.str());
         }
 
@@ -216,10 +214,8 @@ void abcd::distributeRhs()
 
 void abcd::distributeNewRhs()
 {
-    mpi::communicator world;
 
-
-    if(world.rank() == 0) {
+    if(comm.rank() == 0) {
 
         int r_pos = 0;
         // Build my part of the RHS

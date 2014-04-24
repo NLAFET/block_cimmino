@@ -287,7 +287,7 @@ int main(int argc, char* argv[])
         try {
             
 
-            obj.verbose =  pt.get<int>("all_verbose", 0);
+            obj.icntl[Controls::verbose_level] =  pt.get<int>("all_verbose", 0);
 
             obj(-1);
 
@@ -296,7 +296,6 @@ int main(int argc, char* argv[])
             obj(2);
 
             obj.nrhs = 1;
-            obj.use_xf = false;
 
             if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
             else obj.icntl[Controls::block_size] = atoi(argv[4]);
@@ -304,7 +303,7 @@ int main(int argc, char* argv[])
             obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
             obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
 
-            obj.verbose =  pt.get<int>("solve_verbose", 0);
+            // obj.icntl[Controls::verbose] =  pt.get<int>("solve_verbose", 0);
             obj(3);
 
             clog << "Total time: " << MPI_Wtime() - t << endl;

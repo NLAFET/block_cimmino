@@ -3,7 +3,7 @@
 
 void abcd::factorizeAugmentedSystems(MUMPS &mu)
 {
-    mpi::communicator world;
+    mpi::communicator comm;
     mu.job = 2;
 
     double t = MPI_Wtime();
@@ -38,7 +38,7 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         if(IRANK == 0) mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
         else mpi::reduce(inter_comm, mem, std::plus<double>(), 0);
 
-        if(IRANK == 0) smem = smem/world.size();
+        if(IRANK == 0) smem = smem/inter_comm.size();
     }
 
     if(instance_type == 0 && verbose == true) {

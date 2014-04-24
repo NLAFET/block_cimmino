@@ -8,7 +8,6 @@ void abcd::initializeMumps(MUMPS &mu)
 
 void abcd::initializeMumps(MUMPS &mu, bool local)
 {
-    mpi::communicator world;
     // The first run of MUMPS is local to CG-masters
     std::vector<int> r;
     if(local) {
@@ -17,14 +16,14 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
         intra_comm = mpi::communicator(inter_comm, grp);
     } else {
         if(instance_type == 0) {
-            r.push_back(world.rank());
+            r.push_back(comm.rank());
         } else {
             r.push_back(my_master);
         }
         std::copy(my_slaves.begin(), my_slaves.end(), std::back_inserter(r));
 
-        mpi::group grp = world.group().include(r.begin(), r.end());
-        intra_comm = mpi::communicator(world, grp);
+        mpi::group grp = comm.group().include(r.begin(), r.end());
+        intra_comm = mpi::communicator(comm, grp);
     }
 
     mu.sym = 2;
@@ -33,7 +32,6 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
     mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
 
     dmumps_c(&mu);
-    //cout << world.rank() << " << >> " << getMumpsInfo(1) << endl;
     if(mu.getInfo(1) != 0) throw mu.getInfo(1);
 
     mu.setIcntl(1, -1);

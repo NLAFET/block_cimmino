@@ -3,9 +3,7 @@
 
 void abcd::distributeData()
 {
-    mpi::communicator world;
-
-    if(world.rank() == 0) {
+    if(comm.rank() == 0) {
         std::vector<int> nnz_parts;
         std::vector<int> m_parts;
         std::vector<int> groups;

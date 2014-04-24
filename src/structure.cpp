@@ -30,8 +30,7 @@ void abcd::partitionMatrix()
             nbparts = ceil((double)m_o / 20000);
         }
         cout << "Estimated number of partitions: " << nbparts  << endl;
-        mpi::communicator world;
-        parallel_cg =  nbparts < world.size() ? nbparts : world.size();
+        parallel_cg =  nbparts < comm.size() ? nbparts : comm.size();
     }
 
     if (nbparts == 0){

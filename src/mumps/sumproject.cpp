@@ -3,7 +3,6 @@
 
 MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X)
 {
-    mpi::communicator world;
     //int s = X.dim(1);
     if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
 

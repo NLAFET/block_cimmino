@@ -55,14 +55,13 @@ abcd::solveS ( MV_ColMat_double &f )
      *  MUMPS part
      *-----------------------------------------------------------------------------*/
     MUMPS mu;
-    mpi::communicator world;
     mu.sym = 1;
     mu.par = 1;
     mu.job = -1;
 
     int job = 2;
     mpi::broadcast(intra_comm, job, 0);
-    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) comm);
 
     dmumps_c(&mu);
 

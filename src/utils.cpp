@@ -138,7 +138,6 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
  */
 void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
 {
-    mpi::communicator world;
     int rn = 1;
     int rm = x.dim(0);
 

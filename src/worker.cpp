@@ -10,7 +10,6 @@
 abcd::waitForSolve()
 {
     DMUMPS_STRUC_C mu;
-    mpi::communicator world;
 
     vector<int> vrows, vcols;
     vector<double> vvals;
@@ -37,7 +36,7 @@ abcd::waitForSolve()
             mu.par = 1;
             mu.job = -1;
 
-            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
+            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) comm);
             dmumps_c(&mu);
 
             mu.icntl[0] = -1;

@@ -42,6 +42,9 @@ abcd::abcd()
     icntl[Controls::verbose_level] = 0;
     info[Controls::status] = 0;
 
+    mpi::communicator world;
+    comm = world;
+
 }
 
 abcd::~abcd()
@@ -51,9 +54,7 @@ abcd::~abcd()
 /// Creates the internal matrix from user's data
 int abcd::initializeMatrix()
 {
-    mpi::communicator world;
-    
-    if(world.rank() != 0) return 0;
+    if(comm.rank() != 0) return 0;
     
     // Check that the matrix data is present
     if(irn == 0 || jcn == 0 || val == 0) {
@@ -121,12 +122,12 @@ int abcd::initializeMatrix()
 /// Scales, partitions and analyses the structure of partitions
 int abcd::preprocessMatrix()
 {
-    mpi::communicator world;
-    if(world.rank() != 0) return 0;
+
+    if(comm.rank() != 0) return 0;
 
     nbparts = icntl[Controls::nbparts];
     if (parallel_cg == 0) {
-        parallel_cg = nbparts < world.size() ? nbparts : world.size();
+        parallel_cg = nbparts < comm.size() ? nbparts : comm.size();
     }
     
     abcd::partitionMatrix();
@@ -186,7 +187,6 @@ int abcd::factorizeAugmentedSystems()
 /// Runs either BCG or ABCD solve depending on what we want
 int abcd::solveSystem()
 {
-    mpi::communicator world;
     if(instance_type == 0) inter_comm.barrier();
     if(inter_comm.rank() == 0 && instance_type == 0){
         cout << "[+] Launching Solve" << endl;

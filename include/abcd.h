@@ -212,49 +212,15 @@ private:
 
     bool runSolveS;
 
-public:
-    /***************************************************************************
-     * Matrix information
-     */
-    int m;
-    int n;
-    int nz;
-    int nrhs;
     int n_l, m_l, nz_l;
     int n_o, m_o, nz_o;
 
-    //! The path where to write the matrix \f$PD_rAD_cP^T\f$
-    std::string write_problem;
-    //! The path where to write the matrix \f$S\f$ 
-    std::string write_s;
-
-
-    /***************************************************************************
-     * Temporary data about the matrix
-    ***************************************************************************/
-    int *irn;
-    int *jcn;
-    double *val;
-    double *rhs;
-
     MV_ColMat_double Xk;
-    MV_ColMat_double sol;
-    
-
-    /***************************************************************************
-     * Matrix properties
-    ***************************************************************************/
-    bool sym; /// Symmetry
     int start_index; /// To define wether it's Fortran-Style (1) or C-Style (0)
-
-    /***************************************************************************
-     * Partitioning informations
-    ***************************************************************************/
 
     int nbparts; /// The number of partitions
     int nb_local_parts;
-    VECTOR_int strow; /// The starting row index of each partition
-    VECTOR_int nbrows; /// The number of rows per partition
+
     /// A reverse index of columns, contains the original index of each column for each partition
     std::vector<std::vector<int> > column_index;
     std::vector<std::map<int,int> > column_index_cache;
@@ -285,31 +251,46 @@ public:
 
     bool verbose;
 
-
-    /***************************************************************************
-     * Communication info
-    ***************************************************************************/
-    /// The number of parallel CG instances
-    int parallel_cg;
-
     /// The communicator shared by CG masters
     mpi::communicator inter_comm;
     /// The communicator of local slaves
     mpi::communicator intra_comm; 
 
-
-    /*! Control parameters
-     *
-     *  - __icntl[10]__: augmentation type
-     *      - 0 : No augmentation, classical Block Cimmino will be used
-     *      - 1 : \f$C_{i,j}/-I\f$ based augmentation
-     *      - 2 : \f$A_{i,j}/-A_{j,i}\f$ based augmentation
-     *  - __icntl[11]__: augmentation analysis
-     *  - __icntl[12]__: compute \f$\bar{A}^+w\f$ only
-     *  - __icntl[13]__: use dense right-hand sides when building \f$S\f$
-     *  - __icntl[14]__: the blocking-factor used when building \f$S\f$
-     *  - __icntl[15]__: solve \f$Sz =f\f$ iteratively
+public:
+    /***************************************************************************
+     * Matrix information
      */
+    int m; ///< The number of rows in the linear system
+    int n; ///< The number of columns in the linear system
+    int nz; ///< The number of nonzeros in the linear system
+    int nrhs; ///< The number of right-hand sides to solve
+
+    
+    std::string write_problem; ///< The path where to write the matrix \f$PD_rAD_cP^T\f$
+    std::string write_s; ///< The path where to write the matrix \f$S_k\f$ where \f$k\f$ is the mpi-process rank
+
+    int *irn; ///< The row indices
+    int *jcn; ///< The column indices
+    double *val; ///< The entries of the matrix
+    double *rhs; ///< The right-hand side
+    MV_ColMat_double sol; ///< The solution vector
+    
+    bool sym; ///< The symmetry of the matrix
+
+    /***************************************************************************
+     * Partitioning informations
+    ***************************************************************************/
+    VECTOR_int strow; /// The starting row index of each partition
+    VECTOR_int nbrows; /// The number of rows per partition
+
+
+    /***************************************************************************
+     * Communication info
+    ***************************************************************************/
+    int parallel_cg; ///< The number of parallel CG instances
+    mpi::communicator comm; 
+    
+    /// @ref Controls
     std::vector<int> icntl;
     std::vector<double> dcntl;
     std::vector<int> info;

@@ -2,8 +2,6 @@
 
 void abcd::allocateMumpsSlaves(MUMPS &mu)
 {
-    mpi::communicator world;
-
     if(instance_type == 0) {
         std::vector<long> flops(inter_comm.size());
         std::vector<std::pair<long, int> > flops_s;
@@ -20,7 +18,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         std::sort(flops_s.begin(), flops_s.end(), ip_comp);
 
         std::vector<double> shares;
-        int nb_slaves = world.size() - inter_comm.size();
+        int nb_slaves = comm.size() - inter_comm.size();
         int slaves_left = nb_slaves;
         double top = 1, low = 0.90;
 
@@ -56,7 +54,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
 
                 // let the master handle this!
                 if(inter_comm.rank() == 0)
-                    world.send(current_slave, 11,  your_master);
+                    comm.send(current_slave, 11,  your_master);
 
                 if(inter_comm.rank() == your_master) {
                     my_slaves.push_back(current_slave);
@@ -67,12 +65,12 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         }
         // Now that the slaves know who's their daddy, tell who are their brothers
         for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); ++slave) {
-            world.send(*slave, 12, my_slaves);
+            comm.send(*slave, 12, my_slaves);
         }
 
     } else {
-        world.recv(0, 11, my_master);
+        comm.recv(0, 11, my_master);
         //Store in my_slaves my brothers in slavery
-        world.recv(my_master, 12, my_slaves);
+        comm.recv(my_master, 12, my_slaves);
     }
 }
