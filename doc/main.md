@@ -14,9 +14,7 @@ Solver` uses two methods to solve the linear system:
    the original system and through a succession of direct solves finds
    the solution.
 
-# Introduction to the methods #
-
-## The regular block Cimmino ##
+# The regular block Cimmino # {#section_cimmino}
 
 The block Cimmino method is an iterative method that uses block-row
 projections. To solve the \f$Ax = b\f$, where \f$A\f$ is an
@@ -93,17 +91,20 @@ Running our solver in the regular mode will go through the following steps:
 - Analyze and factorize the augmented systems using the direct solver `MUMPS`
 - Run a block conjugate gradient with an implicit matrix \f$H\f$, and at each iteration compute the matrix-vector product as a sum of projections. These projects being a set of solves using the direct solver.
 
-## The augmented block Cimmino ##
+# The augmented block Cimmino # {#section_abcd}
 
 To understand the algorith, suppose that we have a matrix \f$A\f$ with three partitions, described as follow:
-\f[
+
+\f{equation}
     A =
-    \begin{bmatrix}
+    \left[
+    \begin{array}{cccccc}
         A_{1,1} & A_{1,2} &&&&  A_{1,3}\\
-        & A_{2,1} & A_{2,2} & A_{2,3} && \\
-        &&& A_{3,2} & A_{3,3} &  A_{3,1}\\
-    \end{bmatrix}
-\f]
+        & A_{2,1} & A_{2,2} & A_{2,3} & \\
+        &&& A_{3,2} & A_{3,3} &  A_{3,1}
+    \end{array}
+    \right].
+\f}
 
 Where \f$A_{i,j}\f$ is the sub-part of \f$A_i\f$, the \f$i\f$-th partition, that is interconnected algebraically to the partition \f$A_j\f$, and vice versa.
 
@@ -113,15 +114,15 @@ product of each couple of partitions is zero. We consider two
 different ways to augment the matrix to obtain these zero matrix products.
 
 - The first way to augment the matrix to make all the partitions mutually orthogonal to each other is by putting the product \f$C_{ij} = A_{ij}A_{ji}^T\f$ on the right of the partition \f$A_i\f$ and put \f$-I\f$ on the right of \f$A_j\f$ viz.
-\f[
+\f{equation}
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
-        A_{1,1} & A_{1,2} &&&&  A_{1,3}  && C_{1,2}  & C_{1,3}\\
-        & A_{2,1} & A_{2,2} & A_{2,3}  &&&& -I && C_{2,3}\\
-        &&& A_{3,2} & A_{3,3} &  A_{3,1} &&& -I & -I\\
+        A_{1,1} & A_{1,2} &         &          & A_{1,3} &         & C_{1,2}  & C_{1,3} &        \\
+                & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -I       &         & C_{2,3}\\
+                &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -I      & -I
     \end{array}\right].
-\f]
+\f}
 This way \f$\bar{A}_i\bar{A}_j^T\f$ is zero for any pair \f$i/j\f$, hence the new matrix has mutually orthogonal partitions.
 
 - We can repeat the submatrices \f$A_{ij}\f$ and \f$A_{ji}\f$, reversing the signs of one of them to obtain the augmented matrix \f$\bar{A}\f$ as in the following
@@ -129,9 +130,9 @@ This way \f$\bar{A}_i\bar{A}_j^T\f$ is zero for any pair \f$i/j\f$, hence the ne
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
-        A_{1,1} & A_{1,2} &&&&  A_{1,3}  && A_{1,2}  & A_{1,3}\\
-        & A_{2,1} & A_{2,2} & A_{2,3}  &&&& -A_{2,1} && A_{2,3}\\
-        &&& A_{3,2} & A_{3,3} &  A_{3,1} &&& -A_{3,1} & -A_{3,2}\\
+        A_{1,1} & A_{1,2} &         &          & A_{1,3} &         & A_{1,2}  & A_{1,3} &        \\
+                & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -A_{2,1} &         & A_{2,3}\\
+                &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -A_{3,1}& -A_{3,2}
     \end{array}\right].
 \f]
 Notice that we augment the matrix upper-down and shift the
