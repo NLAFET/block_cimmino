@@ -93,7 +93,7 @@ void abcd::bcg(MV_ColMat_double &b)
     t2_total = MPI_Wtime();
     rho = compute_rho(Xk, u);
     t2_total = MPI_Wtime() - t2_total;
-    if(inter_comm.rank() == 0 && verbose) {
+    if(comm.rank() == 0 && icntl[Controls::verbose_level] > 0) {
         cout << "ITERATION " << 0 << " rho = " << rho << endl;
     }
 
@@ -151,7 +151,7 @@ void abcd::bcg(MV_ColMat_double &b)
         //mrho = *std::max_element(grho.begin(), grho.end());
         //
         t = MPI_Wtime() - t;
-        if(comm.rank() == 0 && verbose){
+        if(comm.rank() == 0 && icntl[Controls::verbose_level] > 0) {
             clog << "ITERATION " << it << " rho = " << rho << "  Timings: " << t << "\n" << flush;
         }
         t1_total += t1;

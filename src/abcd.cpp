@@ -201,12 +201,14 @@ int abcd::solveSystem()
             icntl[Controls::aug_type] = 0;
         }
 
-        abcd::distributeRhs();
+        // If we are running ABCD, we have to ensure that we have no block-size > 1
         if(icntl[Controls::aug_type] == 0 || icntl[Controls::aug_project] != 0 || runSolveS){
+            abcd::distributeRhs();
             abcd::bcg(B);
         } else{
             int temp_bs = icntl[Controls::block_size];
             icntl[Controls::block_size] = 1;
+            abcd::distributeRhs();
             abcd::solveABCD(B);
             icntl[Controls::block_size] = temp_bs;
         }
@@ -224,7 +226,14 @@ int abcd::solveSystem()
         }
 
     } else {
-        abcd::waitForSolve();
+        if(icntl[Controls::aug_type] != 0 ){
+            int temp_bs = icntl[Controls::block_size];
+            icntl[Controls::block_size] = 1;
+            abcd::waitForSolve();
+            icntl[Controls::block_size] = temp_bs;
+        } else {
+            abcd::waitForSolve();
+        }
     }
     
     return 0;
@@ -254,12 +263,12 @@ int abcd::operator()(int job)
         solveSystem();
         break;
 
-    case 4:
+    case 5:
         preprocessMatrix();
         factorizeAugmentedSystems();
         break;
 
-    case 5:
+    case 6:
         preprocessMatrix();
         factorizeAugmentedSystems();
         solveSystem();
