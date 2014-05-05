@@ -1,17 +1,52 @@
-# Using the solver # {#title}
+Using the solver {#title}
+=========================
 
-The solver is in the form of a class named `abcd`. In the following,
-we refer to the members of the class by `obj.member` where `obj` is an
-instance of the solver and `member` is the corresponding member,
-similarly, we refer to the public methods by `obj.method()`. Finally,
-arrays will have `[]` appended to them, if we specify a size then the
-array is pre-allocated at construction, otherwise it is either
-allocated by the user (such as the linear system entries) or by the
-solver once it's generated (such as the solution). The user can refer to 
-[The Controls] for more details.
+The solver is in the form of a class named `abcd` and the user has to
+instantiate it on each MPI-process to be involved. In the following,
+we refer to the members of the class by `abcd::member` and to the
+methods by `abcd::method()`.  Arrays will have `[]` appended to them,
+if we specify a size then the array is pre-allocated at construction,
+otherwise it is either allocated by the user (such as the linear
+system entries) or by the solver once it's generated (such as the
+solution). The user can refer to [The Controls](@ref section_controls)
+for more details.
+
+# Instantiating and calling the solver# {#section_instance}
+
+To use the solver, the user has to instantiate the class `abcd`.
+During the construction of the instance, the default parameters are
+initialized. The user can then call the object as a function
+(*functor*) with the job number as an argument.
+
+~~~~~~~~~~~~~~~{.cpp}
+abcd obj; // instantiating the class
+obj(job_id); // call the solver with a job identifier job_id
+~~~~~~~~~~~~~~~
+
+To run a job, the user has to call the solver with a job identifier. 
+- `obj(-1)`, initializes the internal matrix used by the solver. Prior to this call, the user must provide:
+  * The information about the matrix `obj.m`, `obj.n`, `obj.nz`,
+    `obj.sym`, `obj.irn`, `obj.jcn`, `obj.val` have to be initialized
+    before the call. See [Input matrix and right-hand side] for more detail.
+  * After the call, the arrays `obj.irn`, `obj.jcn`, `obj.val` are no
+    longer used by the solver.
+- `obj(1)`, performs the preprocessing. During this call, the solver
+  scales the matrix, partition it, and if required by the user
+  performs the augmentation of the matrix. Prior to this call, the
+  user must provide:
+  * The number of partitions to create (see `abcd::icntl[Controls::nbparts]`) or ask the solver to guess the appropriate number of partitions (see `abcd::icntl[Controls::part_guess]`)
+  * The type of scaling to perform (see `abcd::icntl[Controls::scaling]`)
+  * The type of augmentation to perform (see `abcd::icntl[Controls::aug_type]`)
+- `obj(2)`, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.
+- `obj(3)`, performs the solution step, the right-hand sides and their number are required prior to this call.
+  * The right-hand sides have to be given through the array `obj.rhs` and their number in `obj.nrhs`.
+  * The block-size to be used during the bloc-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.
+- `obj(5)`, regroups the call to the phases 2 and 3. 
+- `obj(6)`, regroups the call to the phases 1, 2 and 3.
+
 
 # Input matrix and right-hand side # {#section_linearsystem}
-The current version of the ABCD solver accepts only real, centralized, linear systems. The definition of the linear system uses 7 members:
+The current version of the ABCD Solver accepts only real, centralized, linear systems. The definition of the linear system uses 7 members:
 
 - `obj.m` (type: `int`), the number of rows.
 - `obj.n` (type: `int`), the number of columns. 
@@ -20,7 +55,8 @@ The current version of the ABCD solver accepts only real, centralized, linear sy
 - `obj.irn` (type: `int *`), the row indices. 
 - `obj.jcn` (type: `int *`), the column indices.
 - `obj.val` (type: `double *`), the matrix entries.
-- `obj.rhs` (type: `double *`), the right-hand side.
+- `obj.rhs` (type: `double *`), the right-hand sides.
+- `obj.nrhs` (type: `int`), the number of right-hand sides (default value is 1)
 
 If either of the row and column indices start with `0` the arrays are supposed to be zero based (`C` arrays indexation), otherwise, if they start with `1` the arrays are supposed to be one based (`Fortran` arrays indexation). If however, none starts with `0` or `1` then there is either an empty row or an empty column and the solver stops.
 
@@ -31,14 +67,12 @@ If either of the row and column indices start with `0` the arrays are supposed t
     obj.m = 7;
     obj.nz = 15;
     obj.sym = false;
+    // allocate the arrays
+    obj.irn = new int[obj.nz]
     // put the data in the arrays
     obj.irn[0] = 1;
     //..
 ~~~~~~~~~~~~~~~
-
-# Calling a job #
-
-@todo explain how to use the solver
 
 # The Controls # {#section_controls}
 
@@ -109,9 +143,15 @@ with `icntl` to handle the scaling of the linear system.
 - `obj.icntl[9]` reserved for a future use.
 - `obj.icntl[Controls::aug_type]` or `obj.icntl[10]` defines the augmentation type.
 
-    + `0` *(default)*, no augmentation. This makes the solver run in **regular block Cimmino** mode.
-    + `1`, makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $C_{ij}/-I$ technique. For numerical stability, this augmentation technique has to be used with a scaling.
-    + `2`,  makes the solver run in **Augmented Block Cimmino** mode with an augmentation of the matrix using the $A_{ij}/-A_{ji}$ technique. This is the prefered augmentation technique. 
+    + `0` **default**, no augmentation. This makes the solver run in
+    **regular block Cimmino** mode.
+    + `1`, makes the solver run in **Augmented Block Cimmino** mode
+    with an augmentation of the matrix using the \f$C_{ij}/-I\f$
+    technique. For numerical stability, this augmentation technique
+    has to be used with a scaling.
+    + `2`, makes the solver run in **Augmented Block Cimmino** mode
+    with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
+    technique. This is the prefered augmentation technique.
 
 - `obj.icntl[Controls::aug_blocking]` or `obj.icntl[11]` defines the blocking factor when building the auxiliary matrix $S$, default is `128`. 
 - `obj.icntl[Controls::aug_analysis]` or `obj.icntl[12]`, when set to a value different than `0`, analyses the number of columns in the augmentation.
@@ -195,7 +235,7 @@ Refer to [Calling a job], [The linear system], and [The Controls] for more detai
             // We call the solver directly using the object itself
             // (the abcd class is a functor)
             obj(-1); // initialize the object with defaults
-            obj(5); // equivalent to running 1, 2 and 3 successively
+            obj(6); // equivalent to running 1, 2 and 3 successively
             // the solution is stored in obj.sol
         } catch (runtime_error err) {
             // In case there is a critical error, we throw a runtime_error exception
