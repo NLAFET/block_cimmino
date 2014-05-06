@@ -38,6 +38,8 @@ namespace Controls{
     enum dinfo {
         residual        = 1, ///< The resulting residual
         forward_error   = 2, ///< The resulting forward error
+        backward        = 3, ///< The resulting residual
+        scaled_residual = 4, ///< The resulting residual
     };
 
 }

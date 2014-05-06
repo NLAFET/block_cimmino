@@ -26,7 +26,7 @@ abcd::abcd()
     icntl.assign(20, 0);
     dcntl.assign(20, 0);
     info.assign(2, 0);
-    dinfo.assign(2, 0);
+    dinfo.assign(5, 0);
 
     icntl[Controls::aug_blocking] = 256;
 
@@ -219,7 +219,9 @@ int abcd::solveSystem()
         if(inter_comm.rank() == 0){
             clog << endl
                  << "======================================" << endl;
-            clog << "Backward error : " << scientific << dinfo[Controls::residual] << endl;
+            clog << "Backward error : " << scientific << dinfo[Controls::backward] << endl;
+            clog << "||r||_inf  : " << scientific << dinfo[Controls::residual] << endl;
+            clog << "||r||_inf/||b||_inf  : " << scientific << dinfo[Controls::scaled_residual] << endl;
             if (Xf.dim(0) != 0)
                 clog << "Forward error : " << scientific << dinfo[Controls::forward_error] << endl;
             clog << "======================================" << endl << endl;

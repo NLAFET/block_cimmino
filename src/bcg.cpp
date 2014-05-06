@@ -172,8 +172,6 @@ void abcd::bcg(MV_ColMat_double &b)
         return;
 
 
-    dinfo[Controls::status] = rho;
-
     if(IRANK == 0) {
         t = MPI_Wtime();
         clog << "Centralizing solution" << endl;
@@ -219,6 +217,9 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
     double nrmR, nrmX, rho;
     abcd::get_nrmres(x, u, nrmR, nrmX, nrmXfmX);
     rho = nrmR / (nrmMtx*nrmX + nrmB);
+    dinfo[Controls::backward] = rho;
+    dinfo[Controls::residual] = nrmR;
+    dinfo[Controls::scaled_residual] = nrmR/nrmB;
     return rho;
 }
 
