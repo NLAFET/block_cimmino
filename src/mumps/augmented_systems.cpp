@@ -2,7 +2,7 @@
 #include <mumps.h>
 
 void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
-        vector<int> &irn_aug, vector<int> &jcn_aug, vector<double> &val_aug)
+        std::vector<int> &irn_aug, std::vector<int> &jcn_aug, std::vector<double> &val_aug)
 {
     m_n = 0;
     m_nz = 0;

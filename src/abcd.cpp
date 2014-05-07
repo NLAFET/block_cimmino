@@ -2,8 +2,10 @@
 #include <algorithm>
 #include <exception>
 
+#include <ctime>
 using namespace std;
 
+_INITIALIZE_EASYLOGGINGPP
 
 /// Set the defaults in the constructor
 abcd::abcd()
@@ -45,6 +47,20 @@ abcd::abcd()
     mpi::communicator world;
     comm = world;
 
+
+    // Prepare for Logging!
+    if (comm.rank() == 0 && log_output == "") {
+        time_t t = time(0);
+        struct tm * now = localtime(&t);
+
+        char timeString[15];  // space for "HH_MM_SS_dd_mm\0"
+
+        strftime(timeString, sizeof(timeString), "%H_%M_%S_%d_%m", now);
+
+        std::string tt(timeString);
+        log_output = "abcd_" + tt + ".log";
+    }
+    configure_logger(log_output);
 }
 
 abcd::~abcd()
@@ -57,14 +73,23 @@ int abcd::initializeMatrix()
     if(comm.rank() != 0) return 0;
     
     // Check that the matrix data is present
-    if(irn == 0 || jcn == 0 || val == 0) {
+    if(irn == nullptr || jcn == nullptr || val == nullptr) {
         // Hey!! where is my data?
         info[Controls::status] = -1;
+        LOG_IF(irn == nullptr, ERROR) << "irn is not allocated";
+        LOG_IF(jcn == nullptr, ERROR) << "jcn is not allocated";
+        LOG_IF(val == nullptr, ERROR) << "val is not allocated";
         throw std::runtime_error("Unallocated matrix vectors");
     }
-    cout << m << '\t' << n << '\t' << nz << endl;
+    LDEBUG << "M  = " << m;
+    LDEBUG << "N  = " << n;
+    LDEBUG << "NZ = " << nz;
+
     if(m <= 0 || n <= 0 || nz <= 0){
         info[Controls::status] = -2;
+        LOG_IF(m <= 0, ERROR) << "m is negative or zero";
+        LOG_IF(n <= 0, ERROR) << "n is negative or zero";
+        LOG_IF(nz<= 0, ERROR) << "nz is negative or zero";
         throw std::range_error("Errornous information about the matrix");
     }
 
@@ -94,7 +119,8 @@ int abcd::initializeMatrix()
         t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
-        cout << "convert splib : " << MPI_Wtime() - t << endl;
+
+        LDEBUG << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
         delete[] t_irn;
         delete[] t_jcn;
         delete[] t_val;
@@ -106,16 +132,15 @@ int abcd::initializeMatrix()
         }
         Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn, MV_Matrix_::ref);
-        cout << "before splib : " << MPI_Wtime() - t << endl;
-        t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
-        cout << "convert splib : " << MPI_Wtime() - t << endl;
+        LDEBUG << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
     }
     
     n_o = n;
     m_o = m;
     nz_o = nz;
         
+    LDEBUG << "Matrix initialization done";
     return 0; 
 }
 
@@ -135,7 +160,7 @@ int abcd::preprocessMatrix()
     double timeToPreprocess = MPI_Wtime();
     abcd::preprocess();
     abcd::analyseFrame();
-    cout << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess << endl;
+    LDEBUG << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess;
     return 0;
 }
 
@@ -168,17 +193,17 @@ int abcd::factorizeAugmentedSystems()
     abcd::initializeCimmino();
     
     if(IRANK == 0){
-        clog << "[-]  Initialization time : " << MPI_Wtime() - t << endl;
+        LDEBUG << "Initialization time : " << MPI_Wtime() - t;
     }
     if(inter_comm.rank() == 0 && instance_type == 0){
-        cout << "[+] Launching MUMPS factorization" << endl;
+        LINFO << "Launching MUMPS factorization";
     }
 
     t = MPI_Wtime();
     abcd::factorizeAugmentedSystems(mumps);
     
     if(IRANK == 0){
-        cout << "[-]  Factorization time : " << MPI_Wtime() - t << endl;
+        LDEBUG << "Factorization time : " << MPI_Wtime() - t;
     }
 
     return 0;
@@ -189,7 +214,7 @@ int abcd::solveSystem()
 {
     if(instance_type == 0) inter_comm.barrier();
     if(inter_comm.rank() == 0 && instance_type == 0){
-        cout << "[+] Launching Solve" << endl;
+        LINFO << "Launching Solve";
     }
     if(instance_type == 0) {
 
@@ -197,7 +222,7 @@ int abcd::solveSystem()
         mpi::broadcast(inter_comm, dcntl, 0);
 
         if(size_c == 0 && inter_comm.rank() == 0 && icntl[Controls::aug_type] != 0){
-            cout << "Size of S is 0, therefore launching bcg" << endl;
+            LINFO << "Size of S is 0, therefore launching bcg";
             icntl[Controls::aug_type] = 0;
         }
 
@@ -217,14 +242,16 @@ int abcd::solveSystem()
         mpi::broadcast(intra_comm, job, 0);
 
         if(inter_comm.rank() == 0){
-            clog << endl
-                 << "======================================" << endl;
-            clog << "Backward error : " << scientific << dinfo[Controls::backward] << endl;
-            clog << "||r||_inf  : " << scientific << dinfo[Controls::residual] << endl;
-            clog << "||r||_inf/||b||_inf  : " << scientific << dinfo[Controls::scaled_residual] << endl;
+            LINFO << "Backward error : " <<
+                scientific << dinfo[Controls::backward];
+            LINFO << "||r||_inf  : " <<
+                scientific << dinfo[Controls::residual];
+            LINFO << "||r||_inf/||b||_inf  : " <<
+                scientific << dinfo[Controls::scaled_residual];
+
             if (Xf.dim(0) != 0)
-                clog << "Forward error : " << scientific << dinfo[Controls::forward_error] << endl;
-            clog << "======================================" << endl << endl;
+                LINFO << "Forward error : " <<
+                    scientific << dinfo[Controls::forward_error];
         }
 
     } else {
@@ -250,6 +277,23 @@ int abcd::operator()(int job)
     switch(job) {
 
     case -1:
+        // in case the user decided to change the log_file name or
+        // decided to disable the logging
+        mpi::broadcast(comm, log_output, 0);
+        if (comm.rank() > 0 && log_output != "") {
+            // find any ".log"
+            int ext = log_output.rfind(".log");
+
+            std::string s = boost::lexical_cast<std::string>(comm.rank());
+
+            if (ext != std::string::npos) {
+                log_output.replace(ext, 4, "_" + s + ".log");
+            } else {
+                log_output = log_output + "_" + s;
+            }
+        }
+        logger_set_filename(log_output);
+
         initializeMatrix();
         break;
 

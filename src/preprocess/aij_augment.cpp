@@ -7,7 +7,7 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     std::map<int,std::vector<CompCol_Mat_double> > C;
     std::map<int,std::vector<int> > stCols;
     double filter_c = dcntl[Controls::aug_filter];
-    stC = vector<int>(M.size(), -1);
+    stC = std::vector<int>(M.size(), -1);
 
     for( size_t i = 0; i < M.size() - 1; i++ ){
         for ( size_t j = i+1; j < M.size(); j++ ) {

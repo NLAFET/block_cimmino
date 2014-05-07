@@ -11,11 +11,11 @@ abcd::waitForSolve()
 {
     DMUMPS_STRUC_C mu;
 
-    vector<int> vrows, vcols;
-    vector<double> vvals;
+    std::vector<int> vrows, vcols;
+    std::vector<double> vvals;
 
-    vector<int> target;
-    vector<int> target_idx;
+    std::vector<int> target;
+    std::vector<int> target_idx;
     target.reserve(size_c);
     target_idx.reserve(size_c);
 

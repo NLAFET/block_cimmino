@@ -288,6 +288,7 @@ int main(int argc, char* argv[])
             
 
             obj.icntl[Controls::verbose_level] =  pt.get<int>("all_verbose", 0);
+            obj.log_output = pt.get<string>("log_filename", "");
 
             obj(-1);
 

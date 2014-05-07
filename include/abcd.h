@@ -31,6 +31,9 @@
 //#include <boost/range/algorithm.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
+#include <boost/lexical_cast.hpp>
+
+#include <easyloggingpp/easylogging++.h>
 
 /*
  * A small hack to make Sparselib++ work with openmpi
@@ -126,8 +129,8 @@ private:
     void solveABCD(MV_ColMat_double &b);
     MV_ColMat_double solveS ( MV_ColMat_double &f );
 
-    void buildS(vector<int> &rows, vector<int> &cols, vector<double> &vals);
-    void buildS(vector<int> &rows, vector<int> &cols, vector<double> &vals, vector<int> &columns_to_build);
+    void buildS(std::vector<int> &rows, std::vector<int> &cols, std::vector<double> &vals);
+    void buildS(std::vector<int> &rows, std::vector<int> &cols, std::vector<double> &vals, std::vector<int> &columns_to_build);
 
     Coord_Mat_double buildS();
     Coord_Mat_double buildS(std::vector<int>);
@@ -150,13 +153,13 @@ private:
     int m_nz;
 
     int n_aug, nz_aug;
-    vector<int> irn_aug, jcn_aug;
-    vector<double> val_aug;
+    std::vector<int> irn_aug, jcn_aug;
+    std::vector<double> val_aug;
 
     MUMPS mumps;
     void initializeMumps(MUMPS &, bool local);
     void initializeMumps(MUMPS &);
-    void createAugmentedSystems(int &n_aug, int &nz_aug, vector<int> &irn_aug, vector<int> &jcn_aug, vector<double> &val_aug);
+    void createAugmentedSystems(int &n_aug, int &nz_aug, std::vector<int> &irn_aug, std::vector<int> &jcn_aug, std::vector<double> &val_aug);
     void analyseAugmentedSystems(MUMPS &);
     void allocateMumpsSlaves(MUMPS &);
     void factorizeAugmentedSystems(MUMPS &);
@@ -201,7 +204,7 @@ private:
 
     std::map<int, CompRow_Mat_double> parts;
     std::vector<CompRow_Mat_double> partitions;
-    std::vector<vector<int> > p_sets;
+    std::vector<std::vector<int> > p_sets;
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;
@@ -249,7 +252,9 @@ private:
     /// Contains the partitions that are handled by this instance
     std::vector<int> parts_id;
 
+    // logging stuffs
     bool verbose;
+    // easyloggingpp::Configurations log_config;
 
     /// The communicator shared by CG masters
     mpi::communicator inter_comm;
@@ -268,6 +273,7 @@ public:
     
     std::string write_problem; ///< The path where to write the matrix \f$PD_rAD_cP^T\f$
     std::string write_s; ///< The path where to write the matrix \f$S_k\f$ where \f$k\f$ is the mpi-process rank
+    std::string log_output; ///< The file where to write logging information
 
     int *irn; ///< The row indices
     int *jcn; ///< The column indices
@@ -307,12 +313,16 @@ public:
 
 };
 
+
+    void configure_logger(std::string log_file);
+    void logger_set_filename(std::string log_file);
+    
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);
 template <class K, class V> std::vector<K> get_keys(std::map<K,V> my_map);
 double or_bin(double &a, double &b);
 void setVal(int *lst, int sz, int ival);
-vector<int> sort_indexes(const int *v, const int nb_el);
-template <typename T> vector<int> sort_indexes(const vector<T> &v);
+std::vector<int> sort_indexes(const int *v, const int nb_el);
+template <typename T> std::vector<int> sort_indexes(const std::vector<T> &v);
 
 #endif // ABCD_HXX

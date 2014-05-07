@@ -121,7 +121,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
         mpi::broadcast(intra_comm, column_index, 0);
 
-        vector<int> locc(loc_cols[0].size(), 0);
+        std::vector<int> locc(loc_cols[0].size(), 0);
         for(size_t i = 0; i < locc.size(); i++){
             if(loc_cols[0][i]){
                 locc[i] = 1;
@@ -143,7 +143,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     if(intra_comm.size() > 1){
         int part = 0;
         sol_lda = mumps.lsol_loc;
-        vector<int> &civ = column_index[part];
+        std::vector<int> &civ = column_index[part];
 
         // get where we should look for the current part
         if (stC[part] != -1) {
@@ -189,7 +189,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
         for(int part = 0; part < nb_local_parts; part++){
             int start_c;
 
-            vector<int> &civ = column_index[part];
+            std::vector<int> &civ = column_index[part];
 
             // get where we should look for the current part
             if (stC[part] != -1) {

@@ -7,7 +7,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     std::map<int,std::vector<CompCol_Mat_double> > C;
     std::map<int,std::vector<int> > stCols;
     double filter_c = dcntl[Controls::aug_filter];
-    stC = vector<int>(M.size(), -1);
+    stC = std::vector<int>(M.size(), -1);
 
     if (icntl[Controls::scaling] == 0)
       clog << "Using C_ij based augmentation gives better results with scaling" << endl;

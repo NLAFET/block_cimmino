@@ -174,8 +174,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
         t = MPI_Wtime();
         cout << "Centralizing solution" << endl;
         MV_ColMat_double temp_sol(n_o, 1, 0);
-        map<int, vector<double> > xo;
-        map<int, vector<int> > io;
+        std::map<int, std::vector<double> > xo;
+        std::map<int, std::vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
             inter_comm.recv(k, 71, xo[k]);
             inter_comm.recv(k, 72, io[k]);
@@ -202,7 +202,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
         cout << "Took " << MPI_Wtime() - t << endl;
 
     } else {
-        vector<double> x;
+        std::vector<double> x;
         x.reserve(n);
         for(int i = 0; i < n; i++){
             x.push_back(Xk(i, 0));

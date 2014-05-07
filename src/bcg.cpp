@@ -176,8 +176,8 @@ void abcd::bcg(MV_ColMat_double &b)
         t = MPI_Wtime();
         clog << "Centralizing solution" << endl;
         sol = MV_ColMat_double(n_o, 1, 0);
-        map<int, vector<double> > xo;
-        map<int, vector<int> > io;
+        std::map<int, std::vector<double> > xo;
+        std::map<int, std::vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
             inter_comm.recv(k, 71, xo[k]);
             inter_comm.recv(k, 72, io[k]);
@@ -201,7 +201,7 @@ void abcd::bcg(MV_ColMat_double &b)
         clog << "took " << MPI_Wtime() - t << endl;
 
     } else {
-        vector<double> x;
+        std::vector<double> x;
         x.reserve(n);
         for(int i = 0; i < n; i++){
             x.push_back(Xk(i, 0));

@@ -5,9 +5,9 @@
 using namespace std;
 using namespace boost::lambda;
 
-void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weights, int nb_parts){
-    vector<int> sets(nb_parts);
-    map<int, vector<int> > pts;
+void abcd::partitioning(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts){
+    std::vector<int> sets(nb_parts);
+    std::map<int, std::vector<int> > pts;
 
     for(int i = 0; i < nb_parts; i++){
         sets[i] = 0;
@@ -33,10 +33,10 @@ void abcd::partitioning(std::vector<vector<int> > &parts, std::vector<int> weigh
 }
 
 /// Partition weigts
-void abcd::partitionWeights(std::vector<vector<int> > &parts, std::vector<int> weights, int nb_parts)
+void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts)
 {
-    vector<int> sets(nb_parts);
-    map<int, vector<int> > pts;
+    std::vector<int> sets(nb_parts);
+    std::map<int, std::vector<int> > pts;
 
     for(int i = 0; i < nb_parts; i++){
         sets[i] = 0;
@@ -226,7 +226,7 @@ void setVal(int *lst, int sz, int ival) {
         for (i=0;i < sz; i++) lst[i] = ival;
 }
 
-vector<int> sort_indexes(const int *v, const int nb_el) {
+std::vector<int> sort_indexes(const int *v, const int nb_el) {
 
     typedef std::pair<int,int> pair_type;
     std::vector< std::pair<int,int> > vp;
@@ -245,7 +245,7 @@ vector<int> sort_indexes(const int *v, const int nb_el) {
 }
 
 template <typename T>
-vector<int> sort_indexes(const vector<T> &v) {
+std::vector<int> sort_indexes(const std::vector<T> &v) {
 
     typedef std::pair<T,int> pair_type;
     std::vector< std::pair<T,int> > vp;

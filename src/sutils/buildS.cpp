@@ -25,13 +25,13 @@ abcd::buildS ( std::vector<int> cols )
     return Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 }
 
-void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv)
+void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double> &vv)
 {
     std::vector<int> cols;
     buildS(vr, vc, vv, cols);
 }
 
-void abcd::buildS(vector<int> &vr, vector<int> &vc, vector<double> &vv, vector<int> &cols)
+void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double> &vv, std::vector<int> &cols)
 {
     Coord_Mat_double shur;
     //MV_ColMat_double S(size_c, size_c, 0);
