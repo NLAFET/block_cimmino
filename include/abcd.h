@@ -33,7 +33,7 @@
 #include <boost/lambda/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include <easyloggingpp/easylogging++.h>
+#include "easylogging++.h"
 
 /*
  * A small hack to make Sparselib++ work with openmpi

@@ -29,7 +29,7 @@ void abcd::partitionMatrix()
         } else {
             nbparts = ceil((double)m_o / 20000);
         }
-        INFO << "Estimated number of partitions: " << nbparts;
+        LINFO << "Estimated number of partitions: " << nbparts;
         parallel_cg =  nbparts < comm.size() ? nbparts : comm.size();
     }
 
