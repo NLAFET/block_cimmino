@@ -124,8 +124,6 @@ void abcd::partitionMatrix()
         _imba   = dcntl[Controls::part_imbalance];
         _ne     = nz_o;
 
-        //xpins   = t_A.colptr_ptr();
-        //pins    = t_A.rowind_ptr();
         xpins   = new int[_n + 1];
         pins    = new int[nz_o];
 
@@ -190,7 +188,7 @@ void abcd::partitionMatrix()
             sr += iro[cur + 1] - iro[cur];
         }
         ir[m_o] = nz_o;
-        LINFO << "    Done with PaToH, time : " << MPI_Wtime() - t;
+        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t;
         t = MPI_Wtime();
 
         A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
@@ -222,7 +220,6 @@ void abcd::partitionMatrix()
         delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
             ir, jc, val;
         PaToH_Free();
-        t_A = CompCol_Mat_double();
 #else
         info[Controls::status] = -6;
         throw std::runtime_error("Trying to use PaToH while it is not available");
@@ -231,6 +228,7 @@ void abcd::partitionMatrix()
     }
 
     if(write_problem.length() != 0) {
+        LINFO << "Writing the problem to the file: " << write_problem;
         string parts = write_problem + "_parts";
         ofstream f;
         f.open(parts.c_str());
@@ -245,16 +243,15 @@ void abcd::partitionMatrix()
 
 void abcd::analyseFrame()
 {
-
+    LDEBUG << "Launching frame analysis";
     std::vector<CompCol_Mat_double > loc_parts;
     loc_parts.reserve(nbparts);
     std::vector<int> ci_sizes;
 
-
     double t  = MPI_Wtime();
 
     column_index.reserve(nbparts);
-    cout << "[+] Creating partitions"<< flush;
+    LINFO << "Creating partitions";
     
     for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
@@ -272,29 +269,28 @@ void abcd::analyseFrame()
             loc_parts.push_back(part);
         }
     }
-    cout << ", done in " << MPI_Wtime() - t<< endl;
+    LINFO << "Partitions created in " << MPI_Wtime() - t << "s.";
     //
-    t= MPI_Wtime();
 
     // test augmentation!
     if(icntl[Controls::aug_analysis] == 2){
         double f = 0;
         size_c = 1;
-        cout << endl;
         while(size_c > 0 && f < 0.9){
             dcntl[Controls::aug_filter] = f;
-            cout << "filter value : " << fixed << setprecision(5) << f << " gives : ";
+            LDEBUG << "filter value : " << fixed << setprecision(5) << f << " gives : ";
             abcd::augmentMatrix(loc_parts);
-            cout << endl << endl;
             f+=0.025;
         }
         exit(0);
     }
 
     if (icntl[Controls::aug_type] != 0) {
+        t = MPI_Wtime();
         abcd::augmentMatrix(loc_parts);
-        cout << "   time to aug : " << MPI_Wtime() - t << endl;
+        LINFO << "Augmentation time" << MPI_Wtime() - t;
 
+        t = MPI_Wtime();
         column_index.clear();
         for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
 
@@ -311,9 +307,9 @@ void abcd::analyseFrame()
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
         if (icntl[Controls::aug_type] != 0)
-            cout << "    time to part /w augmentation : " << MPI_Wtime() - t << endl;
+            LINFO << "Time to regenerate partitions : " << MPI_Wtime() - t;
         if (size_c == 0) {
-            cerr << "WARNING: Size of C is zero, switching to classical cg" << endl;
+            LWARNING << "WARNING: Size of C is zero, switching to classical cg";
             icntl[Controls::aug_type] = 0;
         }
     }

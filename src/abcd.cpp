@@ -81,9 +81,9 @@ int abcd::initializeMatrix()
         LOG_IF(val == nullptr, ERROR) << "val is not allocated";
         throw std::runtime_error("Unallocated matrix vectors");
     }
-    LDEBUG << "M  = " << m;
-    LDEBUG << "N  = " << n;
-    LDEBUG << "NZ = " << nz;
+    LINFO << "M  = " << m;
+    LINFO << "N  = " << n;
+    LINFO << "NZ = " << nz;
 
     if(m <= 0 || n <= 0 || nz <= 0){
         info[Controls::status] = -2;
@@ -120,7 +120,7 @@ int abcd::initializeMatrix()
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
 
-        LDEBUG << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
+        LINFO << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
         delete[] t_irn;
         delete[] t_jcn;
         delete[] t_val;
@@ -133,14 +133,14 @@ int abcd::initializeMatrix()
         Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn, MV_Matrix_::ref);
         A = CompRow_Mat_double(t_A);
-        LDEBUG << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
+        LINFO << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
     }
     
     n_o = n;
     m_o = m;
     nz_o = nz;
         
-    LDEBUG << "Matrix initialization done";
+    LINFO << "Matrix initialization done";
     return 0; 
 }
 
@@ -160,7 +160,7 @@ int abcd::preprocessMatrix()
     double timeToPreprocess = MPI_Wtime();
     abcd::preprocess();
     abcd::analyseFrame();
-    LDEBUG << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess;
+    LINFO << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess;
     return 0;
 }
 
@@ -193,7 +193,7 @@ int abcd::factorizeAugmentedSystems()
     abcd::initializeCimmino();
     
     if(IRANK == 0){
-        LDEBUG << "Initialization time : " << MPI_Wtime() - t;
+        LINFO << "Initialization time : " << MPI_Wtime() - t;
     }
     if(inter_comm.rank() == 0 && instance_type == 0){
         LINFO << "Launching MUMPS factorization";
@@ -203,7 +203,7 @@ int abcd::factorizeAugmentedSystems()
     abcd::factorizeAugmentedSystems(mumps);
     
     if(IRANK == 0){
-        LDEBUG << "Factorization time : " << MPI_Wtime() - t;
+        LINFO << "Factorization time : " << MPI_Wtime() - t;
     }
 
     return 0;
@@ -242,15 +242,15 @@ int abcd::solveSystem()
         mpi::broadcast(intra_comm, job, 0);
 
         if(inter_comm.rank() == 0){
-            LINFO << "Backward error : " <<
+            LINFO << "Backward error       : " <<
                 scientific << dinfo[Controls::backward];
-            LINFO << "||r||_inf  : " <<
+            LINFO << "||r||_inf            : " <<
                 scientific << dinfo[Controls::residual];
             LINFO << "||r||_inf/||b||_inf  : " <<
                 scientific << dinfo[Controls::scaled_residual];
 
             if (Xf.dim(0) != 0)
-                LINFO << "Forward error : " <<
+                LINFO << "Forward error        : " <<
                     scientific << dinfo[Controls::forward_error];
         }
 

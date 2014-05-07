@@ -14,6 +14,9 @@ void configure_logger(std::string log_output)
           ConfigurationType::Format,
           "[%level - %time] %func %log");
 
+    // reset each time
+    abcd_conf.setAll(ConfigurationType::RollOutSize, "1");
+
     Loggers::setDefaultConfigurations(abcd_conf);
     Loggers::reconfigureAllLoggers(abcd_conf);
 }
