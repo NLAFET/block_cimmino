@@ -15,9 +15,9 @@ abcd::solveS ( MV_ColMat_double &f )
 
 
     if(inter_comm.rank() == 0){
-        clog << "*      ----------------------      *" << endl;
-        clog << "| [--] Building S = Y (I - P) Y^T  |" << endl;
-        clog << "*      ----------------------      *" << endl;
+        LINFO << "*----------------------------------*";
+        LINFO << "> Building S = Y (I - P) Y^T       |";
+        LINFO << "*----------------------------------*";
     }
 
     // if not created yet, do it!
@@ -27,9 +27,7 @@ abcd::solveS ( MV_ColMat_double &f )
     }
 
     if(inter_comm.rank() == 0){
-        clog << "*                                  *" << endl;
-        clog << "  [--] T.build S : (no stop)  " << MPI_Wtime() - t << endl;
-        clog << "*                                  *" << endl;
+        LDEBUG << "> T.build S : (no stop)  " << setprecision(2) << MPI_Wtime() - t;
     }
 
     // debug right now:
@@ -37,7 +35,7 @@ abcd::solveS ( MV_ColMat_double &f )
     if(write_sub_s) {
         ofstream f;
         ostringstream ff;
-        cout << "Writing" << endl;
+        LINFO << "> Writing to file '" << "/tmp/m" << IRANK << ".mtx' ";
         ff << "/tmp/m";
         ff << IRANK << ".mtx";
         f.open(ff.str().c_str());
@@ -102,9 +100,9 @@ abcd::solveS ( MV_ColMat_double &f )
     }
 
     if(inter_comm.rank() == 0){
-        clog << "*                                  *" << endl;
-        clog << "  [--] T build and init mumps S: " << MPI_Wtime() - t << endl;
-        clog << "*                                  *" << endl;
+        LINFO << "*                                  *";
+        LINFO << "> T. build and init mumps S: " << setprecision(2) << MPI_Wtime() - t;
+        LINFO << "*                                  *";
     }
 
     t = MPI_Wtime();
@@ -113,9 +111,9 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        clog << "*                                  *" << endl;
-        clog << "  [--] T.Analyse S :   " << MPI_Wtime() - t << endl;
-        clog << "*                                  *" << endl;
+        LINFO << "*                                  *";
+        LINFO << "> T.Analyse S:   " << setprecision(2) << MPI_Wtime() - t;
+        LINFO << "*                                  *";
     }
 
     t = MPI_Wtime();
@@ -124,9 +122,9 @@ abcd::solveS ( MV_ColMat_double &f )
     dmumps_c(&mu);
 
     if(inter_comm.rank() == 0){
-        clog << "*                                  *" << endl;
-        clog << "  [--] T.Factorize S : " << MPI_Wtime() - t << endl;
-        clog << "*                                  *" << endl;
+        LINFO << "*                                  *";
+        LINFO << "> T.Factorize S: " << setprecision(2) << MPI_Wtime() - t;
+        LINFO << "*                                  *";
     }
 
     if(mu.info[0] < 0) {
@@ -137,6 +135,7 @@ abcd::solveS ( MV_ColMat_double &f )
      *  END MUMPS part
      *-----------------------------------------------------------------------------*/
 
+    t = MPI_Wtime();
 
     if(inter_comm.rank() == 0){
         mu.rhs = f.ptr();
@@ -145,9 +144,8 @@ abcd::solveS ( MV_ColMat_double &f )
     }
 
     if(inter_comm.rank() == 0){
-        clog << "*      -------------------         *" << endl;
-        clog << "| [--] Computing z = S^-1 f        |" << endl;
-        clog << "*----------------------------------*" << endl;
+        LINFO << "*                                  *";
+        LINFO << "> Computing z = S^-1 f             |";
     }
 
     mu.job = 3;
@@ -157,6 +155,10 @@ abcd::solveS ( MV_ColMat_double &f )
     // TODO : better send parts not the whole z
     //
     mpi::broadcast(inter_comm, f_ptr, size_c, 0);
+    if(inter_comm.rank() == 0){
+        LINFO << "> Took: " << setprecision(2) << MPI_Wtime() - t;
+        LINFO << "*----------------------------------*";
+    }
 
     return f;
 }       /* -----  end of function abcd::solveS  ----- */

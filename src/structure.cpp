@@ -243,7 +243,7 @@ void abcd::partitionMatrix()
 
 void abcd::analyseFrame()
 {
-    LDEBUG << "Launching frame analysis";
+    LINFO << "Launching frame analysis";
     std::vector<CompCol_Mat_double > loc_parts;
     loc_parts.reserve(nbparts);
     std::vector<int> ci_sizes;
@@ -269,7 +269,7 @@ void abcd::analyseFrame()
             loc_parts.push_back(part);
         }
     }
-    LINFO << "Partitions created in " << MPI_Wtime() - t << "s.";
+    LINFO << "Partitions created in:\t" << MPI_Wtime() - t << "s.";
     //
 
     // test augmentation!
@@ -278,7 +278,7 @@ void abcd::analyseFrame()
         size_c = 1;
         while(size_c > 0 && f < 0.9){
             dcntl[Controls::aug_filter] = f;
-            LDEBUG << "filter value : " << fixed << setprecision(5) << f << " gives : ";
+            LDEBUG << "filter value:\t" << fixed << setprecision(5) << f << " gives : ";
             abcd::augmentMatrix(loc_parts);
             f+=0.025;
         }
@@ -288,7 +288,7 @@ void abcd::analyseFrame()
     if (icntl[Controls::aug_type] != 0) {
         t = MPI_Wtime();
         abcd::augmentMatrix(loc_parts);
-        LINFO << "Augmentation time" << MPI_Wtime() - t;
+        LINFO << "Augmentation time:\t" << MPI_Wtime() - t;
 
         t = MPI_Wtime();
         column_index.clear();
@@ -307,7 +307,7 @@ void abcd::analyseFrame()
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
         if (icntl[Controls::aug_type] != 0)
-            LINFO << "Time to regenerate partitions : " << MPI_Wtime() - t;
+            LINFO << "Time to regenerate partitions:\t" << MPI_Wtime() - t;
         if (size_c == 0) {
             LWARNING << "WARNING: Size of C is zero, switching to classical cg";
             icntl[Controls::aug_type] = 0;
@@ -318,8 +318,7 @@ void abcd::analyseFrame()
 
 }
 
-void
-abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
+void abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
     double filter_c = dcntl[Controls::aug_filter];
     stC = std::vector<int>(M.size(), -1);

@@ -158,7 +158,7 @@ int abcd::preprocessMatrix()
     abcd::partitionMatrix();
     
     double timeToPreprocess = MPI_Wtime();
-    abcd::preprocess();
+    abcd::scaling();
     abcd::analyseFrame();
     LINFO << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess;
     return 0;

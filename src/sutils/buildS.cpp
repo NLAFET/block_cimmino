@@ -55,8 +55,11 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
     int maxcols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::maximum<int>());
     int mincols = mpi::all_reduce(inter_comm, (int) my_cols.size(), mpi::minimum<int>());
     int total = mpi::all_reduce(inter_comm, (int) my_cols.size(), std::plus<int>());
-    IFMASTER clog << "Max number of cols is " << maxcols << " ,  min is " << mincols <<
-       "and average is " << total/parallel_cg <<    endl;
+    if(inter_comm.rank() == 0){
+        LDEBUG << "Max number of cols is " << maxcols;
+        LDEBUG << "Min number of cols is " << mincols;
+        LDEBUG << "Avg number of cols is " << total/parallel_cg;
+    }
 
 #ifndef NO_MUMPS_ES
     mumps.keep[235 - 1] = icntl[Controls::exploit_sparcity];
@@ -122,7 +125,7 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
     } else {
 
         for( int i = 0; i < size_c; i++){
-            if(inter_comm.rank() == 0) clog << " Column " << i << " out of " << size_c << endl;
+            if(inter_comm.rank() == 0) LDEBUG << " Column " << i << " out of " << size_c;
 
             icntl[Controls::block_size] = 1;
             Xk = MV_ColMat_double(n, 1, 0);

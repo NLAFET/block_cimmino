@@ -108,9 +108,9 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
         }
     }
 
-    cout << "Size of C : " << nbcols - A.dim(1) << endl;
     size_c = nbcols - A.dim(1);
     n = nbcols;
+    LINFO << "Size of C : " << size_c;
 
     if(icntl[Controls::aug_analysis] != 0) return;
 

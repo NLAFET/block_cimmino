@@ -11,7 +11,7 @@ void abcd::initializeCimmino()
     if(comm.size() > parallel_cg) {
         if(instance_type == 0) {
             if(inter_comm.rank() == 0 && instance_type == 0)
-                cout << "[+] Initializing MUMPS" << endl;
+                LINFO << "Initializing MUMPS";
             initializeMumps(mumps, true);
             createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
@@ -22,7 +22,7 @@ void abcd::initializeCimmino()
             mumps.a = &val_aug[0];
 
             if(inter_comm.rank() == 0 && instance_type == 0)
-                cout << "[+] Launching Initial MUMPS analysis" << endl;
+                LINFO << "Launching Initial MUMPS analysis";
             analyseAugmentedSystems(mumps);
             
             sym_perm = new int[mumps.n];
@@ -56,7 +56,7 @@ void abcd::initializeCimmino()
     }
     
     if(inter_comm.rank() == 0 && instance_type == 0)
-        cout << "[+] Launching MUMPS analysis" << endl;
+        LINFO << "Launching MUMPS analysis";
     abcd::analyseAugmentedSystems(mumps);
 
     //delete[] sym_perm;

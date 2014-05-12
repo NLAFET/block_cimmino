@@ -77,7 +77,7 @@ private:
     double nrmMtx;
 
     // preprocess stuffs
-    void preprocess();
+    void scaling();
     /**
      * Scales the matrix
      * @norm the norm at which the matrix is scaled

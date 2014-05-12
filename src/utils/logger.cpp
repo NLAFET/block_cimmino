@@ -12,7 +12,7 @@ void configure_logger(std::string log_output)
           "[%time] %log");
     abcd_conf.set(Level::Debug,
           ConfigurationType::Format,
-          "[%level - %time] %func %log");
+          "[%level - %time] %func\n\t %log");
 
     // reset each time
     abcd_conf.setAll(ConfigurationType::RollOutSize, "1");

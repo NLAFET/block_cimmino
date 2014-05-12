@@ -93,8 +93,8 @@ void abcd::bcg(MV_ColMat_double &b)
     t2_total = MPI_Wtime();
     rho = compute_rho(Xk, u);
     t2_total = MPI_Wtime() - t2_total;
-    if(comm.rank() == 0 && icntl[Controls::verbose_level] > 0) {
-        cout << "ITERATION " << 0 << " rho = " << rho << endl;
+    if(comm.rank() == 0) {
+        LDEBUG << "ITERATION " << 0 << " rho = " << rho;
     }
 
     while(true) {
@@ -151,8 +151,8 @@ void abcd::bcg(MV_ColMat_double &b)
         //mrho = *std::max_element(grho.begin(), grho.end());
         //
         t = MPI_Wtime() - t;
-        if(comm.rank() == 0 && icntl[Controls::verbose_level] > 0) {
-            clog << "ITERATION " << it << " rho = " << rho << "  Timings: " << t << "\n" << flush;
+        if(comm.rank() == 0) {
+            LDEBUG << "ITERATION " << it << " rho = " << rho << "  Timings: " << t;
         }
         t1_total += t1;
         t2_total += t2;
@@ -160,13 +160,11 @@ void abcd::bcg(MV_ColMat_double &b)
     
 
     if(inter_comm.rank() == 0) {
-        clog << endl;
-        clog << "BCG Rho: " << rho << endl;
-        clog << "BCG Iterations : " << it << endl;
-        clog << "BCG TIME : " << MPI_Wtime() - ti << endl;
-        clog << "SumProject time : " << t1_total << endl;
-        clog << "Rho Computation time : " << t2_total << endl;
-        clog << endl;
+        LINFO << "BCG Rho: " << rho ;
+        LINFO << "BCG Iterations : " << it ;
+        LINFO << "BCG TIME : " << MPI_Wtime() - ti ;
+        LINFO << "SumProject time : " << t1_total ;
+        LINFO << "Rho Computation time : " << t2_total ;
     }
     if (icntl[Controls::aug_type] != 0)
         return;
@@ -174,7 +172,7 @@ void abcd::bcg(MV_ColMat_double &b)
 
     if(IRANK == 0) {
         t = MPI_Wtime();
-        clog << "Centralizing solution" << endl;
+        LINFO << "Centralizing solution";
         sol = MV_ColMat_double(n_o, 1, 0);
         std::map<int, std::vector<double> > xo;
         std::map<int, std::vector<int> > io;
@@ -198,7 +196,7 @@ void abcd::bcg(MV_ColMat_double &b)
             double nrmxf =  infNorm(xf);
             dinfo[Controls::residual] =  nrmxf/nrmXf;
         }
-        clog << "took " << MPI_Wtime() - t << endl;
+        LINFO << "took " << MPI_Wtime() - t;
 
     } else {
         std::vector<double> x;
@@ -284,16 +282,16 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
         if(abs(r(k, k)) < abs(r(0,0))*1e-16) {
             r(k, k) = 1;
-            cout << "PROBLEM IN GMGS : FOUND AN EXT. SMALL ELMENT " <<  r(k, k) << " postion " << k << endl;
+            LWARNING << "PROBLEM IN GMGS : FOUND AN EXT. SMALL ELMENT " <<  r(k, k) << " postion " << k;
         }
         // if it's negative, make it positive
         if(abs(r(k, k)) < 0) {
             r(k, k) = abs(r(k, k));
-            cout << "PROBLEM IN GMGS : FOUND A NEGATIVE ELMENT " << r(k, k) << " postion " << k << endl;
+            LWARNING << "PROBLEM IN GMGS : FOUND A NEGATIVE ELMENT " << r(k, k) << " postion " << k;
         }
         if(r(k, k) == 0) {
             r(k, k) = 1;
-            cout << "PROBLEM IN GMGS : FOUND A ZERO ELMENT " <<  r(k, k) << " postion " << k << endl;
+            LWARNING << "PROBLEM IN GMGS : FOUND A ZERO ELMENT " <<  r(k, k) << " postion " << k;
         }
         // if all is fine, do an sqrt:
         r(k, k) = sqrt(r(k, k));

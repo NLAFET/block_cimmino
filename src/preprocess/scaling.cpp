@@ -8,7 +8,7 @@ extern "C"
                  int *info, double *rinfo);
 }
 
-void abcd::preprocess()
+void abcd::scaling()
 {
     dcol_ = VECTOR_double(n, double(1));
     drow_ = VECTOR_double(m, double(1));
@@ -16,7 +16,7 @@ void abcd::preprocess()
     if(icntl[Controls::scaling] >= 1) {
         //drow_ = VECTOR_double(m, double(1));
 
-        std::clog << "[-] Scaling with Infinity" << std::endl;
+        LINFO << "Scaling with Infinity";
 
         double rsum;
         drow_ = VECTOR_double(m);
@@ -38,23 +38,12 @@ void abcd::preprocess()
 
 
     if(icntl[Controls::scaling] == 2) {
-        std::cout << "[-] Scaling with Norm 1" << std::endl;
+        LINFO << "Scaling with Norm 1";
         abcd::scaleMatrix(1);
 
-        std::cout << "[-] Scaling with Norm 2" << std::endl;
+        LINFO << "Scaling with Norm 2";
         abcd::scaleMatrix(2);
 
-        //double rsum;
-        //VECTOR_double dc_ = VECTOR_double(n, double(1));
-        //for(int r = 0; r < m; r++) {
-            //rsum = 0;
-            //for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
-                //rsum += pow(A(r, A.col_ind(c)), 2);
-            //}
-            //drow_(r) *= 1/sqrt(rsum);
-        //}
-        //abcd::diagScaleMatrix(drow_, dc_);
-        //
         double min_r = 999;
         double max_r = 0;
         double min_c = 999;
@@ -69,7 +58,7 @@ void abcd::preprocess()
             if(max_c < abs(dcol_[i])) max_c = abs(dcol_[i]);
         }
 
-        cout << "min/max row, col " << min_r << " " << max_r << " | " << min_c << " " << max_c << endl;
+        LDEBUG << "min/max row, col " << min_r << " " << max_r << " | " << min_c << " " << max_c;
     }
 
 
@@ -81,8 +70,6 @@ void abcd::preprocess()
         }
         if(nrmMtx < rsum) nrmMtx = rsum;
     }
-    cout << nrmMtx << endl;
-
 }
 
 void abcd::scaleMatrix(int norm)
@@ -142,9 +129,9 @@ void abcd::scaleMatrix(int norm)
     if(mc77_info[0] < 0) throw - 100 + mc77_info[0];
 
     if(norm == 0)
-        cout << "Distance from 1 (norm inf) : " << mc77_rinfo[0] << endl;
+        LDEBUG << "Distance from 1 (norm inf) : " << mc77_rinfo[0];
     else
-        cout << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0] << endl;
+        LDEBUG << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
 
     // put them back to 0-based for C/C++
     for(int k = 0; k < n + 1 ; k++) {

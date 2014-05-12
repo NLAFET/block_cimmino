@@ -16,17 +16,6 @@ void abcd::distributeData()
         //abcd::partitioning(p_sets, m_parts, parallel_cg);
         abcd::partitionWeights(p_sets, m_parts, parallel_cg);
 
-        clog << "Groups : " <<endl;
-        for(int k = 0; k < parallel_cg; k++) {
-            clog << k+1 << "\t{";
-            for(unsigned int j = 0; j < p_sets[k].size() - 1; j++)
-                clog << p_sets[k][j] << ", ";
-            clog << p_sets[k][p_sets[k].size() -1 ];
-            clog << "} " << endl;
-            //clog  << ", "<< p_sets[k].size();
-        }
-        clog << endl;
-
         for(int i = 1; i < parallel_cg ; i++) {
             inter_comm.send(i, 0, p_sets[i]);
 
@@ -50,7 +39,7 @@ void abcd::distributeData()
             }
 
         }
-        cout << "sent partitions" << endl;
+        LINFO << "Sent partitions";
 
         m_l = m;
         n_l = n;
@@ -140,6 +129,7 @@ void abcd::distributeData()
             delete[] l_v;
         }
         nb_local_parts = partitions.size();
+        LDEBUG << "Process " << inter_comm.rank() << " received " << nb_local_parts << " partitions";
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
@@ -151,6 +141,8 @@ void abcd::distributeData()
 
 void abcd::createInterconnections()
 {
+    if(intra_comm.rank() == 0) LINFO << "Creating interconnections between processes";
+    
     // Link between the current partition and the global array
     // is used only in ABCD
     if (icntl[Controls::aug_type] != 0) {
@@ -235,5 +227,6 @@ void abcd::createInterconnections()
     }
 
     if (inter_comm.rank() == 0) 
-        cout << "Merge done " << endl;
+        LINFO << "Interconnections created";
+    
 }

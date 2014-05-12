@@ -1,35 +1,8 @@
-/*
- * =====================================================================================
- *
- *       Filename:  solve.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/06/2013 11:36:33 AM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
- */
-
-
 #include <abcd.h>
 #include <iostream>
 #include <fstream>
 
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::solveABCD
- *  Description:  
- * =====================================================================================
- */
-    void
-abcd::solveABCD ( MV_ColMat_double &b )
+void abcd::solveABCD ( MV_ColMat_double &b )
 {
     {
         MV_ColMat_double u(m, nrhs, 0);
@@ -43,9 +16,8 @@ abcd::solveABCD ( MV_ColMat_double &b )
     double t, tto = MPI_Wtime();
     MV_ColMat_double w;
     if(inter_comm.rank() == 0){
-        cout << "*----------------------------------*" << endl;
-        cout << "| [->] Computing w = A^+b          |" << endl;
-        cout << "*----------------------------------*" << endl;
+        LINFO << "*----------------------------------*";
+        LINFO << "> Computing w = A^+b                ";
     }
 
     t = MPI_Wtime();
@@ -55,12 +27,14 @@ abcd::solveABCD ( MV_ColMat_double &b )
         bcg(b);
         w = Xk; 
     }
-    if(inter_comm.rank() == 0) cout << "Time to compute w = A^+ b : " << MPI_Wtime() - t << endl;
+    if(inter_comm.rank() == 0){
+        LINFO << "> Time to compute w = A^+ b: " << setprecision(2) << MPI_Wtime() - t;
+    }
+    
 
     if(inter_comm.rank() == 0){
-        cout << "*----------------------------------*" << endl;
-        cout << "| [->] Setting f = - Y w           |" << endl;
-        cout << "*----------------------------------*" << endl;
+        LINFO << "*----------------------------------*";
+        LINFO << "> Setting f = - Y w                 ";
     }
 
     t = MPI_Wtime();
@@ -78,18 +52,21 @@ abcd::solveABCD ( MV_ColMat_double &b )
         mpi::all_reduce(inter_comm, f_ptr, size_c, f_o, or_bin);
         f = ff;
     }
-    if(inter_comm.rank() == 0) cout << "Time to centralize f : " << MPI_Wtime() - t << endl;
+    if(inter_comm.rank() == 0){
+        LINFO << "> Time to centralize f : " << setprecision(2) << MPI_Wtime() - t;
+    }
+
 
     if(inter_comm.rank() == 0){
-        cout << "*----------------------------------*" << endl;
-        cout << "| [->] Solving Sz = f              |" << endl;
-        cout << "*                                  *" << endl;
+        LINFO << "*----------------------------------*";
+        LINFO << "> Solving Sz = f                    ";
+        LINFO << "*                                  *";
     }
 
     t = MPI_Wtime();
     if(icntl[Controls::aug_iterative] != 0){
         if(inter_comm.rank() == 0)
-            cout << "* ITERATIVELY                      *" << endl;
+            LINFO << "* ITERATIVELY                      *";
 
         VECTOR_double f0 = f.data();
         f0 = pcgS(f0);
@@ -100,14 +77,13 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f = solveS(f);
     }
     if(IRANK == 0) 
-        cout << "| Time to solve Sz = f : " << MPI_Wtime() - t << endl;
+        LINFO << "| Time to solve Sz = f: " << setprecision(2) << MPI_Wtime() - t;
 
     t = MPI_Wtime();
     if(inter_comm.rank() == 0){
-        cout << "*----------------------------------*" << endl;
-        cout << "|                               T  |" << endl;
-        cout << "| [->] Computing zz = (I - P) Y  z |" << endl;
-        cout << "*----------------------------------*" << endl;
+        LINFO << "*----------------------------------*";
+        LINFO << "                                T   ";
+        LINFO << "> [->] Computing zz = (I - P) Y  z  ";
     }
 
 
@@ -130,7 +106,6 @@ abcd::solveABCD ( MV_ColMat_double &b )
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
     } else {
-        cout << "HERE" << endl;
         use_xk = false;
 
         if(!use_xk){
@@ -157,7 +132,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
             f = f - Xk;
     }
     if(IRANK == 0) 
-        cout << "| Other stuffs : " << MPI_Wtime() - t << endl;
+        LINFO << "> Took: " << setprecision(2) << MPI_Wtime() - t;
 
 
     //! the final solution (distributed)
@@ -165,14 +140,18 @@ abcd::solveABCD ( MV_ColMat_double &b )
     //! f = \Wbar^+ b
     Xk = w + f;
 
-    if(IRANK == 0) cout << "Total time to build and solve " << MPI_Wtime() - tto << endl;
-    IBARRIER;
+    if(IRANK == 0){
+        LINFO << "*----------------------------------*";
+        LINFO << "> Total time to solve: " << setprecision(2) << MPI_Wtime() - tto;
+        LINFO << "*----------------------------------*";
+        LINFO << "";
+    }
 
     compute_rho(Xk, b);
 
     if(IRANK == 0) {
         t = MPI_Wtime();
-        cout << "Centralizing solution" << endl;
+        LINFO << "> Centralizing solution";
         MV_ColMat_double temp_sol(n_o, 1, 0);
         std::map<int, std::vector<double> > xo;
         std::map<int, std::vector<int> > io;
@@ -199,7 +178,7 @@ abcd::solveABCD ( MV_ColMat_double &b )
             double nrmxf =  infNorm(xf);
             dinfo[Controls::forward_error] = nrmxf/nrmXf;
         }
-        cout << "Took " << MPI_Wtime() - t << endl;
+        LINFO << "> Took: " << setprecision(2) << MPI_Wtime() - t;
 
     } else {
         std::vector<double> x;
