@@ -1,5 +1,5 @@
 The Augmented Block Cimmino Distributed Solver {#mainpage}
-=============
+==============
 
 The package `ABCD Solver` is a distributed hybrid (iterative/direct)
 solver for sparse linear systems \f$Ax = b\f$ where \f$A\f$ is a double
