@@ -10,6 +10,8 @@ _INITIALIZE_EASYLOGGINGPP
 /// Set the defaults in the constructor
 abcd::abcd()
 {
+    last_called_job = 0;
+    
     nrhs = 1;
     start_index = 0;
     use_xk = false;
@@ -274,6 +276,15 @@ int abcd::solveSystem()
 /// \return Status code
 int abcd::operator()(int job)
 {
+    LDEBUG << "MPI-Process " << comm.rank() << " called job = " << job;
+    
+    if ( (job == 1 || job == 5 || job == 6) && last_called_job != -1 )
+        throw std::runtime_error("Did you forget to call job = -1? ");
+    if ( job == 2 && last_called_job != 1)
+        throw std::runtime_error("Did you forget to call job = 1? ");
+    if ( job == 3 && last_called_job != 2)
+        throw std::runtime_error("Did you forget to call job = 2? ");
+    
     switch(job) {
 
     case -1:
@@ -322,7 +333,11 @@ int abcd::operator()(int job)
 
     default:
         // Wrong job id
+        throw std::runtime_error("Wrong job id.");
         return -1;
     }
+
+    // if everything went alright, remember the job
+    last_called_job = job;
     return 0;
 }

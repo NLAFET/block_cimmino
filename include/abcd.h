@@ -76,6 +76,8 @@ private:
     double nrmXf;
     double nrmMtx;
 
+    int last_called_job;
+
     // preprocess stuffs
     void scaling();
     /**

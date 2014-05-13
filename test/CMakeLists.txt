@@ -9,11 +9,12 @@ if(NOT PATOH MATCHES OFF)
 endif()
 
 set(LIBS ${LIBS}
-    ${Boost_LIBRARIES}
-    ${MPI_LIBRARIES}
-    ${BLAS_LAPACK_SCALAPACK_LIBS}
     dmumps
     mumps_common
+
+    ${Boost_LIBRARIES}
+    ${BLAS_LAPACK_SCALAPACK_LIBS}
+    ${MPI_LIBRARIES}
 
     sparse
     spblas
@@ -52,7 +53,7 @@ target_link_libraries(
 ################################
 # Testing
 ################################
-if(test MATCHES ON)
+if(TESTER MATCHES ON)
     add_executable(
             test_abcd
             src/main.cpp
@@ -65,6 +66,8 @@ if(test MATCHES ON)
         abcd 
         ${LIBS}
     )
+endif()
+if(TEST MATCHES ON)
 
     add_executable(
             test_abcd_c_interface

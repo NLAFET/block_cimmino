@@ -141,7 +141,7 @@ void abcd::distributeData()
 
 void abcd::createInterconnections()
 {
-    if(intra_comm.rank() == 0) LINFO << "Creating interconnections between processes";
+    if(comm.rank() == 0) LINFO << "Creating interconnections between processes";
     
     // Link between the current partition and the global array
     // is used only in ABCD
