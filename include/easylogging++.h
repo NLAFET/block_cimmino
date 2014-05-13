@@ -71,8 +71,6 @@
                                + __GNUC_PATCHLEVEL__)
 #   if defined(__GXX_EXPERIMENTAL_CXX0X__)
 #      define _ELPP_CXX0X 1
-#   elif (_ELPP_GCC_VERSION >= 40801)
-#      define _ELPP_CXX11 1
 #   endif // defined(__GXX_EXPERIMENTAL_CXX0X__)
 #endif // defined(__GNUC__)
 // VC++
