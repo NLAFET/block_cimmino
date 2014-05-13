@@ -12,7 +12,7 @@ function watch_dir {
     done
 }
 
-watch_dir ../doc &
 watch_dir ../src &
 watch_dir ../include &
+watch_dir ../doc
 
