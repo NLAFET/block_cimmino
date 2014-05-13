@@ -33,6 +33,7 @@ include_directories(
   ${ABCD_PROJECT_DIR}/include
   ${ABCD_PROJECT_DIR}/lib/sparselib/include
   ${ABCD_PROJECT_DIR}/lib/sparselib/mv/include
+  ${ABCD_PROJECT_DIR}/lib/mumps/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
