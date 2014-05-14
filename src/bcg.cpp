@@ -1,13 +1,17 @@
 #include <abcd.h>
 #include "blas.h"
 
+#include <iostream>
 void abcd::bcg(MV_ColMat_double &b)
 {
+    std::streamsize oldprec = std::cout.precision();
+
     double t, t1, t2, t1_total, t2_total;
 
     int itmax = icntl[Controls::itmax];
     double threshold = dcntl[Controls::threshold];
     int block_size = icntl[Controls::block_size];
+    
 
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
@@ -94,7 +98,7 @@ void abcd::bcg(MV_ColMat_double &b)
     rho = compute_rho(Xk, u);
     t2_total = MPI_Wtime() - t2_total;
     if(comm.rank() == 0) {
-        LDEBUG << "ITERATION " << 0 << " rho = " << rho;
+        LINFO2 << "ITERATION 0  rho = " << scientific << rho << setprecision(oldprec);
     }
 
     while(true) {
@@ -151,8 +155,13 @@ void abcd::bcg(MV_ColMat_double &b)
         //mrho = *std::max_element(grho.begin(), grho.end());
         //
         t = MPI_Wtime() - t;
-        if(comm.rank() == 0) {
-            LDEBUG << "ITERATION " << it << " rho = " << rho << "  Timings: " << t;
+        if(comm.rank() == 0 && icntl[Controls::verbose_level] >= 2) {
+            int ev = icntl[Controls::verbose_level] >= 3 ? 1 : 10;
+            LOG_EVERY_N(ev, INFO) << "ITERATION " << it <<
+                " rho = " << scientific << rho <<
+                "  Timings: " << setprecision(2) << t <<
+                setprecision(oldprec); // put precision back to what it was before
+            
         }
         t1_total += t1;
         t2_total += t2;
@@ -160,11 +169,11 @@ void abcd::bcg(MV_ColMat_double &b)
     
 
     if(inter_comm.rank() == 0) {
-        LINFO << "BCG Rho: " << rho ;
-        LINFO << "BCG Iterations : " << it ;
-        LINFO << "BCG TIME : " << MPI_Wtime() - ti ;
-        LINFO << "SumProject time : " << t1_total ;
-        LINFO << "Rho Computation time : " << t2_total ;
+        LINFO2 << "BCG Rho: " << scientific << rho ;
+        LINFO2 << "BCG Iterations : " << setprecision(2) << it ;
+        LINFO2 << "BCG TIME : " << MPI_Wtime() - ti ;
+        LINFO2 << "SumProject time : " << t1_total ;
+        LINFO2 << "Rho Computation time : " << t2_total ;
     }
     if (icntl[Controls::aug_type] != 0)
         return;
@@ -391,7 +400,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
     if(ierr != 0){
         stringstream err;
-        err << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank() << endl;
+        LERROR << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank();
         info[Controls::status] = -11;
         throw std::runtime_error(err.str());
     }

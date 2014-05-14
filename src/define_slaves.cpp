@@ -73,4 +73,8 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         //Store in my_slaves my brothers in slavery
         comm.recv(my_master, 12, my_slaves);
     }
+
+    LINFO2 << "Process " << inter_comm.rank()
+           << " has " << intra_comm.size()
+           << " workers";
 }

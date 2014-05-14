@@ -25,8 +25,6 @@ abcd::abcd()
     jcn = nullptr;
     val = nullptr;
 
-    verbose = 0;
-
     icntl.assign(20, 0);
     dcntl.assign(20, 0);
     info.assign(2, 0);
@@ -244,12 +242,9 @@ int abcd::solveSystem()
         mpi::broadcast(intra_comm, job, 0);
 
         if(inter_comm.rank() == 0){
-            LINFO << "Backward error       : " <<
-                scientific << dinfo[Controls::backward];
-            LINFO << "||r||_inf            : " <<
-                scientific << dinfo[Controls::residual];
-            LINFO << "||r||_inf/||b||_inf  : " <<
-                scientific << dinfo[Controls::scaled_residual];
+            LINFO1 << "Backward error       : " << scientific << dinfo[Controls::backward];
+            LINFO1 << "||r||_inf            : " << scientific << dinfo[Controls::residual];
+            LINFO1 << "||r||_inf/||b||_inf  : " << scientific << dinfo[Controls::scaled_residual];
 
             if (Xf.dim(0) != 0)
                 LINFO << "Forward error        : " <<
@@ -276,7 +271,7 @@ int abcd::solveSystem()
 /// \return Status code
 int abcd::operator()(int job)
 {
-    LDEBUG << "MPI-Process " << comm.rank() << " called job = " << job;
+    LDEBUG3 << "MPI-Process " << comm.rank() << " called job = " << job;
     
     if ( (job == 1 || job == 5 || job == 6) && last_called_job != -1 )
         throw std::runtime_error("Did you forget to call job = -1? ");

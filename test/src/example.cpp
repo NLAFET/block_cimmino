@@ -21,24 +21,35 @@ int main(int argc, char* argv[])
     // obtain the WORLD communicator, by default the solver uses it
     mpi::communicator world;
 
-    // create one instance of the abcd solver per mpi-process
-    abcd obj;
+    // To see the use of sub-communicator in action, we split the
+    // world communicator in even/odd communicators, and use
+    // only the even ones
+    bool is_even = world.rank() % 2 == 0;
+    mpi::communicator solver_comm = world.split(is_even ? 0 : 1);
 
-    if(world.rank() == 0) { // the master
-        init_2d_lap(obj, 5);
+    if (is_even) {
+        // create one instance of the abcd solver per mpi-process
+        abcd obj;
 
-        // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
+        obj.comm = solver_comm;
+        obj.icntl[Controls::verbose_level] = 1;
+        
+        if(solver_comm.rank() == 0) { // the master
+            init_2d_lap(obj, 100);
+
+            // set the rhs
+            obj.rhs = new double[obj.m];
+            for (size_t i = 0; i < obj.m; i++) {
+                obj.rhs[i] = ((double) i + 1)/obj.m;
+            }
         }
-    }
 
-    try {
-        obj(-1);
-        obj(6); // equivalent to running 1, 2 and 3 successively
-    } catch (runtime_error err) {
-        cout << "An error occured: " << err.what() << endl;
+        try {
+            obj(-1);
+            obj(6); // equivalent to running 1, 2 and 3 successively
+        } catch (runtime_error err) {
+            cout << "An error occured: " << err.what() << endl;
+        }
     }
 
   return 0;

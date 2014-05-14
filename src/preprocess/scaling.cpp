@@ -13,6 +13,11 @@ void abcd::scaling()
     dcol_ = VECTOR_double(n, double(1));
     drow_ = VECTOR_double(m, double(1));
 
+    if (m != n) {
+        LWARNING << "Matrix is not square, disabling the scaling";
+        abcd::icntl[Controls::scaling] = 0;
+    }
+
     if(icntl[Controls::scaling] >= 1) {
         //drow_ = VECTOR_double(m, double(1));
 
@@ -58,7 +63,7 @@ void abcd::scaling()
             if(max_c < abs(dcol_[i])) max_c = abs(dcol_[i]);
         }
 
-        LDEBUG << "min/max row, col " << min_r << " " << max_r << " | " << min_c << " " << max_c;
+        LDEBUG3 << "min/max row, col " << min_r << " " << max_r << " | " << min_c << " " << max_c;
     }
 
 
@@ -129,9 +134,9 @@ void abcd::scaleMatrix(int norm)
     if(mc77_info[0] < 0) throw - 100 + mc77_info[0];
 
     if(norm == 0)
-        LDEBUG << "Distance from 1 (norm inf) : " << mc77_rinfo[0];
+        LINFO2 << "Distance from 1 (norm inf) : " << mc77_rinfo[0];
     else
-        LDEBUG << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
+        LINFO2 << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
 
     // put them back to 0-based for C/C++
     for(int k = 0; k < n + 1 ; k++) {

@@ -16,13 +16,15 @@ void abcd::createInterComm()
         throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
     }
 
-    inter_comm = comm.split(comm.rank() < parallel_cg);
+    instance_type = comm.rank() < parallel_cg ? 0 : 1;
 
-    if(comm.rank() < parallel_cg)
-        instance_type = 0;
-    else
-        instance_type = 1;
+    inter_comm = comm.split(instance_type == 0);
 
+    if (comm.rank() == 0)
+        LINFO << "There are " << inter_comm.size()
+              << " master processes and "
+              << comm.size() - inter_comm.size()
+              << " workers";
 }
 
 void abcd::distributeRhs()

@@ -61,6 +61,41 @@
 #define inter_barrier() inter_comm.barrier()
 #define inter_master() if(inter_comm.rank() == 0)
 
+#ifndef LINFO_
+
+#define LLOG_(v, l) LOG_IF(icntl[Controls::verbose_level] >= v, l)
+#define LINFO1 LLOG_(1, INFO)
+#define LINFO2 LLOG_(2, INFO)
+#define LINFO3 LLOG_(3, INFO)
+
+#define LDEBUG1 LLOG_(1, DEBUG)
+#define LDEBUG2 LLOG_(2, DEBUG)
+#define LDEBUG3 LLOG_(3, DEBUG)
+#endif
+
+#ifdef LINFO
+#undef LINFO
+#define LINFO LINFO1
+#endif
+
+#ifdef LDEBUG
+#undef LDEBUG
+#define LDEBUG LDEBUG1
+#endif
+
+// disable all logging
+#ifdef NOLOGGING
+
+#ifdef LINFO
+#undef LINFO
+#endif
+
+#ifdef LDEBUG
+#undef LDEBUG
+#endif
+
+#endif
+
 using namespace std;
 using namespace boost;
 using namespace boost::numeric;

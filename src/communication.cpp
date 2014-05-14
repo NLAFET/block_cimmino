@@ -129,7 +129,7 @@ void abcd::distributeData()
             delete[] l_v;
         }
         nb_local_parts = partitions.size();
-        LDEBUG << "Process " << inter_comm.rank() << " received " << nb_local_parts << " partitions";
+        LDEBUG3 << "Process " << inter_comm.rank() << " received " << nb_local_parts << " partitions";
 
         // Set the number of rows and nnz handled by this CG Instance
         m = sm;
