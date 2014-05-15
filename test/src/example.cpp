@@ -76,7 +76,7 @@ void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh
     // initialize the matrix
     // Note: the matrix is stored in 1-based format
     size_t pos = 0;
-    for (size_t i = 1; i <= m; i++) {
+    for (size_t i = 0; i < m; i++) {
 
         // the diagonal
         irn[pos] = i;
@@ -85,7 +85,7 @@ void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh
 
         pos++;
 
-        if (i == m) continue;
+        if (i == m - 1) continue;
         // the lower-triangular part
         irn[pos] = i + 1;
         jcn[pos] = i;
