@@ -1,15 +1,15 @@
-Using the solver {#title}
+Using the solver in C++ {#title}
 =========================
 
 The solver is in the form of a class named `abcd` and the user has to
 instantiate it on each MPI-process to be involved. In the following,
-we refer to the members of the class by `abcd::member` and to the
-methods by `abcd::method()`.  Arrays will have `[]` appended to them,
+we refer to the members of the class by `member` and to the
+methods by `method()`. Arrays will have `[]` appended to them,
 if we specify a size then the array is pre-allocated at construction,
 otherwise it is either allocated by the user (such as the linear
 system entries) or by the solver once it's generated (such as the
-solution). The user can refer to [The Controls](@ref section_controls)
-for more details.
+solution vector). The user can refer to [The Controls](@ref
+section_controls) for more details.
 
 # Instantiating and calling the solver# {#section_instance}
 
@@ -23,42 +23,46 @@ abcd obj; // instantiating the class
 obj(job_id); // call the solver with a job identifier job_id
 ~~~~~~~~~~~~~~~
 
-To run a job, the user has to call the solver with a job identifier. 
-- `obj(-1)`, initializes the internal matrix used by the solver. Prior to this call, the user must provide:
-  * The information about the matrix `obj.m`, `obj.n`, `obj.nz`,
-    `obj.sym`, `obj.irn`, `obj.jcn`, `obj.val` have to be initialized
+To run a job, the user has to call the solver with a job identifier, its value can be:
+* \b -1, initializes the internal matrix used by the solver. Prior to this call, the user must provide:
+  - The information about the matrix `abcd::m`, `abcd::n`, `abcd::nz`,
+    `abcd::sym`, `abcd::irn[]`, `abcd::jcn[]`, `abcd::val[]` have to be initialized
     before the call. See [Input matrix and right-hand side] for more detail.
-  * After the call, the arrays `obj.irn`, `obj.jcn`, `obj.val` are no
-    longer used by the solver.
-- `obj(1)`, performs the preprocessing. During this call, the solver
+  - After the call, the arrays `abcd::irn[]`, `abcd::jcn[]`, `abcd::val[]` are no longer used by the solver.
+* **1**, performs the preprocessing. During this call, the solver
   scales the matrix, partition it, and if required by the user
   performs the augmentation of the matrix. Prior to this call, the
   user must provide:
   * The number of partitions to create (see `abcd::icntl[Controls::nbparts]`) or ask the solver to guess the appropriate number of partitions (see `abcd::icntl[Controls::part_guess]`)
-  * The type of scaling to perform (see `abcd::icntl[Controls::scaling]`)
-  * The type of augmentation to perform (see `abcd::icntl[Controls::aug_type]`)
-- `obj(2)`, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.
-- `obj(3)`, performs the solution step, the right-hand sides and their number are required prior to this call.
-  * The right-hand sides have to be given through the array `obj.rhs` and their number in `obj.nrhs`.
-  * The block-size to be used during the bloc-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.
-- `obj(5)`, regroups the call to the phases 2 and 3. 
-- `obj(6)`, regroups the call to the phases 1, 2 and 3.
+  - The type of scaling to perform (see `abcd::icntl[Controls::scaling]`)
+  - The type of augmentation to perform (see `abcd::icntl[Controls::aug_type]`)
+* **2**, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.
+* **3**, performs the solution step, the right-hand sides and their number are required prior to this call.
+  - The right-hand sides have to be given through the array `abcd::rhs[]` and their number in `abcd::nrhs`.
+  - The block-size to be used during the bloc-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.
+  - The solution is centralized (on the master) in the array `abcd::sol[]`.
+* **5**, regroups the call to the phases 2 and 3. 
+* **6**, regroups the call to the phases 1, 2 and 3.
 
 
 # Input matrix and right-hand side # {#section_linearsystem}
 The current version of the ABCD Solver accepts only real, centralized, linear systems. The definition of the linear system uses 7 members:
 
-- `obj.m` (type: `int`), the number of rows.
-- `obj.n` (type: `int`), the number of columns. 
-- `obj.nz` (type: `int`), the number of entries.
-- `obj.sym` (type: `bool`), the symmetry of the matrix. If the matrix is symmetric, the matrix must be given in a lower-triangular form.
-- `obj.irn` (type: `int *`), the row indices. 
-- `obj.jcn` (type: `int *`), the column indices.
-- `obj.val` (type: `double *`), the matrix entries.
-- `obj.rhs` (type: `double *`), the right-hand sides.
-- `obj.nrhs` (type: `int`), the number of right-hand sides (default value is 1)
+- `abcd::m` (type: `int`), the number of rows.
+- `abcd::n` (type: `int`), the number of columns. 
+- `abcd::nz` (type: `int`), the number of entries.
+- `abcd::sym` (type: `bool`), the symmetry of the matrix. If the matrix is symmetric, the matrix must be given in a lower-triangular form.
+- `abcd::irn` (type: `int *`), the row indices. 
+- `abcd::jcn` (type: `int *`), the column indices.
+- `abcd::val` (type: `double *`), the matrix entries.
+- `abcd::rhs` (type: `double *`), the right-hand sides.
+- `abcd::nrhs` (type: `int`), the number of right-hand sides (default value is 1)
 
-If either of the row and column indices start with `0` the arrays are supposed to be zero based (`C` arrays indexation), otherwise, if they start with `1` the arrays are supposed to be one based (`Fortran` arrays indexation). If however, none starts with `0` or `1` then there is either an empty row or an empty column and the solver stops.
+If either of the row and column indices start with **0** the arrays
+are supposed to be zero based (`C` arrays indexation), otherwise, if
+they start with **1** the arrays are supposed to be one based (`Fortran`
+arrays indexation). If however, none starts with **0** or **1** then there
+is either an empty row or an empty column and the solver raises an exception.
 
 ~~~~~~~~~~~~~~~{.cpp}
     // Create an object for each mpi-process
@@ -67,11 +71,13 @@ If either of the row and column indices start with `0` the arrays are supposed t
     obj.m = 7;
     obj.nz = 15;
     obj.sym = false;
-    // allocate the arrays
-    obj.irn = new int[obj.nz]
-    // put the data in the arrays
-    obj.irn[0] = 1;
-    //..
+    if (world.rank() == 0) { // only the master is required to provide the matrix
+        // allocate the arrays
+        obj.irn = new int[obj.nz]
+        // put the data in the arrays
+        obj.irn[0] = 1;
+        //..
+    }
 ~~~~~~~~~~~~~~~
 
 # The Controls # {#section_controls}
