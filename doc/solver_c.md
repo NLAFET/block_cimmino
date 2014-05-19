@@ -1,39 +1,36 @@
-Using the solver in C++ {#title}
-=========================
+# Using the solver in C # {#title}
 
-The solver is in the form of a class named `abcd` and the user has to
-instantiate it on each MPI-process to be involved. In the following,
-we refer to the members of the class by `member` and to the
-methods by `method()`. Arrays will have `[]` appended to them,
-if we specify a size then the array is pre-allocated at construction,
+The solver is in the form of a structure named `struct abcd_solver`
+and the user has to create one for each MPI-process to be involved.
+In the following, we refer to a member of the structure by
+`solver->member`, where `solver` is a pointer to a `struct
+abcd_solver` structure. Arrays will have `[]` appended to them, if we
+specify a size then the array is pre-allocated at construction,
 otherwise it is either allocated by the user (such as the linear
 system entries) or by the solver once it's generated (such as the
-solution vector). The user can refer to @ref section_controls for more details.
+solution vector). The user can refer to @ref section_controls for more
+details.
 
 # Instantiating and calling the solver# {#section_instance}
 
-To use the solver, the user has to instantiate the class `abcd`.
-During the construction of the instance, the default parameters are
-initialized. The user can then call the object as a function
-(*functor*) with the job number as an argument.
+To use the solver, the user has to create a pointer to a `struct abcd_solver` structure. To do that, the user has to use the function `new_solver()`:
 
-~~~~~~~~~~~~~~~{.cpp}
-abcd obj; // instantiating the class
-obj(job_id); // call the solver with a job identifier job_id
+~~~~~~~~~~~~~~~{.c}
+structure abcd_solver *solver = new_solver(); // create a new solver
 ~~~~~~~~~~~~~~~
 
 To run a job, the user has to call the solver with a job identifier, its value can be:
 * \b -1, initializes the internal matrix used by the solver. Prior to this call, the user must provide:
-  - The information about the matrix `abcd::m`, `abcd::n`, `abcd::nz`,
-    `abcd::sym`, `abcd::irn[]`, `abcd::jcn[]`, `abcd::val[]` have to be initialized
+  - The information about the matrix `solver->m`, `solver->n`, `solver->nz`,
+    `solver->sym`, `solver->irn[]`, `solver->jcn[]`, `solver->val[]` have to be initialized
     before the call. See [Input matrix and right-hand side] for more detail.
-  - After the call, the arrays `abcd::irn[]`, `abcd::jcn[]`, `abcd::val[]` are no longer used by the solver.
+  - After the call, the arrays `solver->irn[]`, `solver->jcn[]`, `solver->val[]` are no longer used by the solver.
 * **1**, performs the preprocessing. During this call, the solver
   scales the matrix, partition it, and if required by the user
   performs the augmentation of the matrix. Prior to this call, the
   user must provide:
-  * The number of partitions to create (see `abcd::icntl[Controls::nbparts]`) or ask the solver to guess the appropriate number of partitions (see `abcd::icntl[Controls::part_guess]`)
-  - The type of scaling to perform (see `abcd::icntl[Controls::scaling]`)
+  * The number of partitions to create (see `solver->icntl[Controls::nbparts]`) or ask the solver to guess the appropriate number of partitions (see `solver->icntl[Controls::part_guess]`)
+  - The type of scaling to perform (see `solver->icntl[Controls::scaling]`)
   - The type of augmentation to perform (see `abcd::icntl[Controls::aug_type]`)
 * **2**, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.
 * **3**, performs the solution step, the right-hand sides and their number are required prior to this call.
