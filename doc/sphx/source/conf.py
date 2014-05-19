@@ -51,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'ABCD Solver'
-copyright = '2014, Mohamed Zenadi, Daniel Ruiz, Ronan Guivarch'
+copyright = '2014, Mohamed Zenadi, Daniel Ruiz, and Ronan Guivarch'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -203,8 +203,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ABCDSolver.tex', 'ABCD Solver Documentation',
-   'Mohamed Zenadi, Daniel Ruiz, Ronan Guivarch', 'manual'),
+  ('index', 'ABCDSolver.tex', 'ABCD Solver Documentation', '', 'howto'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -234,7 +233,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'abcdsolver', 'ABCD Solver Documentation',
-     ['Mohamed Zenadi, Daniel Ruiz, Ronan Guivarch'], 1)
+     [''], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -248,7 +247,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'ABCDSolver', 'ABCD Solver Documentation',
-   'Mohamed Zenadi, Daniel Ruiz, Ronan Guivarch', 'ABCDSolver', 'One line description of project.',
+   '', 'ABCDSolver', 'One line description of project.',
    'Miscellaneous'),
 ]
 
