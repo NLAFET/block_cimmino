@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
   obj = new_solver();
 
   if(myrank == 0) { // the master
-    init_2d_lap(obj, 10);
+    init_2d_lap(obj, 5);
 
     // set the rhs
     obj -> rhs = (double *) malloc(sizeof(double)*(obj -> m));
@@ -35,7 +35,8 @@ int main(int argc, char* argv[]) {
     }
   }
   call_solver(obj, -1);
-  call_solver(obj, 5);
+  obj -> icntl[2] = 5;
+  call_solver(obj, 6);
  
   MPI_Finalize();
 
@@ -71,22 +72,23 @@ void init_2d_lap2(int m, int n, int nz,
   for (i = 1; i <= m; i++) {
 
     // the diagonal
-    irn[pos] = i+1;
-    jcn[pos] = i+1;
+    irn[pos] = i;
+    jcn[pos] = i;
     val[pos] = 4.0;
 
     pos++;
 
-    if (i == m) continue;
-    // the lower-triangular part
-    irn[pos] = i + 2;
-    jcn[pos] = i + 1;
-    val[pos] = -1.0;
-    pos++;
+    if (i % mesh_size != 0) {
+      // the lower-triangular part
+      irn[pos] = i + 1;
+      jcn[pos] = i ;
+      val[pos] = -1.0;
+      pos++;
+    } 
 
-    if (i > m - 2*mesh_size + 1) continue;
-    irn[pos] = i + mesh_size + 1;
-    jcn[pos] = i + 1;
+    if (i + mesh_size > m) continue;
+    irn[pos] = i + mesh_size ;
+    jcn[pos] = i ;
     val[pos] = -1.0;
     pos++;
   }

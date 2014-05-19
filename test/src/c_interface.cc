@@ -1,6 +1,7 @@
 #include "abcd.h"
 #include "abcd_c.h"
 #include <string>
+#include <algorithm>
 
 abcd *obj;
 
@@ -37,8 +38,11 @@ void call_solver(struct abcd_solver* solver, int job_id)
   cout << obj-> nz << endl;
   for (size_t i = 0; i < obj -> nz; i++) {
     cout << obj-> irn[i] << "  " << obj-> jcn[i] << "  " << obj -> val[i]<< endl;
-  }  
-
+  } 
+  for(size_t i = 0; i < obj -> icntl.size(); i++){
+    obj -> icntl[i] = solver -> icntl[i];
+  }
+ obj -> icntl[Controls::verbose_level] = 2;
   // TRAVAIL
   obj -> operator()(job_id);
   //cout << obj->write_problem << endl;
