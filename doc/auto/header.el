@@ -1,79 +1,21 @@
-(TeX-add-style-hook "header"
+(TeX-add-style-hook
+ "header"
  (lambda ()
-    (TeX-add-symbols
-     '("n" ["argument"] 0)
-     '("MZ" 1)
-     '("ISD" 1)
-     '("convexpath" 2)
-     '("ra" 1)
-     "Abm"
-     "Ahm"
-     "Atm"
-     "Ehm"
-     "Etm"
-     "Hhm"
-     "Qtm"
-     "SIm"
-     "Stm"
-     "bhv"
-     "fhv"
-     "ftv"
-     "htv"
-     "khv"
-     "phv"
-     "qhv"
-     "rhv"
-     "xhv"
-     "xtv"
-     "BSm"
-     "ACm"
-     "ACBSm"
-     "AugA"
-     "xyv"
-     "bfv"
-     "bfyv"
-     "xOv"
-     "IPm"
-     "OIm"
-     "OImk"
-     "ITM"
-     "ITMP"
-     "SMAbm"
-     "clearemptydoublepage")
-    (TeX-run-style-hooks
-     "ps2pdf"
-     "hyperref"
-     "pagebackref=true"
-     "pdftex"
-     "ifpdf"
-     "tabularx"
-     "subfigure"
-     "caption"
-     "graphicx"
-     "booktabs"
-     "pgf"
-     "siunitx"
-     "multicol"
-     "multirow"
-     "color"
-     "algpseudocode"
-     "algorithm"
-     "pgfplots"
-     "tikz"
-     "amsmath"
-     "fullpage"
-     "babel"
-     "english"
-     "francais"
-     "xcolor"
-     "table"
-     "textcomp"
-     "makeidx"
-     "doxygen"
-     "calc"
-     ""
-     "latex2e"
-     "art10"
-     "article"
-     "twoside")))
+   (TeX-add-to-alist 'LaTeX-provided-class-options
+                     '(("article" "twoside")))
+   (TeX-add-to-alist 'LaTeX-provided-package-options
+                     '(("xcolor" "table") ("hyperref" "pdfstartview=FitH")))
+   (TeX-run-style-hooks
+    "latex2e"
+    "article"
+    "art10"
+    "calc"
+    "doxygen"
+    "makeidx"
+    "textcomp"
+    "xcolor"
+    "hyperref"
+    "amsmath"
+    "tikz"
+    "pgfplots")))
 
