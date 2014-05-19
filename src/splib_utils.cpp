@@ -183,16 +183,15 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
     int st_col, ed_col;
     int c = 0, j = 0, nzc;
 
-    VECTOR_int sm_r;//(M.dim(0)*ci.size());
-    VECTOR_int sm_c(ci.size() + 1, 0);
-    VECTOR_double sm_v;//(M.dim(0)*ci.size());
+    int *M_col_ptr = M.colptr_ptr();
+    int *M_row_ptr = M.rowind_ptr();
+    double *M_val_ptr = M.val_ptr();
 
-    std::vector<int> v_sm_r;
-    std::vector<double> v_sm_v;
 
+    // Compute the number of non-zeros
     for(int k=0; k < ci.size(); k++){
-        st_col = M.col_ptr(ci[k]);
-        ed_col = M.col_ptr(ci[k] + 1);
+        st_col = M_col_ptr[ci[k]];
+        ed_col = M_col_ptr[ci[k] + 1];
 
         nzc = ed_col - st_col;
 
@@ -203,11 +202,11 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         j++;
     }
 
-    v_sm_r.reserve(nzc);
-    v_sm_v.reserve(nzc);
+    std::vector<int> v_sm_c(ci.size() + 1);
+    std::vector<int> v_sm_r(c);
+    std::vector<double> v_sm_v(c);
 
     c = 0; j = 0;
-
 
     // for all columns in ci
     for(int k=0; k < ci.size(); k++){
@@ -219,14 +218,12 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         // if the column is empty
         if (st_col == ed_col) continue;
 
-        sm_c[j] = c;
-        //sm_r(MV_VecIndex(c, c + nzc - 1)) = M.row_ind(MV_VecIndex(st_col, ed_col - 1));
-        //sm_v(MV_VecIndex(c, c + nzc - 1)) = M.val(MV_VecIndex(st_col, ed_col - 1));
+        v_sm_c[j] = c;
         //
         int pos = st_col;
-        for(int i = c; i < c + nzc; i++){
-            v_sm_r.push_back(M.row_ind(pos));
-            v_sm_v.push_back(M.val(pos));
+        for(int i = c; i < c + nzc; ++i){
+            v_sm_r[i] = M_row_ptr[pos];
+            v_sm_v[i] = M_val_ptr[pos];
             pos++;
         }
 
@@ -234,10 +231,9 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         j++;
     }
     if (c==0) return SM;
-    sm_c[j] = c;
+    v_sm_c[j] = c;
     SM = CompCol_Mat_double(M.dim(0), j, c,
-            //sm_v(MV_VecIndex(0,c-1)), sm_r(MV_VecIndex(0,c-1)), sm_c);
-            &v_sm_v[0], &v_sm_r[0], sm_c.ptr());
+            &v_sm_v[0], &v_sm_r[0], &v_sm_c[0]);
 
     return SM;
 }		/* -----  end of function subMatrix  ----- */

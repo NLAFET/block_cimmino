@@ -188,7 +188,7 @@ void abcd::partitionMatrix()
             sr += iro[cur + 1] - iro[cur];
         }
         ir[m_o] = nz_o;
-        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t;
+        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t << "s.";
         t = MPI_Wtime();
 
         A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
@@ -215,7 +215,7 @@ void abcd::partitionMatrix()
 
         }
 
-        LINFO << "Finished Partitioning, time : " << MPI_Wtime() - t;
+        LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << "s.";
            
         delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
             ir, jc, val;
@@ -245,20 +245,21 @@ void abcd::analyseFrame()
 {
     LINFO << "Launching frame analysis";
     std::vector<CompCol_Mat_double > loc_parts;
-    loc_parts.reserve(nbparts);
     std::vector<int> ci_sizes;
 
     double t  = MPI_Wtime();
 
-    column_index.reserve(nbparts);
+    column_index.resize(nbparts);
+    loc_parts.resize(nbparts);
+
     LINFO << "Creating partitions";
     
-    for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
+    for (unsigned int k = 0; k < (unsigned int)nbparts; ++k) {
         CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
         
         int *col_ptr = part.colptr_ptr();
         std::vector<int> ci = getColumnIndex(col_ptr, part.dim(1));
-        column_index.push_back( ci );
+        column_index[k] = ci;
 
         // if no augmentation, then create the parts
         if(icntl[Controls::aug_type] == 0)
@@ -266,10 +267,10 @@ void abcd::analyseFrame()
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         } else 
         {
-            loc_parts.push_back(part);
+            loc_parts[k] = part;
         }
     }
-    LINFO << "Partitions created in:\t" << MPI_Wtime() - t << "s.";
+    LINFO << "Partitions created in: " << MPI_Wtime() - t << "s.";
     //
 
     // test augmentation!
@@ -288,10 +289,12 @@ void abcd::analyseFrame()
     if (icntl[Controls::aug_type] != 0) {
         t = MPI_Wtime();
         abcd::augmentMatrix(loc_parts);
-        LINFO << "Augmentation time:\t" << MPI_Wtime() - t;
+        LINFO << "Augmentation time: " << MPI_Wtime() - t << "s.";
 
-        t = MPI_Wtime();
         column_index.clear();
+        column_index.resize(nbparts);
+        ci_sizes.resize(nbparts);
+        
         for (unsigned int k = 0; k < (unsigned int)nbparts; k++) {
 
             CompCol_Mat_double part = loc_parts[k];
@@ -301,8 +304,8 @@ void abcd::analyseFrame()
                 part.colptr_ptr(), part.dim(1)
                 );
 
-            column_index.push_back(ci);
-            ci_sizes.push_back(ci.size());
+            column_index[k] = ci;
+            ci_sizes[k] = ci.size();
 
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }

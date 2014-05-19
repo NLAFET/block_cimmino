@@ -75,6 +75,6 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
     }
 
     LINFO2 << "Process " << inter_comm.rank()
-           << " has " << intra_comm.size()
+           << " has " << my_slaves.size()
            << " workers";
 }

@@ -33,9 +33,9 @@ abcd::abcd()
     icntl[Controls::aug_blocking] = 256;
 
     icntl[Controls::nbparts] = 4;
-    icntl[Controls::part_type] = 2;
-    dcntl[Controls::part_imbalance] = 0.5;
-    icntl[Controls::part_guess] = 1;
+    icntl[Controls::part_type] = 3;
+    dcntl[Controls::part_imbalance] = 1.5;
+    icntl[Controls::part_guess] = 0;
     icntl[Controls::scaling] = 2;
     icntl[Controls::itmax] = 1000;
     icntl[Controls::block_size] = 1;
@@ -70,6 +70,9 @@ abcd::~abcd()
 /// Creates the internal matrix from user's data
 int abcd::initializeMatrix()
 {
+    LINFO << "*----------------------------------*";
+    LINFO << "> Local matrix initialization";
+    
     if(comm.rank() != 0) return 0;
     
     // Check that the matrix data is present
@@ -81,9 +84,7 @@ int abcd::initializeMatrix()
         LOG_IF(val == nullptr, ERROR) << "val is not allocated";
         throw std::runtime_error("Unallocated matrix vectors");
     }
-    LINFO << "M  = " << m;
-    LINFO << "N  = " << n;
-    LINFO << "NZ = " << nz;
+    LINFO << "M  = " << m << "  N  = " << n << "  NZ = " << nz;
 
     if(m <= 0 || n <= 0 || nz <= 0){
         info[Controls::status] = -2;
@@ -128,7 +129,7 @@ int abcd::initializeMatrix()
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
 
-        LINFO << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
+        LINFO << "> Local matrix initialized in " << setprecision(2) << MPI_Wtime() - t << "s.";
         delete[] t_irn;
         delete[] t_jcn;
         delete[] t_val;
@@ -143,20 +144,24 @@ int abcd::initializeMatrix()
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn, MV_Matrix_::ref);
         A = CompRow_Mat_double(t_A);
 
-        LINFO << "Local matrix initialized in " << MPI_Wtime() - t << "s.";
+        LINFO << "> Local matrix initialized in " << setprecision(2) << MPI_Wtime() - t << "s.";
     }
     
     n_o = n;
     m_o = m;
     nz_o = nz;
         
-    LINFO << "Matrix initialization done";
     return 0; 
 }
 
 /// Scales, partitions and analyses the structure of partitions
 int abcd::preprocessMatrix()
 {
+
+    LINFO << "*----------------------------------*";
+    LINFO << "> Starting Preprocessing            ";
+    double t = MPI_Wtime();
+    double tot = t;
 
     if(comm.rank() != 0) return 0;
 
@@ -166,11 +171,20 @@ int abcd::preprocessMatrix()
     }
     
     abcd::partitionMatrix();
+
+    LINFO << "> Time to partition the matrix: "
+          << MPI_Wtime() - t << "s.";
     
-    double timeToPreprocess = MPI_Wtime();
+    t = MPI_Wtime();
+    
     abcd::scaling();
+
+    LINFO << "> Time to scale the matrix: "
+          << MPI_Wtime() - t << "s.";
+
     abcd::analyseFrame();
-    LINFO << "Time for preprocess : " << MPI_Wtime() - timeToPreprocess;
+    LINFO << "> Total time to preprocess: " << MPI_Wtime() - tot << "s.";
+    LINFO << "*----------------------------------*";
     return 0;
 }
 
