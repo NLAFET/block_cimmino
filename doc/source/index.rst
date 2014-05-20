@@ -12,6 +12,7 @@ The Augmented Block Cimmino Distributed Solver
 
    algorithm
    installation
+   usage_cpp
 
 
 Indices and tables

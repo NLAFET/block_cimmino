@@ -19,7 +19,8 @@ import os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('exts'))
+
 
 # -- General configuration ------------------------------------------------
 
@@ -35,6 +36,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
+    'sphinxcontrib.tikz',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -196,7 +198,11 @@ latex_elements = {
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
-#'preamble': '',
+'preamble': '''
+\\usepackage{tikz}
+\\usepackage{pgfplots}
+\\usetikzlibrary{shapes,arrows,calc}
+''',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

@@ -55,9 +55,12 @@ Now that everything is ready, we can compile the solver. To do so, we need a con
 
 Edit that file to suite your configuration
 
-.. literalinclude:: ../../../cmake.in/abcdCmake.in.ACML
+.. literalinclude:: ../../cmake.in/abcdCmake.in.ACML
+                    :language: cmake
 
-Notice that we link against ``scalapack`` and ``blacs``, these are required libraries by ``MUMPS``. If we want to use ``MKL``, just change this part:
+Notice that we link against ``scalapack`` and ``blacs``, these are
+required libraries by ``MUMPS``. If we want to use ``MKL``, you can
+use the file ``cmake.in/abcdCmake.in.MKL``, or just change this part:
 
 .. code-block:: cmake
 
