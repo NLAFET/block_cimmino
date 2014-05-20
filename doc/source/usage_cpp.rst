@@ -159,166 +159,117 @@ and the stopping criteria of the solver.
 
 To access each of the control options we can either use the indices
 ``0, 1, ..`` or, preferably, use the *enums* defined in the header
-``defaults.h``. To access them, the user can use the namespace
-``Controls``, eg. ``Controls::scaling`` has a value of ``5`` and is used
-with ``icntl`` to handle the scaling of the linear system.
+``defaults.h`` (for ``C++``, in the case of ``C`` they are already
+defined in ``abcd_c.h``). To access them, the user can use the
+namespace ``Controls``, eg. ``Controls::scaling`` has a value of ``5``
+and is used with ``icntl`` to handle the scaling of the linear system.
+In the following we omit the ``Controls::`` part for simplicity.
+Moreover, due to the similarities between the ``C++`` code and the
+``C`` one, we provide only the ``C++`` snippets unless there is a
+major difference.
 
 The integer control array
 #########################
 
-- `abcd::icntl[Controls::nbparts]` or `abcd::icntl[1]` defines the number of partitions in our linear system, can be from `1` to `m` (the number of rows in the matrix)
+* ``icntl[nbparts]`` or ``icntl[1]`` defines the number of partitions in our linear system, can be from ``1`` to ``m`` (the number of rows in the matrix)
 
-.. code-block:: cpp
+    .. code-block:: cpp
 
-    // we have 8 partitions
-    obj.icntl[Controls::nbparts] = 8;
+        // we have 8 partitions
+        obj.icntl[nbparts] = 8;
 
-- `abcd::icntl[Controls::part_type]` or `abcd::icntl[2]` defines the partitioning type. It can have the values:
+* ``icntl[part_type]`` or ``icntl[2]`` defines the partitioning type. It can have the values:
 
-    + `1`, manual partitioning, the *nbparts* partitions can be provided into the STL vector `obj.nbrows[]`. Example:
-~~~~~~~~~~~~~~~{.cpp}
-    // use manual partitioning
-    obj.icntl[Controls::part_type] = 1;
-    // say that we want 20 rows per partition
-    obj.nrows.assign(obj.icntl[Controls::nbparts], 20);
+    - ``1``, manual partitioning, the *nbparts* partitions can be provided into the STL vector ``obj.nbrows[]``. Example:
 
-    // or 
-    obj.nrows.resize(obj.icntl[Controls::nbparts]);
-    obj.nrows[0] = 20;
-    obj.nrows[1] = 20;
-    //...
-~~~~~~~~~~~~~~~
-    + `2` (*default*), automatic uniform partitioning, creates *nbparts* partitions of similar size.
-~~~~~~~~~~~~~~~{.cpp}
-    // use patoh partitioning
-    obj.icntl[Controls::part_type] = 2;
-~~~~~~~~~~~~~~~
-    + `3`, automatic hypergraph partitioning, creates *nbparts* partitions using the hypergraph partitioner `PaToH`. The imbalance between the partitions is handled using `obj.dcntl[Controls::part_imbalance]`. Example:
-~~~~~~~~~~~~~~~{.cpp}
-    // use patoh partitioning
-    obj.icntl[Controls::part_type] = 3;
-    // say that we want an imbalance of 0.3 between the partitions
-    obj.dcntl[Controls::part_imbalance] = 0.3;
-~~~~~~~~~~~~~~~
+        .. code-block:: cpp
 
-- `abcd::icntl[Controls::part_guess]` or `abcd::icntl[4]` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
 
-    + `0` **default**, no guess
-    + `1`, guess
+            // use manual partitioning
+            obj.icntl[part_type] = 1;
+            // say that we want 20 rows per partition
+            obj.nrows.assign(obj.icntl[nbparts], 20);
 
-- `abcd::icntl[Controls::scaling]` or `abcd::icntl[5]` defines the type of scaling to be used.
+            // or 
+            obj.nrows.resize(obj.icntl[nbparts]);
+            obj.nrows[0] = 20;
+            obj.nrows[1] = 20;
+            //...
 
-    + `0`, no scaling
-    + `1`, infinity norm `MC77` based scaling
-    + `2` **default**, combination of one norm and two norm `MC77` based scaling
-- `abcd::icntl[Controls::itmax]` or `abcd::icntl[6]` defines the maximum number of iterations in block-CG acceleration, default is `1000`
-- `abcd::icntl[Controls::block_size]` or `abcd::icntl[7]` defines the block-size to be used by the block-CG acceleration, default is `1` for classical CG acceleration
-- `abcd::icntl[Controls::verbose_level]` or `abcd::icntl[8]` defines how verbose the solver has to be. 
-- `abcd::icntl[Controls::aug_type]` or `abcd::icntl[10]` defines the augmentation type.
+        For ``C``:
 
-    + `0` **default**, no augmentation. This makes the solver run in
+        .. code-block:: cpp
+
+
+            // use manual partitioning
+            obj->icntl[part_type] = 1;
+
+            obj->nrows =  (int*) malloc(sizeof(int)*(obj->icntl[nbparts]));
+
+            obj->nrows[0] = 20;
+            obj->nrows[1] = 20;
+            //...
+
+    - ``2`` (*default*), automatic uniform partitioning, creates *nbparts* partitions of similar size.
+
+        .. code-block:: cpp
+
+            // use patoh partitioning
+            obj.icntl[part_type] = 2;
+
+    - ``3``, automatic hypergraph partitioning, creates *nbparts* partitions using the hypergraph partitioner ``PaToH``. The imbalance between the partitions is handled using ``obj.dcntl[part_imbalance]``. Example:
+
+      .. code-block:: cpp
+
+            // use patoh partitioning
+            obj.icntl[part_type] = 3;
+            // say that we want an imbalance of 0.3 between the partitions
+            obj.dcntl[part_imbalance] = 0.3;
+
+* ``icntl[part_guess]`` or ``icntl[4]`` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
+
+    - ``0`` **default**, no guess
+    - ``1``, guess
+
+* ``icntl[scaling]`` or ``icntl[5]`` defines the type of scaling to be used.
+
+    - ``0``, no scaling
+    - ``1``, infinity norm ``MC77`` based scaling
+    - ``2`` **default**, combination of one norm and two norm ``MC77`` based scaling
+* ``icntl[itmax]`` or ``icntl[6]`` defines the maximum number of iterations in block-CG acceleration, default is ``1000``
+* ``icntl[block_size]`` or ``icntl[7]`` defines the block-size to be used by the block-CG acceleration, default is ``1`` for classical CG acceleration
+* ``icntl[verbose_level]`` or ``icntl[8]`` defines how verbose the solver has to be. 
+* ``icntl[aug_type]`` or ``icntl[10]`` defines the augmentation type.
+
+    - ``0`` **default**, no augmentation. This makes the solver run in
     **regular block Cimmino** mode.
-    + `1`, makes the solver run in **Augmented Block Cimmino** mode
-    with an augmentation of the matrix using the \f$C_{ij}/-I\f$
+
+    - ``1``, makes the solver run in **Augmented Block Cimmino** mode
+    with an augmentation of the matrix using the :math:`C_{ij}/-I`
     technique. For numerical stability, this augmentation technique
     has to be used with a scaling.
-    + `2`, makes the solver run in **Augmented Block Cimmino** mode
-    with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
+
+    - ``2``, makes the solver run in **Augmented Block Cimmino** mode
+    with an augmentation of the matrix using the :math:`A_{ij}/-A_{ji}`
     technique. This is the prefered augmentation technique.
 
-- `abcd::icntl[Controls::aug_blocking]` or `abcd::icntl[11]` defines the blocking factor when building the auxiliary matrix $S$, default is `128`. 
-- `abcd::icntl[Controls::aug_analysis]` or `abcd::icntl[12]`, when set to a value different than `0`, analyses the number of columns in the augmentation.
-- `abcd::icntl[13]` to `abcd::icntl[16]` are for development and testing purposes only.
+* ``icntl[aug_blocking]`` or ``icntl[11]`` defines the blocking factor
+  when building the auxiliary matrix :math:`S`, default is ``128``.
+* ``icntl[aug_analysis]`` or ``icntl[12]``, when set to a value different than ``0``, analyses the number of columns in the augmentation.
+* ``icntl[13]`` to ``icntl[16]`` are for development and testing purposes only.
 
-## The double precision control array ## {#subsection_double_controls}
-- `abcd::dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`abcd::icntl[Controls::part_imbalance] = 3`).
-- `obj.dcntl[Controls::threshold]` or `abcd::dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
+The double precision control array
+##################################
+* ``dcntl[part_imbalance]`` or ``obj.dcntl[1]`` defines the imbalance between the partitions when using ``PaToH`` (``icntl[part_imbalance] = 3``).
+* ``obj.dcntl[threshold]`` or ``dcntl[2]`` defines the stopping threshold for the block-CG acceleration, default is ``1e-12``.
 
-# A usage example # {#section_introduction}
+A usage example (C++)
+---------------------
 
 Combining the previous options, we expose a basic example that uses
 the regular block Cimmino scheme, we comment the interesting parts and
 explain how they fit together.  
 Refer to [Calling a job], [The linear system], and [The Controls] for more details.
 
-~~~~~~~~~~~~~~~{.cpp}
-    #include "abcd.h"
-    // use boost::mpi for simplicity, the user can use which ever he wants
-    #include "mpi.h"
-    #include <boost/mpi.hpp>
-
-    int main(int argc, char* argv[]) 
-    {
-        mpi::environment env(argc, argv);
-        // obtain the WORLD communicator, by default the solver uses it
-        mpi::communicator world;
-
-        // create one instance of the abcd solver per mpi-process
-        abcd obj;
-
-        if(world.rank() == 0) { // the master
-            // we create a 5x5 matrix for a 1D mesh + three-point stencil 
-            obj.sym = true; // the matrix is symmetric
-            obj.m = 10; // number of rows
-            obj.n = obj.m; // number of columns
-            obj.nz = 2*obj.m - 1; // number of nnz in the lower-triangular part
-
-            // allocate the arrays
-            obj.irn = new int[obj.nz];
-            obj.jcn = new int[obj.nz];
-            obj.val = new double[obj.nz];
-
-            // initialize the matrix
-            // Notice that the matrix is stored in 1-based format
-            size_t pos = 0;
-            for (size_t i = 1; i < obj.m; i++) {
-                // the diagonal
-                obj.irn[pos] = i;
-                obj.jcn[pos] = i;
-                obj.val[pos] = 2.0;
-                pos++;
-
-                // the lower-triangular part
-                obj.irn[pos] = i + 1;
-                obj.jcn[pos] = i;
-                obj.val[pos] = -1.0;
-                pos++;
-            }
-
-            // the last diagonal element
-            obj.irn[pos] = obj.m;
-            obj.jcn[pos] = obj.m;
-            obj.val[pos] = 2.0;
-
-            pos++;
-
-            // set the rhs
-            obj.rhs = new double[obj.m];
-            for (size_t i = 0; i < obj.m; i++) {
-                obj.rhs[i] = ((double) i + 1)/obj.m;
-            }
-
-            // ask the solver to guess the number of partitions
-            obj.icntl[Controls::part_guess] = 1;
-        }
-
-        try {
-            // We call the solver directly using the object itself
-            // (the abcd class is a functor)
-            obj(-1); // initialize the object with defaults
-            obj(6); // equivalent to running 1, 2 and 3 successively
-            // the solution is stored in obj.sol
-        } catch (runtime_error err) {
-            // In case there is a critical error, we throw a runtime_error exception
-            cout << "An error occured: " << err.what() << endl;
-        }
-        
-        if(world.rank() == 0) { // the master
-            delete[] obj.irn;
-            delete[] obj.jcn;
-            delete[] obj.val;
-        }
-
-      return 0;
-    }
-~~~~~~~~~~~~~~~
+.. literalinclude:: ../../test/src/example.cpp
+                    :language: cpp
