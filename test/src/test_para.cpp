@@ -1,11 +1,14 @@
-// A simple working example of
-// =======================
-
-
-// We include the ABCD solver header file, it contains the `abcd` class definition
 #include "abcd.h"
+#include "defaults.h"
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "vect_utils.h"
 
-// Use `boost::mpi` for simplicity, the user can use which ever MPI library he wants
+using ::testing::AtLeast;
+using ::testing::Return;
+using ::testing::Eq;
+using namespace Controls;
+
 #include "mpi.h"
 #include <boost/mpi.hpp>
 
@@ -13,50 +16,46 @@
 void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh_size);
 void init_2d_lap(abcd &o, int mesh_size);
 
-int main(int argc, char* argv[]) 
+TEST (blockCG, ClassicalCG) 
 {
+    mpi::communicator world;
+    abcd obj;
+    init_2d_lap(obj, 10);
+
+    if (world.rank() == 0) {
+        obj.icntl[part_type] = 1;
+    }
+
+    try { obj(-1); obj(6);}
+    catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
+}
+
+TEST (blockCG, BlockCG) 
+{
+    mpi::communicator world;
+    abcd obj;
+    init_2d_lap(obj, 10);
+    obj.icntl[block_size] = 4;
+
+    try { obj(-1); obj(6);}
+    catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
+}
+
+int main(int argc, char **argv) {
     // Equivalent to MPI_Initialize
     mpi::environment env(argc, argv);
 
-    // obtain the WORLD communicator, by default the solver uses it
-    mpi::communicator world;
+    ::testing::InitGoogleTest(&argc, argv);
 
-    // create one instance of the abcd solver per mpi-process
-    abcd obj;
-
-    if(obj.comm.rank() == 0) { // the master
-
-        // we want that only the master logs data
-        obj.icntl[Controls::verbose_level] = 2;
-
-        init_2d_lap(obj, 100);
-
-        // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
-        }
-    }
-
-    try {
-        obj(-1);
-
-        obj.icntl[Controls::part_guess] = 1;
-        obj.icntl[Controls::aug_type] = 0;
-        obj.icntl[Controls::block_size] = 0;
-
-        obj(4); // equivalent to running 1, 2 and 3 successively
-        obj(3); 
-        obj(3); // re-run the solve, fur fun :)
-    } catch (runtime_error err) {
-        cout << "An error occured: " << err.what() << endl;
-    }
-
-    return 0;
+    return RUN_ALL_TESTS();
 }
 
 void init_2d_lap(abcd &obj, int mesh_size)
 {
+    mpi::communicator world;
+
+    if(obj.comm.rank() != 0) return;
+
     obj.m = mesh_size*mesh_size; // number of rows
     obj.n = obj.m; // number of columns
     obj.nz = 3*obj.m - 2*mesh_size; // number of nnz in the lower-triangular part
@@ -68,6 +67,12 @@ void init_2d_lap(abcd &obj, int mesh_size)
     obj.val = new double[obj.nz];
 
     init_2d_lap(obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mesh_size);
+
+    // set the rhs
+    obj.rhs = new double[obj.m];
+    for (size_t i = 0; i < obj.m; i++) {
+        obj.rhs[i] = ((double) i + 1)/obj.m;
+    }
 }
 
 void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh_size)

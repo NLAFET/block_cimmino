@@ -5,6 +5,26 @@
 using namespace std;
 using namespace boost::lambda;
 
+void abcd::setIcntl(std::vector<int> &v)
+{
+    if (v.size() == 0)
+        throw std::runtime_error("Vector is empty");
+
+    for (int i = 0; i < icntl.size(); i++) {
+        icntl[i] = v[i];
+    }
+}
+void abcd::setIcntl(int *v)
+{
+    if (!v)
+        throw std::runtime_error("Array not allocated");
+
+    for (int i = 0; i < icntl.size(); i++) {
+        icntl[i] = v[i];
+    }
+}
+
+
 void abcd::partitioning(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts){
     std::vector<int> sets(nb_parts);
     std::map<int, std::vector<int> > pts;

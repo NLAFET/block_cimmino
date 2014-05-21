@@ -19,7 +19,6 @@
 #include <string>
 #include <stdlib.h>
 #include <map>
-#include "mmio.h"
 
 #include <mumps.h>
 #include "dmumps_c.h"
@@ -231,6 +230,7 @@ private:
     /***************************************************************************
      * The matrix object itself
     ***************************************************************************/
+    MUMPS mumps_S;
     Coord_Mat_double S;
     std::vector<int> S_rows;
     std::vector<int> S_cols;
@@ -339,6 +339,9 @@ public:
     std::vector<int> info;
     std::vector<double> dinfo;
 
+    void setIcntl(std::vector<int> &v);
+    void setIcntl(int *v);
+
     int initializeMatrix();
     int preprocessMatrix();
     int factorizeAugmentedSystems();
@@ -351,8 +354,8 @@ public:
 };
 
 
-    void configure_logger(std::string log_file);
-    void logger_set_filename(std::string log_file);
+void configure_logger(std::string log_file);
+void logger_set_filename(std::string log_file);
     
 typedef std::pair<double,int> dipair;
 bool ip_comp(const dipair &, const dipair &);

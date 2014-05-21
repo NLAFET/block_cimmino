@@ -21,35 +21,35 @@ int main(int argc, char* argv[])
     // obtain the WORLD communicator, by default the solver uses it
     mpi::communicator world;
 
-    // create one instance of the abcd solver per mpi-process
-    abcd obj;
+    // To see the use of sub-communicator in action, we split the
+    // world communicator in even/odd communicators, and use
+    // only the even ones
+    bool is_even = world.rank() % 2 == 0;
+    mpi::communicator solver_comm = world.split(is_even ? 0 : 1);
 
-    if(obj.comm.rank() == 0) { // the master
+    if (is_even) {
+        // create one instance of the abcd solver per mpi-process
+        abcd obj;
 
-        // we want that only the master logs data
-        obj.icntl[Controls::verbose_level] = 2;
+        obj.comm = solver_comm;
+        obj.icntl[Controls::verbose_level] = 1;
+        
+        if(solver_comm.rank() == 0) { // the master
+            init_2d_lap(obj, 100);
 
-        init_2d_lap(obj, 100);
-
-        // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
+            // set the rhs
+            obj.rhs = new double[obj.m];
+            for (size_t i = 0; i < obj.m; i++) {
+                obj.rhs[i] = ((double) i + 1)/obj.m;
+            }
         }
-    }
 
-    try {
-        obj(-1);
-
-        obj.icntl[Controls::part_guess] = 1;
-        obj.icntl[Controls::aug_type] = 0;
-        obj.icntl[Controls::block_size] = 0;
-
-        obj(4); // equivalent to running 1, 2 and 3 successively
-        obj(3); 
-        obj(3); // re-run the solve, fur fun :)
-    } catch (runtime_error err) {
-        cout << "An error occured: " << err.what() << endl;
+        try {
+            obj(-1);
+            obj(6); // equivalent to running 1, 2 and 3 successively
+        } catch (runtime_error err) {
+            cout << "An error occured: " << err.what() << endl;
+        }
     }
 
     return 0;

@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -15,6 +14,17 @@
 
 using namespace std;
 using namespace boost::property_tree;
+
+
+extern "C" {
+    #include "mmio.h"
+    int mm_read_mtx_crd_size(_IO_FILE*, int*, int*, int*);
+    int mm_read_mtx_crd_data(_IO_FILE*, int, int, int, int*, int*, double*, char*);
+    int mm_read_banner(_IO_FILE*, char (*) [4]);
+    int mm_read_mtx_array_size(_IO_FILE*, int*, int*);
+}
+
+
 
 int main(int argc, char* argv[]) 
 {

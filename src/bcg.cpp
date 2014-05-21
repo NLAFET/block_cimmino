@@ -400,9 +400,10 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
     if(ierr != 0){
         stringstream err;
-        LERROR << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank();
-        info[Controls::status] = -11;
-        throw std::runtime_error(err.str());
+        LWARNING << "PROBLEM IN GQR " << ierr << " " << inter_comm.rank();
+        LWARNING << "Switching to GMGS";
+        
+        return ierr;
     }
 
     p_ptr = p.ptr();

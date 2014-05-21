@@ -38,7 +38,9 @@ void abcd::partitionMatrix()
         throw std::runtime_error("FATAL ERROR: Number of partitions is zero");
     }
     if (nbparts < parallel_cg) {
-        LERROR << "ERROR: Number of partitions is smaller than the number of parallel_cg";
+        // the user is not supposed to know about the parallel_cg
+        // LERROR << "ERROR: Number of partitions is smaller than the number of parallel_cg";
+        LERROR << "Oops! This should not happen";
         
         LWARNING << "WARNING: Increasing the number of partitions from " << nbparts
                  << " up to " << parallel_cg;
@@ -53,10 +55,16 @@ void abcd::partitionMatrix()
         
         nbparts = parallel_cg;
     }
+
     if (nbparts == 1 && icntl[Controls::part_type] == 3) {
         LWARNING << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning";
         icntl[Controls::part_type] = 2;
     }
+
+    if (icntl[Controls::part_type] == 1 && nbrows.size() == 0) {
+        throw std::runtime_error("nbrows not initialized for manual partitioning");
+    }
+    
 
 
     switch(icntl[Controls::part_type]){

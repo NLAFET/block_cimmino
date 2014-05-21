@@ -32,28 +32,23 @@ abcd::waitForSolve()
         // handle the matrix S
         } else if (job == 2) {
 
-            mu.sym = 2;
-            mu.par = 1;
-            mu.job = -1;
+            mumps_S.sym = 2;
+            mumps_S.par = 1;
+            mumps_S.comm_fortran = MPI_Comm_c2f((MPI_Comm) comm);
+            mumps_S(-1);
 
-            mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) comm);
-            dmumps_c(&mu);
+            mumps_S.icntl[0] = -1;
+            mumps_S.icntl[1] = -1;
+            mumps_S.icntl[2] = -1;
 
-            mu.icntl[0] = -1;
-            mu.icntl[1] = -1;
-            mu.icntl[2] = -1;
+            mumps_S.nz_loc = vrows.size();
+            mumps_S.irn_loc = &vrows[0];
+            mumps_S.jcn_loc = &vcols[0];
+            mumps_S.a_loc = &vvals[0];
 
-            mu.nz_loc = vrows.size();
-            mu.irn_loc = &vrows[0];
-            mu.jcn_loc = &vcols[0];
-            mu.a_loc = &vvals[0];
-
-            mu.job = 1;
-            dmumps_c(&mu);
-            mu.job = 2;
-            dmumps_c(&mu);
-            mu.job = 3;
-            dmumps_c(&mu);
+            mumps_S(1);
+            mumps_S(2);
+            mumps_S(3);
         // do the solve with a distributed solution output, when building S
         } else if (job == 3) {
             int s;
@@ -114,7 +109,11 @@ abcd::waitForSolve()
 
             delete[] mumps.isol_loc;
             delete[] mumps.sol_loc;
+        // handle the matrix S w/o re-building it
+        } else if (job == 4) {
+            mumps_S(3);
         }
+        
     }while(true);
 
 }		/* -----  end of function abcd::waitForSolve()  ----- */

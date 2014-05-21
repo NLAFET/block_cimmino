@@ -10,7 +10,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     stC = std::vector<int>(M.size(), -1);
 
     if (icntl[Controls::scaling] == 0)
-      clog << "Using C_ij based augmentation gives better results with scaling" << endl;
+      LINFO << "Using C_ij based augmentation gives better results with scaling";
 
 
     for( size_t i = 0; i < M.size() - 1; i++ ){
@@ -157,7 +157,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
         }
 
     }
-    cout << "Size of C : " << nbcols - A.dim(1) << endl;
+    LINFO << "Size of C : " << nbcols - A.dim(1);
     size_c = nbcols - A.dim(1);
     n = nbcols;
 

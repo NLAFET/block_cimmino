@@ -103,7 +103,6 @@ if(TEST MATCHES ON)
 
   # Link runTests with what we want to test and the GTest and pthread library
   add_executable(runTests src/test.cpp)
-  message("${GMOCK_BOTH_LIBRARIES}")
   target_link_libraries(runTests
       ${GTEST_BOTH_LIBRARIES}
       ${GMOCK_BOTH_LIBRARIES}
@@ -111,6 +110,14 @@ if(TEST MATCHES ON)
       ${LIBS}
   )
 
+  # Link runTests with what we want to test and the GTest and pthread library
+  add_executable(runParallelTests src/test_para.cpp)
+  target_link_libraries(runParallelTests
+      ${GTEST_BOTH_LIBRARIES}
+      ${GMOCK_BOTH_LIBRARIES}
+      abcd 
+      ${LIBS}
+  )
   enable_testing()
 
   ##############

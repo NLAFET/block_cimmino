@@ -16,10 +16,11 @@ abcd::abcd()
     start_index = 0;
     use_xk = false;
     use_xf = false;
-    rhs = NULL;
+    rhs = nullptr;
     size_c = 0;
     verbose = false;
     runSolveS = false;
+    parallel_cg = 0;
 
     irn = nullptr;
     jcn = nullptr;
@@ -58,7 +59,7 @@ abcd::abcd()
         strftime(timeString, sizeof(timeString), "%H_%M_%S_%d_%m", now);
 
         std::string tt(timeString);
-        log_output = "abcd_" + tt + ".log";
+        log_output = "/tmp/log_abcd_" + tt + ".log";
     }
     configure_logger(log_output);
 }
@@ -301,7 +302,7 @@ int abcd::operator()(int job)
         throw std::runtime_error("Did you forget to call job = -1? ");
     if ( job == 2 && last_called_job != 1)
         throw std::runtime_error("Did you forget to call job = 1? ");
-    if ( job == 3 && last_called_job != 2)
+    if ( job == 3 && last_called_job < 2 )
         throw std::runtime_error("Did you forget to call job = 2? ");
     
     switch(job) {
@@ -339,7 +340,7 @@ int abcd::operator()(int job)
         solveSystem();
         break;
 
-    case 5:
+    case 4:
         preprocessMatrix();
         factorizeAugmentedSystems();
         break;

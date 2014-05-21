@@ -19,30 +19,6 @@
 #include <abcd.h>
 #include "blas.h"
 
-//extern "C"
-//{
-    //void amub_ (int *nrow,int *ncol,int *job,double *a,int *ja,int *ia,double *b,int *jb,int *ib,
-           //double *c,int *jc,int *ic,int *nzmax,int *iw,int *ierr );
-//}
-
-/// Sum nonzeros from parts
-int sum_nnz(int res, CompRow_Mat_double M)
-{
-    return res += M.NumNonzeros();
-}
-int sum_rows(int res, CompRow_Mat_double M)
-{
-    return res += M.dim(0);
-}
-int sum_cols(int res, CompRow_Mat_double M)
-{
-    return res += M.dim(0);
-}
-//bool comp_cols(Eigen::SparseMatrix<double, RowMajor> L, Eigen::SparseMatrix<double, RowMajor> R)
-//{
-    //return (L.cols() < R.cols());
-//}
-//
 double infNorm(Coord_Mat_double &M){
     double max = 0;
     double *pt = M.val_ptr();

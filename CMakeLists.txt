@@ -4,6 +4,7 @@ set(BUILD_TYPE "Release")
 
 if(DEBUG MATCHES ON)
     set(BUILD_TYPE "Debug")
+    set(CMAKE_CXX_FLAGS "-O0 --coverage")
 endif()
 
 include(abcdCmake.in)
@@ -45,6 +46,7 @@ file(
     source_files
     src/*.f
     src/*.cpp
+    src/*.c
 )
 
 add_library(abcd ${source_files})

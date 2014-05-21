@@ -1,6 +1,3 @@
-int sum_nnz(int res, CompRow_Mat_double M);
-int sum_rows(int res, CompRow_Mat_double M);
-int sum_cols(int res, CompRow_Mat_double M);
 double squaredNorm(CompRow_Mat_double &M);
 double squaredNorm(VECTOR_double &V);
 double squaredNorm(VECTOR_double &V, VECTOR_int &I);

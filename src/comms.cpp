@@ -29,7 +29,6 @@ void abcd::createInterComm()
 
 void abcd::distributeRhs()
 {
-
     mpi::broadcast(inter_comm, use_xf, 0);
 
     if(icntl[Controls::block_size] < nrhs) icntl[Controls::block_size] = nrhs;
@@ -44,8 +43,8 @@ void abcd::distributeRhs()
         for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
-
-        if(rhs==NULL){
+        
+        if(rhs == nullptr){
             rhs = new double[n_l * nrhs];
 
             srand(10); 
@@ -211,7 +210,8 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, dcntl[Controls::aug_filter], 0);
 
     delete[] rhs;
-    A = CompRow_Mat_double();
+    rhs = nullptr;
+    // A = CompRow_Mat_double();
 }
 
 void abcd::distributeNewRhs()
