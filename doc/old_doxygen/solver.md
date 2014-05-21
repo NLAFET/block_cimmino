@@ -8,8 +8,7 @@ methods by `method()`. Arrays will have `[]` appended to them,
 if we specify a size then the array is pre-allocated at construction,
 otherwise it is either allocated by the user (such as the linear
 system entries) or by the solver once it's generated (such as the
-solution vector). The user can refer to [The Controls](@ref
-section_controls) for more details.
+solution vector). The user can refer to @ref section_controls for more details.
 
 # Instantiating and calling the solver# {#section_instance}
 
@@ -98,13 +97,13 @@ with `icntl` to handle the scaling of the linear system.
 
 ## The integer control array ## {#subsection_integer_controls}
 
-- `obj.icntl[Controls::nbparts]` or `obj.icntl[1]` defines the number of partitions in our linear system, can be from `1` to `m` (the number of rows in the matrix)
+- `abcd::icntl[Controls::nbparts]` or `abcd::icntl[1]` defines the number of partitions in our linear system, can be from `1` to `m` (the number of rows in the matrix)
 ~~~~~~~~~~~~~~~{.cpp}
     // we have 8 partitions
     obj.icntl[Controls::nbparts] = 8;
 ~~~~~~~~~~~~~~~
 
-- `obj.icntl[Controls::part_type]` or `obj.icntl[2]` defines the partitioning type. It can have the values:
+- `abcd::icntl[Controls::part_type]` or `abcd::icntl[2]` defines the partitioning type. It can have the values:
 
     + `1`, manual partitioning, the *nbparts* partitions can be provided into the STL vector `obj.nbrows[]`. Example:
 ~~~~~~~~~~~~~~~{.cpp}
@@ -119,7 +118,7 @@ with `icntl` to handle the scaling of the linear system.
     obj.nrows[1] = 20;
     //...
 ~~~~~~~~~~~~~~~
-    + `2` *(default)*, automatic uniform partitioning, creates *nbparts* partitions of similar size.
+    + `2` (*default*), automatic uniform partitioning, creates *nbparts* partitions of similar size.
 ~~~~~~~~~~~~~~~{.cpp}
     // use patoh partitioning
     obj.icntl[Controls::part_type] = 2;
@@ -132,22 +131,20 @@ with `icntl` to handle the scaling of the linear system.
     obj.dcntl[Controls::part_imbalance] = 0.3;
 ~~~~~~~~~~~~~~~
 
-- `obj.icntl[3]` reserved for a future use.
-- `obj.icntl[Controls::part_guess]` or `obj.icntl[4]` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
+- `abcd::icntl[Controls::part_guess]` or `abcd::icntl[4]` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
 
     + `0` **default**, no guess
     + `1`, guess
 
-- `obj.icntl[Controls::scaling]` or `obj.icntl[5]` defines the type of scaling to be used.
+- `abcd::icntl[Controls::scaling]` or `abcd::icntl[5]` defines the type of scaling to be used.
 
     + `0`, no scaling
     + `1`, infinity norm `MC77` based scaling
     + `2` **default**, combination of one norm and two norm `MC77` based scaling
-- `obj.icntl[Controls::itmax]` or `obj.icntl[6]` defines the maximum number of iterations in block-CG acceleration, default is `1000`
-- `obj.icntl[Controls::block_size]` or `obj.icntl[7]` defines the block-size to be used by the block-CG acceleration, default is `1` for classical CG acceleration
-- `obj.icntl[Controls::verbose_level]` or `obj.icntl[8]` **Not Yet Implemented**, defines how verbose the solver has to be. 
-- `obj.icntl[9]` reserved for a future use.
-- `obj.icntl[Controls::aug_type]` or `obj.icntl[10]` defines the augmentation type.
+- `abcd::icntl[Controls::itmax]` or `abcd::icntl[6]` defines the maximum number of iterations in block-CG acceleration, default is `1000`
+- `abcd::icntl[Controls::block_size]` or `abcd::icntl[7]` defines the block-size to be used by the block-CG acceleration, default is `1` for classical CG acceleration
+- `abcd::icntl[Controls::verbose_level]` or `abcd::icntl[8]` defines how verbose the solver has to be. 
+- `abcd::icntl[Controls::aug_type]` or `abcd::icntl[10]` defines the augmentation type.
 
     + `0` **default**, no augmentation. This makes the solver run in
     **regular block Cimmino** mode.
@@ -159,15 +156,13 @@ with `icntl` to handle the scaling of the linear system.
     with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
     technique. This is the prefered augmentation technique.
 
-- `obj.icntl[Controls::aug_blocking]` or `obj.icntl[11]` defines the blocking factor when building the auxiliary matrix $S$, default is `128`. 
-- `obj.icntl[Controls::aug_analysis]` or `obj.icntl[12]`, when set to a value different than `0`, analyses the number of columns in the augmentation.
-- `obj.icntl[13]` to `obj.icntl[16]` are for development and testing purposes only.
-- `obj.icntl[17]` to `obj.icntl[19]` are reserved for a future use.
+- `abcd::icntl[Controls::aug_blocking]` or `abcd::icntl[11]` defines the blocking factor when building the auxiliary matrix $S$, default is `128`. 
+- `abcd::icntl[Controls::aug_analysis]` or `abcd::icntl[12]`, when set to a value different than `0`, analyses the number of columns in the augmentation.
+- `abcd::icntl[13]` to `abcd::icntl[16]` are for development and testing purposes only.
 
 ## The double precision control array ## {#subsection_double_controls}
-- `obj.dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`obj.icntl[Controls::part_imbalance] = 3`).
-- `obj.dcntl[Controls::threshold]` or `obj.dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
-- `obj.dcnlt[3]` to `obj.dcntl[20]` are reserved for future use.
+- `abcd::dcntl[Controls::part_imbalance]` or `obj.dcntl[1]` defines the imbalance between the partitions when using `PaToH` (`abcd::icntl[Controls::part_imbalance] = 3`).
+- `obj.dcntl[Controls::threshold]` or `abcd::dcntl[2]` defines the stopping threshold for the block-CG acceleration, default is `1e-12`.
 
 # A usage example # {#section_introduction}
 
@@ -257,4 +252,3 @@ Refer to [Calling a job], [The linear system], and [The Controls] for more detai
       return 0;
     }
 ~~~~~~~~~~~~~~~
-

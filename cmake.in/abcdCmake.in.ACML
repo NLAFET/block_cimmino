@@ -1,5 +1,7 @@
-set(BOOST_ROOT $ENV{BOOST_ROOT})
-set(BOOST_LIBRARYDIR ${BOOST_ROOT}/../lib)
+# Uncomment if you installed boost manually
+# on a different location than the default
+#set(BOOST_ROOT $ENV{BOOST_ROOT})
+#set(BOOST_LIBRARYDIR ${BOOST_ROOT}/../lib)
 
 set(CMAKE_CXX_COMPILER mpic++)
 set(CMAKE_C_COMPILER mpicc)
@@ -14,10 +16,7 @@ set(BLAS_LAPACK_SCALAPACK_LIBS acml_mp
     scalapack
     )
 
-set(MUMPS_DIR $ENV{HOME}/opt/mumps_5_b/)
-set(MUMPS_INCLUDE_DIR ${MUMPS_DIR}/include)
-set(MUMPS_LIBRARY_DIR ${MUMPS_DIR}/lib)
-
+# Put here the location of mpi libraries and headers
 set(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
 set(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
 set(MPI_LIBRARIES 

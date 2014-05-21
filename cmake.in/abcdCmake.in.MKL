@@ -1,3 +1,5 @@
+# Uncomment if you installed boost manually
+# on a different location than the default
 set(BOOST_ROOT $ENV{BOOST_ROOT})
 set(BOOST_LIBRARYDIR ${BOOST_ROOT}/../lib)
 
@@ -11,13 +13,10 @@ set(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
     mkl_blacs_openmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
     )
 
-set(MUMPS_DIR $ENV{HOME}/opt/mumps_5_b/)
-set(MUMPS_INCLUDE_DIR ${MUMPS_DIR}/include)
-set(MUMPS_LIBRARY_DIR ${MUMPS_DIR}/lib)
-
+# Put here the location of mpi libraries and headers
 set(MPI_LIB_DIR /opt/openmpi-1.6.3-gnu/lib/)
 set(MPI_INC_DIR /opt/openmpi-1.6.3-gnu/include/)
-set(MPI_LIBRARIES 
+set(MPI_LIBRARIES
     mpi
     mpi_f90
     mpi_f77
@@ -25,7 +24,7 @@ set(MPI_LIBRARIES
     dl
 )
 
-set(LIB_DIRS 
+set(LIB_DIRS
     ##Put here other mumps dependencies paths
     ##such as scotch, if you compiled mumps with -Dscotch
     # /path/to/scotch/lib/
