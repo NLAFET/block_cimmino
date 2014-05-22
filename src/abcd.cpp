@@ -34,9 +34,9 @@ abcd::abcd()
     icntl[Controls::aug_blocking] = 256;
 
     icntl[Controls::nbparts] = 4;
-    icntl[Controls::part_type] = 3;
+    icntl[Controls::part_type] = 2;
     dcntl[Controls::part_imbalance] = 1.5;
-    icntl[Controls::part_guess] = 0;
+    icntl[Controls::part_guess] = 1;
     icntl[Controls::scaling] = 2;
     icntl[Controls::itmax] = 1000;
     icntl[Controls::block_size] = 1;
@@ -237,6 +237,15 @@ int abcd::factorizeAugmentedSystems()
 /// Runs either BCG or ABCD solve depending on what we want
 int abcd::solveSystem()
 {
+    if (nrhs < 1) {
+        info[Controls::status] = -9;
+        throw std::runtime_error("Number of right-hand sides should be at least one (1)");
+    }
+    if(icntl[Controls::block_size] < 1) {
+        info[Controls::status] = -10;
+        throw std::runtime_error("Block size should be at least one (1)");
+    } 
+    
     if(instance_type == 0) inter_comm.barrier();
     if(inter_comm.rank() == 0 && instance_type == 0){
         LINFO << "Launching Solve";
@@ -311,14 +320,14 @@ int abcd::operator()(int job)
         throw std::runtime_error("Did you forget to call job = 1? ");
     }
 
-    if ( job == 3 && last_called_job != 2 ) {
+    if ( job == 3 && last_called_job != 2 && last_called_job != 3 ) {
         info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job = 2? ");
     }
 
     if ( job < last_called_job && job != 3) {
         info[Controls::status] = -2;
-        throw std::runtime_error("You cannot go back in time unless");
+        throw std::runtime_error("You cannot go back in time");
     }
 
     if ( job == last_called_job && job != 3) {

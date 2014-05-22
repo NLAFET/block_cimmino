@@ -7,6 +7,7 @@
 using ::testing::AtLeast;
 using ::testing::Return;
 using ::testing::Eq;
+using ::testing::Le;
 using namespace Controls;
 
 #include "mpi.h"
@@ -24,7 +25,7 @@ class AbcdTest : public ::testing::Test {
 TEST_F (AbcdTest, defaults)
 {
     // default icntl
-    int ic[] = {0,4,3,0,0,2,1000,1,0,0,0,256,0,0,0,0,0,0,0,0};
+    int ic[] = {0,4,2,0,1,2,1000,1,0,0,0,256,0,0,0,0,0,0,0,0};
     std::vector<int> default_icntl(ic, ic + 20);
 
     EXPECT_THAT(obj.icntl, Eq(default_icntl));
@@ -85,8 +86,55 @@ TEST (blockCG, ClassicalCG)
     abcd obj;
     init_2d_lap(obj, 10);
 
-    try { obj(-1); obj(6);}
-    catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
+    EXPECT_NO_THROW( obj(-1) );
+
+    EXPECT_NO_THROW( obj(1) );
+
+    // go to past
+    EXPECT_THROW(obj(-1), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_NO_THROW( obj(5) );
+    EXPECT_THAT(obj.info[Controls::nb_iter], Le(obj.icntl[Controls::itmax]));
+
+    // go to wrong past
+    EXPECT_THROW(obj(4), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+    // go to wrong past
+    EXPECT_THROW(obj(2), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    // re-launch solve
+    EXPECT_NO_THROW( obj(3) );
+
+    // no more than what we've requested
+    obj.icntl[Controls::itmax] = 1;
+    EXPECT_NO_THROW( obj(3) );
+    EXPECT_THAT(obj.info[Controls::nb_iter], Eq(obj.icntl[Controls::itmax]));
+
+    // no negative iteration counts
+    obj.icntl[Controls::itmax] = -1;
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-11));
+    obj.icntl[Controls::itmax] = 1000;
+
+    // block-size > 0
+    obj.icntl[Controls::block_size] = 0;
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-10));
+    obj.icntl[Controls::block_size] = -1;
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-10));
+    obj.icntl[Controls::block_size] = 1;
+
+    // rhs number > 0
+    obj.nrhs = 0;
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-9));
+    obj.nrhs = -1;
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-9));
+    obj.nrhs = 1;
 }
 
 TEST (blockCG, BlockCG) 
@@ -98,6 +146,68 @@ TEST (blockCG, BlockCG)
 
     try { obj(-1); obj(6);}
     catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
+}
+
+TEST_F (AbcdTest, OneSystemOneBased)
+{
+    mpi::communicator world;
+
+    obj.m = 1;
+    obj.n = 1;
+    obj.nz = 1;
+
+    obj.irn = new int[1];
+    obj.jcn = new int[1];
+    obj.val = new double[1];
+    obj.rhs = new double[1];
+
+    obj.irn[0] = 1;
+    obj.jcn[0] = 1;
+    obj.val[0] = 1;
+    obj.rhs[0] = 2;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(1));
+    EXPECT_ANY_THROW(obj(1));
+    EXPECT_NO_THROW(obj(5));
+
+    if (world.rank() == 0) {
+        ///@TODO change this when you have implemented rhs = solution
+        EXPECT_THAT(obj.sol.dim(0), Eq(obj.n));
+        EXPECT_THAT(obj.sol.dim(1), Eq(obj.nrhs));
+        EXPECT_THAT(obj.sol(0, 0), Eq(obj.rhs[0]));
+    }
+}
+
+TEST_F (AbcdTest, OneSystemZeroBased)
+{
+    mpi::communicator world;
+
+    obj.m = 1;
+    obj.n = 1;
+    obj.nz = 1;
+
+    obj.irn = new int[1];
+    obj.jcn = new int[1];
+    obj.val = new double[1];
+    obj.rhs = new double[1];
+
+    obj.irn[0] = 0;
+    obj.jcn[0] = 0;
+    obj.val[0] = 1;
+    obj.rhs[0] = 2;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(1));
+    EXPECT_ANY_THROW(obj(1));
+    EXPECT_NO_THROW(obj(5));
+
+    if (world.rank() == 0) {
+        ///@TODO change this when you have implemented rhs = solution
+        EXPECT_THAT(obj.sol.dim(0), Eq(obj.n));
+        EXPECT_THAT(obj.sol.dim(1), Eq(obj.nrhs));
+        EXPECT_THAT(obj.sol(0, 0), Eq(obj.rhs[0]));
+    }
 }
 
 int main(int argc, char **argv) {

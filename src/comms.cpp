@@ -209,8 +209,6 @@ void abcd::distributeRhs()
     mpi::broadcast(inter_comm, dcntl[Controls::threshold], 0);
     mpi::broadcast(inter_comm, dcntl[Controls::aug_filter], 0);
 
-    delete[] rhs;
-    rhs = nullptr;
     // A = CompRow_Mat_double();
 }
 
@@ -263,6 +261,4 @@ void abcd::distributeNewRhs()
             B.setCol(t, j);
         }
     }
-
-    delete[] rhs;
 }

@@ -7,18 +7,18 @@ void abcd::bcg(MV_ColMat_double &b)
     std::streamsize oldprec = std::cout.precision();
 
     double t, t1, t2, t1_total, t2_total;
-
-    int itmax = icntl[Controls::itmax];
+    
     double threshold = dcntl[Controls::threshold];
     int block_size = icntl[Controls::block_size];
-    
 
+    int itmax = icntl[Controls::itmax];
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
-    if(s < 1){
-        info[Controls::status] = -10;
-        throw std::runtime_error("Block size should be at least one (1)");
-    } 
+
+    if (itmax < 0) {
+        info[Controls::status] = -11;
+        throw std::runtime_error("Max iter number should be at least zero (0)");
+    }
 
     //exit(0);
     if(!use_xk) {
@@ -178,11 +178,14 @@ void abcd::bcg(MV_ColMat_double &b)
     if (icntl[Controls::aug_type] != 0)
         return;
 
+    info[Controls::nb_iter] = it;
 
     if(IRANK == 0) {
         t = MPI_Wtime();
         LINFO << "Centralizing solution";
+
         sol = MV_ColMat_double(n_o, 1, 0);
+
         std::map<int, std::vector<double> > xo;
         std::map<int, std::vector<int> > io;
         for(int k = 1; k < inter_comm.size(); k++){
@@ -206,7 +209,6 @@ void abcd::bcg(MV_ColMat_double &b)
             dinfo[Controls::residual] =  nrmxf/nrmXf;
         }
         LINFO << "took " << MPI_Wtime() - t;
-
     } else {
         std::vector<double> x;
         x.reserve(n);

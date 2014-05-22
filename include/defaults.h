@@ -33,6 +33,7 @@ namespace Controls{
     };
     enum info {
         status          = 1, ///< Exit status
+        nb_iter         = 2, ///< Number of iterations after CG
     };
 
     enum dinfo {
