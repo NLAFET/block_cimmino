@@ -10,7 +10,7 @@ _INITIALIZE_EASYLOGGINGPP
 /// Set the defaults in the constructor
 abcd::abcd()
 {
-    last_called_job = 0;
+    last_called_job = -2;
     
     nrhs = 1;
     start_index = 0;
@@ -294,16 +294,37 @@ int abcd::solveSystem()
 ///
 /// \param job The job id
 /// \return Status code
+/// @TODO Replace the number of jobs by identifiers easy to remember
 int abcd::operator()(int job)
 {
+    info[Controls::status] = 0;
+
     LDEBUG3 << "MPI-Process " << comm.rank() << " called job = " << job;
     
-    if ( (job == 1 || job == 5 || job == 6) && last_called_job != -1 )
+    if ( job == 1 && last_called_job != -1 ) {
+        info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job = -1? ");
-    if ( job == 2 && last_called_job != 1)
+    }
+
+    if ( job == 2 && job <= 3 && last_called_job != 1) {
+        info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job = 1? ");
-    if ( job == 3 && last_called_job < 2 )
+    }
+
+    if ( job == 3 && last_called_job != 2 ) {
+        info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job = 2? ");
+    }
+
+    if ( job < last_called_job && job != 3) {
+        info[Controls::status] = -2;
+        throw std::runtime_error("You cannot go back in time unless");
+    }
+
+    if ( job == last_called_job && job != 3) {
+        info[Controls::status] = -2;
+        throw std::runtime_error("You cannot re-run the same job unless you want to re-run job_id = 3 ");
+    }
     
     switch(job) {
 
@@ -326,38 +347,69 @@ int abcd::operator()(int job)
         logger_set_filename(log_output);
 
         initializeMatrix();
+
+        // if everything went alright, remember the job
+        last_called_job = job;
+
         break;
 
     case 1:
         preprocessMatrix();
+
+        // if everything went alright, remember the job
+        last_called_job = job;
+
         break;
 
     case 2:
         factorizeAugmentedSystems();
+
+        // if everything went alright, remember the job
+        last_called_job = job;
+
         break;
 
     case 3:
         solveSystem();
+
+        // if everything went alright, remember the job
+        last_called_job = job;
+
         break;
 
     case 4:
-        preprocessMatrix();
-        factorizeAugmentedSystems();
+        // this ensures that we get consistent results
+        operator()(1);
+        operator()(2);
+
+        // if everything went alright, remember the job
+        last_called_job = 2;
+
+        break;
+
+    case 5:
+        operator()(2);
+        operator()(3);
+
+        // if everything went alright, remember the job
+        last_called_job = 3;
+
         break;
 
     case 6:
-        preprocessMatrix();
-        factorizeAugmentedSystems();
-        solveSystem();
+        operator()(1);
+        operator()(2);
+        operator()(3);
+
+        // if everything went alright, remember the job
+        last_called_job = 3;
+
         break;
 
     default:
         // Wrong job id
+        info[Controls::status] = -1;
         throw std::runtime_error("Wrong job id.");
-        return -1;
     }
-
-    // if everything went alright, remember the job
-    last_called_job = job;
     return 0;
 }

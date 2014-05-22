@@ -16,15 +16,74 @@ using namespace Controls;
 void init_2d_lap(int m, int n, int nz, int *irn, int *jcn, double *val, int mesh_size);
 void init_2d_lap(abcd &o, int mesh_size);
 
+
+class AbcdTest : public ::testing::Test {
+ protected:
+  abcd obj;
+};
+TEST_F (AbcdTest, defaults)
+{
+    // default icntl
+    int ic[] = {0,4,3,0,0,2,1000,1,0,0,0,256,0,0,0,0,0,0,0,0};
+    std::vector<int> default_icntl(ic, ic + 20);
+
+    EXPECT_THAT(obj.icntl, Eq(default_icntl));
+}
+
+TEST_F (AbcdTest, WrongJobOrder) 
+{
+    EXPECT_THROW(obj(1), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(2), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(3), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(4), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(5), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(6), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    EXPECT_THROW(obj(8), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-1));
+}
+
+TEST_F (AbcdTest, MatrixInit) 
+{
+    mpi::communicator world;
+
+    int mesh_size = 10;
+    init_2d_lap(obj, mesh_size);
+
+    if (world.rank() == 0) {
+        // number of non-zeros before expansion of the matrix
+        EXPECT_THAT(obj.nz, Eq(3 * mesh_size * mesh_size - 2 * mesh_size));
+    }
+
+    ASSERT_NO_THROW(obj(-1));
+    EXPECT_THAT(obj.info[Controls::status], Eq(0));
+
+    // rerun
+    EXPECT_THROW(obj(-1), runtime_error);
+    EXPECT_THAT(obj.info[Controls::status], Eq(-2));
+
+    if (world.rank() == 0) {
+        // number of non-zeros after expansion of the matrix
+        EXPECT_THAT(obj.nz, Eq(5 * mesh_size * mesh_size - 4 * mesh_size));
+    }
+}
+
 TEST (blockCG, ClassicalCG) 
 {
     mpi::communicator world;
     abcd obj;
     init_2d_lap(obj, 10);
-
-    if (world.rank() == 0) {
-        obj.icntl[part_type] = 1;
-    }
 
     try { obj(-1); obj(6);}
     catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}

@@ -73,11 +73,11 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with a given nbrows
          *-----------------------------------------------------------------------------*/
     case 1:
-        strow = VECTOR_int(nbparts);
+        strow.resize(nbparts);
 
         for(unsigned int k = 0; k < (unsigned int)nbparts; k++) {
-            strow(k) = row_sum;
-            row_sum += nbrows(k);
+            strow[k] = row_sum;
+            row_sum += nbrows[k];
         }
         break;
 
@@ -88,25 +88,25 @@ void abcd::partitionMatrix()
         ceil_per_part = ceil(float(m_o)/float(nbparts));
         floor_per_part = floor(float(m_o)/float(nbparts));
 
-        strow = VECTOR_int(nbparts);
-        nbrows = VECTOR_int(nbparts);
+        strow =  std::vector<int>(nbparts);
+        nbrows = std::vector<int>(nbparts);
 
         // alternate the number of rows, they will not be that equal
         // but at least we will have simmilar number of row
         for(unsigned k = 0; k < (unsigned) nbparts; k+=2) {
-            nbrows(k) = ceil_per_part;
+            nbrows[k] = ceil_per_part;
             handled_rows += ceil_per_part;
         }
         for(unsigned k = 1; k < (unsigned) nbparts; k+=2) {
-            nbrows(k) = floor_per_part;
+            nbrows[k] = floor_per_part;
             handled_rows += floor_per_part;
         }
 
-        nbrows(nbparts - 1) += m_o - handled_rows;
+        nbrows[nbparts - 1] += m_o - handled_rows;
 
         for(unsigned k = 0; k < (unsigned)nbparts; k++) {
-            strow(k) = row_sum;
-            row_sum += nbrows(k);
+            strow[k] = row_sum;
+            row_sum += nbrows[k];
         }
         break;
         /*-----------------------------------------------------------------------------
@@ -201,12 +201,14 @@ void abcd::partitionMatrix()
 
         A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
 
-        nbrows = VECTOR_int(partweights, nbparts);
-        strow = VECTOR_int(nbparts);
+        int * test;
+        
+        nbrows = std::vector<int>(partweights, partweights + nbparts);
+        strow =  std::vector<int>(nbparts);
 
         for(unsigned k = 0; k < nbparts; k++) {
-            strow(k) = row_sum;
-            row_sum += nbrows(k);
+            strow[k] = row_sum;
+            row_sum += nbrows[k];
         }
 
         if(write_problem.length() != 0) {

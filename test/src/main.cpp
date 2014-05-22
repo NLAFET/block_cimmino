@@ -235,7 +235,6 @@ int main(int argc, char* argv[])
 
         if(obj.icntl[Controls::part_type] == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
-            std::vector<int> nrows;
 
             if(parts.length() == 0){
                 try{
@@ -248,7 +247,7 @@ int main(int argc, char* argv[])
 
                 BOOST_FOREACH( ptree::value_type v, pt.get_child("partitioning.nbrows") )
                 {
-                    nrows.push_back(atoi(v.first.data()));
+                    obj.nbrows.push_back(atoi(v.first.data()));
                 }
 
             } else {
@@ -258,18 +257,16 @@ int main(int argc, char* argv[])
                 for(unsigned k = 0; k < (unsigned int)obj.icntl[Controls::nbparts]; k++) {
                     string l;
                     getline(f, l);
-                    nrows.push_back(atoi(l.c_str()));
+                    obj.nbrows.push_back(atoi(l.c_str()));
                 }
 
                 f.close();
             }
 
-            if(nrows.size() != (size_t)obj.icntl[Controls::nbparts]){
+            if(obj.nbrows.size() != (size_t)obj.icntl[Controls::nbparts]){
                 clog << "Error parsing the file, nbparts is different from the partitioning description" << endl;
                 exit(-1);
             }
-
-            obj.nbrows = VECTOR_int(&nrows[0], obj.icntl[Controls::nbparts]);
         }
 
         obj.write_problem   = pt.get<string>("write_problem", "");

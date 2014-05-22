@@ -323,8 +323,8 @@ public:
     /***************************************************************************
      * Partitioning informations
     ***************************************************************************/
-    VECTOR_int strow; /// The starting row index of each partition
-    VECTOR_int nbrows; /// The number of rows per partition
+    std::vector<int> strow; /// The starting row index of each partition
+    std::vector<int> nbrows; /// The number of rows per partition
 
 
     /***************************************************************************
