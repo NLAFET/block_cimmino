@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
 
         // we want that only the master logs data
         obj.icntl[Controls::verbose_level] = 2;
+        obj.icntl[Controls::aug_type] = 2;
 
         init_2d_lap(obj, 5);
 

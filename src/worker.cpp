@@ -23,6 +23,12 @@ abcd::waitForSolve()
     do{
         mpi::broadcast(intra_comm, job, 0);
         
+        // if we receive an emergency stop
+        if(job < -1){
+            info[Controls::status] = job;
+            throw runtime_error("Worker was asked to stop by its master");
+        }
+
         //we are finished here!
         if(job == -1) break;
         // do the solve, in the (simple or not) sumproject

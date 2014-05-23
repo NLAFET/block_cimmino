@@ -80,6 +80,62 @@ TEST_F (AbcdTest, MatrixInit)
     }
 }
 
+TEST_F (AbcdTest, OneSystemOneBased)
+{
+    mpi::communicator world;
+
+    obj.m = 1;
+    obj.n = 1;
+    obj.nz = 1;
+
+    obj.irn = new int[1];
+    obj.jcn = new int[1];
+    obj.val = new double[1];
+    obj.rhs = new double[1];
+
+    obj.irn[0] = 1;
+    obj.jcn[0] = 1;
+    obj.val[0] = 1;
+    obj.rhs[0] = 2;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(1));
+    EXPECT_ANY_THROW(obj(1));
+    EXPECT_NO_THROW(obj(5));
+
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.sol[0], Eq(obj.rhs[0]));
+    }
+}
+
+TEST_F (AbcdTest, OneSystemZeroBased)
+{
+    mpi::communicator world;
+
+    obj.m = 1;
+    obj.n = 1;
+    obj.nz = 1;
+
+    obj.irn = new int[1];
+    obj.jcn = new int[1];
+    obj.val = new double[1];
+    obj.rhs = new double[1];
+
+    obj.irn[0] = 0;
+    obj.jcn[0] = 0;
+    obj.val[0] = 1;
+    obj.rhs[0] = 2;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(1));
+    EXPECT_ANY_THROW(obj(1));
+    EXPECT_NO_THROW(obj(5));
+
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.sol[0], Eq(obj.rhs[0]));
+    }
+}
+
 TEST (blockCG, ClassicalCG) 
 {
     mpi::communicator world;
@@ -95,7 +151,7 @@ TEST (blockCG, ClassicalCG)
     EXPECT_THAT(obj.info[Controls::status], Eq(-2));
 
     EXPECT_NO_THROW( obj(5) );
-    EXPECT_THAT(obj.info[Controls::nb_iter], Le(obj.icntl[Controls::itmax]));
+    if (world.rank() == 0) EXPECT_THAT(obj.info[Controls::nb_iter], Le(obj.icntl[Controls::itmax]));
 
     // go to wrong past
     EXPECT_THROW(obj(4), runtime_error);
@@ -110,7 +166,7 @@ TEST (blockCG, ClassicalCG)
     // no more than what we've requested
     obj.icntl[Controls::itmax] = 1;
     EXPECT_NO_THROW( obj(3) );
-    EXPECT_THAT(obj.info[Controls::nb_iter], Eq(obj.icntl[Controls::itmax]));
+    if (world.rank() == 0) EXPECT_THAT(obj.info[Controls::nb_iter], Eq(obj.icntl[Controls::itmax]));
 
     // no negative iteration counts
     obj.icntl[Controls::itmax] = -1;
@@ -146,68 +202,6 @@ TEST (blockCG, BlockCG)
 
     try { obj(-1); obj(6);}
     catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
-}
-
-TEST_F (AbcdTest, OneSystemOneBased)
-{
-    mpi::communicator world;
-
-    obj.m = 1;
-    obj.n = 1;
-    obj.nz = 1;
-
-    obj.irn = new int[1];
-    obj.jcn = new int[1];
-    obj.val = new double[1];
-    obj.rhs = new double[1];
-
-    obj.irn[0] = 1;
-    obj.jcn[0] = 1;
-    obj.val[0] = 1;
-    obj.rhs[0] = 2;
-
-    EXPECT_NO_THROW(obj(-1));
-    EXPECT_NO_THROW(obj(1));
-    EXPECT_ANY_THROW(obj(1));
-    EXPECT_NO_THROW(obj(5));
-
-    if (world.rank() == 0) {
-        ///@TODO change this when you have implemented rhs = solution
-        EXPECT_THAT(obj.sol.dim(0), Eq(obj.n));
-        EXPECT_THAT(obj.sol.dim(1), Eq(obj.nrhs));
-        EXPECT_THAT(obj.sol(0, 0), Eq(obj.rhs[0]));
-    }
-}
-
-TEST_F (AbcdTest, OneSystemZeroBased)
-{
-    mpi::communicator world;
-
-    obj.m = 1;
-    obj.n = 1;
-    obj.nz = 1;
-
-    obj.irn = new int[1];
-    obj.jcn = new int[1];
-    obj.val = new double[1];
-    obj.rhs = new double[1];
-
-    obj.irn[0] = 0;
-    obj.jcn[0] = 0;
-    obj.val[0] = 1;
-    obj.rhs[0] = 2;
-
-    EXPECT_NO_THROW(obj(-1));
-    EXPECT_NO_THROW(obj(1));
-    EXPECT_ANY_THROW(obj(1));
-    EXPECT_NO_THROW(obj(5));
-
-    if (world.rank() == 0) {
-        ///@TODO change this when you have implemented rhs = solution
-        EXPECT_THAT(obj.sol.dim(0), Eq(obj.n));
-        EXPECT_THAT(obj.sol.dim(1), Eq(obj.nrhs));
-        EXPECT_THAT(obj.sol(0, 0), Eq(obj.rhs[0]));
-    }
 }
 
 int main(int argc, char **argv) {

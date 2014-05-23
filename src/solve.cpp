@@ -150,11 +150,11 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     compute_rho(Xk, b);
 
     if(IRANK == 0) {
-        sol = MV_ColMat_double(n_o, nrhs, 0);
-        solution = sol.ptr();
+        solution = MV_ColMat_double(n_o, nrhs, 0);
+        sol = solution.ptr();
     }
 
-    centralizeVector(solution, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
+    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

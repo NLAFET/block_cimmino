@@ -327,9 +327,9 @@ int main(int argc, char* argv[])
                 ofstream f; 
                 f.open("/tmp/out_comp");
                 for(int i = 0; i < mumps_n; i++) {
-                    f << mumps_rhs[i] << "\t" << obj.sol(i,0) << "\n";
-                    if (abs(mumps_rhs[i] - obj.sol(i,0)) > infTop) {
-                        infTop = abs(mumps_rhs[i] - obj.sol(i,0));
+                    f << mumps_rhs[i] << "\t" << obj.sol[i] << "\n";
+                    if (abs(mumps_rhs[i] - obj.sol[i]) > infTop) {
+                        infTop = abs(mumps_rhs[i] - obj.sol[i]);
                     }
                     if (abs(mumps_rhs[i]) > infBot) {
                         infBot = abs(mumps_rhs[i]);

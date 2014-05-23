@@ -279,6 +279,7 @@ private:
     std::vector<int> stC;
     bool use_xk;
     bool use_xf;
+    MV_ColMat_double solution; ///< The solution vector
 
     /**
      * Contains the mutual interconnections between partitions
@@ -321,8 +322,7 @@ public:
     int *jcn; ///< The column indices
     double *val; ///< The entries of the matrix
     double *rhs; ///< The right-hand side
-    double *solution; ///< @TODO replaces the sol
-    MV_ColMat_double sol; ///< The solution vector
+    double *sol; ///<  The solution vector
     
     bool sym; ///< The symmetry of the matrix
 

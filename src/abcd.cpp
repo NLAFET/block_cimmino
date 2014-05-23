@@ -44,6 +44,7 @@ abcd::abcd()
 
     icntl[Controls::verbose_level] = 0;
     info[Controls::status] = 0;
+    info[Controls::nb_iter] = 0;
 
     mpi::communicator world;
     comm = world;

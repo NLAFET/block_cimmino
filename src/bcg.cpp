@@ -17,6 +17,8 @@ void abcd::bcg(MV_ColMat_double &b)
 
     if (itmax < 0) {
         info[Controls::status] = -11;
+        mpi::broadcast(intra_comm, info[Controls::status], 0);
+
         throw std::runtime_error("Max iter number should be at least zero (0)");
     }
 
@@ -181,11 +183,11 @@ void abcd::bcg(MV_ColMat_double &b)
     info[Controls::nb_iter] = it;
 
     if(IRANK == 0) {
-        sol = MV_ColMat_double(n_o, nrhs, 0);
-        solution = sol.ptr();
+        solution = MV_ColMat_double(n_o, nrhs, 0);
+        sol = solution.ptr();
     }
     
-    centralizeVector(solution, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
+    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
