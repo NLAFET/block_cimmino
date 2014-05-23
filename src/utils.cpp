@@ -244,10 +244,9 @@ std::vector<int> sort_indexes(const int *v, const int nb_el) {
 }
 
 /// Regroups the data from the different sources to a single destination on the master
-///
-/// The non-master processes will have their source vector cleared
-void abcd::centralizeVector(double *dest, int dest_ncols, int dest_lda,
-                            double *src, int src_ncols, int src_lda)
+void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
+                            double *src,  int src_lda,  int src_ncols,
+                            std::vector<int> globalIndex, double *scale)
 {
     if (src_ncols != dest_ncols) {
         throw std::runtime_error("Source's number of columns must be the same as the destination's");
@@ -271,14 +270,14 @@ void abcd::centralizeVector(double *dest, int dest_ncols, int dest_lda,
         }
         for(int k = 1; k < inter_comm.size(); ++k){
             for(int j = 0; j < dest_ncols; ++j)
-                for(size_t i = 0; i < io[k].size(); ++i){
+                for(size_t i = 0; i < io[k].size() && io[k][i] < n_o; ++i){
                     int ci = io[k][i];
-                    vdest(ci, j) = xo[k][i + j * lo[k]] * dcol_(ci);
+                    vdest(ci, j) = xo[k][i + j * lo[k]] * scale[ci];
                 }
         }
         for(int j = 0; j < dest_ncols; ++j)
-            for(size_t i = 0; i < glob_to_local_ind.size(); ++i){
-                vdest(glob_to_local_ind[i], 0) = source(i, j) * dcol_(glob_to_local_ind[i]);
+            for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < n_o; ++i){
+                vdest(globalIndex[i], 0) = source(i, j) * dcol_(globalIndex[i]);
             }
 
         ///@TODO Move this away
@@ -289,12 +288,7 @@ void abcd::centralizeVector(double *dest, int dest_ncols, int dest_lda,
             dinfo[Controls::forward_error] =  nrmxf/nrmXf;
         }
     } else {
-        std::vector<double> x(src_lda * src_ncols);
-        for(int i = 0; i < src_lda; ++i){
-            for(int j = 0; j < src_ncols; ++j){
-                x[i + j * src_ncols] = source(i, j);
-            }
-        }
+        std::vector<double> x(src, src + src_lda * src_ncols);
 
         inter_comm.send(0, 71, x);
         inter_comm.send(0, 72, glob_to_local_ind);

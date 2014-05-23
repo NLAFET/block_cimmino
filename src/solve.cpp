@@ -150,45 +150,11 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     compute_rho(Xk, b);
 
     if(IRANK == 0) {
-        t = MPI_Wtime();
-        LINFO << "> Centralizing solution";
-        MV_ColMat_double temp_sol(n_o, 1, 0);
-        std::map<int, std::vector<double> > xo;
-        std::map<int, std::vector<int> > io;
-        for(int k = 1; k < inter_comm.size(); k++){
-            inter_comm.recv(k, 71, xo[k]);
-            inter_comm.recv(k, 72, io[k]);
-        }
-        for(int k = 1; k < inter_comm.size(); k++){
-            for(size_t i = 0; i < io[k].size() && io[k][i] < n_o; i++){
-                int ci = io[k][i];
-                temp_sol(ci, 0) = xo[k][i] * dcol_(io[k][i]);
-            }
-        }
-
-        for(size_t i = 0; i < glob_to_local_ind.size() && glob_to_local_ind[i] < n_o ; i++){
-            temp_sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
-        }
-
-        sol = temp_sol(MV_VecIndex(0, n_o-1), 0);
-
-        if(Xf.dim(0) != 0) {
-            MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
-            xf = Xf - sol;
-            double nrmxf =  infNorm(xf);
-            dinfo[Controls::forward_error] = nrmxf/nrmXf;
-        }
-        LINFO << "> Took: " << setprecision(2) << MPI_Wtime() - t;
-
-    } else {
-        std::vector<double> x;
-        x.reserve(n);
-        for(int i = 0; i < n; i++){
-            x.push_back(Xk(i, 0));
-        }
-        inter_comm.send(0, 71, x);
-        inter_comm.send(0, 72, glob_to_local_ind);
+        sol = MV_ColMat_double(n_o, nrhs, 0);
+        solution = sol.ptr();
     }
+
+    centralizeVector(solution, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

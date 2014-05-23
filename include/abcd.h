@@ -298,8 +298,9 @@ private:
     /// The communicator of local slaves
     mpi::communicator intra_comm; 
 
-    void centralizeVector(double *dest, int dest_ncols, int dest_lda,
-                          double *src, int src_ncols, int src_lda);
+    void centralizeVector(double *dest, int dest_lda, int dest_ncols,
+                          double *src,  int src_lda,  int src_ncols,
+                          std::vector<int> globalIndex, double *scale);
     
 
 public:
