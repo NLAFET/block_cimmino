@@ -15,7 +15,9 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
             s+=flops[idx];
         }
 
-        std::sort(flops_s.begin(), flops_s.end(), ip_comp);
+        std::sort(flops_s.begin(), flops_s.end(),
+                  bind(&std::pair<long, int>::first, _1) >
+                  bind(&std::pair<long, int>::first, _2));
 
         std::vector<double> shares;
         int nb_slaves = comm.size() - inter_comm.size();

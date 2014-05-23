@@ -298,6 +298,10 @@ private:
     /// The communicator of local slaves
     mpi::communicator intra_comm; 
 
+    void centralizeVector(double *dest, int dest_ncols, int dest_lda,
+                          double *src, int src_ncols, int src_lda);
+    
+
 public:
     /***************************************************************************
      * Matrix information
@@ -316,6 +320,7 @@ public:
     int *jcn; ///< The column indices
     double *val; ///< The entries of the matrix
     double *rhs; ///< The right-hand side
+    double *solution; ///< @TODO replaces the sol
     MV_ColMat_double sol; ///< The solution vector
     
     bool sym; ///< The symmetry of the matrix

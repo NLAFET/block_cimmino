@@ -181,43 +181,12 @@ void abcd::bcg(MV_ColMat_double &b)
     info[Controls::nb_iter] = it;
 
     if(IRANK == 0) {
-        t = MPI_Wtime();
-        LINFO << "Centralizing solution";
-
-        sol = MV_ColMat_double(n_o, 1, 0);
-
-        std::map<int, std::vector<double> > xo;
-        std::map<int, std::vector<int> > io;
-        for(int k = 1; k < inter_comm.size(); k++){
-            inter_comm.recv(k, 71, xo[k]);
-            inter_comm.recv(k, 72, io[k]);
-        }
-        for(int k = 1; k < inter_comm.size(); k++){
-            for(size_t i = 0; i < io[k].size(); i++){
-                int ci = io[k][i];
-                sol(ci, 0) = xo[k][i] * dcol_(ci);
-            }
-        }
-        for(size_t i = 0; i < glob_to_local_ind.size(); i++){
-            sol(glob_to_local_ind[i], 0) = Xk(i, 0) * dcol_(glob_to_local_ind[i]);
-        }
-
-        if(Xf.dim(0) != 0) {
-            MV_ColMat_double xf = MV_ColMat_double(n, 1, 0);
-            xf = Xf - sol;
-            double nrmxf =  infNorm(xf);
-            dinfo[Controls::residual] =  nrmxf/nrmXf;
-        }
-        LINFO << "took " << MPI_Wtime() - t;
-    } else {
-        std::vector<double> x;
-        x.reserve(n);
-        for(int i = 0; i < n; i++){
-            x.push_back(Xk(i, 0));
-        }
-        inter_comm.send(0, 71, x);
-        inter_comm.send(0, 72, glob_to_local_ind);
+        sol = MV_ColMat_double(n_o, nrhs, 0);
+        solution = sol.ptr();
     }
+    
+    centralizeVector(solution, nrhs, n_o,
+                     Xk.ptr(), nrhs, n);
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)

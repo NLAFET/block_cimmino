@@ -29,25 +29,18 @@ int main(int argc, char* argv[])
         // we want that only the master logs data
         obj.icntl[Controls::verbose_level] = 2;
 
-        init_2d_lap(obj, 100);
+        init_2d_lap(obj, 5);
 
         // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
-        }
+        // obj.rhs = new double[obj.m];
+        // for (size_t i = 0; i < obj.m; i++) {
+        //     obj.rhs[i] = ((double) i + 1)/obj.m;
+        // }
     }
 
     try {
         obj(-1);
-
-        obj.icntl[Controls::part_guess] = 1;
-        obj.icntl[Controls::aug_type] = 0;
-        obj.icntl[Controls::block_size] = 0;
-
-        obj(4); // equivalent to running 1, 2 and 3 successively
-        obj(3); 
-        obj(3); // re-run the solve, fur fun :)
+        obj(6); // equivalent to running 1, 2 and 3 successively
     } catch (runtime_error err) {
         cout << "An error occured: " << err.what() << endl;
     }

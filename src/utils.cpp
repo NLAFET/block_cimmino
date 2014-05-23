@@ -24,7 +24,6 @@ void abcd::setIcntl(int *v)
     }
 }
 
-
 void abcd::partitioning(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts){
     std::vector<int> sets(nb_parts);
     std::map<int, std::vector<int> > pts;
@@ -220,30 +219,10 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
 }
 
-/// Compair pairs
-bool ip_comp(const dipair &l, const dipair &r)
-{
-    return l.first > r.first;
-}
-
-template <class K, class V>
-std::vector<K> get_keys(std::map<K,V> my_map){
-    std::vector<K> keys;
-    for(typename std::map<K,V>::iterator it = my_map.begin(); it != my_map.end(); it++){
-        keys.push_back(it->first);
-    }
-    return keys;
-}
-
 double or_bin(double &a, double &b){
     if(a!=0) return a;
     else if(b!=0) return b;
     else return 0;
-}
-
-void setVal(int *lst, int sz, int ival) {
-        int i;
-        for (i=0;i < sz; i++) lst[i] = ival;
 }
 
 std::vector<int> sort_indexes(const int *v, const int nb_el) {
@@ -264,20 +243,61 @@ std::vector<int> sort_indexes(const int *v, const int nb_el) {
     return idx;
 }
 
-template <typename T>
-std::vector<int> sort_indexes(const std::vector<T> &v) {
+/// Regroups the data from the different sources to a single destination on the master
+///
+/// The non-master processes will have their source vector cleared
+void abcd::centralizeVector(double *dest, int dest_ncols, int dest_lda,
+                            double *src, int src_ncols, int src_lda)
+{
+    if (src_ncols != dest_ncols) {
+        throw std::runtime_error("Source's number of columns must be the same as the destination's");
+    }
 
-    typedef std::pair<T,int> pair_type;
-    std::vector< std::pair<T,int> > vp;
-    vp.reserve(v.size());
-    for(int i = 0; i < v.size(); i++)
-        vp.push_back( std::make_pair<T,int>(v[i], i) );
+    MV_ColMat_double source(src, src_lda, src_ncols, MV_Matrix_::ref);
+    
+    if(IRANK == 0) {
+        double t = MPI_Wtime();
 
-    // sort indexes based on comparing values in v
-    //sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+        MV_ColMat_double vdest(dest, dest_lda, dest_ncols, MV_Matrix_::ref);
 
-    std::vector<int> idx;
-    //transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
-    return idx;
+        std::map<int, std::vector<double> > xo;
+        std::map<int, std::vector<int> > io;
+        std::map<int, int > lo;
+
+        for(int k = 1; k < inter_comm.size(); k++){
+            inter_comm.recv(k, 71, xo[k]);
+            inter_comm.recv(k, 72, io[k]);
+            inter_comm.recv(k, 73, lo[k]);
+        }
+        for(int k = 1; k < inter_comm.size(); ++k){
+            for(int j = 0; j < dest_ncols; ++j)
+                for(size_t i = 0; i < io[k].size(); ++i){
+                    int ci = io[k][i];
+                    vdest(ci, j) = xo[k][i + j * lo[k]] * dcol_(ci);
+                }
+        }
+        for(int j = 0; j < dest_ncols; ++j)
+            for(size_t i = 0; i < glob_to_local_ind.size(); ++i){
+                vdest(glob_to_local_ind[i], 0) = source(i, j) * dcol_(glob_to_local_ind[i]);
+            }
+
+        ///@TODO Move this away
+        if(Xf.dim(0) != 0) {
+            MV_ColMat_double xf = MV_ColMat_double(dest_lda, dest_ncols, 0);
+            xf = Xf - sol;
+            double nrmxf =  infNorm(xf);
+            dinfo[Controls::forward_error] =  nrmxf/nrmXf;
+        }
+    } else {
+        std::vector<double> x(src_lda * src_ncols);
+        for(int i = 0; i < src_lda; ++i){
+            for(int j = 0; j < src_ncols; ++j){
+                x[i + j * src_ncols] = source(i, j);
+            }
+        }
+
+        inter_comm.send(0, 71, x);
+        inter_comm.send(0, 72, glob_to_local_ind);
+        inter_comm.send(0, 73, src_lda);
+    }
 }
-
