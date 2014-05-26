@@ -19,8 +19,9 @@ void init_2d_lap(abcd &o, int mesh_size);
 
 
 class AbcdTest : public ::testing::Test {
- protected:
-  abcd obj;
+protected:
+    mpi::communicator world;
+    abcd obj;
 };
 TEST_F (AbcdTest, defaults)
 {
@@ -57,8 +58,6 @@ TEST_F (AbcdTest, WrongJobOrder)
 
 TEST_F (AbcdTest, MatrixInit) 
 {
-    mpi::communicator world;
-
     int mesh_size = 10;
     init_2d_lap(obj, mesh_size);
 
@@ -82,8 +81,6 @@ TEST_F (AbcdTest, MatrixInit)
 
 TEST_F (AbcdTest, OneSystemOneBased)
 {
-    mpi::communicator world;
-
     obj.m = 1;
     obj.n = 1;
     obj.nz = 1;
@@ -110,8 +107,6 @@ TEST_F (AbcdTest, OneSystemOneBased)
 
 TEST_F (AbcdTest, OneSystemZeroBased)
 {
-    mpi::communicator world;
-
     obj.m = 1;
     obj.n = 1;
     obj.nz = 1;
@@ -136,10 +131,8 @@ TEST_F (AbcdTest, OneSystemZeroBased)
     }
 }
 
-TEST (blockCG, ClassicalCG) 
+TEST_F (AbcdTest, ClassicalCG) 
 {
-    mpi::communicator world;
-    abcd obj;
     init_2d_lap(obj, 10);
 
     EXPECT_NO_THROW( obj(-1) );
@@ -193,15 +186,31 @@ TEST (blockCG, ClassicalCG)
     obj.nrhs = 1;
 }
 
-TEST (blockCG, BlockCG) 
+TEST_F (AbcdTest, BlockCG) 
 {
-    mpi::communicator world;
-    abcd obj;
     init_2d_lap(obj, 10);
     obj.icntl[block_size] = 4;
 
     try { obj(-1); obj(6);}
     catch (runtime_error err) {cout << "An error occured: " << err.what() << endl;}
+}
+
+TEST_F (AbcdTest, CijAugment)
+{
+    init_2d_lap(obj, 10);
+    obj.icntl[aug_type] = 1;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(6));
+}
+
+TEST_F (AbcdTest, AijAugment)
+{
+    init_2d_lap(obj, 10);
+    obj.icntl[aug_type] = 2;
+
+    EXPECT_NO_THROW(obj(-1));
+    EXPECT_NO_THROW(obj(6));
 }
 
 int main(int argc, char **argv) {
