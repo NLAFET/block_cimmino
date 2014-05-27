@@ -164,12 +164,19 @@ int abcd::preprocessMatrix()
     LINFO << "> Starting Preprocessing            ";
     double t = MPI_Wtime();
     double tot = t;
+    int err = 0;
 
-    if(comm.rank() != 0) return 0;
+    if(comm.rank() != 0) {
+        mpi::broadcast(comm, err, 0);
+        if (err != 0) {
+            info[Controls::status] = err;
+            throw std::runtime_error("The master asked me to stop.");
+        }
+        return err;
+    }
 
-    nbparts = icntl[Controls::nbparts];
     if (parallel_cg == 0) {
-        parallel_cg = nbparts < comm.size() ? nbparts : comm.size();
+        parallel_cg = icntl[Controls::nbparts] < comm.size() ? icntl[Controls::nbparts] : comm.size();
     }
     
     abcd::partitionMatrix();
@@ -187,6 +194,10 @@ int abcd::preprocessMatrix()
     abcd::analyseFrame();
     LINFO << "> Total time to preprocess: " << MPI_Wtime() - tot << "s.";
     LINFO << "*----------------------------------*";
+
+    // everything is alright, tell the others that we're done here
+    mpi::broadcast(comm, err, 0);
+
     return 0;
 }
 

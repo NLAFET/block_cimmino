@@ -104,12 +104,13 @@ void abcd::distributeRhs()
 
         }
 
-        bool good_rhs = true;
+        int good_rhs = 0;
         if (infNorm(B) == 0) {
-            good_rhs = false;
+            good_rhs = -9;
             mpi::broadcast(inter_comm, good_rhs, 0);
             stringstream err_msg;
             err_msg << "On process [" << comm.rank() << "], the given right-hand side is zero";
+            info[Controls::status] = good_rhs;
             throw std::runtime_error(err_msg.str());
         }
         
@@ -174,9 +175,10 @@ void abcd::distributeRhs()
             }
         }
     } else {
-        bool good_rhs;
+        int good_rhs;
         mpi::broadcast(inter_comm, good_rhs, 0);
-        if (!good_rhs) {
+        if (good_rhs != 0) {
+            info[Controls::status] = good_rhs;
             stringstream err_msg;
             err_msg << "On process [" << comm.rank() << "], leaving due to an error on the master";
             throw std::runtime_error(err_msg.str());
@@ -203,6 +205,8 @@ void abcd::distributeRhs()
             VECTOR_double t(rhs+j*m, m);
             B.setCol(t, j);
         }
+
+        delete[] rhs;
     }
     // and distribute max iterations
     mpi::broadcast(inter_comm, icntl[Controls::itmax], 0);

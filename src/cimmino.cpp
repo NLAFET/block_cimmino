@@ -5,7 +5,7 @@ void abcd::initializeCimmino()
 {
     int *sym_perm;
 
-    mpi::broadcast(comm, nbparts, 0);
+    mpi::broadcast(comm, icntl[Controls::nbparts], 0);
 
     
     if(comm.size() > parallel_cg) {

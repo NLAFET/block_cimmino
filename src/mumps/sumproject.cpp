@@ -120,8 +120,8 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
     // Where the other Deltas are going to be summed
 
-    std::vector<double *>itcp(nbparts);
-    std::vector<double *>otcp(nbparts);
+    std::vector<double *>itcp(icntl[Controls::nbparts]);
+    std::vector<double *>otcp(icntl[Controls::nbparts]);
 
     std::vector<mpi::status> sts;
     std::vector<mpi::request> reqs;

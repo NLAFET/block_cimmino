@@ -7,7 +7,9 @@
 using ::testing::AtLeast;
 using ::testing::Return;
 using ::testing::Eq;
+using ::testing::Ne;
 using ::testing::Le;
+using ::testing::Lt;
 using namespace Controls;
 
 #include "mpi.h"
@@ -77,6 +79,27 @@ TEST_F (AbcdTest, MatrixInit)
         // number of non-zeros after expansion of the matrix
         EXPECT_THAT(obj.nz, Eq(5 * mesh_size * mesh_size - 4 * mesh_size));
     }
+
+    obj.icntl[Controls::part_guess] = 0;
+    obj.icntl[Controls::part_type] = 1;
+    EXPECT_ANY_THROW(obj(1));
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.info[Controls::status], Eq(-4));
+    }
+
+    obj.icntl[Controls::nbparts] = 0;
+    obj.icntl[Controls::part_type] = 2;
+    EXPECT_ANY_THROW(obj(1));
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.info[Controls::status], Eq(-3));
+    }
+
+    // more than what It should
+    obj.icntl[Controls::nbparts] = 101;
+    EXPECT_NO_THROW(obj(1));
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.icntl[Controls::nbparts], Eq(100));
+    }
 }
 
 TEST_F (AbcdTest, OneSystemOneBased)
@@ -94,6 +117,7 @@ TEST_F (AbcdTest, OneSystemOneBased)
     obj.jcn[0] = 1;
     obj.val[0] = 1;
     obj.rhs[0] = 2;
+    obj.nrhs = 1;
 
     EXPECT_NO_THROW(obj(-1));
     EXPECT_NO_THROW(obj(1));
@@ -103,6 +127,19 @@ TEST_F (AbcdTest, OneSystemOneBased)
     if (world.rank() == 0) {
         EXPECT_THAT(obj.sol[0], Eq(obj.rhs[0]));
     }
+
+    // auto generate a new RHS
+    if (world.rank() == 0) {
+        delete[] obj.rhs;
+        obj.rhs = nullptr;
+    }
+
+    EXPECT_NO_THROW(obj(3));
+    if (world.rank() == 0) {
+        EXPECT_THAT(obj.sol[0], Eq(obj.rhs[0]));
+    }
+    
+
 }
 
 TEST_F (AbcdTest, OneSystemZeroBased)
@@ -120,6 +157,7 @@ TEST_F (AbcdTest, OneSystemZeroBased)
     obj.jcn[0] = 0;
     obj.val[0] = 1;
     obj.rhs[0] = 2;
+    obj.nrhs = 1;
 
     EXPECT_NO_THROW(obj(-1));
     EXPECT_NO_THROW(obj(1));
@@ -197,7 +235,7 @@ TEST_F (AbcdTest, BlockCG)
 
 TEST_F (AbcdTest, CijAugment)
 {
-    init_2d_lap(obj, 10);
+    init_2d_lap(obj, 100);
     obj.icntl[aug_type] = 1;
 
     EXPECT_NO_THROW(obj(-1));
@@ -206,8 +244,9 @@ TEST_F (AbcdTest, CijAugment)
 
 TEST_F (AbcdTest, AijAugment)
 {
-    init_2d_lap(obj, 10);
+    init_2d_lap(obj, 100);
     obj.icntl[aug_type] = 2;
+    obj.icntl[part_type] = 3;
 
     EXPECT_NO_THROW(obj(-1));
     EXPECT_NO_THROW(obj(6));

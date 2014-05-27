@@ -8,7 +8,7 @@ void abcd::distributeData()
         std::vector<int> m_parts;
         std::vector<int> groups;
 
-        for(int k = 0; k < nbparts; k++) {
+        for(int k = 0; k < icntl[Controls::nbparts]; k++) {
             nnz_parts.push_back(parts[k].NumNonzeros());
             m_parts.push_back(parts[k].dim(0));
         }
