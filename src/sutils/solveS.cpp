@@ -109,6 +109,13 @@ abcd::solveS ( MV_ColMat_double &f )
 
         mumps_S(1);
 
+        if(mumps_S.info[0] < 0) {
+            LERROR << "MUMPS exited with " << mumps_S.info[0];
+            int job = -90 + mumps_S.info[0];
+            mpi::broadcast(intra_comm, job, 0);
+            throw std::runtime_error("MUMPS exited with an error");
+        }
+
         if(inter_comm.rank() == 0){
             LINFO << "*                                  *";
             LINFO << "> T.Analyse S:   " << setprecision(2) << MPI_Wtime() - t;
@@ -119,16 +126,17 @@ abcd::solveS ( MV_ColMat_double &f )
 
         mumps_S(2);
 
+        if(mumps_S.info[0] < 0) {
+            LERROR << "MUMPS exited with " << mumps_S.info[0];
+            int job = -90 + mumps_S.info[0];
+            mpi::broadcast(intra_comm, job, 0);
+            throw std::runtime_error("MUMPS exited with an error");
+        }
+
         if(inter_comm.rank() == 0){
             LINFO << "*                                  *";
             LINFO << "> T.Factorize S: " << setprecision(2) << MPI_Wtime() - t;
             LINFO << "*                                  *";
-        }
-
-        if(mumps_S.info[0] < 0) {
-            LERROR << "MUMPS exited with " << mumps_S.info[0];
-            
-            throw std::runtime_error("MUMPS exited with an error");
         }
         /*-----------------------------------------------------------------------------
          *  END MUMPS part

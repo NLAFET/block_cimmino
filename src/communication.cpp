@@ -13,7 +13,6 @@ void abcd::distributeData()
             m_parts.push_back(parts[k].dim(0));
         }
 
-        //abcd::partitioning(p_sets, m_parts, parallel_cg);
         abcd::partitionWeights(p_sets, m_parts, parallel_cg);
 
         for(int i = 1; i < parallel_cg ; i++) {

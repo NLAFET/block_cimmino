@@ -5,7 +5,7 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
 {
     mu.job = 1;
 
-    double t = MPI_Wtime();
+    double t = MPI_Wtime()
 
     dmumps_c(&mu);
 

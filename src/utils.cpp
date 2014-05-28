@@ -24,32 +24,6 @@ void abcd::setIcntl(int *v)
     }
 }
 
-void abcd::partitioning(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts){
-    std::vector<int> sets(nb_parts);
-    std::map<int, std::vector<int> > pts;
-
-    for(int i = 0; i < nb_parts; i++){
-        sets[i] = 0;
-        pts[i];
-    }
-    
-    int cur = 0;
-    int ls = 0;
-    while(cur != (int)weights.size()){
-        int sm = ls;
-        for(int i = 0; i < nb_parts; i++){
-            if(sets[i] < sets[sm]) sm = i;
-        }
-        sets[sm] = sets[sm] + weights[cur];
-        pts[sm].push_back(cur);
-        cur++;
-        ls = sm;
-    }
-
-    for(int i = 0; i < nb_parts; i++){
-        parts.push_back(pts[i]);
-    }
-}
 
 /// Partition weigts
 void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts)

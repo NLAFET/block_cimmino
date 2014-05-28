@@ -33,8 +33,7 @@ abcd::waitForSolve()
         if(job == -1) break;
         // do the solve, in the (simple or not) sumproject
         if(job == 1){
-            mumps.job = 3;
-            dmumps_c(&mumps);
+            mumps(3);
         // handle the matrix S
         } else if (job == 2) {
 
@@ -53,7 +52,9 @@ abcd::waitForSolve()
             mumps_S.a_loc = &vvals[0];
 
             mumps_S(1);
+            if(mumps_S.info[0] < 0) continue;
             mumps_S(2);
+            if(mumps_S.info[0] < 0) continue;
             mumps_S(3);
         // do the solve with a distributed solution output, when building S
         } else if (job == 3) {
@@ -77,8 +78,8 @@ abcd::waitForSolve()
             mumps.sol_loc = new double[mumps.lsol_loc * s];
             mumps.isol_loc = new int[mumps.lsol_loc];
 
-            mumps.job = 3;
-            dmumps_c(&mumps);
+            mumps(3);
+            if(mumps.info[0] < 0) continue;
 
             int part = 0;
             int x_pos = 0;
