@@ -216,20 +216,6 @@ void abcd::partitionMatrix()
             row_sum += nbrows[k];
         }
 
-        if(write_problem.length() != 0) {
-            ofstream f;
-            f.open(write_problem.c_str());
-            f << "%%MatrixMarket matrix coordinate real general\n";
-            f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
-            for(int i = 0; i < m_o; i++){
-                for(int j = ir[i]; j< ir[i + 1]; j++){
-                    f << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
-                }
-            }
-            f.close();
-
-        }
-
         LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << "s.";
            
         delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
@@ -244,16 +230,30 @@ void abcd::partitionMatrix()
     }
 
     if(write_problem.length() != 0) {
-        LINFO << "Writing the problem to the file: " << write_problem;
-        string parts = write_problem + "_parts";
-        ofstream f;
-        f.open(parts.c_str());
+      LINFO << "Writing the problem to the file: " << write_problem;
+      int *ir = A.rowptr_ptr();
+      int *jc = A.colind_ptr();
+      double *val = A.val_ptr();
 
-        for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
-            f << nbrows[k] << "\n";
+      ofstream f;
+      f.open(write_problem.c_str());
+      f << "%%MatrixMarket matrix coordinate real general\n";
+      f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
+      for(int i = 0; i < m_o; i++){
+        for(int j = ir[i]; j< ir[i + 1]; j++){
+          f << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
         }
+      }
+      f.close();
 
-        f.close();
+      string parts = write_problem + "_parts";
+      f.open(parts.c_str());
+
+      for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
+        f << nbrows[k] << "\n";
+      }
+
+      f.close();
     }
 }
 

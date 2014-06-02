@@ -160,6 +160,9 @@ TEST_F (AbcdTest, OneSystemZeroBased)
     obj.rhs[0] = 2;
     obj.nrhs = 1;
 
+    // write the problem
+    obj.write_problem = "/tmp/test_file_abcd";
+
     EXPECT_NO_THROW(obj(-1));
     EXPECT_NO_THROW(obj(1));
     EXPECT_ANY_THROW(obj(1));
