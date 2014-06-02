@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.6)
 
 project(Test_abcd)
 
+if(DEBUG MATCHES ON)
+    add_definitions(-DDEBUG)
+endif()
+
 set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
 
 if(NOT PATOH MATCHES OFF)

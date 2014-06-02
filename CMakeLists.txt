@@ -7,6 +7,7 @@ if(DEBUG MATCHES ON)
     set(TEST "ON")
     set(TESTER "ON")
     set(CMAKE_CXX_FLAGS "-O0 --coverage")
+    add_definitions(-DDBG)
 endif()
 
 include(abcdCmake.in)

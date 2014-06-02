@@ -176,10 +176,6 @@ private:
     VECTOR_double pcgS ( VECTOR_double &b );
     std::vector<int> selected_S_columns;
     std::vector<int> skipped_S_columns;
-    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
-    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U);
     std::vector<double> normres;
     int size_c;
@@ -345,9 +341,6 @@ public:
     std::vector<int> info;
     std::vector<double> dinfo;
 
-    void setIcntl(std::vector<int> &v);
-    void setIcntl(int *v);
-
     int initializeMatrix();
     int preprocessMatrix();
     int factorizeAugmentedSystems();
@@ -357,18 +350,17 @@ public:
     abcd();
     ~abcd();
 
+    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
+    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
 };
 
 
 void configure_logger(std::string log_file);
 void logger_set_filename(std::string log_file);
     
-typedef std::pair<double,int> dipair;
-bool ip_comp(const dipair &, const dipair &);
-template <class K, class V> std::vector<K> get_keys(std::map<K,V> my_map);
 double or_bin(double &a, double &b);
-void setVal(int *lst, int sz, int ival);
 std::vector<int> sort_indexes(const int *v, const int nb_el);
-template <typename T> std::vector<int> sort_indexes(const std::vector<T> &v);
 
 #endif // ABCD_HXX

@@ -28,9 +28,10 @@ int main(int argc, char* argv[])
 
         // we want that only the master logs data
         obj.icntl[Controls::verbose_level] = 2;
-        obj.icntl[Controls::aug_type] = 2;
+        obj.icntl[Controls::block_size] = 2;
+        obj.icntl[Controls::scaling] = 2;
 
-        init_2d_lap(obj, 5);
+        init_2d_lap(obj, 10);
 
         // set the rhs
         // obj.rhs = new double[obj.m];
