@@ -67,7 +67,12 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
     mumps.keep[495 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[497 - 1] = icntl[Controls::exploit_sparcity];
 #endif
+
+#ifdef WIP
+    // If we need to fully augment the matrix, or at least to build part of it
+    // this is needed only in ABCD direct and iterative
     if(dcntl[Controls::aug_type] == 0 || icntl[Controls::aug_iterative] == 2){
+#endif
 
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
@@ -96,6 +101,7 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
             int mumps_share = share;
             mumps.icntl[27 - 1] = mumps_share;
 
+#ifdef WIP
             // debug
             bool dense_build = false;
             if(dense_build){
@@ -118,11 +124,17 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
             } else {
                 spSimpleProject(cur_cols, vr, vc, vv);
             }
+#else
+                spSimpleProject(cur_cols, vr, vc, vv);
+#endif // WIP
             pos = end_pos;
         }
 
 
+#ifdef WIP
     } else {
+      // We build a smaller S from a filtered C, this requires an iterative
+      // process. We repetedly compute m.n.s. using bcg() 
 
         for( int i = 0; i < size_c; i++){
             if(inter_comm.rank() == 0) LDEBUG << " Column " << i << " out of " << size_c;
@@ -150,6 +162,8 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
             }
         }
     }
+#endif // WIP
+
     if(vv.size() == 0) {
         vc.push_back(0);
         vr.push_back(0);

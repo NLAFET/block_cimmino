@@ -4,6 +4,8 @@ set(BUILD_TYPE "Release")
 
 if(DEBUG MATCHES ON)
     set(BUILD_TYPE "Debug")
+    set(TEST "ON")
+    set(TESTER "ON")
     set(CMAKE_CXX_FLAGS "-O0 --coverage")
 endif()
 
@@ -28,6 +30,10 @@ endif()
 
 if(MUMPS_ES MATCHES OFF)
     add_definitions(-DNO_MUMPS_ES)
+endif()
+
+if(WIP MATCHES ON)
+  add_definitions(-DWIP)
 endif()
 
 include_directories(
