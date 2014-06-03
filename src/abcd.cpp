@@ -273,7 +273,11 @@ int abcd::solveSystem()
         }
 
         // If we are running ABCD, we have to ensure that we have no block-size > 1
-        if(icntl[Controls::aug_type] == 0 || icntl[Controls::aug_project] != 0 || runSolveS){
+        if(icntl[Controls::aug_type] == 0 ||
+#ifdef WIP
+           icntl[Controls::aug_project] != 0 ||
+#endif //WIP
+           runSolveS){
             abcd::distributeRhs();
             abcd::bcg(B);
         } else{

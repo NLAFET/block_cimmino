@@ -20,17 +20,21 @@ namespace Controls{
 
         exploit_sparcity= 13, ///< Exploit the sparcity in MUMPS
 
+#ifdef WIP
         aug_iterative   = 14, ///< \exp Enable or disable iterative solving of Sz=f
 
         aug_project     = 15, ///< \deprecated Compute the projection only
         aug_dense       = 16, ///< \deprecated Use dense RHS when doing the computation
+#endif //WIP
     };
     enum dcontrols {
         part_imbalance  = 1, ///< The imbalance factor in PaToH case
         threshold       = 2, ///< The stoping threshold
 
+#ifdef WIP
         aug_filter      = 10, ///< \deprecated The filtering value
         aug_precond     = 11, ///< \exp The preconditioner criteria of selection
+#endif //WIP
     };
     enum info {
         status          = 1, ///< Exit status

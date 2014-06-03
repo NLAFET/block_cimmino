@@ -9,6 +9,7 @@
  *  Description:  Builds a sparse S
  * =====================================================================================
  */
+#ifdef WIP
     Coord_Mat_double
 abcd::buildS (  )
 {
@@ -24,6 +25,7 @@ abcd::buildS ( std::vector<int> cols )
     buildS(vr, vc, vv, cols);
     return Coord_Mat_double(size_c, size_c, vv.size(), &vv[0], &vr[0], &vc[0]);
 }
+#endif //WIP
 
 void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double> &vv)
 {

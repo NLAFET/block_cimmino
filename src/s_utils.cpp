@@ -21,12 +21,7 @@
 #include <iostream>
 #include <fstream>
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::prodSv
- *  Description:  
- * =====================================================================================
- */
+#ifdef WIP
     MV_ColMat_double
 abcd::prodSv ( MV_ColMat_double &V )
 {
@@ -51,12 +46,6 @@ abcd::prodSv ( MV_ColMat_double &V )
 }       /* -----  end of function abcd::prodSv  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::buildM
- *  Description:  
- * =====================================================================================
- */
 MUMPS abcd::buildM (  )
 {
     if(inter_comm.rank() == 0){
@@ -213,12 +202,6 @@ MUMPS abcd::buildM (  )
 
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::solveM
- *  Description:  
- * =====================================================================================
- */
     VECTOR_double
 abcd::solveM (MUMPS &mu, VECTOR_double &z )
 {
@@ -246,12 +229,6 @@ abcd::solveM (MUMPS &mu, VECTOR_double &z )
 }       /* -----  end of function abcd::solveM  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::pcgS
- *  Description:  
- * =====================================================================================
- */
     VECTOR_double
 abcd::pcgS ( VECTOR_double &b )
 {
@@ -350,3 +327,5 @@ abcd::pcgS ( VECTOR_double &b )
 
     return x;
 }       /* -----  end of function abcd::pcgS  ----- */
+
+#endif //WIP

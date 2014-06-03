@@ -22,13 +22,16 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
     }
 
     if(mu.getInfo(1) != 0){
-        cout << string(32, '-') << endl
-             << "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             << string(32, '-') << endl
-             << "| info(1)       : " << setw(6) << mu.getInfo(1) << string(4, ' ') << " |" << endl
-             << "| info(2)       : " << setw(6) << mu.getInfo(2) << string(4, ' ') << " |" << endl
-             << string(32, '-') << endl;
-        throw 100 * mu.getInfo(1) - mu.getInfo(2);
+        LERROR << string(32, '-') ;
+        LERROR << "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" ;
+        LERROR << string(32, '-') ;
+        LERROR << "| info(1)       : " << setw(6) << mu.getInfo(1) << string(4, ' ') << " |" ;
+        LERROR << "| info(2)       : " << setw(6) << mu.getInfo(2) << string(4, ' ') << " |" ;
+        LERROR << string(32, '-') ;;
+        LERROR << "MUMPS exited with " << mumps_S.info[0];
+        int job = -70 + mu.info[0];
+        mpi::broadcast(intra_comm, job, 0);
+        throw std::runtime_error("MUMPS exited with an error");
     }
 
     double smem;
@@ -41,19 +44,19 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         if(IRANK == 0) smem = smem/inter_comm.size();
     }
 
-    if(instance_type == 0 && verbose == true) {
+    if(instance_type == 0) {
         double flop = mu.getRinfoG(3);
         int prec = cout.precision();
         cout.precision(2);
-        cout << string(32, '-') << endl
-             << "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" << endl
-             << string(32, '-') << endl
-             << "| N             : " << setw(12) << mumps.n << " |" << endl
-             << "| NZ            : " << setw(12) << mumps.nz << " |" << endl
-             << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" << endl
-             << "| Time          : " << setw(6) << t << " sec |" << endl
-             << "| avg memory    : " << setw(6) << smem << " M| "<< endl
-             << string(32, '-') << endl;
+        LINFO << string(32, '-') ;
+        LINFO << "| MUMPS FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" ;
+        LINFO << string(32, '-') ;
+        LINFO << "| N             : " << setw(12) << mumps.n << " |" ;
+        LINFO << "| NZ            : " << setw(12) << mumps.nz << " |" ;
+        LINFO << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" ;
+        LINFO << "| Time          : " << setw(6) << t << " sec |" ;
+        LINFO << "| avg memory    : " << setw(6) << smem << " M| ";
+        LINFO << string(32, '-') ;;
         cout.precision(prec);
     }
 }

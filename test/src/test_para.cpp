@@ -319,34 +319,22 @@ TEST_F (AbcdTest, AijAugment)
   init_2d_lap(obj, 100);
   obj.icntl[aug_type] = 2;
   obj.icntl[part_type] = 3;
+  obj.icntl[verbose_level] = 2;
 
   EXPECT_NO_THROW(obj(-1));
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, AijAugmentIterative)
+TEST_F (AbcdTest, AijAugment_SmallChuncks)
 {
-  init_2d_lap(obj, 100);
+  init_2d_lap(obj, 10);
   obj.icntl[aug_type] = 2;
   obj.icntl[part_type] = 3;
-  obj.icntl[aug_iterative] = 1;
-  obj.dcntl[aug_filter] = 0.1;
+  obj.icntl[aug_blocking] = 1;
 
   EXPECT_NO_THROW(obj(-1));
   EXPECT_NO_THROW(obj(6));
 }
-
-TEST_F (AbcdTest, AijAugmentFilter)
-{
-  init_2d_lap(obj, 100);
-  obj.icntl[aug_type] = 2;
-  obj.icntl[part_type] = 3;
-  obj.dcntl[aug_filter] = 1e-6;
-
-  EXPECT_NO_THROW(obj(-1));
-  EXPECT_ANY_THROW(obj(6));
-}
-
 
 int main(int argc, char **argv) {
   // Equivalent to MPI_Initialize

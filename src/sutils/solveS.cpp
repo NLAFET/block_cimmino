@@ -31,6 +31,7 @@ abcd::solveS ( MV_ColMat_double &f )
             LDEBUG << "> T.build S : (no stop)  " << setprecision(2) << MPI_Wtime() - t;
         }
 
+#ifdef WIP
         // debug right now:
         bool write_sub_s = false;
         if(write_sub_s) {
@@ -48,6 +49,7 @@ abcd::solveS ( MV_ColMat_double &f )
             f.close();
             exit(0);
         }
+#endif //WIP
 
     
         /*-----------------------------------------------------------------------------

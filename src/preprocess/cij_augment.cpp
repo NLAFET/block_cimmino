@@ -6,7 +6,11 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     int nz_c = 0;
     std::map<int,std::vector<CompCol_Mat_double> > C;
     std::map<int,std::vector<int> > stCols;
+#ifdef WIP
     double filter_c = dcntl[Controls::aug_filter];
+#else
+    double filter_c = 0;
+#endif //WIP
     stC = std::vector<int>(M.size(), -1);
 
     if (icntl[Controls::scaling] == 0)
@@ -45,6 +49,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                     bool valid = false;
                     int coli = C_ij.col_ptr(k-1);
                     while(coli < C_ij.col_ptr(k)){
+#ifdef WIP
                         if(icntl[Controls::aug_iterative] != 0){ 
                             if(abs(C_ij.val(coli)) >= dcntl[Controls::aug_precond]){
                                 selected_S_columns.push_back( nbcols + k - n_o);
@@ -53,15 +58,18 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                             }
                         }
 
+#endif //WIP
                         if(abs(C_ij.val(coli)) >= filter_c){
                             valid = true;
                             break;
                         }
 
+#ifdef WIP
                         if( icntl[Controls::aug_iterative] != 2 ){ // don't reduce, we just need the selected columns!
                             valid = true; // let the force be with you, always!
                             break;
                         }
+#endif //WIP
 
                         coli++;
                     }
@@ -78,6 +86,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                     bool valid = false;
                     int coli = CT_ij.col_ptr(k-1);
                     while(coli < CT_ij.col_ptr(k)){
+#ifdef WIP
                         if(icntl[Controls::aug_iterative] != 0){ 
                             if(abs(CT_ij.val(coli)) >= dcntl[Controls::aug_precond]){
                                 selected_S_columns.push_back( nbcols + k - n_o);
@@ -86,15 +95,18 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                             }
                         }
 
+#endif //WIP
                         if(abs(CT_ij.val(coli)) >= filter_c){
                             valid = true;
                             break;
                         }
 
+#ifdef WIP
                         if( icntl[Controls::aug_iterative] != 2 ){ // don't reduce, we just need the selected columns!
                             valid = true; // let the force be with you, always!
                             break;
                         }
+#endif //WIP
                         coli++;
                     }
                     if(valid) cir.push_back(l);

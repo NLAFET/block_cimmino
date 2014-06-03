@@ -6,7 +6,9 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     int nbcols = A.dim(1);
     std::map<int,std::vector<CompCol_Mat_double> > C;
     std::map<int,std::vector<int> > stCols;
+#ifdef WIP
     double filter_c = dcntl[Controls::aug_filter];
+#endif //WIP
     stC = std::vector<int>(M.size(), -1);
 
     for( size_t i = 0; i < M.size() - 1; i++ ){
@@ -23,6 +25,7 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
             for(int k = 0; k < A_ji.NumNonzeros(); k++)
                 A_ji.val(k) *= double(-1);
 
+#ifdef WIP
             if(filter_c != 0 || icntl[Controls::aug_iterative] != 0) {
                 std::vector<int> selected_cols;
                 std::vector<double> frob_ij, mu;
@@ -98,6 +101,7 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                     A_ji = sub_matrix(A_ji, selected_cols);
                 }
             }
+#endif //WIP
 
             stCols[i].push_back(nbcols);
             stCols[j].push_back(nbcols);

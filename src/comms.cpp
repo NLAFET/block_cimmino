@@ -211,7 +211,9 @@ void abcd::distributeRhs()
     // and distribute max iterations
     mpi::broadcast(inter_comm, icntl[Controls::itmax], 0);
     mpi::broadcast(inter_comm, dcntl[Controls::threshold], 0);
+#ifdef WIP
     mpi::broadcast(inter_comm, dcntl[Controls::aug_filter], 0);
+#endif //WIP
 
     // A = CompRow_Mat_double();
 }

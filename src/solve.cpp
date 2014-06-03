@@ -21,12 +21,20 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     }
 
     t = MPI_Wtime();
+#ifdef WIP
     if(dcntl[Controls::aug_filter] == 0){
+#endif //WIP
+
         w = sumProject(1e0, b, 0e0, Xk);
+
+#ifdef WIP
+    if(dcntl[Controls::aug_filter] == 0){
     } else {
         bcg(b);
         w = Xk; 
     }
+#endif //WIP
+
     if(inter_comm.rank() == 0){
         LINFO << "> Time to compute w = A^+ b: " << setprecision(2) << MPI_Wtime() - t;
     }
@@ -64,6 +72,7 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     }
 
     t = MPI_Wtime();
+#ifdef WIP
     if(icntl[Controls::aug_iterative] != 0){
         if(inter_comm.rank() == 0)
             LINFO << "* ITERATIVELY                      *";
@@ -74,8 +83,14 @@ void abcd::solveABCD ( MV_ColMat_double &b )
 
     } else {
 
+#endif //WIP
+
         f = solveS(f);
+
+#ifdef WIP
     }
+#endif //WIP
+
     if(IRANK == 0) 
         LINFO << "| Time to solve Sz = f: " << setprecision(2) << MPI_Wtime() - t;
 
@@ -102,9 +117,12 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     }
     f = MV_ColMat_double(n, 1, 0);
 
+#ifdef WIP
     if(dcntl[Controls::aug_filter] == 0){
+#endif //WIP
         f = Xk - sumProject(0e0, b, 1e0, Xk);
 
+#ifdef WIP
     } else {
         use_xk = false;
 
@@ -131,6 +149,7 @@ void abcd::solveABCD ( MV_ColMat_double &b )
         else
             f = f - Xk;
     }
+#endif // WIP
     if(IRANK == 0) 
         LINFO << "> Took: " << setprecision(2) << MPI_Wtime() - t;
 

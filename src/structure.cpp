@@ -340,7 +340,6 @@ void abcd::analyseFrame()
 
 void abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
-    double filter_c = dcntl[Controls::aug_filter];
     stC = std::vector<int>(M.size(), -1);
 
     if(icntl[Controls::aug_type] == 0){

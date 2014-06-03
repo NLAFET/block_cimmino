@@ -278,13 +278,15 @@ int main(int argc, char* argv[])
 
         if(augmentation){
             obj.icntl[Controls::aug_type]   = pt.get<int>("augmentation.type", 2);
-            obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
             obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
+            obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.multirhs", 256);
+#ifdef WIP
+            obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
             obj.icntl[Controls::aug_project]   = pt.get<int>("augmentation.project_only", 0);
             obj.icntl[Controls::aug_dense]   = pt.get<int>("augmentation.denserhs", 0);
-            obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.multirhs", 256);
             obj.icntl[Controls::aug_iterative]   = pt.get<int>("augmentation.iterative", 0);
             obj.dcntl[Controls::aug_precond]   = pt.get<double>("augmentation.precond", 0.0);
+#endif //WIP
             obj.write_s     = pt.get<string>("augmentation.write_s", "");
         }
 
