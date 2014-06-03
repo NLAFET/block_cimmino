@@ -2,6 +2,7 @@
 #include<mumps.h>
 using namespace  boost::lambda;
 
+#ifdef WIP
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
     bool dense_rhs = (icntl[Controls::aug_dense] == 1);
@@ -180,3 +181,4 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 
     return Delta;
 }
+#endif // WIP

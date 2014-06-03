@@ -239,7 +239,17 @@ TEST_F (AbcdTest, BlockCG)
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, BlockCGPaToH0) 
+TEST_F (AbcdTest, BlockCG_GMGS2) 
+{
+  init_2d_lap(obj, 100);
+  obj.icntl[block_size] = 4;
+  obj.icntl[use_gmgs2] = 1;
+
+  EXPECT_NO_THROW(obj(-1));
+  EXPECT_NO_THROW(obj(6));
+}
+
+TEST_F (AbcdTest, BlockCG_PaToH_0) 
 {
   init_2d_lap(obj, 100);
   obj.icntl[block_size] = 4;
@@ -250,7 +260,7 @@ TEST_F (AbcdTest, BlockCGPaToH0)
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, BlockCGPaToH05) 
+TEST_F (AbcdTest, BlockCG_PaToH_05) 
 {
   init_2d_lap(obj, 100);
   obj.icntl[block_size] = 4;
@@ -261,7 +271,7 @@ TEST_F (AbcdTest, BlockCGPaToH05)
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, BlockCGPaToH15) 
+TEST_F (AbcdTest, BlockCG_PaToH_15) 
 {
   init_2d_lap(obj, 100);
   obj.icntl[block_size] = 4;
@@ -272,7 +282,7 @@ TEST_F (AbcdTest, BlockCGPaToH15)
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, BlockCGPaToH25) 
+TEST_F (AbcdTest, BlockCG_PaToH_25) 
 {
   init_2d_lap(obj, 100);
   obj.icntl[block_size] = 4;
@@ -283,7 +293,7 @@ TEST_F (AbcdTest, BlockCGPaToH25)
   EXPECT_NO_THROW(obj(6));
 }
 
-TEST_F (AbcdTest, BlockCGPaToH5) 
+TEST_F (AbcdTest, BlockCG_PaToH_5) 
 {
   init_2d_lap(obj, 100);
   obj.icntl[block_size] = 4;

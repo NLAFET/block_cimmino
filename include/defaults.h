@@ -12,6 +12,7 @@ namespace Controls{
         itmax           = 6, ///< The max number of iterations
         block_size      = 7, ///< The Block-CG block-size
         verbose_level   = 8, ///< The verbose level
+        use_gmgs2       = 9, ///< Force GMGS^2 in B-CG
 
         aug_type        = 10, ///< The augmentation type
         aug_blocking    = 11, ///< The blocking factor when building S

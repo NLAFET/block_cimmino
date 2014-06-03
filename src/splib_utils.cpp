@@ -19,17 +19,6 @@
 #include <abcd.h>
 #include "blas.h"
 
-double infNorm(Coord_Mat_double &M){
-    double max = 0;
-    double *pt = M.val_ptr();
-    double v;
-    for (int i = 0; i < M.NumNonzeros(); i++){
-        //if(abs(V(i)) >= max) max = abs(V(i));
-        v = abs(pt[i]);
-        max = v > max ? v : max;
-    }
-    return max;
-}
 double infNorm(VECTOR_double &V){
     double max = 0;
     for (int i = 0; i < V.size(); i++){
@@ -48,32 +37,12 @@ double infNorm(MV_ColMat_double &V){
     return max;
 }
 
-double squaredNorm(VECTOR_double &V){
-    double sum = 0;
-    double e;
-    for (int i = 0; i < V.size(); i++){
-        e = V(i);
-        sum += e*e;
-    }
-    return sum;
-}
-
 double squaredNorm(VECTOR_double &V, VECTOR_int &I){
     double sum = 0;
     double e;
     for (int i = 0; i < I.size(); i++){
         e = V(I(i));
         sum += e*e;
-    }
-    return sum;
-}
-
-double squaredNorm(CompRow_Mat_double &M)
-{
-    double sum = 0;
-    for (int i = 0; i < M.NumNonzeros(); i++){
-        double v = M.val(i);
-        sum += v*v;
     }
     return sum;
 }
@@ -110,12 +79,6 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
 
 CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
     return CompCol_Mat_double(CSR_middleRows(M, st_row, nb_rows));
-}
-
-VECTOR_double middleCol(CompCol_Mat_double &M, int col_num){
-    VECTOR_int ind;
-    return middleCol(M, col_num, ind);
-
 }
 
 VECTOR_double middleCol(CompCol_Mat_double &M, int col_num, VECTOR_int &ind){

@@ -79,7 +79,10 @@ void abcd::bcg(MV_ColMat_double &b)
     t1_total = MPI_Wtime() - t1_total;
     // orthogonalize
     // r = r*gamma^-1
-    if(gqr(r, r, gammak, s, false) != 0){
+
+    if(icntl[Controls::use_gmgs2] != 0){
+        gmgs(r, r, gammak, s, false);
+    } else if(gqr(r, r, gammak, s, false) != 0){
         gmgs(r, r, gammak, s, false);
     }
 
@@ -111,7 +114,9 @@ void abcd::bcg(MV_ColMat_double &b)
 
         t1 = MPI_Wtime() - t;
 
-        if(gqr(p, qp, betak, s, true) != 0){
+        if(icntl[Controls::use_gmgs2] != 0){
+            gmgs(p, qp, betak, s, true);
+        } else if(gqr(p, qp, betak, s, true) != 0){
             gmgs(p, qp, betak, s, true);
         }
 

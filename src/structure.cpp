@@ -288,7 +288,7 @@ void abcd::analyseFrame()
     }
     LINFO << "Partitions created in: " << MPI_Wtime() - t << "s.";
     //
-
+#ifdef WIP
     // test augmentation!
     if(icntl[Controls::aug_analysis] == 2){
         double f = 0;
@@ -301,6 +301,7 @@ void abcd::analyseFrame()
         }
         exit(0);
     }
+#endif //WIP
 
     if (icntl[Controls::aug_type] != 0) {
         t = MPI_Wtime();
