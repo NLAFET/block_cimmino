@@ -26,6 +26,7 @@ protected:
   mpi::communicator world;
   abcd obj;
 };
+
 TEST_F (AbcdTest, defaults)
 {
   // default icntl
@@ -336,53 +337,6 @@ TEST_F (AbcdTest, AijAugmentFilter)
   EXPECT_ANY_THROW(obj(6));
 }
 
-TEST_F(AbcdTest, GMGSvsGQR)
-{
-  // prepare data
-  init_2d_lap(obj, 100);
-  obj(-1);
-  obj(4);
-  
-  int s = 2;
-  int n = obj.n;
-
-  double *gq1 = new double[n * s];
-  double *gq2 = new double[n * s];
-  double *gm1 = new double[n * s];
-  double *gm2 = new double[n * s];
-
-  MV_ColMat_double gq(s, s, 0);
-  MV_ColMat_double gm(s, s, 0);
-
-  srand(s); 
-
-  for(int i = 0; i < n; ++i){
-    for(int j = 0; j < s; ++j){
-      gm1[i + j * n] = gq1[i + j * n] = (double)((rand())%10)/99.9 + 1;
-      gm2[i + j * n] = gq2[i + j * n] = (double)((rand())%10)/99.9 + 1;
-    }
-  }
-
-  MV_ColMat_double q1(gq1, n, s, MV_Matrix_::ref);
-  MV_ColMat_double q2(gq2, n, s, MV_Matrix_::ref);
-  MV_ColMat_double m1(gm1, n, s, MV_Matrix_::ref);
-  MV_ColMat_double m2(gm2, n, s, MV_Matrix_::ref);
-
-
-  obj.gqr (q1, q2, gq, s, true);
-  obj.gmgs(m1, m2, gm, s, true);
-
-  MV_Vector_double diff1 = q1(0) - m1(0);
-  MV_Vector_double diff2 = q2(0) - m2(0);
-  double diff = gq(0,0) - gm(0,0);
-
-  MV_Vector_double q10 = q1(0);
-  MV_Vector_double q20 = q2(0);
-
-  EXPECT_THAT(infNorm(diff1)/infNorm(q10), Le(1e-12));
-  EXPECT_THAT(infNorm(diff2)/infNorm(q20), Le(1e-12));
-  EXPECT_THAT(diff/gq(0,0), Le(1e-12));
-}
 
 int main(int argc, char **argv) {
   // Equivalent to MPI_Initialize

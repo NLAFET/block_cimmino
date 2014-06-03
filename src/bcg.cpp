@@ -254,7 +254,6 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 {
     r = MV_ColMat_double(s, s, 0);
 
-
     // OK!! we have our R here, lets have some fun :)
     for(int k = 0; k < s; k++) {
         VECTOR_double p_k = p(k);
@@ -277,26 +276,23 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         // if all is fine, do an sqrt:
         r(k, k) = sqrt(r(k, k));
         p_k = p_k / r(k, k);
+        
         p.setCol(p_k, k);
         if(use_a){
             ap_k = ap_k / r(k, k);
             ap.setCol(ap_k, k);
         }
 
-        if(k < s - 1) {
-            for(int j = k + 1; j < s - k; j++){
-                ap_k = ap(j);
-                p_k = p(k);
-                r(k, j) = abcd::ddot(p_k, ap_k);
-                VECTOR_double tcol = p(k);
-                p_k = p_k - tcol * r(k, j);
-                p.setCol(p_k, j);
+        for(int j = k + 1; j < s; j++){
+            VECTOR_double p_j = p(j);
+            VECTOR_double ap_j = ap(j);
+            
+            r(k, j) = abcd::ddot(p_k, ap_j);
 
-                if(use_a) {
-                    tcol = ap(k);
-                    ap_k = ap_k - tcol * r(k, j);
-                    ap.setCol(ap_k, j);
-                }
+            p_j = p_j - p_k * r(k, j);
+
+            if(use_a) {
+                ap_j = ap_j - ap_k * r(k, j);
             }
         }
     }
