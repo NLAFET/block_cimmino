@@ -6,7 +6,6 @@ void abcd::initializeCimmino()
     int *sym_perm;
 
     mpi::broadcast(comm, icntl[Controls::nbparts], 0);
-
     
     if(comm.size() > parallel_cg) {
         if(instance_type == 0) {
@@ -34,6 +33,8 @@ void abcd::initializeCimmino()
         if(instance_type == 0) {
             mumps.job = -2;
             dmumps_c(&mumps);
+
+            mumps.initialized = false;
         }
 
         allocateMumpsSlaves(mumps);
@@ -54,11 +55,4 @@ void abcd::initializeCimmino()
         mumps.jcn = &jcn_aug[0];
         mumps.a = &val_aug[0];
     }
-    
-    if(inter_comm.rank() == 0 && instance_type == 0)
-        LINFO << "Launching MUMPS analysis";
-    abcd::analyseAugmentedSystems(mumps);
-
-    //delete[] sym_perm;
-
 }

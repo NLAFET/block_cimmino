@@ -71,7 +71,7 @@ void abcd::distributeRhs()
             for(int j = 0; j < nrhs; j++){
                 double unscaled; 
                 for(int i = 0; i < A.dim(1); i++) {
-                    unscaled = rhs[i + j * A.dim(1)] * dcol_(i);
+                    unscaled = rhs[i + j * A.dim(1)] * dcol_[i];
                     if(abs(unscaled) > nrmXf) nrmXf = abs(unscaled);
                     Xf(i, j) = unscaled;
                 }

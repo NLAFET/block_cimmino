@@ -32,7 +32,7 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
             int current_weight = 0;
 
             // Share everything sequentially
-            while(current_partiton < nb_parts) {
+            while((current_partiton < nb_parts) && (weight_index < (int)weights.size())) {
                 if((weights[weight_index] > avg * (fix - 0.1))
                     && (pts[current_partiton].size() != 0)){
                     current_partiton++;
@@ -231,7 +231,7 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
         }
         for(int j = 0; j < dest_ncols; ++j)
             for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < n_o; ++i){
-                vdest(globalIndex[i], 0) = source(i, j) * dcol_(globalIndex[i]);
+                vdest(globalIndex[i], 0) = source(i, j) * dcol_[globalIndex[i]];
             }
 
         ///@TODO Move this away

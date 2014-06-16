@@ -218,8 +218,15 @@ void abcd::partitionMatrix()
 
         LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << "s.";
            
-        delete[] ir, jc, val, partvec, partweights, cwghts, pins, xpins, nwghts,
-            ir, jc, val;
+        delete[] ir;
+        delete[] jc;
+        delete[] val;
+        delete[] partvec;
+        delete[] partweights;
+        delete[] cwghts;
+        delete[] pins;
+        delete[] xpins;
+        delete[] nwghts;
         PaToH_Free();
 #else
         info[Controls::status] = -7;
@@ -271,19 +278,18 @@ void abcd::analyseFrame()
     LINFO << "Creating partitions";
     
     for (unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; ++k) {
-        CompCol_Mat_double part = CSC_middleRows(A, strow[k], nbrows[k]);
+        CompCol_Mat_double part(CSC_middleRows(A, strow[k], nbrows[k]));
         
         int *col_ptr = part.colptr_ptr();
-        std::vector<int> ci = getColumnIndex(col_ptr, part.dim(1));
-        column_index[k] = ci;
+        column_index[k] =  getColumnIndex(col_ptr, part.dim(1));
 
         // if no augmentation, then create the parts
         if(icntl[Controls::aug_type] == 0)
         {
-            parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
+            parts[k] = CompRow_Mat_double(sub_matrix(part, column_index[k]));
         } else 
         {
-            loc_parts[k] = part;
+            loc_parts[k] = CompCol_Mat_double(part);
         }
     }
     LINFO << "Partitions created in: " << MPI_Wtime() - t << "s.";
@@ -312,16 +318,18 @@ void abcd::analyseFrame()
         column_index.resize(icntl[Controls::nbparts]);
         ci_sizes.resize(icntl[Controls::nbparts]);
         
-        for (unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
+        for (unsigned int k = 0;
+             k < (unsigned int)icntl[Controls::nbparts]; k++) {
 
-            CompCol_Mat_double part = loc_parts[k];
+            CompCol_Mat_double &part = loc_parts[k];
 
             // Build the column index of part
-            std::vector<int> ci = getColumnIndex(
+            column_index[k] = getColumnIndex(
                 part.colptr_ptr(), part.dim(1)
                 );
 
-            column_index[k] = ci;
+            std::vector<int> &ci = column_index[k];
+            
             ci_sizes[k] = ci.size();
 
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));

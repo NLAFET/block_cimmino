@@ -119,7 +119,7 @@ private:
      * @norm the norm at which the matrix is scaled
      */
     void scaleMatrix(int norm);
-    void diagScaleMatrix(VECTOR_double , VECTOR_double );
+    void diagScaleMatrix(std::vector<double> & , std::vector<double> & );
     void diagScaleRhs(VECTOR_double &);
     void diagScaleRhs(MV_ColMat_double &);
     /**
@@ -220,8 +220,8 @@ private:
     /*
      * Scaling information
      */
-    VECTOR_double drow_;
-    VECTOR_double dcol_;
+    std::vector<double> drow_;
+    std::vector<double> dcol_;
 
     /***************************************************************************
      * The matrix object itself

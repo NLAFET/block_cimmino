@@ -23,15 +23,27 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
 
     if(mu.getInfo(1) != 0){
         LERROR << string(32, '-') ;
-        LERROR << "| MUMPS Factoriz FAILED on MA " << setw(7) << inter_comm.rank() << " |" ;
-        LERROR << string(32, '-') ;
-        LERROR << "| info(1)       : " << setw(6) << mu.getInfo(1) << string(4, ' ') << " |" ;
-        LERROR << "| info(2)       : " << setw(6) << mu.getInfo(2) << string(4, ' ') << " |" ;
-        LERROR << string(32, '-') ;;
-        LERROR << "MUMPS exited with " << mumps_S.info[0];
-        int job = -70 + mu.info[0];
+        LERROR << "> MUMPS Factoriz FAILED on master " << inter_comm.rank();
+        LERROR << "MUMPS exited with " << mu.getInfo(1);
+        
+        int job = -700 + mu.getInfo(1);
         mpi::broadcast(intra_comm, job, 0);
-        throw std::runtime_error("MUMPS exited with an error");
+
+        // oh the infamous -9!
+        if (mu.getInfo(1) == -9) {
+            LERROR << "MUMPS's internet real workarray is too small.";
+            LERROR << "MUMPS is missing "
+                   << setprecision(2)
+                   << (mu.getInfo(2) > 0 ? mu.getInfo(2) * sizeof(double) : mu.getInfo(2) * pow(10, 6) * sizeof(double))
+                   << " Bytes";
+            LERROR << "MUMPS ICNTL[14] = " << mu.getIcntl(14);
+
+        } else if (mu.getInfo(1) == -10) {
+            LERROR << "MUMPS says that the augmented matrix is singular.";
+            LERROR << "That should not happen if your system is full column rank";
+        }
+        
+        throw std::runtime_error("MUMPS exited with an error!");
     }
 
     double smem;

@@ -105,7 +105,7 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
 
 #ifdef WIP
             // debug
-            bool dense_build = false;
+            bool dense_build = true;
             if(dense_build){
                 MV_ColMat_double sp = spSimpleProject(cur_cols);
 

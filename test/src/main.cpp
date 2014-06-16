@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
             double t = MPI_Wtime();
             obj(1);
             obj(2);
-
+            
             obj.nrhs = 1;
 
             if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
@@ -317,9 +317,9 @@ int main(int argc, char* argv[])
             obj(3);
 
             clog << "Total time: " << MPI_Wtime() - t << endl;
-        } catch(int e) {
-            cout << world.rank() << " Error code : " << e << endl;
-            mpi::broadcast(world, e, 0);
+        } catch(std::runtime_error e) {
+            cout << world.rank() << " Error code : " << e.what() << endl;
+            mpi::broadcast(world, error, 0);
             error = true;
         }
 
@@ -369,10 +369,8 @@ int main(int argc, char* argv[])
             obj(1);
             obj(2);
             obj(3);
-        } catch(int e) {
-            cout << world.rank() << " Error code : " << e << endl;
-            if(world.rank() == 6) 
-            exit(0);
+        } catch(std::runtime_error e) {
+            cout << world.rank() << " Error code : " << e.what() << endl;
         }
     }
     world.barrier();

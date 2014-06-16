@@ -92,6 +92,12 @@ if(TEST MATCHES ON)
             src/basic.cpp
     )
 
+    target_link_libraries(
+        basic_test
+        abcd 
+        ${LIBS}
+    )
+
     set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
     set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
     set(GTEST_INCLUDE_DIR $ENV{HOME}/.local/include/)

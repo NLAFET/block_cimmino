@@ -28,7 +28,6 @@ void abcd::solveABCD ( MV_ColMat_double &b )
         w = sumProject(1e0, b, 0e0, Xk);
 
 #ifdef WIP
-    if(dcntl[Controls::aug_filter] == 0){
     } else {
         bcg(b);
         w = Xk; 
@@ -173,7 +172,7 @@ void abcd::solveABCD ( MV_ColMat_double &b )
         sol = solution.ptr();
     }
 
-    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
+    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, &dcol_[0]);
 
 }		/* -----  end of function abcd::solveABCD  ----- */
 

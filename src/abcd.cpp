@@ -28,7 +28,7 @@ abcd::abcd()
 
     icntl.assign(20, 0);
     dcntl.assign(20, 0);
-    info.assign(2, 0);
+    info.assign(10, 0);
     dinfo.assign(5, 0);
 
     icntl[Controls::aug_blocking] = 256;
@@ -67,6 +67,9 @@ abcd::abcd()
 
 abcd::~abcd()
 {
+  if (mumps.initialized) {
+    mumps(-2);
+  }
 }
 
 /// Creates the internal matrix from user's data
@@ -228,6 +231,11 @@ int abcd::factorizeAugmentedSystems()
     }
     
     abcd::initializeCimmino();
+    
+    if(inter_comm.rank() == 0 && instance_type == 0)
+        LINFO << "Launching MUMPS analysis";
+    
+    abcd::analyseAugmentedSystems(mumps);
     
     if(IRANK == 0){
         LINFO << "Initialization time : " << MPI_Wtime() - t;

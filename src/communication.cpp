@@ -136,6 +136,23 @@ void abcd::distributeData()
     }
     mpi::broadcast(inter_comm, m_l, 0);
     mpi::broadcast(inter_comm, n_l, 0);
+
+    nrmMtx = 0;
+    double nrmP = 0;
+    for(int i = 0; i < partitions.size(); ++i) {
+      int *rp = partitions[i].rowptr_ptr();
+      int *cp = partitions[i].colind_ptr();
+      double *vp = partitions[i].val_ptr();
+      
+      for(int r = 0; r < partitions[i].dim(0); r++) {
+          double rsum = 0;
+          for (int c = rp[r]; c < rp[r+1]; ++c){
+              rsum += abs(vp[c]);
+          }
+          if(nrmP < rsum) nrmP = rsum;
+      }
+    }
+    mpi::all_reduce(inter_comm, &nrmP, 1, &nrmMtx, mpi::maximum<double>());
 }
 
 void abcd::createInterconnections()

@@ -192,7 +192,7 @@ void abcd::bcg(MV_ColMat_double &b)
         sol = solution.ptr();
     }
     
-    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, dcol_.ptr());
+    centralizeVector(sol, n_o, nrhs, Xk.ptr(), n, nrhs, glob_to_local_ind, &dcol_[0]);
 }
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
