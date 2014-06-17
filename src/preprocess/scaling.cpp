@@ -22,7 +22,7 @@ void abcd::scaling()
     }
 
     if(icntl[Controls::scaling] >= 0) {
-        LINFO << "Scaling with Infinity";
+        LINFO << "Row-Scaling with Infinity";
 
         double rsum;
         dcol_.assign(n, double(1));

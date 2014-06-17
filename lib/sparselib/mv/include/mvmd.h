@@ -222,7 +222,7 @@ inline MV_Vector_double MV_ColMat_double::operator()(int j){
     assert(0<=j && j<dim1_);
 #endif
 
-    VECTOR_double v = v_(MV_VecIndex(j*lda_, (j+1)*lda_ -1));
+    MV_Vector_double v = v_(MV_VecIndex(j*lda_, (j+1)*lda_ -1));
     return v;
 }
 
