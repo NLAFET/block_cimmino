@@ -36,3 +36,11 @@ set(LIBS
     # scotch
     # scotcherr
 )
+
+set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
+set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
+set(GTEST_INCLUDE_DIR $ENV{HOME}/.local/include/)
+
+set(GMOCK_LIBRARY $ENV{HOME}/.local/lib/libgmock.a)
+set(GMOCK_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgmock_main.a)
+set(GMOCK_INCLUDE_DIR $ENV{HOME}/.local/include/)
