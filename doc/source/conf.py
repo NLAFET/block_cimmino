@@ -20,6 +20,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('exts'))
+sys.path.append(os.path.abspath('../src'))
 
 
 # -- General configuration ------------------------------------------------
@@ -32,6 +33,7 @@ sys.path.insert(0, os.path.abspath('exts'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
@@ -53,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'ABCD Solver'
-copyright = '2014, Mohamed Zenadi, Daniel Ruiz, and Ronan Guivarch'
+copyright = '2014, INP de Toulouse'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -107,7 +109,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'nature'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
