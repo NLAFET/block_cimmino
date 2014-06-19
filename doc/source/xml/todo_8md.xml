@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="todo_8md" kind="file">
+    <compoundname>todo.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal">TODO</highlight></codeline>
+<codeline lineno="2"><highlight class="normal">=====</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">##<sp/>C<sp/>interface<sp/>##</highlight></codeline>
+<codeline lineno="5"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal">It</highlight><highlight class="stringliteral">&apos;s<sp/>easy<sp/>to<sp/>implement<sp/>a<sp/>C-interface<sp/>for<sp/>`ABCD`.<sp/>Two<sp/>files<sp/>are<sp/>included<sp/>in<sp/>`test/src/`,<sp/>`abcd_c.h`<sp/>and<sp/>`c_interface.cc`.<sp/>The<sp/>C-interface<sp/>is<sp/>a<sp/>structure<sp/>called<sp/>`abcd_solver`<sp/>and<sp/>it<sp/>replicates<sp/>part<sp/>(only<sp/>public)<sp/>members<sp/>of<sp/>the<sp/>C++<sp/>class<sp/>`abcd`.</highlight></codeline>
+<codeline lineno="7"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="8"><highlight class="stringliteral">###<sp/>What&apos;</highlight><highlight class="normal">s<sp/>done?<sp/>###</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal">We<sp/>have<sp/>already<sp/>defined<sp/>an<sp/>example<sp/>in<sp/>the<sp/>aforementioned<sp/>files,<sp/>the<sp/>test<sp/>file<sp/>is<sp/>also<sp/>included<sp/>`c_test.c`<sp/>and<sp/>compiles<sp/>into<sp/>an<sp/>executable<sp/>`test_abcd_c_interface`.<sp/>The<sp/>`icntl`<sp/>array<sp/>is<sp/>the<sp/>only<sp/>interfaced<sp/>member<sp/>right<sp/>now,<sp/>the<sp/>structure<sp/>looks<sp/>like:</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">abcd_solver</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*icntl;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">The<sp/>initializing<sp/></highlight><highlight class="keyword">function</highlight><highlight class="normal"><sp/>is<sp/>called<sp/>`new_solver()`<sp/>and<sp/>returns<sp/>a<sp/>pointer<sp/>to<sp/>an<sp/>allocated<sp/>structure:</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">abcd_solver*<sp/>new_solver()</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">abcd_solver<sp/>*solver<sp/>=<sp/>(</highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">abcd_solver<sp/>*)malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(*solver));</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>obj<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classabcd" kindref="compound">abcd</ref>();</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>solver-&gt;icntl<sp/>=<sp/>&amp;obj-&gt;icntl[0];</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>put<sp/>the<sp/>rest<sp/>of<sp/>associations<sp/>here!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>solver;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">In<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">function</highlight><highlight class="normal"><sp/>we<sp/>create<sp/>an<sp/>instance<sp/>of<sp/>the<sp/>C++<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">`<ref refid="classabcd" kindref="compound">abcd</ref>`<sp/>and</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">associate<sp/>the<sp/>pointer<sp/>to<sp/>the<sp/>first<sp/>entry<sp/>in<sp/>the<sp/>C++<sp/>`<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>`<sp/>vector<sp/>to</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">the<sp/>C-array<sp/>with<sp/>the<sp/>same<sp/>name.<sp/>Here<sp/>is<sp/>a<sp/>simple<sp/>working<sp/>example<sp/>in<sp/>C</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>#include<sp/>&quot;abcd_c.h&quot;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//....</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>typedef<sp/>struct<sp/>abcd_solver<sp/><ref refid="classabcd" kindref="compound">abcd</ref>;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classabcd" kindref="compound">abcd</ref><sp/>*obj<sp/>=<sp/>new_solver();</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>20;<sp/>i++)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(</highlight><highlight class="stringliteral">&quot;%d<sp/><sp/><sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>i,<sp/>obj-&gt;<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[i]);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">Notice<sp/>that<sp/>`<ref refid="classabcd" kindref="compound">abcd</ref>`<sp/>in<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>is<sp/>not<sp/>related<sp/>to<sp/>the<sp/>C++<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">but<sp/>to<sp/>the<sp/>C-structure<sp/>as<sp/>the<sp/>C++<sp/>header<sp/>is<sp/>not<sp/>included.</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">###<sp/>What&apos;s<sp/>left?<sp/>###</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">Almost<sp/>everything!<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">-<sp/>Add<sp/>the<sp/>rest<sp/>of<sp/>associations</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">-<sp/>Add<sp/>the<sp/>function<sp/>call<sp/>to<sp/>run<sp/>the<sp/>solver<sp/>(it<sp/>should<sp/>call<sp/>the<sp/>function<sp/>`bc()`.</highlight></codeline>
+    </programlisting>
+    <location file="/home/mzenadi/projects/abcd/doc/old_doxygen/todo.md"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_9655df946259d9fb0c43b0282f9e4a22" kind="dir">
+    <compoundname>/home/mzenadi/projects/abcd/src/utils</compoundname>
+    <innerfile refid="compress__columns_8cpp">compress_columns.cpp</innerfile>
+    <innerfile refid="logger_8cpp">logger.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/src/utils/"/>
+  </compounddef>
+</doxygen>

@@ -22,6 +22,10 @@ import os
 sys.path.insert(0, os.path.abspath('exts'))
 sys.path.append(os.path.abspath('../src'))
 
+breathe_projects = {
+    "abcd":"xml/",
+}
+
 
 # -- General configuration ------------------------------------------------
 
@@ -39,6 +43,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinxcontrib.tikz',
+    'breathe',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

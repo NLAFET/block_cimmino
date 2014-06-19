@@ -14,7 +14,9 @@ The Augmented Block Cimmino Distributed Solver
    installation
    usage_cpp
 
-.. automodule:: abcd
+.. doxygenclass:: abcd
+   :project: abcd
+   :members:
 
 Indices and tables
 ==================

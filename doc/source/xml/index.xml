@@ -1,0 +1,810 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.6">
+  <compound refid="classabcd" kind="class"><name>abcd</name>
+    <member refid="classabcd_1af5397b434eab1f94cbbe4e104e93723b" kind="variable"><name>nrmA</name></member>
+    <member refid="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" kind="variable"><name>nrmB</name></member>
+    <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" kind="variable"><name>nrmXf</name></member>
+    <member refid="classabcd_1afd573b0c136c11086126ab0869cfb912" kind="variable"><name>nrmMtx</name></member>
+    <member refid="classabcd_1ac7dad2825c69db177a9e616a386c3131" kind="variable"><name>last_called_job</name></member>
+    <member refid="classabcd_1a7228c63e7b61ad01935612d5c68f2564" kind="variable"><name>instance_type</name></member>
+    <member refid="classabcd_1ad4a6632f5425fc1fb6cc15e3160ce91c" kind="variable"><name>selected_S_columns</name></member>
+    <member refid="classabcd_1a976f04d4e48f36d0e6c5b38821654971" kind="variable"><name>skipped_S_columns</name></member>
+    <member refid="classabcd_1aa1a229ff3c4713418623c6416bd13f6b" kind="variable"><name>normres</name></member>
+    <member refid="classabcd_1a299209b68954f61f840c16964438da55" kind="variable"><name>size_c</name></member>
+    <member refid="classabcd_1aa080d0df3ebb1813d70fe3fc3e7f4055" kind="variable"><name>m_n</name></member>
+    <member refid="classabcd_1a5de04c7b1e0749991df158b8758fcd7a" kind="variable"><name>m_nz</name></member>
+    <member refid="classabcd_1a65a26d9b5e26a6fc735fc0a44269c274" kind="variable"><name>n_aug</name></member>
+    <member refid="classabcd_1aae46ce5a9ec879a0eb6ebba50381c62b" kind="variable"><name>nz_aug</name></member>
+    <member refid="classabcd_1a806d3bee472cdae0490e809295aa2141" kind="variable"><name>irn_aug</name></member>
+    <member refid="classabcd_1a983804bd5a2990ffce8182a767175b83" kind="variable"><name>jcn_aug</name></member>
+    <member refid="classabcd_1a202032f1d34ddce8f5155e7c2f2fad86" kind="variable"><name>val_aug</name></member>
+    <member refid="classabcd_1a878bd4b6a03057799978bb745b44cd15" kind="variable"><name>mumps</name></member>
+    <member refid="classabcd_1ae11d9fd2b4ffecd11c6a5a4f66049160" kind="variable"><name>my_slaves</name></member>
+    <member refid="classabcd_1a0f5749acc76c44b96da4752557ac0580" kind="variable"><name>my_master</name></member>
+    <member refid="classabcd_1a8a415661419f06b656382390896827a3" kind="variable"><name>comm_map</name></member>
+    <member refid="classabcd_1a9def8962f21d58d5b61975ffecc1af96" kind="variable"><name>drow_</name></member>
+    <member refid="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" kind="variable"><name>dcol_</name></member>
+    <member refid="classabcd_1a4476fbb15765c2e6276d70131212baba" kind="variable"><name>mumps_S</name></member>
+    <member refid="classabcd_1a6494ba4a220da82e02622f38b25068db" kind="variable"><name>S</name></member>
+    <member refid="classabcd_1ab1ae1de1a6d9e3864c07fe746ddc6fcd" kind="variable"><name>S_rows</name></member>
+    <member refid="classabcd_1a28e5018dcc397bfef8ab9de001cc4506" kind="variable"><name>S_cols</name></member>
+    <member refid="classabcd_1aba3ee1235942f0b5121ecb2b4d74a196" kind="variable"><name>S_vals</name></member>
+    <member refid="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" kind="variable"><name>parts</name></member>
+    <member refid="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" kind="variable"><name>partitions</name></member>
+    <member refid="classabcd_1a43aed50014aaac4c6442475410dce5f1" kind="variable"><name>p_sets</name></member>
+    <member refid="classabcd_1a112a717bc087d569225694bada18c45f" kind="variable"><name>Xf</name></member>
+    <member refid="classabcd_1a4a0f44796d9dadf39f0b9655ada8df67" kind="variable"><name>B</name></member>
+    <member refid="classabcd_1a3c69c57b283e3d97a9eb0176efcc2f70" kind="variable"><name>RRand</name></member>
+    <member refid="classabcd_1ac65507961f8180935b292542e452a4f4" kind="variable"><name>A</name></member>
+    <member refid="classabcd_1a546571c42ff50c26f55fbfd4d66cf0ee" kind="variable"><name>row_perm</name></member>
+    <member refid="classabcd_1a1907cd9c727f334284fbcaffdd88b8b9" kind="variable"><name>runSolveS</name></member>
+    <member refid="classabcd_1a1ceaa3c6a556f8e818d213029d0fe8b9" kind="variable"><name>n_l</name></member>
+    <member refid="classabcd_1a61ec8805a290f1fc73e413332e3ac96d" kind="variable"><name>m_l</name></member>
+    <member refid="classabcd_1a8256e8277b5d2200dba679d8dd71554a" kind="variable"><name>nz_l</name></member>
+    <member refid="classabcd_1a8f8c3fe9e674f9f1e27973891ac968e1" kind="variable"><name>n_o</name></member>
+    <member refid="classabcd_1a2257a5ef4b7426570fe986d8f5344efb" kind="variable"><name>m_o</name></member>
+    <member refid="classabcd_1ad0a81d878205a7333c9a674224f74b58" kind="variable"><name>nz_o</name></member>
+    <member refid="classabcd_1ad788028f06240ea4038c0c74eb0e7087" kind="variable"><name>Xk</name></member>
+    <member refid="classabcd_1a6cdf5d4fe4ccb909ae7f247b1a6c2467" kind="variable"><name>start_index</name></member>
+    <member refid="classabcd_1a9d25f8c5a12912bf579d4b856d23ef4e" kind="variable"><name>nbparts</name></member>
+    <member refid="classabcd_1a394b46f507335cb80943626234cc0789" kind="variable"><name>nb_local_parts</name></member>
+    <member refid="classabcd_1aa393171b258ca15e05c4be342bec81d9" kind="variable"><name>column_index</name></member>
+    <member refid="classabcd_1a2db6084cb434e4751b2df4369a985ea7" kind="variable"><name>column_index_cache</name></member>
+    <member refid="classabcd_1a35c3b252abcc4dd7931e4b034e8de062" kind="variable"><name>local_column_index</name></member>
+    <member refid="classabcd_1ac687cd652fbf6c35035792eb8fd29b70" kind="variable"><name>fast_local_column_index</name></member>
+    <member refid="classabcd_1a563905855b1ab8c8a3bf20d5785a3901" kind="variable"><name>glob_to_local</name></member>
+    <member refid="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" kind="variable"><name>glob_to_local_ind</name></member>
+    <member refid="classabcd_1a1707bed55d487b558424d13d8afafda3" kind="variable"><name>glob_to_local_c</name></member>
+    <member refid="classabcd_1add4558f59ffb02eb4aa85648f324036b" kind="variable"><name>st_c_part_it</name></member>
+    <member refid="classabcd_1a29978bbf0d8de4a0c40daea6dc6376c4" kind="variable"><name>st_c_part</name></member>
+    <member refid="classabcd_1a526c2c2ba72f32aea9a49c785d1cb8b2" kind="variable"><name>glob_to_part</name></member>
+    <member refid="classabcd_1adbcae55b17045d4202388dad7a913c00" kind="variable"><name>part_to_glob</name></member>
+    <member refid="classabcd_1a98bd0bc0703a2a0ff27223df81df6097" kind="variable"><name>stC</name></member>
+    <member refid="classabcd_1a1f9a7481b36c728f518a1391c83a37b7" kind="variable"><name>use_xk</name></member>
+    <member refid="classabcd_1a9eb7ac628f0bf6d4132ea384f46810d4" kind="variable"><name>use_xf</name></member>
+    <member refid="classabcd_1a4a2f088da09ed8daae94b7d3639e0418" kind="variable"><name>solution</name></member>
+    <member refid="classabcd_1a958fb5e353f34d2ab91d95df9a82f920" kind="variable"><name>col_interconnections</name></member>
+    <member refid="classabcd_1a7197aee3bef7fc1fbbfcb62dafc28d1c" kind="variable"><name>col_inter</name></member>
+    <member refid="classabcd_1aaa986f7d93302b717d39c4d5c4662edb" kind="variable"><name>parts_id</name></member>
+    <member refid="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" kind="variable"><name>verbose</name></member>
+    <member refid="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" kind="variable"><name>inter_comm</name></member>
+    <member refid="classabcd_1a272df4807f77f34dc90146a76fc1a230" kind="variable"><name>intra_comm</name></member>
+    <member refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kind="variable"><name>m</name></member>
+    <member refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kind="variable"><name>n</name></member>
+    <member refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kind="variable"><name>nz</name></member>
+    <member refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kind="variable"><name>nrhs</name></member>
+    <member refid="classabcd_1ace2325edd418de592d36d4ba3d2ee983" kind="variable"><name>write_problem</name></member>
+    <member refid="classabcd_1af72a892a19a1d3eb640638d532770ce8" kind="variable"><name>write_s</name></member>
+    <member refid="classabcd_1a6dbfdab8785ca4e04335b514df06cf57" kind="variable"><name>log_output</name></member>
+    <member refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kind="variable"><name>irn</name></member>
+    <member refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kind="variable"><name>jcn</name></member>
+    <member refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kind="variable"><name>val</name></member>
+    <member refid="classabcd_1a6d0201d9f397728a0cb9f0504570e958" kind="variable"><name>rhs</name></member>
+    <member refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" kind="variable"><name>sol</name></member>
+    <member refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kind="variable"><name>sym</name></member>
+    <member refid="classabcd_1ad720ae148dc7e0aa94c19d20e655c187" kind="variable"><name>strow</name></member>
+    <member refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kind="variable"><name>nbrows</name></member>
+    <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kind="variable"><name>parallel_cg</name></member>
+    <member refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kind="variable"><name>comm</name></member>
+    <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kind="variable"><name>icntl</name></member>
+    <member refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kind="variable"><name>dcntl</name></member>
+    <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" kind="variable"><name>info</name></member>
+    <member refid="classabcd_1a8929be2a941d94806c90eb40a7366c9a" kind="variable"><name>dinfo</name></member>
+    <member refid="classabcd_1a92ee33baaed6bff47deff16943966123" kind="function"><name>scaling</name></member>
+    <member refid="classabcd_1ae95e3e480eb2fad37901ef31bc45e274" kind="function"><name>scaleMatrix</name></member>
+    <member refid="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" kind="function"><name>diagScaleMatrix</name></member>
+    <member refid="classabcd_1a66529e5682d33cf80934c0f596a461a7" kind="function"><name>diagScaleRhs</name></member>
+    <member refid="classabcd_1ae8c0947316be4c38301332074fda0339" kind="function"><name>diagScaleRhs</name></member>
+    <member refid="classabcd_1a09091f9c7c3dc22cde07ff661dbef576" kind="function"><name>computeNorms</name></member>
+    <member refid="classabcd_1aa886456ff67dc4a18e1c5cdb8b1d7ea3" kind="function"><name>partitionMatrix</name></member>
+    <member refid="classabcd_1abc87b17b4a945955631d21220c544117" kind="function"><name>analyseFrame</name></member>
+    <member refid="classabcd_1af62d114097b0e9039c05392c1ce17cb5" kind="function"><name>augmentMatrix</name></member>
+    <member refid="classabcd_1ad4c94bb95e057c3a0e8e67fac4f613fd" kind="function"><name>cijAugmentMatrix</name></member>
+    <member refid="classabcd_1adf0919f439b050435990bccef88dd74b" kind="function"><name>aijAugmentMatrix</name></member>
+    <member refid="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" kind="function"><name>createInterComm</name></member>
+    <member refid="classabcd_1a2d28aace9f0b39f4a42f73c9a1065552" kind="function"><name>distributePartitions</name></member>
+    <member refid="classabcd_1aa290bca49b911d694e128ce85057e058" kind="function"><name>createInterconnections</name></member>
+    <member refid="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" kind="function"><name>distributeData</name></member>
+    <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" kind="function"><name>initializeCimmino</name></member>
+    <member refid="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" kind="function"><name>distributeRhs</name></member>
+    <member refid="classabcd_1a51b5418bb8de6589d5456f7657b31b67" kind="function"><name>distributeNewRhs</name></member>
+    <member refid="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" kind="function"><name>bcg</name></member>
+    <member refid="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" kind="function"><name>solveABCD</name></member>
+    <member refid="classabcd_1aa3d8082dc1f8bb53fecb6796983bc41f" kind="function"><name>solveS</name></member>
+    <member refid="classabcd_1a8da6dd9fb704f3669d56a309384424fd" kind="function"><name>buildS</name></member>
+    <member refid="classabcd_1abc3798083b0d66d028984023a7a79e04" kind="function"><name>buildS</name></member>
+    <member refid="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" kind="function"><name>buildS</name></member>
+    <member refid="classabcd_1a955d4b1e0db10d8674b92bd23d215870" kind="function"><name>buildS</name></member>
+    <member refid="classabcd_1ae2707391ee22a24e3a704e12b89e87aa" kind="function"><name>buildM</name></member>
+    <member refid="classabcd_1a07cb16265fca6e94b21f3cb546ec8bf8" kind="function"><name>solveM</name></member>
+    <member refid="classabcd_1a70a9ed1ef8d082ec9722eb0f529620cc" kind="function"><name>prodSv</name></member>
+    <member refid="classabcd_1af357842f3e0e35c69d2611d2bb20d7f1" kind="function"><name>pcgS</name></member>
+    <member refid="classabcd_1ad3ed7b03a3b928931f4ebcb95e6786a3" kind="function"><name>compute_rho</name></member>
+    <member refid="classabcd_1a4a38fc2cf3a288e6cbfbf9cebe961599" kind="function"><name>initializeMumps</name></member>
+    <member refid="classabcd_1a93a2700765821fc8f648923fe31fb731" kind="function"><name>initializeMumps</name></member>
+    <member refid="classabcd_1ac35f58e16199bd8730bec922906b6af5" kind="function"><name>createAugmentedSystems</name></member>
+    <member refid="classabcd_1a6a02efd657087ee75d2baaa8ca36992f" kind="function"><name>analyseAugmentedSystems</name></member>
+    <member refid="classabcd_1a1df8d0625f241fdc4b31826674a114d7" kind="function"><name>allocateMumpsSlaves</name></member>
+    <member refid="classabcd_1a0ad19a4110240dfa7f241567e205e731" kind="function"><name>factorizeAugmentedSystems</name></member>
+    <member refid="classabcd_1a7c67e07b5a8d9c04013eeddcb38b2b56" kind="function"><name>sumProject</name></member>
+    <member refid="classabcd_1ac3d0bae5d7774e31f2c5551447b358ea" kind="function"><name>coupleSumProject</name></member>
+    <member refid="classabcd_1aa7e0342f591210d552ffa8ad60bd0aee" kind="function"><name>simpleProject</name></member>
+    <member refid="classabcd_1aa6b92bcd620bc56a7bbe9847a5c8707b" kind="function"><name>spSimpleProject</name></member>
+    <member refid="classabcd_1a455e4818649b17fb7454cd5660c173d4" kind="function"><name>spSimpleProject</name></member>
+    <member refid="classabcd_1a817a3c3999a828b77c7ba67dff64dc2c" kind="function"><name>waitForSolve</name></member>
+    <member refid="classabcd_1aecdcfbeb7c8483e30a5696406c15f66f" kind="function"><name>partitionWeights</name></member>
+    <member refid="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" kind="function"><name>partitioning</name></member>
+    <member refid="classabcd_1a262aae8ba8a72bb202f5f56c88e4457e" kind="function"><name>ddot</name></member>
+    <member refid="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" kind="function"><name>get_nrmres</name></member>
+    <member refid="classabcd_1addecce43741a76bd852cd439cda77eae" kind="function"><name>S_nbrows</name></member>
+    <member refid="classabcd_1ae9dbae8b952ba08d0c8bf29c0f9d0779" kind="function"><name>S_nbcols</name></member>
+    <member refid="classabcd_1a482623996a6268d4b29cad1db5382122" kind="function"><name>S_nnz</name></member>
+    <member refid="classabcd_1a33e3410c567ea50aa84a31c745b296ca" kind="function"><name>centralizeVector</name></member>
+    <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kind="function"><name>initializeMatrix</name></member>
+    <member refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kind="function"><name>preprocessMatrix</name></member>
+    <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kind="function"><name>factorizeAugmentedSystems</name></member>
+    <member refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" kind="function"><name>solveSystem</name></member>
+    <member refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kind="function"><name>operator()</name></member>
+    <member refid="classabcd_1a5e503b1e89268fbfad4399194895b683" kind="function"><name>abcd</name></member>
+    <member refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" kind="function"><name>~abcd</name></member>
+    <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" kind="function"><name>gqr</name></member>
+    <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" kind="function"><name>gqr</name></member>
+    <member refid="classabcd_1aedb08f01ec4ef119160da403cee682ea" kind="function"><name>gmgs</name></member>
+    <member refid="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" kind="function"><name>gmgs</name></member>
+  </compound>
+  <compound refid="struct_m_u_m_p_s" kind="struct"><name>MUMPS</name>
+    <member refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" kind="variable"><name>initialized</name></member>
+    <member refid="struct_m_u_m_p_s_1adf68bbbd0d25691e1f3d46b78cf3d50d" kind="function"><name>MUMPS</name></member>
+    <member refid="struct_m_u_m_p_s_1a565f658601b879b6af7cceb6ab65ef8c" kind="function"><name>operator()</name></member>
+    <member refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kind="function"><name>setIcntl</name></member>
+    <member refid="struct_m_u_m_p_s_1aa2432953311e2753688a84fac29c1c7b" kind="function"><name>setCntl</name></member>
+    <member refid="struct_m_u_m_p_s_1a04673f03636f7b3993ee6ef02dd8583e" kind="function"><name>getIcntl</name></member>
+    <member refid="struct_m_u_m_p_s_1a44b0fbe7cdf0384135f0149074d06a60" kind="function"><name>getCntl</name></member>
+    <member refid="struct_m_u_m_p_s_1a0cb19453cec6726af88cfa432bed247d" kind="function"><name>getInfo</name></member>
+    <member refid="struct_m_u_m_p_s_1a50527464722e7b00483f90f93324f03a" kind="function"><name>getInfoG</name></member>
+    <member refid="struct_m_u_m_p_s_1afd037d16254c04c34e6f24a4c06a229d" kind="function"><name>getRinfo</name></member>
+    <member refid="struct_m_u_m_p_s_1a8255db5ea962546e6b27d8c47de4ae6e" kind="function"><name>getRinfoG</name></member>
+  </compound>
+  <compound refid="classsphinxcontrib_1_1tikz_1_1tikz" kind="class"><name>sphinxcontrib::tikz::tikz</name>
+  </compound>
+  <compound refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive" kind="class"><name>sphinxcontrib::tikz::TikzDirective</name>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a335286739701ea5c6ad9c94bb8d0141d" kind="variable"><name>has_content</name></member>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a4d7b4d1072cada7882654d0565e94f65" kind="variable"><name>required_arguments</name></member>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a713aea27f7c9f1e99274918a12c1c417" kind="variable"><name>optional_arguments</name></member>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a874bc3ea4cc256965d6c181dc5d78a96" kind="variable"><name>final_argument_whitespace</name></member>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a775d49b9959305db0307e02dd081c31a" kind="variable"><name>option_spec</name></member>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_directive_1a4cc31ed8b8b0fd5d842cd59874286e65" kind="function"><name>run</name></member>
+  </compound>
+  <compound refid="classsphinxcontrib_1_1tikz_1_1_tikz_ext_error" kind="class"><name>sphinxcontrib::tikz::TikzExtError</name>
+    <member refid="classsphinxcontrib_1_1tikz_1_1_tikz_ext_error_1a0b2ba8b5e60b2cfa54c4bfa4e8bd0d6d" kind="variable"><name>category</name></member>
+  </compound>
+  <compound refid="classsphinxcontrib_1_1tikz_1_1tikzinline" kind="class"><name>sphinxcontrib::tikz::tikzinline</name>
+  </compound>
+  <compound refid="namespaceboost" kind="namespace"><name>boost</name>
+  </compound>
+  <compound refid="namespaceboost_1_1lambda" kind="namespace"><name>boost::lambda</name>
+  </compound>
+  <compound refid="namespaceboost_1_1numeric" kind="namespace"><name>boost::numeric</name>
+  </compound>
+  <compound refid="namespaceconf" kind="namespace"><name>conf</name>
+    <member refid="namespaceconf_1ae475e080536acb271a0a0efe56c3ba42" kind="variable"><name>extensions</name></member>
+    <member refid="namespaceconf_1ae850ae634911b713e036b43894fdd525" kind="variable"><name>templates_path</name></member>
+    <member refid="namespaceconf_1a10af2a769eb3bd3322e874f677e435b1" kind="variable"><name>source_suffix</name></member>
+    <member refid="namespaceconf_1a6fcd7e5236f355b1e1a55f9d95988810" kind="variable"><name>master_doc</name></member>
+    <member refid="namespaceconf_1a45653c983098153b78e33600e39230eb" kind="variable"><name>project</name></member>
+    <member refid="namespaceconf_1a33fa97cf51dcb25970fbf53f10159589" kind="variable"><name>copyright</name></member>
+    <member refid="namespaceconf_1ade15c5b54093b64d7c428ec19ca5b1cb" kind="variable"><name>version</name></member>
+    <member refid="namespaceconf_1a325dc746d8bf05c54d26351c35a21d90" kind="variable"><name>release</name></member>
+    <member refid="namespaceconf_1a7ad48fb6f3e9b129c02346ea0d3527c1" kind="variable"><name>exclude_patterns</name></member>
+    <member refid="namespaceconf_1a641130e096b26cba8a5d63ed38684de7" kind="variable"><name>pygments_style</name></member>
+    <member refid="namespaceconf_1a6c3bfcc1a44546c1c75ce20f55bd0fd6" kind="variable"><name>html_theme</name></member>
+    <member refid="namespaceconf_1af4fb5d8851ccaade135c2668dd3ced41" kind="variable"><name>html_static_path</name></member>
+    <member refid="namespaceconf_1aab7fddb2766ce3c430d8246fbfdbc7b1" kind="variable"><name>htmlhelp_basename</name></member>
+    <member refid="namespaceconf_1a33619d385ad23765ac6ebb58bf82d43d" kind="variable"><name>latex_elements</name></member>
+    <member refid="namespaceconf_1a7812f49970f3de0d15dd7b9b9a10e3a1" kind="variable"><name>latex_documents</name></member>
+    <member refid="namespaceconf_1a85efc5fee48a26fa2d651f6eeb38fc2b" kind="variable"><name>man_pages</name></member>
+    <member refid="namespaceconf_1a54b0faed214ac92017d5689efbb10672" kind="variable"><name>texinfo_documents</name></member>
+    <member refid="namespaceconf_1a8375f4f963de3ac8026eaa9beced9564" kind="variable"><name>intersphinx_mapping</name></member>
+  </compound>
+  <compound refid="namespace_controls" kind="namespace"><name>Controls</name>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6e" kind="enum"><name>icontrols</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kind="enumvalue"><name>nbparts</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" kind="enumvalue"><name>part_type</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" kind="enumvalue"><name>part_guess</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" kind="enumvalue"><name>scaling</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea6cd993d493cb532bed17907e8337d9ca" kind="enumvalue"><name>itmax</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kind="enumvalue"><name>block_size</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" kind="enumvalue"><name>verbose_level</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" kind="enumvalue"><name>use_gmgs2</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kind="enumvalue"><name>aug_type</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kind="enumvalue"><name>aug_blocking</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" kind="enumvalue"><name>aug_analysis</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kind="enumvalue"><name>exploit_sparcity</name></member>
+    <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" kind="enum"><name>dcontrols</name></member>
+    <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" kind="enumvalue"><name>part_imbalance</name></member>
+    <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kind="enumvalue"><name>threshold</name></member>
+    <member refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kind="enum"><name>info</name></member>
+    <member refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kind="enumvalue"><name>status</name></member>
+    <member refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" kind="enumvalue"><name>nb_iter</name></member>
+    <member refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kind="enum"><name>dinfo</name></member>
+    <member refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" kind="enumvalue"><name>residual</name></member>
+    <member refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" kind="enumvalue"><name>forward_error</name></member>
+    <member refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" kind="enumvalue"><name>backward</name></member>
+    <member refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" kind="enumvalue"><name>scaled_residual</name></member>
+  </compound>
+  <compound refid="namespaceeasyloggingpp" kind="namespace"><name>easyloggingpp</name>
+  </compound>
+  <compound refid="namespacesphinxcontrib" kind="namespace"><name>sphinxcontrib</name>
+  </compound>
+  <compound refid="namespacesphinxcontrib_1_1tikz" kind="namespace"><name>sphinxcontrib::tikz</name>
+    <member refid="namespacesphinxcontrib_1_1tikz_1aa873c04349af105cd865476a4adeceba" kind="variable"><name>DOC_HEAD</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a156549fe684cee4fd1c66fe276b1d7c6" kind="variable"><name>DOC_BODY</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1ad139ac0acd0291fda2d73c78f4cc3bd3" kind="function"><name>tikz_role</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a6347b0ba24818d80d25d51bb602a1805" kind="function"><name>render_tikz</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a1fb382f0e43880ba182b1ca5831755ea" kind="function"><name>html_visit_tikzinline</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a77b838f59801f2b7ba5b13814fe60a54" kind="function"><name>html_visit_tikz</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a5cbcf96c839318167a9ed8ab4f6641af" kind="function"><name>latex_visit_tikzinline</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a59276569a94655f89f9a4551b3d33970" kind="function"><name>latex_visit_tikz</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a859a83b79ed4d3ac91e690269f68636c" kind="function"><name>depart_tikz</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1a5189fc7d04fec6e41330a2fdef5b2fb7" kind="function"><name>cleanup_tempdir</name></member>
+    <member refid="namespacesphinxcontrib_1_1tikz_1ad5a74d87a83125570806d232a751be07" kind="function"><name>setup</name></member>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="doctools_8js" kind="file"><name>doctools.js</name>
+    <member refid="doctools_8js_1ad9bcfd597eba04db946451e8368a1f05" kind="variable"><name>$u</name></member>
+    <member refid="doctools_8js_1a6fe8c535920429aad34341e5251a6a86" kind="variable"><name>urldecode</name></member>
+    <member refid="doctools_8js_1a8ad0128bd470dd7de4d5515b5e2d322d" kind="variable"><name>urlencode</name></member>
+    <member refid="doctools_8js_1a6c86fd85aed016ab07e2592698da7b8f" kind="variable"><name>getQueryParameters</name></member>
+    <member refid="doctools_8js_1a2e71b63565071f6869c34fb6405fa1b5" kind="variable"><name>highlightText</name></member>
+    <member refid="doctools_8js_1a02217f350f58eea1f41fcc9b47c1fca0" kind="variable"><name>Documentation</name></member>
+    <member refid="doctools_8js_1a18f05aeddc212b523b40818fa2b87b33" kind="variable"><name>_</name></member>
+    <member refid="doctools_8js_1aed7c9717fcf244e1b1a15762bd682f75" kind="function"><name>ready</name></member>
+  </compound>
+  <compound refid="jquery_8js" kind="file"><name>jquery.js</name>
+    <member refid="jquery_8js_1a2c038346d47955cbe2cb91e338edd7e1" kind="variable"><name>e</name></member>
+    <member refid="jquery_8js_1a3c7365c007156a2a63223e3c9909fbf8" kind="variable"><name>n</name></member>
+    <member refid="jquery_8js_1a07c0e0a63b5b484807c0331c78558c9e" kind="variable"><name>r</name></member>
+    <member refid="jquery_8js_1a5e25b1d1bed9ab5f3174b76d6a722180" kind="variable"><name>i</name></member>
+    <member refid="jquery_8js_1ad9a7d92cb87932d25187fdec3ba1b621" kind="variable"><name>s</name></member>
+    <member refid="jquery_8js_1a400dc8109620963da8314d4bdfa14f83" kind="variable"><name>o</name></member>
+    <member refid="jquery_8js_1accb4ce8dd4113ac0f510653e31809106" kind="variable"><name>u</name></member>
+    <member refid="jquery_8js_1a82ca4ee5dd63e58a2bb967077dc8b8fb" kind="variable"><name>a</name></member>
+    <member refid="jquery_8js_1a9cf09a2972472098a4c689fd988f4dfc" kind="variable"><name>f</name></member>
+    <member refid="jquery_8js_1ae5e71a2600e8891c54854be157cc6626" kind="variable"><name>l</name></member>
+    <member refid="jquery_8js_1abce695e0af988ece0826d9ad59b8160d" kind="variable"><name>c</name></member>
+    <member refid="jquery_8js_1a79fe0eb780a2a4b5543b4dddf8b6188a" kind="variable"><name>h</name></member>
+    <member refid="jquery_8js_1ad1707b001240e9c8298830073364c8bf" kind="variable"><name>p</name></member>
+    <member refid="jquery_8js_1aeb337d295abaddb5ec3cb34cc2e2bbc9" kind="variable"><name>d</name></member>
+    <member refid="jquery_8js_1afc3dd12de12777f6e20b4c93b7e7cb96" kind="variable"><name>v</name></member>
+    <member refid="jquery_8js_1a9e77e016b2928d7dcb493b89a0c9dc32" kind="variable"><name>m</name></member>
+    <member refid="jquery_8js_1a103df269476e78897c9c4c6cb8f4eb06" kind="variable"><name>g</name></member>
+    <member refid="jquery_8js_1a0b31909b1cae9ed1db6ff042057fce60" kind="variable"><name>y</name></member>
+    <member refid="jquery_8js_1aa4026ad5544b958e54ce5e106fa1c805" kind="variable"><name>b</name></member>
+    <member refid="jquery_8js_1a9721a992655f700bdc2e91ba68b71e26" kind="variable"><name>w</name></member>
+    <member refid="jquery_8js_1ae406f8d6be3dab2e4d9b41c963380c36" kind="variable"><name>E</name></member>
+    <member refid="jquery_8js_1a81e910173af87b1161e719a504d52407" kind="variable"><name>x</name></member>
+    <member refid="jquery_8js_1aa798e0c32253f973f3154aa30c996eb2" kind="variable"><name>T</name></member>
+    <member refid="jquery_8js_1a0cb3f9e3fcef602adbab963356fbb226" kind="variable"><name>Ft</name></member>
+    <member refid="jquery_8js_1a23006e6b8c3aaabc55cafb592a6fbf4e" kind="variable"><name>It</name></member>
+    <member refid="jquery_8js_1ace17522c42e6559dc5c794d2f4267215" kind="variable"><name>qt</name></member>
+    <member refid="jquery_8js_1a27ee00d05d7021e3b587a325f904c420" kind="variable"><name>Rt</name></member>
+    <member refid="jquery_8js_1a16fa269fdb5cd7b001595c6dc9e583b5" kind="variable"><name>Ut</name></member>
+    <member refid="jquery_8js_1aa317a06941fb406d331c8252365d3c28" kind="variable"><name>zt</name></member>
+    <member refid="jquery_8js_1a238b06f7dac4b7cd29e04d50a5eba6ab" kind="variable"><name>Wt</name></member>
+    <member refid="jquery_8js_1a2cfdb12b771102714ac3bce73ee91ab4" kind="variable"><name>Xt</name></member>
+    <member refid="jquery_8js_1a0499ebb7b16841ec6df8c1f7d76a24a9" kind="variable"><name>Vt</name></member>
+    <member refid="jquery_8js_1a5a188274831b027a2be077bb2a5826e9" kind="variable"><name>$t</name></member>
+    <member refid="jquery_8js_1a9b7a0aabc4057f3721477c68db932435" kind="variable"><name>Jt</name></member>
+    <member refid="jquery_8js_1a9fac4a61459c4b6f76dac3641f2a761a" kind="variable"><name>Kt</name></member>
+    <member refid="jquery_8js_1aa5cee20f62fd8888f4ec6338e682401f" kind="variable"><name>Dt</name></member>
+    <member refid="jquery_8js_1a312f7253f789df5c98ee787b1101a5b0" kind="variable"><name>hidden</name></member>
+    <member refid="jquery_8js_1a4559cfa48784aec9bc7778700d54c201" kind="variable"><name>visible</name></member>
+    <member refid="jquery_8js_1a2b8bdbf35a0b5bc9390c34bd8f4b592b" kind="variable"><name>rn</name></member>
+    <member refid="jquery_8js_1a70ece1b3f74db2cb3cb7e4b72d59b226" kind="variable"><name>sn</name></member>
+    <member refid="jquery_8js_1a2e2ca80f624c66ee8f92375cd2d042e7" kind="variable"><name>on</name></member>
+    <member refid="jquery_8js_1a86a341ddf6f75b8b1aa799f4f0d7fb70" kind="variable"><name>un</name></member>
+    <member refid="jquery_8js_1a951e0d6430e959298106da0f19dd9417" kind="variable"><name>an</name></member>
+    <member refid="jquery_8js_1a15cbbf51f96c4b37e0bef0e5e2e6424c" kind="variable"><name>param</name></member>
+    <member refid="jquery_8js_1acb2bfb9726d903b7e0a8a251c79839de" kind="variable"><name>ln</name></member>
+    <member refid="jquery_8js_1a43c2bda2537661fb64e62fdfdcea1560" kind="variable"><name>cn</name></member>
+    <member refid="jquery_8js_1a703d7f6a2aadb540eb051a5f62674194" kind="variable"><name>hn</name></member>
+    <member refid="jquery_8js_1a6a40831f7c967a457dbbd3b5e6f287d7" kind="variable"><name>pn</name></member>
+    <member refid="jquery_8js_1ab5e3f3e2b2507b73e2d8092caa5c8650" kind="variable"><name>dn</name></member>
+    <member refid="jquery_8js_1a4d3ea42bab8c1a36105c29b5a098a050" kind="variable"><name>vn</name></member>
+    <member refid="jquery_8js_1a4bd552ea83aba00f67c291312863f0c3" kind="function"><name>_</name></member>
+    <member refid="jquery_8js_1a362078f5ee6839a160100dd8c4b12202" kind="function"><name>H</name></member>
+    <member refid="jquery_8js_1ac4077c2c67b5042f2501458598791448" kind="function"><name>B</name></member>
+    <member refid="jquery_8js_1ab18b216aa6438aa9156bfab487626976" kind="function"><name>et</name></member>
+    <member refid="jquery_8js_1aa9d8a13f2cedadb17c423fea0511ce51" kind="function"><name>tt</name></member>
+    <member refid="jquery_8js_1a363f16ff7c6c142a0024599294b85d08" kind="function"><name>ut</name></member>
+    <member refid="jquery_8js_1af07462ae1bd9fb6295cb3c284cc3aadd" kind="function"><name>at</name></member>
+    <member refid="jquery_8js_1ac9de83c33da9d4c9dde2fcd7792d504a" kind="function"><name>ft</name></member>
+    <member refid="jquery_8js_1a206c6a1012b89ca3dfd8d06a96e05ac6" kind="function"><name>lt</name></member>
+    <member refid="jquery_8js_1a4043f678fa20313ae683379cd51ccfb1" kind="function"><name>Lt</name></member>
+    <member refid="jquery_8js_1a927f3db2c1e35330b648faafdeac612d" kind="function"><name>At</name></member>
+    <member refid="jquery_8js_1ae2cf857fbc96abdbc4aaf95bc916a8af" kind="function"><name>Ot</name></member>
+    <member refid="jquery_8js_1aa6a81425faeca949eaf5009aa83f8109" kind="function"><name>Mt</name></member>
+    <member refid="jquery_8js_1acdf8a01530b8170fc2fd653283015238" kind="function"><name>_t</name></member>
+    <member refid="jquery_8js_1ab95080ab9ca06a5b2faf00281b7f87c4" kind="function"><name>Qt</name></member>
+    <member refid="jquery_8js_1a47c5fc31bec9b68bd6263e9d3b296fa3" kind="function"><name>Gt</name></member>
+    <member refid="jquery_8js_1a26823cbbea5773cdde4105d0bd369f13" kind="function"><name>Yt</name></member>
+    <member refid="jquery_8js_1a3473ef0961b344623a3ac42d1cf1dcc6" kind="function"><name>Zt</name></member>
+    <member refid="jquery_8js_1ab1ebd30b3f526114003b29887513463c" kind="function"><name>en</name></member>
+    <member refid="jquery_8js_1a82dc3d0c985624a11b99e421c27aedf3" kind="function"><name>tn</name></member>
+    <member refid="jquery_8js_1a7ea7ec92d45f940306a54e88e43e8864" kind="function"><name>nn</name></member>
+    <member refid="jquery_8js_1a8e6fe8453cf0a4c2e82ab347bdbb4d2a" kind="function"><name>fn</name></member>
+    <member refid="jquery_8js_1aa449a4717573ed8ce6f7b5c00964655f" kind="function"><name>Cn</name></member>
+    <member refid="jquery_8js_1ad6b90318981eb83239001ed8fba164c2" kind="function"><name>kn</name></member>
+    <member refid="jquery_8js_1ad3f1ac50ebb06e32d3126eafddff3f21" kind="function"><name>Ln</name></member>
+    <member refid="jquery_8js_1a97d3fdd1613fa2c00abb86b5fe895c41" kind="function"><name>An</name></member>
+    <member refid="jquery_8js_1a017fee080acf30853016ed804cd8cf7f" kind="function"><name>On</name></member>
+    <member refid="jquery_8js_1aa7b3098e337f431eb8467ca634e5f396" kind="function"><name>Fn</name></member>
+    <member refid="jquery_8js_1a593d854239e56b1d32af4f695d93211a" kind="function"><name>In</name></member>
+    <member refid="jquery_8js_1ad7a70f65757b0998958436396c34ac49" kind="function"><name>$n</name></member>
+    <member refid="jquery_8js_1a83f43463df80bd49be70c6d1533b7989" kind="function"><name>Jn</name></member>
+    <member refid="jquery_8js_1a1832df4bafc8606634166886b5705644" kind="function"><name>Kn</name></member>
+    <member refid="jquery_8js_1a701a948cde1501e2352ba1d04b18f1e4" kind="function"><name>Qn</name></member>
+    <member refid="jquery_8js_1ab0928b8e1395eb6fb1f2e223d789ad05" kind="function"><name>Gn</name></member>
+    <member refid="jquery_8js_1a3e1dbc89497dc3efe6a5e70c402dea61" kind="function"><name>Yn</name></member>
+    <member refid="jquery_8js_1a895b5eb73c7e7e53dd9145bda7bbc5db" kind="function"><name>Zn</name></member>
+    <member refid="jquery_8js_1ab40f84f156bb1540d6cee0cd5816877d" kind="function"><name>tr</name></member>
+    <member refid="jquery_8js_1aeb5aa50a6bc95e54208a9c646f250e70" kind="function"><name>extend</name></member>
+    <member refid="jquery_8js_1a09c6b5fa63bd5849a819197757f64ad4" kind="function"><name>each</name></member>
+    <member refid="jquery_8js_1a9fe34b8c7923785f355fa031ce7f8041" kind="function"><name>opacity</name></member>
+    <member refid="jquery_8js_1acd85e49041174b54abb196361a6c888a" kind="function"><name>v</name></member>
+  </compound>
+  <compound refid="searchtools_8js" kind="file"><name>searchtools.js</name>
+    <member refid="searchtools_8js_1a8a565179f2cd2ff63341c71f11c306f9" kind="variable"><name>Stemmer</name></member>
+    <member refid="searchtools_8js_1afca8fba35da8ed22fdb4c10146737888" kind="variable"><name>Search</name></member>
+    <member refid="searchtools_8js_1a4184e3cf9fc60964f532d2529e4f0691" kind="function"><name>ready</name></member>
+  </compound>
+  <compound refid="sidebar_8js" kind="file"><name>sidebar.js</name>
+    <member refid="sidebar_8js_1a70fa2db5a2f75fd924dbe650ab312435" kind="variable"><name>sidebar</name></member>
+    <member refid="sidebar_8js_1a6f472f1382441ad08c83d287f86556e4" kind="variable"><name>sidebarwrapper</name></member>
+    <member refid="sidebar_8js_1aa1f5c40bc6722b0f306ab5c4407e90bb" kind="variable"><name>bw_margin_expanded</name></member>
+    <member refid="sidebar_8js_1ac435d14e08cab4872ba8656ab82178f1" kind="variable"><name>ssb_width_expanded</name></member>
+    <member refid="sidebar_8js_1a518a0e0e37e51129045604c701741d28" kind="variable"><name>bw_margin_collapsed</name></member>
+    <member refid="sidebar_8js_1a7f51b7be087b4c36680b97ee2db2077b" kind="variable"><name>ssb_width_collapsed</name></member>
+    <member refid="sidebar_8js_1abf6d3d4a0d53476274e95f84ba51cf70" kind="variable"><name>dark_color</name></member>
+    <member refid="sidebar_8js_1a8d222451898695609c49555936204667" kind="variable"><name>light_color</name></member>
+    <member refid="sidebar_8js_1afbd425f704d83cb6406cb2d21e8160f8" kind="variable"><name>sidebarbutton</name></member>
+    <member refid="sidebar_8js_1a6a0083127525e6032f907927eba2cf38" kind="function"><name>if</name></member>
+    <member refid="sidebar_8js_1a8597faa62ac75ddfeaf08b2fa8ea6c9b" kind="function"><name>sidebar_is_collapsed</name></member>
+    <member refid="sidebar_8js_1a7ba84cb0ce6d929f8e0679ee708fdec6" kind="function"><name>toggle_sidebar</name></member>
+    <member refid="sidebar_8js_1a215c0f3c7e0d71d7b86969f613a43503" kind="function"><name>collapse_sidebar</name></member>
+    <member refid="sidebar_8js_1af0851c4541ece8dd5f3b78b135e1e997" kind="function"><name>expand_sidebar</name></member>
+    <member refid="sidebar_8js_1a85e9ab71f7dd4fd0f2511b4ff8006926" kind="function"><name>add_sidebar_button</name></member>
+    <member refid="sidebar_8js_1aa4c1099f4f033b64dd1e6de92800c790" kind="function"><name>set_position_from_cookie</name></member>
+  </compound>
+  <compound refid="underscore_8js" kind="file"><name>underscore.js</name>
+    <member refid="underscore_8js_1a4b28d4aa90dcb1209e289611a604bfbe" kind="variable"><name>_</name></member>
+    <member refid="underscore_8js_1a76595d95e1519d598549a881f24bc055" kind="variable"><name>VERSION</name></member>
+    <member refid="underscore_8js_1aab858032a95af802114b255fac6f45f2" kind="variable"><name>j</name></member>
+    <member refid="underscore_8js_1ac5a9750bad09b1dcf137ad443ade8221" kind="variable"><name>map</name></member>
+    <member refid="underscore_8js_1a90b002cc070dad3774ec7fffd1023c58" kind="variable"><name>reduce</name></member>
+    <member refid="underscore_8js_1ae76b761b23840b6bbfea03f62c652944" kind="variable"><name>reduceRight</name></member>
+    <member refid="underscore_8js_1a93ad9f230c504e1291baa4c34d0eef25" kind="variable"><name>find</name></member>
+    <member refid="underscore_8js_1a3b9fcc0ddef81bbffc25293b11b366ad" kind="variable"><name>filter</name></member>
+    <member refid="underscore_8js_1ac968af6186f26346cc538d732f47dbc3" kind="variable"><name>reject</name></member>
+    <member refid="underscore_8js_1ae38bdb5a85bd7a52b96d8d7d00014e87" kind="variable"><name>every</name></member>
+    <member refid="underscore_8js_1ae406f8d6be3dab2e4d9b41c963380c36" kind="variable"><name>E</name></member>
+    <member refid="underscore_8js_1af4d2b5868c70c43431af0b10347baa79" kind="variable"><name>include</name></member>
+    <member refid="underscore_8js_1ae4d93d99b0121f1731bfdc0b8d22ccf6" kind="variable"><name>invoke</name></member>
+    <member refid="underscore_8js_1af8e00fb51ee78e00faf6395453b960ac" kind="variable"><name>pluck</name></member>
+    <member refid="underscore_8js_1a7a169801e449ed2092e89963bbd0aa30" kind="variable"><name>max</name></member>
+    <member refid="underscore_8js_1af8e4b82eb7b6e642f79a3e6157781195" kind="variable"><name>min</name></member>
+    <member refid="underscore_8js_1aef7da2318afcc4412756e1d0624954c1" kind="variable"><name>shuffle</name></member>
+    <member refid="underscore_8js_1a7cff7fe5f6a592de54ee5e11956c41d7" kind="variable"><name>sortBy</name></member>
+    <member refid="underscore_8js_1a6ea94572ff69e4618d415b422647a657" kind="variable"><name>groupBy</name></member>
+    <member refid="underscore_8js_1a4de5711e6cbd210c5b003921317b118d" kind="variable"><name>sortedIndex</name></member>
+    <member refid="underscore_8js_1ad036fe05d5bbcfa95ad50ee028a45a60" kind="variable"><name>toArray</name></member>
+    <member refid="underscore_8js_1af41999b338e023c7ef0a4a2f55d9059f" kind="variable"><name>size</name></member>
+    <member refid="underscore_8js_1a63bb2babdabfb6444d4dcc710c67d753" kind="variable"><name>first</name></member>
+    <member refid="underscore_8js_1aca11ea5bedcc515ce9112bd2367ca0ea" kind="variable"><name>initial</name></member>
+    <member refid="underscore_8js_1a36e70607e386cb4352b4e6b6dbe7a16a" kind="variable"><name>last</name></member>
+    <member refid="underscore_8js_1a9a70c6f871249cf900d1a52eadbedf90" kind="variable"><name>rest</name></member>
+    <member refid="underscore_8js_1a3d26f399eec08601f48d73d9d57fc7b6" kind="variable"><name>compact</name></member>
+    <member refid="underscore_8js_1adb6fa7d98ec614bdb92b4ceb02a63206" kind="variable"><name>flatten</name></member>
+    <member refid="underscore_8js_1a34dcd6b86f7af5bc91767c205c2715c7" kind="variable"><name>without</name></member>
+    <member refid="underscore_8js_1a5c5ca1fea8ae68feb3a8013cfcea2661" kind="variable"><name>uniq</name></member>
+    <member refid="underscore_8js_1ac84ab33daa8fdcf212f3b8ba805e3787" kind="variable"><name>union</name></member>
+    <member refid="underscore_8js_1a2b15744a52ca641e57dc6306cf16b092" kind="variable"><name>intersection</name></member>
+    <member refid="underscore_8js_1ab7b36c436281ccbaa8d9f0f24215e5c0" kind="variable"><name>difference</name></member>
+    <member refid="underscore_8js_1ae6efd2be4d514fada53f66a7e4abcf50" kind="variable"><name>zip</name></member>
+    <member refid="underscore_8js_1a792cc7b2c8eb3125cdf4e244c300ea4c" kind="variable"><name>indexOf</name></member>
+    <member refid="underscore_8js_1abe28632119762d83c77313990412bf39" kind="variable"><name>lastIndexOf</name></member>
+    <member refid="underscore_8js_1a8df4c9d8cebcb5fedc1630aa846a92d0" kind="variable"><name>range</name></member>
+    <member refid="underscore_8js_1a04d9082506e3640041cd22bef9ab6566" kind="variable"><name>F</name></member>
+    <member refid="underscore_8js_1a9442edb4c79741f2601bb1cef18fc30f" kind="variable"><name>bind</name></member>
+    <member refid="underscore_8js_1a644530dec93375014bbd0b95ceb903da" kind="variable"><name>bindAll</name></member>
+    <member refid="underscore_8js_1abfc3eacbaf273b1d7cf621dded205446" kind="variable"><name>memoize</name></member>
+    <member refid="underscore_8js_1a6cb49c99f81a74fe4c550bc9bb9dc49b" kind="variable"><name>delay</name></member>
+    <member refid="underscore_8js_1a10b1891f0dfc33c1056458ed0aafbf2d" kind="variable"><name>defer</name></member>
+    <member refid="underscore_8js_1a2bf9b507b56023e2b30e9e83b2c54557" kind="variable"><name>throttle</name></member>
+    <member refid="underscore_8js_1a7658f215842a2de7184c64b9e33543f7" kind="variable"><name>debounce</name></member>
+    <member refid="underscore_8js_1a71b4187d13f2023f3d69cab87a2e974d" kind="variable"><name>once</name></member>
+    <member refid="underscore_8js_1ab16ba054cbdceb2a793821ae0600ecca" kind="variable"><name>wrap</name></member>
+    <member refid="underscore_8js_1aa405d9f723913d89be4e5454bd9bdb79" kind="variable"><name>compose</name></member>
+    <member refid="underscore_8js_1a26669b0ec8c0e484f55bba8fe329ee29" kind="variable"><name>after</name></member>
+    <member refid="underscore_8js_1a045ca5db0905811352e338af45b4a93d" kind="variable"><name>keys</name></member>
+    <member refid="underscore_8js_1a7f2daeea0b9079d54a18d6120d729cde" kind="variable"><name>values</name></member>
+    <member refid="underscore_8js_1a61aaaa87b59f1818d8366f0cfd7d086d" kind="variable"><name>functions</name></member>
+    <member refid="underscore_8js_1a5360490a8133165b4291734261ed286d" kind="variable"><name>extend</name></member>
+    <member refid="underscore_8js_1aeaac9d53256ff7d852e756826e3b4d91" kind="variable"><name>defaults</name></member>
+    <member refid="underscore_8js_1ac8235ab7efa3a407f7a905ba7f35023b" kind="variable"><name>clone</name></member>
+    <member refid="underscore_8js_1ac04a7b170398e8561d827cafc34b0292" kind="variable"><name>tap</name></member>
+    <member refid="underscore_8js_1a171f311987ad1c52aeadd3f74d2289b1" kind="variable"><name>isEqual</name></member>
+    <member refid="underscore_8js_1ae0fb8cad591f5cc7a88aa11a52b6c24c" kind="variable"><name>isEmpty</name></member>
+    <member refid="underscore_8js_1a2bc16f6298a96cefbffee8b968001db2" kind="variable"><name>isElement</name></member>
+    <member refid="underscore_8js_1a2580f6d4bcfe2598c3f2abed694e6fdd" kind="variable"><name>isArray</name></member>
+    <member refid="underscore_8js_1a875092d24c0b2cc7490f6bbac8fa1d78" kind="variable"><name>isObject</name></member>
+    <member refid="underscore_8js_1addfe79d6348c7885bd56b7c8af2f8ace" kind="variable"><name>isArguments</name></member>
+    <member refid="underscore_8js_1aa1dc89fd6d5f63d3b7cd7cd914e49111" kind="variable"><name>isFunction</name></member>
+    <member refid="underscore_8js_1af055ec43b6ccabc9a61791387dd5a8f0" kind="variable"><name>isString</name></member>
+    <member refid="underscore_8js_1aa93b0abe08d38a646f1683c1343981ac" kind="variable"><name>isNumber</name></member>
+    <member refid="underscore_8js_1a2e9887111dd2ae16aa13d8d244060901" kind="variable"><name>isNaN</name></member>
+    <member refid="underscore_8js_1aa27fac38f73b42c6680f057229727382" kind="variable"><name>isBoolean</name></member>
+    <member refid="underscore_8js_1af4e600fc27649bc920cff58d4ee02167" kind="variable"><name>isDate</name></member>
+    <member refid="underscore_8js_1a4d9f684a1e2ebf56c3e84ede85a7a9b4" kind="variable"><name>isRegExp</name></member>
+    <member refid="underscore_8js_1ae2d679c193f5edf0b0276e07a2e16f2a" kind="variable"><name>isNull</name></member>
+    <member refid="underscore_8js_1afa625625e6de6f235d08df8cf99602ca" kind="variable"><name>isUndefined</name></member>
+    <member refid="underscore_8js_1a0b5424e11a75994692f03f98b5f02b9c" kind="variable"><name>has</name></member>
+    <member refid="underscore_8js_1a2a9718a41896fd969eb78a2b3b3bf57a" kind="variable"><name>noConflict</name></member>
+    <member refid="underscore_8js_1af9d29d5a841ddf5f4474772b929cdd1a" kind="variable"><name>identity</name></member>
+    <member refid="underscore_8js_1a0f964f91072502cd3d1a7c5b34868f46" kind="variable"><name>times</name></member>
+    <member refid="underscore_8js_1ad14090d81a82801b65ba6386e282324f" kind="function"><name>if</name></member>
+    <member refid="underscore_8js_1aeec3e70a22e4c096d5dbded6242fe3b9" kind="function"><name>if</name></member>
+  </compound>
+  <compound refid="websupport_8js" kind="file"><name>websupport.js</name>
+    <member refid="websupport_8js_1a33a190deded503ba0a2cd874399f3fb0" kind="variable"><name>resize</name></member>
+    <member refid="websupport_8js_1a2b1d6f9c448e3ce72f4e1865d6e38d2c" kind="variable"><name>jQuery</name></member>
+    <member refid="websupport_8js_1a26a647aebe291383f5eb6e1ca7acbeb7" kind="variable"><name>comment</name></member>
+    <member refid="websupport_8js_1ace99df6e66b76aace3839a4de1dbd861" kind="variable"><name>opts</name></member>
+    <member refid="websupport_8js_1a88f5bd8ac2d94f3628c50faa71fd41db" kind="variable"><name>popupTemplate</name></member>
+    <member refid="websupport_8js_1a5789ff86babc8dda87202f60c162328e" kind="variable"><name>blocks</name></member>
+    <member refid="websupport_8js_1ac276746d810f03810d1966b42ca252c7" kind="variable"><name>class</name></member>
+    <member refid="websupport_8js_1aa855c545fa09917744f2de31ad05c6a7" kind="variable"><name>cols</name></member>
+    <member refid="websupport_8js_1a0826fb3c3f0e99e3f82a79aef43667fc" kind="variable"><name>commentTemplate</name></member>
+    <member refid="websupport_8js_1a650d92c2b85f3532a1ff05f12a454d26" kind="variable"><name>replyTemplate</name></member>
+    <member refid="websupport_8js_1af8dc73726eb0578fe44fb98cd2319445" kind="function"><name>init</name></member>
+    <member refid="websupport_8js_1aa7b8b358348ef752595debd977a9d8e1" kind="function"><name>initEvents</name></member>
+    <member refid="websupport_8js_1ae415a8741eb41a8fa68c2d401319c5ca" kind="function"><name>setComparator</name></member>
+    <member refid="websupport_8js_1a80b4860d82cc28e5413242eb2f86ca99" kind="function"><name>initComparator</name></member>
+    <member refid="websupport_8js_1a34b2bb38da6ac84e5708382e03478900" kind="function"><name>show</name></member>
+    <member refid="websupport_8js_1abb32d825b52ef528b86b799b6247e79a" kind="function"><name>hide</name></member>
+    <member refid="websupport_8js_1a25ebb76ed964a467db5dfb8451731188" kind="function"><name>getComments</name></member>
+    <member refid="websupport_8js_1a1fc9ccb31f89958511b00d3933fba684" kind="function"><name>addComment</name></member>
+    <member refid="websupport_8js_1ab952ce840f1a48a12ca14b2949a07c80" kind="function"><name>appendComments</name></member>
+    <member refid="websupport_8js_1abf0a1b9fd2fda24c1fb9cbe6c4183ce1" kind="function"><name>insertComment</name></member>
+    <member refid="websupport_8js_1ae2ab6a5e4df8472082ec823c5d9a72c7" kind="function"><name>acceptComment</name></member>
+    <member refid="websupport_8js_1ae32e24563e7ba99195e6a0eeee4c19a9" kind="function"><name>deleteComment</name></member>
+    <member refid="websupport_8js_1a35673ca56d509c1e89376dc97c8ca3bc" kind="function"><name>showProposal</name></member>
+    <member refid="websupport_8js_1a3fc02d87b48333a9f92b56243092eb1a" kind="function"><name>hideProposal</name></member>
+    <member refid="websupport_8js_1a72a6fafee016037122586d77a74aba90" kind="function"><name>showProposeChange</name></member>
+    <member refid="websupport_8js_1afbea492cdb16a6977db4a3676277fa9a" kind="function"><name>hideProposeChange</name></member>
+    <member refid="websupport_8js_1a8debb7f3e779157f3d139c4981129af0" kind="function"><name>toggleCommentMarkupBox</name></member>
+    <member refid="websupport_8js_1ab379308d6c41a177e0e64a7e0bacc06f" kind="function"><name>handleReSort</name></member>
+    <member refid="websupport_8js_1ad90683755e678bc87e623d4ef698ed26" kind="function"><name>handleVote</name></member>
+    <member refid="websupport_8js_1ad6e7c76d563f9205b41e0906fef5e7ee" kind="function"><name>openReply</name></member>
+    <member refid="websupport_8js_1abc065d6701f22b74078fce9194931818" kind="function"><name>closeReply</name></member>
+    <member refid="websupport_8js_1adda3174dfb972a4f2110f055c310f9ac" kind="function"><name>sortComments</name></member>
+    <member refid="websupport_8js_1aa051ee1f27858b2a0f2935f59ab57e94" kind="function"><name>getChildren</name></member>
+    <member refid="websupport_8js_1ab869ffe21cc338ee8d073a37bcc63622" kind="function"><name>createCommentDiv</name></member>
+    <member refid="websupport_8js_1a58e35e155de7288dd753b827d7248fa5" kind="function"><name>renderTemplate</name></member>
+    <member refid="websupport_8js_1a2201c99de928fac619cdf5be2d788985" kind="function"><name>showError</name></member>
+    <member refid="websupport_8js_1a231ae64a5ee314d9c2f017b6367810c9" kind="function"><name>if</name></member>
+    <member refid="websupport_8js_1a17c3e27c25776bdfe7b5f1bc9b82ccb6" kind="function"><name>ready</name></member>
+  </compound>
+  <compound refid="searchindex_8js" kind="file"><name>searchindex.js</name>
+  </compound>
+  <compound refid="highlight_8pack_8js" kind="file"><name>highlight.pack.js</name>
+  </compound>
+  <compound refid="installation_8md" kind="file"><name>installation.md</name>
+  </compound>
+  <compound refid="main_8md" kind="file"><name>main.md</name>
+  </compound>
+  <compound refid="solver_8md" kind="file"><name>solver.md</name>
+  </compound>
+  <compound refid="solver__c_8md" kind="file"><name>solver_c.md</name>
+  </compound>
+  <compound refid="todo_8md" kind="file"><name>todo.md</name>
+  </compound>
+  <compound refid="conf_8py" kind="file"><name>conf.py</name>
+  </compound>
+  <compound refid="____init_____8py" kind="file"><name>__init__.py</name>
+  </compound>
+  <compound refid="tikz_8py" kind="file"><name>tikz.py</name>
+  </compound>
+  <compound refid="abcd_8h" kind="file"><name>abcd.h</name>
+    <member refid="abcd_8h_1a930a566fa45fefdd326401c2efb53164" kind="define"><name>COMPLEX</name></member>
+    <member refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kind="define"><name>IRANK</name></member>
+    <member refid="abcd_8h_1a86ce1665978a1c3d971cb82562b2d506" kind="define"><name>IBARRIER</name></member>
+    <member refid="abcd_8h_1a5fa673749ede7090fe93477fc0efc4bb" kind="define"><name>IFMASTER</name></member>
+    <member refid="abcd_8h_1a043fba147e9f9707cc6f201bedc9012b" kind="define"><name>TIC</name></member>
+    <member refid="abcd_8h_1a41274c91f890aa7ffd5c2a87aee8e7be" kind="define"><name>TOC</name></member>
+    <member refid="abcd_8h_1af1994fd41de8388e8be6c528fa7591a9" kind="define"><name>inter_rank</name></member>
+    <member refid="abcd_8h_1a5ce093a26d1e61d6d736a92c60b890f8" kind="define"><name>inter_barrier</name></member>
+    <member refid="abcd_8h_1a188b82d8e493295f9538c68f1d45a9da" kind="define"><name>inter_master</name></member>
+    <member refid="abcd_8h_1aecd0a398d18b4ade7003d6b0703bbf70" kind="define"><name>LLOG_</name></member>
+    <member refid="abcd_8h_1a03f32d7db91dbdfbfc4324df0de98a2d" kind="define"><name>LINFO1</name></member>
+    <member refid="abcd_8h_1a3680e2fb0255f53d8c1811bb93f36fa1" kind="define"><name>LINFO2</name></member>
+    <member refid="abcd_8h_1a6c15b16fecb7cb45e84365c323cc981e" kind="define"><name>LINFO3</name></member>
+    <member refid="abcd_8h_1a396d14bf6cbf8e706215d14fb2ab9fd4" kind="define"><name>LDEBUG1</name></member>
+    <member refid="abcd_8h_1a3fc1edb88508ae358ced8b06c7c26087" kind="define"><name>LDEBUG2</name></member>
+    <member refid="abcd_8h_1a811512f7b437be6fe22033afa14ecb1a" kind="define"><name>LDEBUG3</name></member>
+    <member refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kind="define"><name>LINFO</name></member>
+    <member refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kind="define"><name>LDEBUG</name></member>
+    <member refid="abcd_8h_1a2c09796dd23448cf458060091893daec" kind="function"><name>configure_logger</name></member>
+    <member refid="abcd_8h_1aefc7b027322fca1a06c8ee40d6a88373" kind="function"><name>logger_set_filename</name></member>
+    <member refid="abcd_8h_1ac832dfdd5ec260af2ae5908e45d5775d" kind="function"><name>or_bin</name></member>
+    <member refid="abcd_8h_1a8e6eb297d5836a8959f84c0f953a1b41" kind="function"><name>sort_indexes</name></member>
+  </compound>
+  <compound refid="defaults_8h" kind="file"><name>defaults.h</name>
+    <member refid="defaults_8h_1ab979d9d4b4923f7c54d6caa6e1a61936" kind="define"><name>nullptr</name></member>
+  </compound>
+  <compound refid="mat__utils_8h" kind="file"><name>mat_utils.h</name>
+    <member refid="mat__utils_8h_1a79b0ce19f3f9d68c250f2f4fcd438284" kind="function"><name>csr_tocsc</name></member>
+  </compound>
+  <compound refid="mc77_8h" kind="file"><name>mc77.h</name>
+    <member refid="mc77_8h_1a844fc1858b5281bb1a386c1f2b2ecec1" kind="function"><name>mc77id_</name></member>
+  </compound>
+  <compound refid="mmio_8h" kind="file"><name>mmio.h</name>
+    <member refid="mmio_8h_1a338442ee1967d47ab7f2e4c3cccf75dd" kind="define"><name>MM_MAX_LINE_LENGTH</name></member>
+    <member refid="mmio_8h_1af63c90afdcf0c7bb538ef8963b0385d9" kind="define"><name>MatrixMarketBanner</name></member>
+    <member refid="mmio_8h_1a532f9540afd8f387f6f846714ecd4d36" kind="define"><name>MM_MAX_TOKEN_LENGTH</name></member>
+    <member refid="mmio_8h_1a39b0b604a9348b9f662a0587a0c29911" kind="define"><name>mm_is_matrix</name></member>
+    <member refid="mmio_8h_1aee7772c709001e294bd67e6fd8382dc3" kind="define"><name>mm_is_sparse</name></member>
+    <member refid="mmio_8h_1a922acd6ee972f16bae8349729bd22d28" kind="define"><name>mm_is_coordinate</name></member>
+    <member refid="mmio_8h_1a0839683fb6e8a9ce931aec600871f8f8" kind="define"><name>mm_is_dense</name></member>
+    <member refid="mmio_8h_1a74c82110c8610df75aad31ee0e57bc8c" kind="define"><name>mm_is_array</name></member>
+    <member refid="mmio_8h_1a099de03c35a8b30cf035c46b5349e48b" kind="define"><name>mm_is_complex</name></member>
+    <member refid="mmio_8h_1a6afdb9ff27a7a940a7e6538c961d2b72" kind="define"><name>mm_is_real</name></member>
+    <member refid="mmio_8h_1aa105a83b200825c5c9c8e5d44b905187" kind="define"><name>mm_is_pattern</name></member>
+    <member refid="mmio_8h_1ad405f8a31e4f487e04269e372def0071" kind="define"><name>mm_is_integer</name></member>
+    <member refid="mmio_8h_1ae3eab2d2f506a37bc1cda68b21bce9c4" kind="define"><name>mm_is_symmetric</name></member>
+    <member refid="mmio_8h_1aadc12b70af792b1b5c820267396342ce" kind="define"><name>mm_is_general</name></member>
+    <member refid="mmio_8h_1a714cfbd11fe0bcdd72ec7eac5ef27a73" kind="define"><name>mm_is_skew</name></member>
+    <member refid="mmio_8h_1a409f46e8143876e3b6681728318d866f" kind="define"><name>mm_is_hermitian</name></member>
+    <member refid="mmio_8h_1ab94a2a33e79dda9a50645718c3055bde" kind="define"><name>mm_set_matrix</name></member>
+    <member refid="mmio_8h_1a60425fdf2040cff47da380e2904af1e2" kind="define"><name>mm_set_coordinate</name></member>
+    <member refid="mmio_8h_1a2234ddc053712126166ca92e590fa2bf" kind="define"><name>mm_set_array</name></member>
+    <member refid="mmio_8h_1abba2bdfdc6f133207b52e70b31f07534" kind="define"><name>mm_set_dense</name></member>
+    <member refid="mmio_8h_1a38129ce74fa250f778730f1344135c16" kind="define"><name>mm_set_sparse</name></member>
+    <member refid="mmio_8h_1a1d2710c2c5c84322c5ebad36811c0636" kind="define"><name>mm_set_complex</name></member>
+    <member refid="mmio_8h_1aef12252aecf7a4af6baa752dc9d29698" kind="define"><name>mm_set_real</name></member>
+    <member refid="mmio_8h_1ac9bdbe4b4fb164f60460b56c815902c4" kind="define"><name>mm_set_pattern</name></member>
+    <member refid="mmio_8h_1a88726ec878ed03d713d9cf1519ac822d" kind="define"><name>mm_set_integer</name></member>
+    <member refid="mmio_8h_1a5b5292978fc119acc10444b282fe994c" kind="define"><name>mm_set_symmetric</name></member>
+    <member refid="mmio_8h_1a244392516ea33cb49f27d53d36c71d4a" kind="define"><name>mm_set_general</name></member>
+    <member refid="mmio_8h_1a355520c4b7b525bd79972117368967b1" kind="define"><name>mm_set_skew</name></member>
+    <member refid="mmio_8h_1a1df99ff9edf59d44b3866633ee98dbdf" kind="define"><name>mm_set_hermitian</name></member>
+    <member refid="mmio_8h_1a4d63d071fcfb7c11c77ced59b38b2b38" kind="define"><name>mm_clear_typecode</name></member>
+    <member refid="mmio_8h_1a61be6348c808d02530d151e59f0b456f" kind="define"><name>mm_initialize_typecode</name></member>
+    <member refid="mmio_8h_1a1e36f866ae2805a8b1a6fb626863decc" kind="define"><name>MM_COULD_NOT_READ_FILE</name></member>
+    <member refid="mmio_8h_1a35f109af00ebbbd4d008f8fcbc8ed9c1" kind="define"><name>MM_PREMATURE_EOF</name></member>
+    <member refid="mmio_8h_1add74a290ac25b62447f27f5faed05f5d" kind="define"><name>MM_NOT_MTX</name></member>
+    <member refid="mmio_8h_1a92a9e51b7e612248c29398422613c83d" kind="define"><name>MM_NO_HEADER</name></member>
+    <member refid="mmio_8h_1a7c4977adc296451d59e66972fd4e58db" kind="define"><name>MM_UNSUPPORTED_TYPE</name></member>
+    <member refid="mmio_8h_1a8397a5d870f5a9827caa1c4b766de609" kind="define"><name>MM_LINE_TOO_LONG</name></member>
+    <member refid="mmio_8h_1a823b41c658a5cbedb8e724fb3b9fe79e" kind="define"><name>MM_COULD_NOT_WRITE_FILE</name></member>
+    <member refid="mmio_8h_1a103aac2f6e2ac7c7b063726f58dda8af" kind="define"><name>MM_MTX_STR</name></member>
+    <member refid="mmio_8h_1accb347ba4db3bf355de9b3750a80ad86" kind="define"><name>MM_ARRAY_STR</name></member>
+    <member refid="mmio_8h_1ad54c538e24b85cc0ce790e53c96b18f8" kind="define"><name>MM_DENSE_STR</name></member>
+    <member refid="mmio_8h_1a5cf347e6e895c61edaf4b82e0d6b39bf" kind="define"><name>MM_COORDINATE_STR</name></member>
+    <member refid="mmio_8h_1a720ba16714f07ad6ae39055683aa3cb3" kind="define"><name>MM_SPARSE_STR</name></member>
+    <member refid="mmio_8h_1a53e740b82aa1fcc72b48aac6304b38bf" kind="define"><name>MM_COMPLEX_STR</name></member>
+    <member refid="mmio_8h_1adb63588b8225c991b215b37befd8909e" kind="define"><name>MM_REAL_STR</name></member>
+    <member refid="mmio_8h_1ae7d131244c25d09dd27ffe7188572a3e" kind="define"><name>MM_INT_STR</name></member>
+    <member refid="mmio_8h_1a4f2a311f3cebaf460f028b00d4d1e6c6" kind="define"><name>MM_GENERAL_STR</name></member>
+    <member refid="mmio_8h_1ac004e8f7880b764acaa4b02a6ac80d43" kind="define"><name>MM_SYMM_STR</name></member>
+    <member refid="mmio_8h_1a99c6e5fbe593f517fc63cbd25dd387a0" kind="define"><name>MM_HERM_STR</name></member>
+    <member refid="mmio_8h_1a357908ad5dada2cd90176746e073cd0e" kind="define"><name>MM_SKEW_STR</name></member>
+    <member refid="mmio_8h_1a1f4d6203428af6f9711140288fe8061b" kind="define"><name>MM_PATTERN_STR</name></member>
+    <member refid="mmio_8h_1a27c4a0610b9f2ecb5edb6430e79ae9ee" kind="typedef"><name>MM_typecode</name></member>
+    <member refid="mmio_8h_1ae59430e91ee3c56cbe666976066f0a56" kind="function"><name>mm_typecode_to_str</name></member>
+    <member refid="mmio_8h_1ad8204d233b87eeba15de78abae85c814" kind="function"><name>mm_read_banner</name></member>
+    <member refid="mmio_8h_1acf80791ad47f3c907c9145f7573eb33c" kind="function"><name>mm_read_mtx_crd_size</name></member>
+    <member refid="mmio_8h_1a77d0cc326838831814294614d1010ca5" kind="function"><name>mm_read_mtx_array_size</name></member>
+    <member refid="mmio_8h_1a1ae61f76394b37d9c41a0a1b63e5a3a1" kind="function"><name>mm_write_banner</name></member>
+    <member refid="mmio_8h_1ad6f7429821e10fc084d1d7da481029f3" kind="function"><name>mm_write_mtx_crd_size</name></member>
+    <member refid="mmio_8h_1a4d0fe7a313521b054e1eaa7b38c6e514" kind="function"><name>mm_write_mtx_array_size</name></member>
+    <member refid="mmio_8h_1aa1015f3b0282e7ef7ef3448fca37958d" kind="function"><name>mm_is_valid</name></member>
+    <member refid="mmio_8h_1a68d9871d7292ea09a915e05a3588ad4c" kind="function"><name>mm_write_mtx_crd</name></member>
+    <member refid="mmio_8h_1a20f55cb677aa71256a6c27311d164ee7" kind="function"><name>mm_read_mtx_crd</name></member>
+    <member refid="mmio_8h_1a865459b4a6c07939c06e3fe9365fc2a2" kind="function"><name>mm_read_mtx_crd_data</name></member>
+    <member refid="mmio_8h_1acc95fad8ef63aa0cd6cf0d02a4188109" kind="function"><name>mm_read_mtx_crd_entry</name></member>
+    <member refid="mmio_8h_1a7c7820e0d0a68f95befe5f43eb833da9" kind="function"><name>mm_read_unsymmetric_sparse</name></member>
+    <member refid="mmio_8h_1aefb6fb6b293af4bef9de5822f24f2185" kind="function"><name>mm_strdup</name></member>
+  </compound>
+  <compound refid="mumps_8h" kind="file"><name>mumps.h</name>
+  </compound>
+  <compound refid="splib__utils_8h" kind="file"><name>splib_utils.h</name>
+    <member refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kind="function"><name>squaredNorm</name></member>
+    <member refid="splib__utils_8h_1a830a8d6dec0c2db24204f211b9ddcc6a" kind="function"><name>squaredNorm</name></member>
+    <member refid="splib__utils_8h_1ab2c785209f07fb1eba5cefc0cddb204e" kind="function"><name>squaredNorm</name></member>
+    <member refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kind="function"><name>infNorm</name></member>
+    <member refid="splib__utils_8h_1aa0cc4ca9b09d6c78efad9a68627802b5" kind="function"><name>infNorm</name></member>
+    <member refid="splib__utils_8h_1abfc7f8fc061d1a1c1c78448daeaab894" kind="function"><name>infNorm</name></member>
+    <member refid="splib__utils_8h_1a4cef34a4a8c30481d81e65f7b795bf69" kind="function"><name>CSR_middleRows</name></member>
+    <member refid="splib__utils_8h_1ae1a1dead02b35631ade961522e1b1680" kind="function"><name>CSC_middleRows</name></member>
+    <member refid="splib__utils_8h_1a82bc42018a1f31de48709b44ef8985dd" kind="function"><name>sub_matrix</name></member>
+    <member refid="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" kind="function"><name>middleCol</name></member>
+    <member refid="splib__utils_8h_1a9ffc1f08aa424b4625d510642270d805" kind="function"><name>middleCol</name></member>
+    <member refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kind="function"><name>smmtm</name></member>
+    <member refid="splib__utils_8h_1a883ea693afae1a500340b8b59fd0fe25" kind="function"><name>smmtm</name></member>
+    <member refid="splib__utils_8h_1a2cc873631d0b18e7b0710fc8019de10b" kind="function"><name>smmtm</name></member>
+    <member refid="splib__utils_8h_1aa7ca8d33589d40c39300c20d6b52e501" kind="function"><name>smmtm</name></member>
+    <member refid="splib__utils_8h_1ac52a7ef12ffc59dca94fa0bb0d9a0fdd" kind="function"><name>spmm</name></member>
+    <member refid="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" kind="function"><name>csc_transpose</name></member>
+    <member refid="splib__utils_8h_1a85bb383c2d036e595901511cbe7a674f" kind="function"><name>csc_transpose</name></member>
+    <member refid="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" kind="function"><name>csr_transpose</name></member>
+    <member refid="splib__utils_8h_1a0fbc2dfa59bb79f67e28a22fd0a4c3fb" kind="function"><name>csr_transpose</name></member>
+    <member refid="splib__utils_8h_1a423d8745f6289f20b18e9143b1cb00fa" kind="function"><name>resize_columns</name></member>
+    <member refid="splib__utils_8h_1aa0dbb183d773929881d02c2c1641614c" kind="function"><name>concat_columns</name></member>
+    <member refid="splib__utils_8h_1a217546c31621626c8eb05ad2883cfa2e" kind="function"><name>smv</name></member>
+    <member refid="splib__utils_8h_1a0359a150367f51c85f7ee6a7114346ed" kind="function"><name>spsmv</name></member>
+    <member refid="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" kind="function"><name>gemmColMat</name></member>
+    <member refid="splib__utils_8h_1a69cf5b56c209aaada6f797bb23a2af62" kind="function"><name>gemmColMat</name></member>
+    <member refid="splib__utils_8h_1a86f09802334491235367a2885834c0ec" kind="function"><name>upperMat</name></member>
+  </compound>
+  <compound refid="vect__utils_8h" kind="file"><name>vect_utils.h</name>
+    <member refid="vect__utils_8h_1ac8a19f75d3e1ac628f664c854599617c" kind="function"><name>getColumnIndex</name></member>
+    <member refid="vect__utils_8h_1a5fbcdca088251d8f40f28d15525fe01f" kind="function"><name>mergeSortedVectors</name></member>
+    <member refid="vect__utils_8h_1abd925b6861001e52ab0b82655487f228" kind="function"><name>getIntersectionIndices</name></member>
+  </compound>
+  <compound refid="abcd_8cpp" kind="file"><name>abcd.cpp</name>
+  </compound>
+  <compound refid="bcg_8cpp" kind="file"><name>bcg.cpp</name>
+  </compound>
+  <compound refid="cimmino_8cpp" kind="file"><name>cimmino.cpp</name>
+  </compound>
+  <compound refid="comms_8cpp" kind="file"><name>comms.cpp</name>
+  </compound>
+  <compound refid="communication_8cpp" kind="file"><name>communication.cpp</name>
+  </compound>
+  <compound refid="define__slaves_8cpp" kind="file"><name>define_slaves.cpp</name>
+  </compound>
+  <compound refid="mc77ad_8f" kind="file"><name>mc77ad.f</name>
+    <member refid="mc77ad_8f_1a7d12fbdde0b9d4a3a8af7436f010a45a" kind="function"><name>mc77id</name></member>
+    <member refid="mc77ad_8f_1a3f1fb55a69c2cb87f48c62edd345342a" kind="function"><name>mc77ad</name></member>
+    <member refid="mc77ad_8f_1ad99151373e149aced3386384ec1d0a60" kind="function"><name>mc77nd</name></member>
+    <member refid="mc77ad_8f_1aefb94a37f26e724835fef079bd38e395" kind="function"><name>mc77od</name></member>
+    <member refid="mc77ad_8f_1a346057166d6964470c8c5abc2fee8281" kind="function"><name>mc77pd</name></member>
+    <member refid="mc77ad_8f_1aa7662bccefdabe8e0b7797b6b5ef8636" kind="function"><name>mc77qd</name></member>
+    <member refid="mc77ad_8f_1a8493be745bfaa93d96b2502f452fa5d9" kind="function"><name>mc77bd</name></member>
+    <member refid="mc77ad_8f_1a5da744a89d87bda3c1b5caf730e015fa" kind="function"><name>mc77rd</name></member>
+    <member refid="mc77ad_8f_1a638b76abc8d8ef1be671211c915b1102" kind="function"><name>mc77sd</name></member>
+    <member refid="mc77ad_8f_1ac8fd961a7fdd6af49eaee458783ffc0e" kind="function"><name>mc77td</name></member>
+    <member refid="mc77ad_8f_1a1c4b073c2979cb7cd689f67fb1509288" kind="function"><name>mc77ud</name></member>
+    <member refid="mc77ad_8f_1ad5fb7dd03c1878d55e42bc9c1d28acba" kind="function"><name>mc77cd</name></member>
+    <member refid="mc77ad_8f_1a49958eb5dbde1e7cacf9f4bc4d3f69d4" kind="function"><name>mc77jd</name></member>
+    <member refid="mc77ad_8f_1a7ae9ae7f0add9c83286808d5cdf88a81" kind="function"><name>mc77kd</name></member>
+    <member refid="mc77ad_8f_1a471588645c79b8caaf066c576df17ef3" kind="function"><name>mc77ld</name></member>
+    <member refid="mc77ad_8f_1a60950fbefe38fdef72cb9ed99cd626e0" kind="function"><name>mc77md</name></member>
+  </compound>
+  <compound refid="mmio_8c" kind="file"><name>mmio.c</name>
+    <member refid="mmio_8c_1a7c7820e0d0a68f95befe5f43eb833da9" kind="function"><name>mm_read_unsymmetric_sparse</name></member>
+    <member refid="mmio_8c_1aa1015f3b0282e7ef7ef3448fca37958d" kind="function"><name>mm_is_valid</name></member>
+    <member refid="mmio_8c_1ad8204d233b87eeba15de78abae85c814" kind="function"><name>mm_read_banner</name></member>
+    <member refid="mmio_8c_1ad6f7429821e10fc084d1d7da481029f3" kind="function"><name>mm_write_mtx_crd_size</name></member>
+    <member refid="mmio_8c_1acf80791ad47f3c907c9145f7573eb33c" kind="function"><name>mm_read_mtx_crd_size</name></member>
+    <member refid="mmio_8c_1a77d0cc326838831814294614d1010ca5" kind="function"><name>mm_read_mtx_array_size</name></member>
+    <member refid="mmio_8c_1a4d0fe7a313521b054e1eaa7b38c6e514" kind="function"><name>mm_write_mtx_array_size</name></member>
+    <member refid="mmio_8c_1a865459b4a6c07939c06e3fe9365fc2a2" kind="function"><name>mm_read_mtx_crd_data</name></member>
+    <member refid="mmio_8c_1a9b35386bc4a8284ece9185e6a314e6fb" kind="function"><name>mm_read_mtx_crd_entry</name></member>
+    <member refid="mmio_8c_1a20f55cb677aa71256a6c27311d164ee7" kind="function"><name>mm_read_mtx_crd</name></member>
+    <member refid="mmio_8c_1a1ae61f76394b37d9c41a0a1b63e5a3a1" kind="function"><name>mm_write_banner</name></member>
+    <member refid="mmio_8c_1a68d9871d7292ea09a915e05a3588ad4c" kind="function"><name>mm_write_mtx_crd</name></member>
+    <member refid="mmio_8c_1ac37b950ca2d922353bb1d33dcb9762e4" kind="function"><name>mm_strdup</name></member>
+    <member refid="mmio_8c_1ae59430e91ee3c56cbe666976066f0a56" kind="function"><name>mm_typecode_to_str</name></member>
+  </compound>
+  <compound refid="analysis_8cpp" kind="file"><name>analysis.cpp</name>
+  </compound>
+  <compound refid="augmented__systems_8cpp" kind="file"><name>augmented_systems.cpp</name>
+  </compound>
+  <compound refid="factorization_8cpp" kind="file"><name>factorization.cpp</name>
+  </compound>
+  <compound refid="init_8cpp" kind="file"><name>init.cpp</name>
+  </compound>
+  <compound refid="simple__sumproject_8cpp" kind="file"><name>simple_sumproject.cpp</name>
+  </compound>
+  <compound refid="sparse__simple__sumproject_8cpp" kind="file"><name>sparse_simple_sumproject.cpp</name>
+  </compound>
+  <compound refid="sumproject_8cpp" kind="file"><name>sumproject.cpp</name>
+  </compound>
+  <compound refid="aij__augment_8cpp" kind="file"><name>aij_augment.cpp</name>
+  </compound>
+  <compound refid="augmentation_8cpp" kind="file"><name>augmentation.cpp</name>
+  </compound>
+  <compound refid="cij__augment_8cpp" kind="file"><name>cij_augment.cpp</name>
+  </compound>
+  <compound refid="partitioning_8cpp" kind="file"><name>partitioning.cpp</name>
+  </compound>
+  <compound refid="scaling_8cpp" kind="file"><name>scaling.cpp</name>
+    <member refid="scaling_8cpp_1a844fc1858b5281bb1a386c1f2b2ecec1" kind="function"><name>mc77id_</name></member>
+    <member refid="scaling_8cpp_1a8989e493beee3e4aa409ce008c4cf589" kind="function"><name>mc77ad_</name></member>
+  </compound>
+  <compound refid="s__utils_8cpp" kind="file"><name>s_utils.cpp</name>
+  </compound>
+  <compound refid="solve_8cpp" kind="file"><name>solve.cpp</name>
+  </compound>
+  <compound refid="splib__utils_8cpp" kind="file"><name>splib_utils.cpp</name>
+    <member refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kind="function"><name>infNorm</name></member>
+    <member refid="splib__utils_8cpp_1aa0cc4ca9b09d6c78efad9a68627802b5" kind="function"><name>infNorm</name></member>
+    <member refid="splib__utils_8cpp_1ab2c785209f07fb1eba5cefc0cddb204e" kind="function"><name>squaredNorm</name></member>
+    <member refid="splib__utils_8cpp_1a9b4a380c5595dc5084c4434a65b85725" kind="function"><name>CSR_middleRows</name></member>
+    <member refid="splib__utils_8cpp_1ae1a1dead02b35631ade961522e1b1680" kind="function"><name>CSC_middleRows</name></member>
+    <member refid="splib__utils_8cpp_1a9ffc1f08aa424b4625d510642270d805" kind="function"><name>middleCol</name></member>
+    <member refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kind="function"><name>sub_matrix</name></member>
+    <member refid="splib__utils_8cpp_1a58a53fd0e2a26cd9d01ceedf3ab82643" kind="function"><name>spmm</name></member>
+    <member refid="splib__utils_8cpp_1a9cd60db25328649bc6fd839217b256f7" kind="function"><name>csc_transpose</name></member>
+    <member refid="splib__utils_8cpp_1a85bb383c2d036e595901511cbe7a674f" kind="function"><name>csc_transpose</name></member>
+    <member refid="splib__utils_8cpp_1a32e83fa3657a40e24f110cccf947e28e" kind="function"><name>csr_transpose</name></member>
+    <member refid="splib__utils_8cpp_1a0fbc2dfa59bb79f67e28a22fd0a4c3fb" kind="function"><name>csr_transpose</name></member>
+    <member refid="splib__utils_8cpp_1a423d8745f6289f20b18e9143b1cb00fa" kind="function"><name>resize_columns</name></member>
+    <member refid="splib__utils_8cpp_1aa0dbb183d773929881d02c2c1641614c" kind="function"><name>concat_columns</name></member>
+    <member refid="splib__utils_8cpp_1a217546c31621626c8eb05ad2883cfa2e" kind="function"><name>smv</name></member>
+    <member refid="splib__utils_8cpp_1a0359a150367f51c85f7ee6a7114346ed" kind="function"><name>spsmv</name></member>
+    <member refid="splib__utils_8cpp_1acfe4867dae920089f48b51f70e0c08ae" kind="function"><name>gemmColMat</name></member>
+    <member refid="splib__utils_8cpp_1a69cf5b56c209aaada6f797bb23a2af62" kind="function"><name>gemmColMat</name></member>
+    <member refid="splib__utils_8cpp_1a86f09802334491235367a2885834c0ec" kind="function"><name>upperMat</name></member>
+  </compound>
+  <compound refid="structure_8cpp" kind="file"><name>structure.cpp</name>
+  </compound>
+  <compound refid="build_s_8cpp" kind="file"><name>buildS.cpp</name>
+  </compound>
+  <compound refid="solve_s_8cpp" kind="file"><name>solveS.cpp</name>
+  </compound>
+  <compound refid="utils_8cpp" kind="file"><name>utils.cpp</name>
+    <member refid="utils_8cpp_1ac832dfdd5ec260af2ae5908e45d5775d" kind="function"><name>or_bin</name></member>
+    <member refid="utils_8cpp_1a8e6eb297d5836a8959f84c0f953a1b41" kind="function"><name>sort_indexes</name></member>
+  </compound>
+  <compound refid="compress__columns_8cpp" kind="file"><name>compress_columns.cpp</name>
+    <member refid="compress__columns_8cpp_1ac8a19f75d3e1ac628f664c854599617c" kind="function"><name>getColumnIndex</name></member>
+    <member refid="compress__columns_8cpp_1a5fbcdca088251d8f40f28d15525fe01f" kind="function"><name>mergeSortedVectors</name></member>
+    <member refid="compress__columns_8cpp_1abd925b6861001e52ab0b82655487f228" kind="function"><name>getIntersectionIndices</name></member>
+  </compound>
+  <compound refid="logger_8cpp" kind="file"><name>logger.cpp</name>
+    <member refid="logger_8cpp_1a130a459360662ae529f33e443f3258e7" kind="function"><name>configure_logger</name></member>
+    <member refid="logger_8cpp_1aa5b050be7887f0214c6391779dfe330c" kind="function"><name>logger_set_filename</name></member>
+  </compound>
+  <compound refid="worker_8cpp" kind="file"><name>worker.cpp</name>
+  </compound>
+  <compound refid="md_old_doxygen_installation" kind="page"><name>md_old_doxygen_installation</name>
+  </compound>
+  <compound refid="title" kind="page"><name>title</name>
+  </compound>
+  <compound refid="md_old_doxygen_solver_c" kind="page"><name>md_old_doxygen_solver_c</name>
+  </compound>
+  <compound refid="md_old_doxygen_todo" kind="page"><name>md_old_doxygen_todo</name>
+  </compound>
+  <compound refid="dir_b891e558b8bc3c54dc1492129cfd4187" kind="dir"><name>build/html/_static</name>
+  </compound>
+  <compound refid="dir_28ada5c8e6f16519651dbc7f40619492" kind="dir"><name>build</name>
+  </compound>
+  <compound refid="dir_7c7bb55e8ca84dfca8c72b260e33fd14" kind="dir"><name>source/exts</name>
+  </compound>
+  <compound refid="dir_c8a3a375903fbe108939f1488399eacb" kind="dir"><name>build/html</name>
+  </compound>
+  <compound refid="dir_bbb17e10796aff76ef62dd10bd673a98" kind="dir"><name>/home/mzenadi/projects/abcd/include</name>
+  </compound>
+  <compound refid="dir_15acda7902985122b8bdba2d2faecf68" kind="dir"><name>/home/mzenadi/projects/abcd/src/mumps</name>
+  </compound>
+  <compound refid="dir_f5ad5e6a0520fd47fbd2d5d9aa78b026" kind="dir"><name>old_doxygen</name>
+  </compound>
+  <compound refid="dir_38ee114e808a2beb276c016ebd2ad5af" kind="dir"><name>/home/mzenadi/projects/abcd/src/preprocess</name>
+  </compound>
+  <compound refid="dir_87c9769afaf9c68ff31fe0387c9ff57a" kind="dir"><name>source</name>
+  </compound>
+  <compound refid="dir_181c9c860eabc4942181f3774ac29a17" kind="dir"><name>source/exts/sphinxcontrib</name>
+  </compound>
+  <compound refid="dir_cd14cd687467e804ccf83f20fe05f7a0" kind="dir"><name>/home/mzenadi/projects/abcd/src</name>
+  </compound>
+  <compound refid="dir_a9d88a40f0721fc323be27f74ff5252f" kind="dir"><name>/home/mzenadi/projects/abcd/src/sutils</name>
+  </compound>
+  <compound refid="dir_9655df946259d9fb0c43b0282f9e4a22" kind="dir"><name>/home/mzenadi/projects/abcd/src/utils</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

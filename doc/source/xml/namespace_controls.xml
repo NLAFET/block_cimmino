@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="namespace_controls" kind="namespace">
+    <compoundname>Controls</compoundname>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6e" prot="public" static="no">
+        <name>icontrols</name>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" prot="public">
+          <name>nbparts</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>The number of partitions. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" prot="public">
+          <name>part_type</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>The partitioning type. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" prot="public">
+          <name>part_guess</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+<para>Guess the number of partitions. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" prot="public">
+          <name>scaling</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+<para>The scaling type. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea6cd993d493cb532bed17907e8337d9ca" prot="public">
+          <name>itmax</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+<para>The max number of iterations. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" prot="public">
+          <name>block_size</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+<para>The Block-CG block-size. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" prot="public">
+          <name>verbose_level</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+<para>The verbose level. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" prot="public">
+          <name>use_gmgs2</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+<para>Force GMGS^2 in B-CG. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" prot="public">
+          <name>aug_type</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+<para>The augmentation type. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" prot="public">
+          <name>aug_blocking</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+<para>The blocking factor when building S. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" prot="public">
+          <name>aug_analysis</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+<para>Analyse the augmentation process. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" prot="public">
+          <name>exploit_sparcity</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+<para>Exploit the sparcity in <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="39" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="39" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" prot="public" static="no">
+        <name>dcontrols</name>
+        <enumvalue id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" prot="public">
+          <name>part_imbalance</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>The imbalance factor in PaToH case. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" prot="public">
+          <name>threshold</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>The stoping threshold. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="62" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="62" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" prot="public" static="no">
+        <name>info</name>
+        <enumvalue id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" prot="public">
+          <name>status</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>Exit status. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" prot="public">
+          <name>nb_iter</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>Number of iterations after CG. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="71" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="71" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" prot="public" static="no">
+        <name>dinfo</name>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" prot="public">
+          <name>residual</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" prot="public">
+          <name>forward_error</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>The resulting forward error. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" prot="public">
+          <name>backward</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" prot="public">
+          <name>scaled_residual</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="76" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="76" bodyend="81"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines the control parameters indices in a safe way. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="38" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="classsphinxcontrib_1_1tikz_1_1tikz" kind="class" prot="public">
+    <compoundname>sphinxcontrib::tikz::tikz</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Part</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">Element</basecompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="10">
+        <label>sphinxcontrib.tikz.tikz</label>
+        <link refid="classsphinxcontrib_1_1tikz_1_1tikz"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>nodes::Part</label>
+      </node>
+      <node id="12">
+        <label>nodes::Element</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="13">
+        <label>sphinxcontrib.tikz.tikz</label>
+        <link refid="classsphinxcontrib_1_1tikz_1_1tikz"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>nodes::Part</label>
+      </node>
+      <node id="15">
+        <label>nodes::Element</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mzenadi/projects/abcd/doc/source/exts/sphinxcontrib/tikz.py" line="75" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/exts/sphinxcontrib/tikz.py" bodystart="75" bodyend="78"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

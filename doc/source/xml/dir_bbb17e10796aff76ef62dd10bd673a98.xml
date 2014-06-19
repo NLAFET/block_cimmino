@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_bbb17e10796aff76ef62dd10bd673a98" kind="dir">
+    <compoundname>/home/mzenadi/projects/abcd/include</compoundname>
+    <innerfile refid="abcd_8h">abcd.h</innerfile>
+    <innerfile refid="defaults_8h">defaults.h</innerfile>
+    <innerfile refid="mat__utils_8h">mat_utils.h</innerfile>
+    <innerfile refid="mc77_8h">mc77.h</innerfile>
+    <innerfile refid="mmio_8h">mmio.h</innerfile>
+    <innerfile refid="mumps_8h">mumps.h</innerfile>
+    <innerfile refid="splib__utils_8h">splib_utils.h</innerfile>
+    <innerfile refid="vect__utils_8h">vect_utils.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/include/"/>
+  </compounddef>
+</doxygen>

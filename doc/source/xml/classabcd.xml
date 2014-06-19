@@ -1,0 +1,2566 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="classabcd" kind="class" prot="public">
+    <compoundname>abcd</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classabcd_1af5397b434eab1f94cbbe4e104e93723b" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double abcd::nrmA</definition>
+        <argsstring></argsstring>
+        <name>nrmA</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="140" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double abcd::nrmB</definition>
+        <argsstring></argsstring>
+        <name>nrmB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="141" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double abcd::nrmXf</definition>
+        <argsstring></argsstring>
+        <name>nrmXf</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="142" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1afd573b0c136c11086126ab0869cfb912" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double abcd::nrmMtx</definition>
+        <argsstring></argsstring>
+        <name>nrmMtx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="143" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ac7dad2825c69db177a9e616a386c3131" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::last_called_job</definition>
+        <argsstring></argsstring>
+        <name>last_called_job</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="145" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a7228c63e7b61ad01935612d5c68f2564" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::instance_type</definition>
+        <argsstring></argsstring>
+        <name>instance_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The type of process<itemizedlist>
+<listitem><para>0 the process will behave as a CG master</para></listitem><listitem><para>1 the process will be a <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> Slave </para></listitem></itemizedlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="176" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ad4a6632f5425fc1fb6cc15e3160ce91c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::selected_S_columns</definition>
+        <argsstring></argsstring>
+        <name>selected_S_columns</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="209" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="209" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a976f04d4e48f36d0e6c5b38821654971" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::skipped_S_columns</definition>
+        <argsstring></argsstring>
+        <name>skipped_S_columns</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="210" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="210" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aa1a229ff3c4713418623c6416bd13f6b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::normres</definition>
+        <argsstring></argsstring>
+        <name>normres</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="212" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="212" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a299209b68954f61f840c16964438da55" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::size_c</definition>
+        <argsstring></argsstring>
+        <name>size_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="213" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aa080d0df3ebb1813d70fe3fc3e7f4055" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::m_n</definition>
+        <argsstring></argsstring>
+        <name>m_n</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="216" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="216" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a5de04c7b1e0749991df158b8758fcd7a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::m_nz</definition>
+        <argsstring></argsstring>
+        <name>m_nz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="217" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="217" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a65a26d9b5e26a6fc735fc0a44269c274" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::n_aug</definition>
+        <argsstring></argsstring>
+        <name>n_aug</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="219" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aae46ce5a9ec879a0eb6ebba50381c62b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nz_aug</definition>
+        <argsstring></argsstring>
+        <name>nz_aug</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="219" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a806d3bee472cdae0490e809295aa2141" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::irn_aug</definition>
+        <argsstring></argsstring>
+        <name>irn_aug</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="220" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a983804bd5a2990ffce8182a767175b83" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::jcn_aug</definition>
+        <argsstring></argsstring>
+        <name>jcn_aug</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="220" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a202032f1d34ddce8f5155e7c2f2fad86" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::val_aug</definition>
+        <argsstring></argsstring>
+        <name>val_aug</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="221" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a878bd4b6a03057799978bb745b44cd15" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></type>
+        <definition>MUMPS abcd::mumps</definition>
+        <argsstring></argsstring>
+        <name>mumps</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="223" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ae11d9fd2b4ffecd11c6a5a4f66049160" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::my_slaves</definition>
+        <argsstring></argsstring>
+        <name>my_slaves</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="230" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="230" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a0f5749acc76c44b96da4752557ac0580" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::my_master</definition>
+        <argsstring></argsstring>
+        <name>my_master</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="231" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="231" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8a415661419f06b656382390896827a3" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::comm_map</definition>
+        <argsstring></argsstring>
+        <name>comm_map</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="243" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="243" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a9def8962f21d58d5b61975ffecc1af96" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::drow_</definition>
+        <argsstring></argsstring>
+        <name>drow_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="255" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::dcol_</definition>
+        <argsstring></argsstring>
+        <name>dcol_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="256" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="256" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a4476fbb15765c2e6276d70131212baba" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></type>
+        <definition>MUMPS abcd::mumps_S</definition>
+        <argsstring></argsstring>
+        <name>mumps_S</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="261" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a6494ba4a220da82e02622f38b25068db" prot="private" static="no" mutable="no">
+        <type>Coord_Mat_double</type>
+        <definition>Coord_Mat_double abcd::S</definition>
+        <argsstring></argsstring>
+        <name>S</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="262" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="262" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ab1ae1de1a6d9e3864c07fe746ddc6fcd" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::S_rows</definition>
+        <argsstring></argsstring>
+        <name>S_rows</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="263" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="263" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a28e5018dcc397bfef8ab9de001cc4506" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::S_cols</definition>
+        <argsstring></argsstring>
+        <name>S_cols</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="264" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="264" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aba3ee1235942f0b5121ecb2b4d74a196" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::S_vals</definition>
+        <argsstring></argsstring>
+        <name>S_vals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="265" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="265" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, CompRow_Mat_double &gt;</type>
+        <definition>std::map&lt;int, CompRow_Mat_double&gt; abcd::parts</definition>
+        <argsstring></argsstring>
+        <name>parts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="270" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="270" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; CompRow_Mat_double &gt;</type>
+        <definition>std::vector&lt;CompRow_Mat_double&gt; abcd::partitions</definition>
+        <argsstring></argsstring>
+        <name>partitions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="271" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="271" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a43aed50014aaac4c6442475410dce5f1" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; abcd::p_sets</definition>
+        <argsstring></argsstring>
+        <name>p_sets</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="272" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="272" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a112a717bc087d569225694bada18c45f" prot="private" static="no" mutable="no">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::Xf</definition>
+        <argsstring></argsstring>
+        <name>Xf</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="274" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="274" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a4a0f44796d9dadf39f0b9655ada8df67" prot="private" static="no" mutable="no">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::B</definition>
+        <argsstring></argsstring>
+        <name>B</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="275" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="275" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a3c69c57b283e3d97a9eb0176efcc2f70" prot="private" static="no" mutable="no">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::RRand</definition>
+        <argsstring></argsstring>
+        <name>RRand</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="276" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="276" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ac65507961f8180935b292542e452a4f4" prot="private" static="no" mutable="no">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double abcd::A</definition>
+        <argsstring></argsstring>
+        <name>A</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="278" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="278" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a546571c42ff50c26f55fbfd4d66cf0ee" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::row_perm</definition>
+        <argsstring></argsstring>
+        <name>row_perm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="279" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="279" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a1907cd9c727f334284fbcaffdd88b8b9" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool abcd::runSolveS</definition>
+        <argsstring></argsstring>
+        <name>runSolveS</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="281" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="281" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a1ceaa3c6a556f8e818d213029d0fe8b9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::n_l</definition>
+        <argsstring></argsstring>
+        <name>n_l</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="283" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a61ec8805a290f1fc73e413332e3ac96d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::m_l</definition>
+        <argsstring></argsstring>
+        <name>m_l</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="283" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8256e8277b5d2200dba679d8dd71554a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nz_l</definition>
+        <argsstring></argsstring>
+        <name>nz_l</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="283" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8f8c3fe9e674f9f1e27973891ac968e1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::n_o</definition>
+        <argsstring></argsstring>
+        <name>n_o</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="284" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a2257a5ef4b7426570fe986d8f5344efb" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::m_o</definition>
+        <argsstring></argsstring>
+        <name>m_o</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="284" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ad0a81d878205a7333c9a674224f74b58" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nz_o</definition>
+        <argsstring></argsstring>
+        <name>nz_o</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="284" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ad788028f06240ea4038c0c74eb0e7087" prot="private" static="no" mutable="no">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::Xk</definition>
+        <argsstring></argsstring>
+        <name>Xk</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="286" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a6cdf5d4fe4ccb909ae7f247b1a6c2467" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::start_index</definition>
+        <argsstring></argsstring>
+        <name>start_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="287" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a9d25f8c5a12912bf579d4b856d23ef4e" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nbparts</definition>
+        <argsstring></argsstring>
+        <name>nbparts</name>
+        <briefdescription>
+<para>To define wether it&apos;s Fortran-Style (1) or C-Style (0) </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="289" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a394b46f507335cb80943626234cc0789" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nb_local_parts</definition>
+        <argsstring></argsstring>
+        <name>nb_local_parts</name>
+        <briefdescription>
+<para>The number of partitions. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="290" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="290" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aa393171b258ca15e05c4be342bec81d9" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; abcd::column_index</definition>
+        <argsstring></argsstring>
+        <name>column_index</name>
+        <briefdescription>
+<para>A reverse index of columns, contains the original index of each column for each partition. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="293" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="293" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a2db6084cb434e4751b2df4369a985ea7" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
+        <definition>std::vector&lt;std::map&lt;int,int&gt; &gt; abcd::column_index_cache</definition>
+        <argsstring></argsstring>
+        <name>column_index_cache</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="294" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="294" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a35c3b252abcc4dd7931e4b034e8de062" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; abcd::local_column_index</definition>
+        <argsstring></argsstring>
+        <name>local_column_index</name>
+        <briefdescription>
+<para>A merge of col_index vectors, determines non-null columns in all local partitions. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="296" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="296" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ac687cd652fbf6c35035792eb8fd29b70" prot="private" static="no" mutable="no">
+        <type>int **</type>
+        <definition>int** abcd::fast_local_column_index</definition>
+        <argsstring></argsstring>
+        <name>fast_local_column_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="297" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="297" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a563905855b1ab8c8a3bf20d5785a3901" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, int &gt;</type>
+        <definition>std::map&lt;int,int&gt; abcd::glob_to_local</definition>
+        <argsstring></argsstring>
+        <name>glob_to_local</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="298" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="298" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::glob_to_local_ind</definition>
+        <argsstring></argsstring>
+        <name>glob_to_local_ind</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="300" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a1707bed55d487b558424d13d8afafda3" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, int &gt;</type>
+        <definition>std::map&lt;int,int&gt; abcd::glob_to_local_c</definition>
+        <argsstring></argsstring>
+        <name>glob_to_local_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="301" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1add4558f59ffb02eb4aa85648f324036b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;::iterator</type>
+        <definition>std::vector&lt;int&gt;::iterator abcd::st_c_part_it</definition>
+        <argsstring></argsstring>
+        <name>st_c_part_it</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="302" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a29978bbf0d8de4a0c40daea6dc6376c4" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::st_c_part</definition>
+        <argsstring></argsstring>
+        <name>st_c_part</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="303" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="303" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a526c2c2ba72f32aea9a49c785d1cb8b2" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
+        <definition>std::vector&lt;std::map&lt;int,int&gt; &gt; abcd::glob_to_part</definition>
+        <argsstring></argsstring>
+        <name>glob_to_part</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="305" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1adbcae55b17045d4202388dad7a913c00" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
+        <definition>std::vector&lt;std::map&lt;int,int&gt; &gt; abcd::part_to_glob</definition>
+        <argsstring></argsstring>
+        <name>part_to_glob</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="306" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a98bd0bc0703a2a0ff27223df81df6097" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::stC</definition>
+        <argsstring></argsstring>
+        <name>stC</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="307" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a1f9a7481b36c728f518a1391c83a37b7" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool abcd::use_xk</definition>
+        <argsstring></argsstring>
+        <name>use_xk</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="308" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a9eb7ac628f0bf6d4132ea384f46810d4" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool abcd::use_xf</definition>
+        <argsstring></argsstring>
+        <name>use_xf</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="309" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a4a2f088da09ed8daae94b7d3639e0418" prot="private" static="no" mutable="no">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::solution</definition>
+        <argsstring></argsstring>
+        <name>solution</name>
+        <briefdescription>
+<para>The solution vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="310" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="310" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a958fb5e353f34d2ab91d95df9a82f920" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; int &gt; &gt;</type>
+        <definition>std::map&lt;int,std::vector&lt;int&gt; &gt; abcd::col_interconnections</definition>
+        <argsstring></argsstring>
+        <name>col_interconnections</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains the mutual interconnections between partitions The key is the cg-master rank (in inter_comm) and the value is the column indices </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="316" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a7197aee3bef7fc1fbbfcb62dafc28d1c" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; int &gt; &gt;</type>
+        <definition>std::map&lt;int,std::vector&lt;int&gt; &gt; abcd::col_inter</definition>
+        <argsstring></argsstring>
+        <name>col_inter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="317" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="317" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aaa986f7d93302b717d39c4d5c4662edb" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::parts_id</definition>
+        <argsstring></argsstring>
+        <name>parts_id</name>
+        <briefdescription>
+<para>Contains the partitions that are handled by this instance. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="319" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool abcd::verbose</definition>
+        <argsstring></argsstring>
+        <name>verbose</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="322" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" prot="private" static="no" mutable="no">
+        <type>mpi::communicator</type>
+        <definition>mpi::communicator abcd::inter_comm</definition>
+        <argsstring></argsstring>
+        <name>inter_comm</name>
+        <briefdescription>
+<para>The communicator shared by CG masters. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="326" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a272df4807f77f34dc90146a76fc1a230" prot="private" static="no" mutable="no">
+        <type>mpi::communicator</type>
+        <definition>mpi::communicator abcd::intra_comm</definition>
+        <argsstring></argsstring>
+        <name>intra_comm</name>
+        <briefdescription>
+<para>The communicator of local slaves. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="328" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="328" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::m</definition>
+        <argsstring></argsstring>
+        <name>m</name>
+        <briefdescription>
+<para>The number of rows in the linear system. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="339" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="339" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a430f5548e5969cc1f703563b92733b09" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <briefdescription>
+<para>The number of columns in the linear system. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="340" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="340" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a0e652023493e13d320dd80a6b58c92ef" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nz</definition>
+        <argsstring></argsstring>
+        <name>nz</name>
+        <briefdescription>
+<para>The number of nonzeros in the linear system. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="341" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="341" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::nrhs</definition>
+        <argsstring></argsstring>
+        <name>nrhs</name>
+        <briefdescription>
+<para>The number of right-hand sides to solve. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="342" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="342" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ace2325edd418de592d36d4ba3d2ee983" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string abcd::write_problem</definition>
+        <argsstring></argsstring>
+        <name>write_problem</name>
+        <briefdescription>
+<para>The path where to write the matrix <formula id="0">$PD_rAD_cP^T$</formula>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="345" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="345" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1af72a892a19a1d3eb640638d532770ce8" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string abcd::write_s</definition>
+        <argsstring></argsstring>
+        <name>write_s</name>
+        <briefdescription>
+<para>The path where to write the matrix <formula id="1">$S_k$</formula> where <formula id="2">$k$</formula> is the mpi-process rank. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="346" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="346" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a6dbfdab8785ca4e04335b514df06cf57" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string abcd::log_output</definition>
+        <argsstring></argsstring>
+        <name>log_output</name>
+        <briefdescription>
+<para>The file where to write logging information. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="347" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="347" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" prot="public" static="no" mutable="no">
+        <type>int *</type>
+        <definition>int* abcd::irn</definition>
+        <argsstring></argsstring>
+        <name>irn</name>
+        <briefdescription>
+<para>The row indices. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="349" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="349" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a56ab8a26759da48beacb9914edc97c39" prot="public" static="no" mutable="no">
+        <type>int *</type>
+        <definition>int* abcd::jcn</definition>
+        <argsstring></argsstring>
+        <name>jcn</name>
+        <briefdescription>
+<para>The column indices. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="350" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="350" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a47f742608fbdf5f394a68097500dc7dd" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* abcd::val</definition>
+        <argsstring></argsstring>
+        <name>val</name>
+        <briefdescription>
+<para>The entries of the matrix. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="351" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="351" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a6d0201d9f397728a0cb9f0504570e958" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* abcd::rhs</definition>
+        <argsstring></argsstring>
+        <name>rhs</name>
+        <briefdescription>
+<para>The right-hand side. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="352" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="352" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* abcd::sol</definition>
+        <argsstring></argsstring>
+        <name>sol</name>
+        <briefdescription>
+<para>The solution vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="353" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="353" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a21d084898cb002a8814a7be3cf849da8" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool abcd::sym</definition>
+        <argsstring></argsstring>
+        <name>sym</name>
+        <briefdescription>
+<para>The symmetry of the matrix. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="355" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="355" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1ad720ae148dc7e0aa94c19d20e655c187" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::strow</definition>
+        <argsstring></argsstring>
+        <name>strow</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="360" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="360" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8280c080e69ab33e646c33e6555b0d96" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::nbrows</definition>
+        <argsstring></argsstring>
+        <name>nbrows</name>
+        <briefdescription>
+<para>The starting row index of each partition. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="361" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="361" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int abcd::parallel_cg</definition>
+        <argsstring></argsstring>
+        <name>parallel_cg</name>
+        <briefdescription>
+<para>The number of rows per partition. </para>        </briefdescription>
+        <detaileddescription>
+<para>The number of parallel CG instances </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="367" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="367" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" prot="public" static="no" mutable="no">
+        <type>mpi::communicator</type>
+        <definition>mpi::communicator abcd::comm</definition>
+        <argsstring></argsstring>
+        <name>comm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="368" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="368" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a4e25bee21981dc6f6541126221d6c197" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::icntl</definition>
+        <argsstring></argsstring>
+        <name>icntl</name>
+        <briefdescription>
+<para><ref refid="namespace_controls" kindref="compound">Controls</ref> </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="371" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="371" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1afc2897e4faf4d2f2466251488123af8d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::dcntl</definition>
+        <argsstring></argsstring>
+        <name>dcntl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="372" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="372" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; abcd::info</definition>
+        <argsstring></argsstring>
+        <name>info</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="373" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="373" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classabcd_1a8929be2a941d94806c90eb40a7366c9a" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::dinfo</definition>
+        <argsstring></argsstring>
+        <name>dinfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="374" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="374" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classabcd_1a92ee33baaed6bff47deff16943966123" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::scaling</definition>
+        <argsstring>()</argsstring>
+        <name>scaling</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="148" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp" bodystart="43" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ae95e3e480eb2fad37901ef31bc45e274" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::scaleMatrix</definition>
+        <argsstring>(int norm)</argsstring>
+        <name>scaleMatrix</name>
+        <param>
+          <type>int</type>
+          <declname>norm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Scales the matrix  the norm at which the matrix is scaled </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="153" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp" bodystart="88" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::diagScaleMatrix</definition>
+        <argsstring>(std::vector&lt; double &gt; &amp;, std::vector&lt; double &gt; &amp;)</argsstring>
+        <name>diagScaleMatrix</name>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <defname>drow</defname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <defname>dcol</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="154" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp" bodystart="184" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a66529e5682d33cf80934c0f596a461a7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::diagScaleRhs</definition>
+        <argsstring>(VECTOR_double &amp;)</argsstring>
+        <name>diagScaleRhs</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <defname>b</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="155" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp" bodystart="202" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ae8c0947316be4c38301332074fda0339" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::diagScaleRhs</definition>
+        <argsstring>(MV_ColMat_double &amp;)</argsstring>
+        <name>diagScaleRhs</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <defname>B</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="156" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp" bodystart="210" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a09091f9c7c3dc22cde07ff661dbef576" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::computeNorms</definition>
+        <argsstring>()</argsstring>
+        <name>computeNorms</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the norm of the matrix <xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>implement it! </para></xrefdescription></xrefsect></para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="161" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa886456ff67dc4a18e1c5cdb8b1d7ea3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::partitionMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>partitionMatrix</name>
+        <briefdescription>
+<para>Partitions the matrix into <ref refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kindref="member">abcd::nbrows</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="165" column="1" bodyfile="/home/mzenadi/projects/abcd/src/structure.cpp" bodystart="43" bodyend="297"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1abc87b17b4a945955631d21220c544117" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::analyseFrame</definition>
+        <argsstring>()</argsstring>
+        <name>analyseFrame</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Analyses the structure of each partition Compresses the and analyses the interconnections between them </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="170" column="1" bodyfile="/home/mzenadi/projects/abcd/src/structure.cpp" bodystart="299" bodyend="379"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1af62d114097b0e9039c05392c1ce17cb5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::augmentMatrix</definition>
+        <argsstring>(std::vector&lt; CompCol_Mat_double &gt; &amp;loc_parts)</argsstring>
+        <name>augmentMatrix</name>
+        <param>
+          <type>std::vector&lt; CompCol_Mat_double &gt; &amp;</type>
+          <declname>loc_parts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="181" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/augmentation.cpp" bodystart="42" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ad4c94bb95e057c3a0e8e67fac4f613fd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::cijAugmentMatrix</definition>
+        <argsstring>(std::vector&lt; CompCol_Mat_double &gt; &amp;loc_parts)</argsstring>
+        <name>cijAugmentMatrix</name>
+        <param>
+          <type>std::vector&lt; CompCol_Mat_double &gt; &amp;</type>
+          <declname>loc_parts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="182" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/cij_augment.cpp" bodystart="35" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1adf0919f439b050435990bccef88dd74b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::aijAugmentMatrix</definition>
+        <argsstring>(std::vector&lt; CompCol_Mat_double &gt; &amp;loc_parts)</argsstring>
+        <name>aijAugmentMatrix</name>
+        <param>
+          <type>std::vector&lt; CompCol_Mat_double &gt; &amp;</type>
+          <declname>loc_parts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="183" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp" bodystart="35" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::createInterComm</definition>
+        <argsstring>()</argsstring>
+        <name>createInterComm</name>
+        <briefdescription>
+<para>Assignes each mpi-process to its category : CG-master or MUMPS-Slave. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="186" column="1" bodyfile="/home/mzenadi/projects/abcd/src/comms.cpp" bodystart="37" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a2d28aace9f0b39f4a42f73c9a1065552" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::distributePartitions</definition>
+        <argsstring>()</argsstring>
+        <name>distributePartitions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="187" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa290bca49b911d694e128ce85057e058" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::createInterconnections</definition>
+        <argsstring>()</argsstring>
+        <name>createInterconnections</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="188" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="190" bodyend="280"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::distributeData</definition>
+        <argsstring>()</argsstring>
+        <name>distributeData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="190" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="36" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::initializeCimmino</definition>
+        <argsstring>()</argsstring>
+        <name>initializeCimmino</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="193" column="1" bodyfile="/home/mzenadi/projects/abcd/src/cimmino.cpp" bodystart="36" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::distributeRhs</definition>
+        <argsstring>()</argsstring>
+        <name>distributeRhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="194" column="1" bodyfile="/home/mzenadi/projects/abcd/src/comms.cpp" bodystart="62" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a51b5418bb8de6589d5456f7657b31b67" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::distributeNewRhs</definition>
+        <argsstring>()</argsstring>
+        <name>distributeNewRhs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="195" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::bcg</definition>
+        <argsstring>(MV_ColMat_double &amp;b)</argsstring>
+        <name>bcg</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="196" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="37" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::solveABCD</definition>
+        <argsstring>(MV_ColMat_double &amp;b)</argsstring>
+        <name>solveABCD</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para>the final solution (distributed) w = ^+ b f = ^+ b </para>        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="197" column="1" bodyfile="/home/mzenadi/projects/abcd/src/solve.cpp" bodystart="37" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa3d8082dc1f8bb53fecb6796983bc41f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::solveS</definition>
+        <argsstring>(MV_ColMat_double &amp;f)</argsstring>
+        <name>solveS</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="198" column="1" bodyfile="/home/mzenadi/projects/abcd/src/sutils/solveS.cpp" bodystart="44" bodyend="210"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a8da6dd9fb704f3669d56a309384424fd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::buildS</definition>
+        <argsstring>(std::vector&lt; int &gt; &amp;rows, std::vector&lt; int &gt; &amp;cols, std::vector&lt; double &gt; &amp;vals)</argsstring>
+        <name>buildS</name>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>rows</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>cols</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <declname>vals</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="200" column="1" bodyfile="/home/mzenadi/projects/abcd/src/sutils/buildS.cpp" bodystart="62" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1abc3798083b0d66d028984023a7a79e04" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::buildS</definition>
+        <argsstring>(std::vector&lt; int &gt; &amp;rows, std::vector&lt; int &gt; &amp;cols, std::vector&lt; double &gt; &amp;vals, std::vector&lt; int &gt; &amp;columns_to_build)</argsstring>
+        <name>buildS</name>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>rows</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>cols</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <declname>vals</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>columns_to_build</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="201" column="1" bodyfile="/home/mzenadi/projects/abcd/src/sutils/buildS.cpp" bodystart="68" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Coord_Mat_double</type>
+        <definition>Coord_Mat_double abcd::buildS</definition>
+        <argsstring>()</argsstring>
+        <name>buildS</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="203" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a955d4b1e0db10d8674b92bd23d215870" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Coord_Mat_double</type>
+        <definition>Coord_Mat_double abcd::buildS</definition>
+        <argsstring>(std::vector&lt; int &gt;)</argsstring>
+        <name>buildS</name>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="204" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ae2707391ee22a24e3a704e12b89e87aa" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></type>
+        <definition>MUMPS abcd::buildM</definition>
+        <argsstring>()</argsstring>
+        <name>buildM</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="205" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a07cb16265fca6e94b21f3cb546ec8bf8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>VECTOR_double</type>
+        <definition>VECTOR_double abcd::solveM</definition>
+        <argsstring>(MUMPS &amp;mu, VECTOR_double &amp;z)</argsstring>
+        <name>solveM</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <declname>mu</declname>
+        </param>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="206" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a70a9ed1ef8d082ec9722eb0f529620cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::prodSv</definition>
+        <argsstring>(MV_ColMat_double &amp;)</argsstring>
+        <name>prodSv</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="207" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1af357842f3e0e35c69d2611d2bb20d7f1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>VECTOR_double</type>
+        <definition>VECTOR_double abcd::pcgS</definition>
+        <argsstring>(VECTOR_double &amp;b)</argsstring>
+        <name>pcgS</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="208" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ad3ed7b03a3b928931f4ebcb95e6786a3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double abcd::compute_rho</definition>
+        <argsstring>(MV_ColMat_double &amp;X, MV_ColMat_double &amp;U)</argsstring>
+        <name>compute_rho</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>U</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="211" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="230" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a4a38fc2cf3a288e6cbfbf9cebe961599" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::initializeMumps</definition>
+        <argsstring>(MUMPS &amp;, bool local)</argsstring>
+        <name>initializeMumps</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <defname>mu</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>local</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="224" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/init.cpp" bodystart="41" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a93a2700765821fc8f648923fe31fb731" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::initializeMumps</definition>
+        <argsstring>(MUMPS &amp;)</argsstring>
+        <name>initializeMumps</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <defname>mu</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="225" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/init.cpp" bodystart="36" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ac35f58e16199bd8730bec922906b6af5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::createAugmentedSystems</definition>
+        <argsstring>(int &amp;n_aug, int &amp;nz_aug, std::vector&lt; int &gt; &amp;irn_aug, std::vector&lt; int &gt; &amp;jcn_aug, std::vector&lt; double &gt; &amp;val_aug)</argsstring>
+        <name>createAugmentedSystems</name>
+        <param>
+          <type>int &amp;</type>
+          <declname>n_aug</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>nz_aug</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>irn_aug</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>jcn_aug</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <declname>val_aug</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="226" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/augmented_systems.cpp" bodystart="36" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a6a02efd657087ee75d2baaa8ca36992f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::analyseAugmentedSystems</definition>
+        <argsstring>(MUMPS &amp;)</argsstring>
+        <name>analyseAugmentedSystems</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <defname>mu</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="227" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/analysis.cpp" bodystart="36" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a1df8d0625f241fdc4b31826674a114d7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::allocateMumpsSlaves</definition>
+        <argsstring>(MUMPS &amp;)</argsstring>
+        <name>allocateMumpsSlaves</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <defname>mu</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="228" column="1" bodyfile="/home/mzenadi/projects/abcd/src/define_slaves.cpp" bodystart="35" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a0ad19a4110240dfa7f241567e205e731" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::factorizeAugmentedSystems</definition>
+        <argsstring>(MUMPS &amp;)</argsstring>
+        <name>factorizeAugmentedSystems</name>
+        <param>
+          <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> &amp;</type>
+          <defname>mu</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="229" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/factorization.cpp" bodystart="36" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a7c67e07b5a8d9c04013eeddcb38b2b56" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::sumProject</definition>
+        <argsstring>(double alpha, MV_ColMat_double &amp;Rhs, double beta, MV_ColMat_double &amp;X)</argsstring>
+        <name>sumProject</name>
+        <param>
+          <type>double</type>
+          <declname>alpha</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>Rhs</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>beta</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="232" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/sumproject.cpp" bodystart="36" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ac3d0bae5d7774e31f2c5551447b358ea" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::coupleSumProject</definition>
+        <argsstring>(double alpha, MV_ColMat_double &amp;Rhs, double beta, MV_ColMat_double &amp;X, int my_bro)</argsstring>
+        <name>coupleSumProject</name>
+        <param>
+          <type>double</type>
+          <declname>alpha</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>Rhs</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>beta</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>my_bro</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="233" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa7e0342f591210d552ffa8ad60bd0aee" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::simpleProject</definition>
+        <argsstring>(MV_ColMat_double &amp;X)</argsstring>
+        <name>simpleProject</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="235" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa6b92bcd620bc56a7bbe9847a5c8707b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double abcd::spSimpleProject</definition>
+        <argsstring>(std::vector&lt; int &gt; mycols)</argsstring>
+        <name>spSimpleProject</name>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <declname>mycols</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="237" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a455e4818649b17fb7454cd5660c173d4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::spSimpleProject</definition>
+        <argsstring>(std::vector&lt; int &gt; mycols, std::vector&lt; int &gt; &amp;vrows, std::vector&lt; int &gt; &amp;vcols, std::vector&lt; double &gt; &amp;vvals)</argsstring>
+        <name>spSimpleProject</name>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <declname>mycols</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>vrows</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>vcols</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <declname>vvals</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="239" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp" bodystart="38" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a817a3c3999a828b77c7ba67dff64dc2c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::waitForSolve</definition>
+        <argsstring>()</argsstring>
+        <name>waitForSolve</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="242" column="1" bodyfile="/home/mzenadi/projects/abcd/src/worker.cpp" bodystart="42" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aecdcfbeb7c8483e30a5696406c15f66f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::partitionWeights</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; int &gt; &gt; &amp;, std::vector&lt; int &gt;, int)</argsstring>
+        <name>partitionWeights</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; int &gt; &gt; &amp;</type>
+          <defname>parts</defname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <defname>weights</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>nb_parts</defname>
+        </param>
+        <briefdescription>
+<para>Partition weigts. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="246" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="41" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::partitioning</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; int &gt; &gt; &amp;, std::vector&lt; int &gt;, int)</argsstring>
+        <name>partitioning</name>
+        <param>
+          <type>std::vector&lt; std::vector&lt; int &gt; &gt; &amp;</type>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+        </param>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="247" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a262aae8ba8a72bb202f5f56c88e4457e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double abcd::ddot</definition>
+        <argsstring>(VECTOR_double &amp;p, VECTOR_double &amp;ap)</argsstring>
+        <name>ddot</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>DDOT. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="248" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="109" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::get_nrmres</definition>
+        <argsstring>(MV_ColMat_double &amp;x, MV_ColMat_double &amp;b, double &amp;nrmR, double &amp;nrmX, double &amp;nrmXfmX)</argsstring>
+        <name>get_nrmres</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nrmR</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nrmX</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nrmXfmX</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="249" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="144" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1addecce43741a76bd852cd439cda77eae" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::S_nbrows</definition>
+        <argsstring>()</argsstring>
+        <name>S_nbrows</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="266" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="266" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ae9dbae8b952ba08d0c8bf29c0f9d0779" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::S_nbcols</definition>
+        <argsstring>()</argsstring>
+        <name>S_nbcols</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="267" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="267" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a482623996a6268d4b29cad1db5382122" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::S_nnz</definition>
+        <argsstring>()</argsstring>
+        <name>S_nnz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="268" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="268" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a33e3410c567ea50aa84a31c745b296ca" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::centralizeVector</definition>
+        <argsstring>(double *dest, int dest_lda, int dest_ncols, double *src, int src_lda, int src_ncols, std::vector&lt; int &gt; globalIndex, double *scale)</argsstring>
+        <name>centralizeVector</name>
+        <param>
+          <type>double *</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dest_lda</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dest_ncols</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>src_lda</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>src_ncols</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <declname>globalIndex</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>scale</declname>
+        </param>
+        <briefdescription>
+<para>Regroups the data from the different sources to a single destination on the master. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para>Move this away </para>        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="330" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="233" bodyend="283"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classabcd_1abc697f84c0c41893ac22cdb42acd7693" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::initializeMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>initializeMatrix</name>
+        <briefdescription>
+<para>Creates the internal matrix from user&apos;s data. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para>CHeck that the matrix is not structurally singular </para>        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="376" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="108" bodyend="192"/>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" compoundref="defaults_8h" startline="72">Controls::status</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::preprocessMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>preprocessMatrix</name>
+        <briefdescription>
+<para>Scales, partitions and analyses the structure of partitions. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="377" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="195" bodyend="237"/>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" compoundref="defaults_8h" startline="72">Controls::status</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" compoundref="defaults_8h" startline="40">Controls::nbparts</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::factorizeAugmentedSystems</definition>
+        <argsstring>()</argsstring>
+        <name>factorizeAugmentedSystems</name>
+        <briefdescription>
+<para>Creates augmented systems and factorizes them. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="378" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="240" bodyend="287"/>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" compoundref="defaults_8h" startline="49">Controls::aug_type</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::solveSystem</definition>
+        <argsstring>()</argsstring>
+        <name>solveSystem</name>
+        <briefdescription>
+<para>Runs either BCG or ABCD solve depending on what we want. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="379" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="290" bodyend="356"/>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" compoundref="defaults_8h" startline="72">Controls::status</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" compoundref="defaults_8h" startline="45">Controls::block_size</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" compoundref="defaults_8h" startline="49">Controls::aug_type</references>
+        <references refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" compoundref="defaults_8h" startline="79">Controls::backward</references>
+        <references refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" compoundref="defaults_8h" startline="77">Controls::residual</references>
+        <references refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" compoundref="defaults_8h" startline="80">Controls::scaled_residual</references>
+        <references refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" compoundref="defaults_8h" startline="78">Controls::forward_error</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::operator()</definition>
+        <argsstring>(int job)</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>int</type>
+          <declname>job</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The gateway function that launches all other options</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>job</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The job id </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Status code  Replace the number of jobs by identifiers easy to remember </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="381" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="363" bodyend="480"/>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" compoundref="defaults_8h" startline="72">Controls::status</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a5e503b1e89268fbfad4399194895b683" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>_INITIALIZE_EASYLOGGINGPP abcd::abcd</definition>
+        <argsstring>()</argsstring>
+        <name>abcd</name>
+        <briefdescription>
+<para>Set the defaults in the constructor. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="382" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="43" bodyend="98"/>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" compoundref="defaults_8h" startline="50">Controls::aug_blocking</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" compoundref="defaults_8h" startline="40">Controls::nbparts</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" compoundref="defaults_8h" startline="41">Controls::part_type</references>
+        <references refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" compoundref="defaults_8h" startline="63">Controls::part_imbalance</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" compoundref="defaults_8h" startline="42">Controls::part_guess</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" compoundref="defaults_8h" startline="43">Controls::scaling</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea6cd993d493cb532bed17907e8337d9ca" compoundref="defaults_8h" startline="44">Controls::itmax</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" compoundref="defaults_8h" startline="45">Controls::block_size</references>
+        <references refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" compoundref="defaults_8h" startline="64">Controls::threshold</references>
+        <references refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" compoundref="defaults_8h" startline="46">Controls::verbose_level</references>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" compoundref="defaults_8h" startline="72">Controls::status</references>
+        <references refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" compoundref="defaults_8h" startline="73">Controls::nb_iter</references>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>abcd::~abcd</definition>
+        <argsstring>()</argsstring>
+        <name>~abcd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="383" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="100" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::gqr</definition>
+        <argsstring>(MV_ColMat_double &amp;P, MV_ColMat_double &amp;AP, MV_ColMat_double &amp;R, int s, bool use_a)</argsstring>
+        <name>gqr</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>AP</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>R</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="385" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="264" bodyend="284"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int abcd::gqr</definition>
+        <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, CompCol_Mat_double g, int s, bool use_a)</argsstring>
+        <name>gqr</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>ap</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>CompCol_Mat_double</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="386" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="338" bodyend="423"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1aedb08f01ec4ef119160da403cee682ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::gmgs</definition>
+        <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, int s, bool use_a)</argsstring>
+        <name>gmgs</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>ap</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="387" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="242" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void abcd::gmgs</definition>
+        <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, CompCol_Mat_double g, int s, bool use_a)</argsstring>
+        <name>gmgs</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>ap</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>CompCol_Mat_double</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Generalized modifed Gram-Schmidt </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="388" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="289" bodyend="336"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>std::vector&lt; double &gt;</label>
+      </node>
+      <node id="1">
+        <label>abcd</label>
+        <link refid="classabcd"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>write_problem</edgelabel>
+          <edgelabel>log_output</edgelabel>
+          <edgelabel>write_s</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>strow</edgelabel>
+          <edgelabel>icntl</edgelabel>
+          <edgelabel>info</edgelabel>
+          <edgelabel>nbrows</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>dcntl</edgelabel>
+          <edgelabel>dinfo</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::basic_string&lt; char &gt;</label>
+      </node>
+      <node id="4">
+        <label>std::vector&lt; int &gt;</label>
+      </node>
+      <node id="2">
+        <label>std::string</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="137" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="136" bodyend="389"/>
+    <listofallmembers>
+      <member refid="classabcd_1ac65507961f8180935b292542e452a4f4" prot="private" virt="non-virtual"><scope>abcd</scope><name>A</name></member>
+      <member refid="classabcd_1a5e503b1e89268fbfad4399194895b683" prot="public" virt="non-virtual"><scope>abcd</scope><name>abcd</name></member>
+      <member refid="classabcd_1adf0919f439b050435990bccef88dd74b" prot="private" virt="non-virtual"><scope>abcd</scope><name>aijAugmentMatrix</name></member>
+      <member refid="classabcd_1a1df8d0625f241fdc4b31826674a114d7" prot="private" virt="non-virtual"><scope>abcd</scope><name>allocateMumpsSlaves</name></member>
+      <member refid="classabcd_1a6a02efd657087ee75d2baaa8ca36992f" prot="private" virt="non-virtual"><scope>abcd</scope><name>analyseAugmentedSystems</name></member>
+      <member refid="classabcd_1abc87b17b4a945955631d21220c544117" prot="private" virt="non-virtual"><scope>abcd</scope><name>analyseFrame</name></member>
+      <member refid="classabcd_1af62d114097b0e9039c05392c1ce17cb5" prot="private" virt="non-virtual"><scope>abcd</scope><name>augmentMatrix</name></member>
+      <member refid="classabcd_1a4a0f44796d9dadf39f0b9655ada8df67" prot="private" virt="non-virtual"><scope>abcd</scope><name>B</name></member>
+      <member refid="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" prot="private" virt="non-virtual"><scope>abcd</scope><name>bcg</name></member>
+      <member refid="classabcd_1ae2707391ee22a24e3a704e12b89e87aa" prot="private" virt="non-virtual"><scope>abcd</scope><name>buildM</name></member>
+      <member refid="classabcd_1a8da6dd9fb704f3669d56a309384424fd" prot="private" virt="non-virtual"><scope>abcd</scope><name>buildS</name></member>
+      <member refid="classabcd_1abc3798083b0d66d028984023a7a79e04" prot="private" virt="non-virtual"><scope>abcd</scope><name>buildS</name></member>
+      <member refid="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" prot="private" virt="non-virtual"><scope>abcd</scope><name>buildS</name></member>
+      <member refid="classabcd_1a955d4b1e0db10d8674b92bd23d215870" prot="private" virt="non-virtual"><scope>abcd</scope><name>buildS</name></member>
+      <member refid="classabcd_1a33e3410c567ea50aa84a31c745b296ca" prot="private" virt="non-virtual"><scope>abcd</scope><name>centralizeVector</name></member>
+      <member refid="classabcd_1ad4c94bb95e057c3a0e8e67fac4f613fd" prot="private" virt="non-virtual"><scope>abcd</scope><name>cijAugmentMatrix</name></member>
+      <member refid="classabcd_1a7197aee3bef7fc1fbbfcb62dafc28d1c" prot="private" virt="non-virtual"><scope>abcd</scope><name>col_inter</name></member>
+      <member refid="classabcd_1a958fb5e353f34d2ab91d95df9a82f920" prot="private" virt="non-virtual"><scope>abcd</scope><name>col_interconnections</name></member>
+      <member refid="classabcd_1aa393171b258ca15e05c4be342bec81d9" prot="private" virt="non-virtual"><scope>abcd</scope><name>column_index</name></member>
+      <member refid="classabcd_1a2db6084cb434e4751b2df4369a985ea7" prot="private" virt="non-virtual"><scope>abcd</scope><name>column_index_cache</name></member>
+      <member refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" prot="public" virt="non-virtual"><scope>abcd</scope><name>comm</name></member>
+      <member refid="classabcd_1a8a415661419f06b656382390896827a3" prot="private" virt="non-virtual"><scope>abcd</scope><name>comm_map</name></member>
+      <member refid="classabcd_1ad3ed7b03a3b928931f4ebcb95e6786a3" prot="private" virt="non-virtual"><scope>abcd</scope><name>compute_rho</name></member>
+      <member refid="classabcd_1a09091f9c7c3dc22cde07ff661dbef576" prot="private" virt="non-virtual"><scope>abcd</scope><name>computeNorms</name></member>
+      <member refid="classabcd_1ac3d0bae5d7774e31f2c5551447b358ea" prot="private" virt="non-virtual"><scope>abcd</scope><name>coupleSumProject</name></member>
+      <member refid="classabcd_1ac35f58e16199bd8730bec922906b6af5" prot="private" virt="non-virtual"><scope>abcd</scope><name>createAugmentedSystems</name></member>
+      <member refid="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" prot="private" virt="non-virtual"><scope>abcd</scope><name>createInterComm</name></member>
+      <member refid="classabcd_1aa290bca49b911d694e128ce85057e058" prot="private" virt="non-virtual"><scope>abcd</scope><name>createInterconnections</name></member>
+      <member refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" prot="public" virt="non-virtual"><scope>abcd</scope><name>dcntl</name></member>
+      <member refid="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" prot="private" virt="non-virtual"><scope>abcd</scope><name>dcol_</name></member>
+      <member refid="classabcd_1a262aae8ba8a72bb202f5f56c88e4457e" prot="private" virt="non-virtual"><scope>abcd</scope><name>ddot</name></member>
+      <member refid="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" prot="private" virt="non-virtual"><scope>abcd</scope><name>diagScaleMatrix</name></member>
+      <member refid="classabcd_1a66529e5682d33cf80934c0f596a461a7" prot="private" virt="non-virtual"><scope>abcd</scope><name>diagScaleRhs</name></member>
+      <member refid="classabcd_1ae8c0947316be4c38301332074fda0339" prot="private" virt="non-virtual"><scope>abcd</scope><name>diagScaleRhs</name></member>
+      <member refid="classabcd_1a8929be2a941d94806c90eb40a7366c9a" prot="public" virt="non-virtual"><scope>abcd</scope><name>dinfo</name></member>
+      <member refid="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" prot="private" virt="non-virtual"><scope>abcd</scope><name>distributeData</name></member>
+      <member refid="classabcd_1a51b5418bb8de6589d5456f7657b31b67" prot="private" virt="non-virtual"><scope>abcd</scope><name>distributeNewRhs</name></member>
+      <member refid="classabcd_1a2d28aace9f0b39f4a42f73c9a1065552" prot="private" virt="non-virtual"><scope>abcd</scope><name>distributePartitions</name></member>
+      <member refid="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" prot="private" virt="non-virtual"><scope>abcd</scope><name>distributeRhs</name></member>
+      <member refid="classabcd_1a9def8962f21d58d5b61975ffecc1af96" prot="private" virt="non-virtual"><scope>abcd</scope><name>drow_</name></member>
+      <member refid="classabcd_1a0ad19a4110240dfa7f241567e205e731" prot="private" virt="non-virtual"><scope>abcd</scope><name>factorizeAugmentedSystems</name></member>
+      <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" prot="public" virt="non-virtual"><scope>abcd</scope><name>factorizeAugmentedSystems</name></member>
+      <member refid="classabcd_1ac687cd652fbf6c35035792eb8fd29b70" prot="private" virt="non-virtual"><scope>abcd</scope><name>fast_local_column_index</name></member>
+      <member refid="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" prot="private" virt="non-virtual"><scope>abcd</scope><name>get_nrmres</name></member>
+      <member refid="classabcd_1a563905855b1ab8c8a3bf20d5785a3901" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local</name></member>
+      <member refid="classabcd_1a1707bed55d487b558424d13d8afafda3" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_c</name></member>
+      <member refid="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_ind</name></member>
+      <member refid="classabcd_1a526c2c2ba72f32aea9a49c785d1cb8b2" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_part</name></member>
+      <member refid="classabcd_1aedb08f01ec4ef119160da403cee682ea" prot="public" virt="non-virtual"><scope>abcd</scope><name>gmgs</name></member>
+      <member refid="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" prot="public" virt="non-virtual"><scope>abcd</scope><name>gmgs</name></member>
+      <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="public" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
+      <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="public" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
+      <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" prot="public" virt="non-virtual"><scope>abcd</scope><name>icntl</name></member>
+      <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" prot="public" virt="non-virtual"><scope>abcd</scope><name>info</name></member>
+      <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeCimmino</name></member>
+      <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" prot="public" virt="non-virtual"><scope>abcd</scope><name>initializeMatrix</name></member>
+      <member refid="classabcd_1a4a38fc2cf3a288e6cbfbf9cebe961599" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeMumps</name></member>
+      <member refid="classabcd_1a93a2700765821fc8f648923fe31fb731" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeMumps</name></member>
+      <member refid="classabcd_1a7228c63e7b61ad01935612d5c68f2564" prot="private" virt="non-virtual"><scope>abcd</scope><name>instance_type</name></member>
+      <member refid="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" prot="private" virt="non-virtual"><scope>abcd</scope><name>inter_comm</name></member>
+      <member refid="classabcd_1a272df4807f77f34dc90146a76fc1a230" prot="private" virt="non-virtual"><scope>abcd</scope><name>intra_comm</name></member>
+      <member refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" prot="public" virt="non-virtual"><scope>abcd</scope><name>irn</name></member>
+      <member refid="classabcd_1a806d3bee472cdae0490e809295aa2141" prot="private" virt="non-virtual"><scope>abcd</scope><name>irn_aug</name></member>
+      <member refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" prot="public" virt="non-virtual"><scope>abcd</scope><name>jcn</name></member>
+      <member refid="classabcd_1a983804bd5a2990ffce8182a767175b83" prot="private" virt="non-virtual"><scope>abcd</scope><name>jcn_aug</name></member>
+      <member refid="classabcd_1ac7dad2825c69db177a9e616a386c3131" prot="private" virt="non-virtual"><scope>abcd</scope><name>last_called_job</name></member>
+      <member refid="classabcd_1a35c3b252abcc4dd7931e4b034e8de062" prot="private" virt="non-virtual"><scope>abcd</scope><name>local_column_index</name></member>
+      <member refid="classabcd_1a6dbfdab8785ca4e04335b514df06cf57" prot="public" virt="non-virtual"><scope>abcd</scope><name>log_output</name></member>
+      <member refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" prot="public" virt="non-virtual"><scope>abcd</scope><name>m</name></member>
+      <member refid="classabcd_1a61ec8805a290f1fc73e413332e3ac96d" prot="private" virt="non-virtual"><scope>abcd</scope><name>m_l</name></member>
+      <member refid="classabcd_1aa080d0df3ebb1813d70fe3fc3e7f4055" prot="private" virt="non-virtual"><scope>abcd</scope><name>m_n</name></member>
+      <member refid="classabcd_1a5de04c7b1e0749991df158b8758fcd7a" prot="private" virt="non-virtual"><scope>abcd</scope><name>m_nz</name></member>
+      <member refid="classabcd_1a2257a5ef4b7426570fe986d8f5344efb" prot="private" virt="non-virtual"><scope>abcd</scope><name>m_o</name></member>
+      <member refid="classabcd_1a878bd4b6a03057799978bb745b44cd15" prot="private" virt="non-virtual"><scope>abcd</scope><name>mumps</name></member>
+      <member refid="classabcd_1a4476fbb15765c2e6276d70131212baba" prot="private" virt="non-virtual"><scope>abcd</scope><name>mumps_S</name></member>
+      <member refid="classabcd_1a0f5749acc76c44b96da4752557ac0580" prot="private" virt="non-virtual"><scope>abcd</scope><name>my_master</name></member>
+      <member refid="classabcd_1ae11d9fd2b4ffecd11c6a5a4f66049160" prot="private" virt="non-virtual"><scope>abcd</scope><name>my_slaves</name></member>
+      <member refid="classabcd_1a430f5548e5969cc1f703563b92733b09" prot="public" virt="non-virtual"><scope>abcd</scope><name>n</name></member>
+      <member refid="classabcd_1a65a26d9b5e26a6fc735fc0a44269c274" prot="private" virt="non-virtual"><scope>abcd</scope><name>n_aug</name></member>
+      <member refid="classabcd_1a1ceaa3c6a556f8e818d213029d0fe8b9" prot="private" virt="non-virtual"><scope>abcd</scope><name>n_l</name></member>
+      <member refid="classabcd_1a8f8c3fe9e674f9f1e27973891ac968e1" prot="private" virt="non-virtual"><scope>abcd</scope><name>n_o</name></member>
+      <member refid="classabcd_1a394b46f507335cb80943626234cc0789" prot="private" virt="non-virtual"><scope>abcd</scope><name>nb_local_parts</name></member>
+      <member refid="classabcd_1a9d25f8c5a12912bf579d4b856d23ef4e" prot="private" virt="non-virtual"><scope>abcd</scope><name>nbparts</name></member>
+      <member refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" prot="public" virt="non-virtual"><scope>abcd</scope><name>nbrows</name></member>
+      <member refid="classabcd_1aa1a229ff3c4713418623c6416bd13f6b" prot="private" virt="non-virtual"><scope>abcd</scope><name>normres</name></member>
+      <member refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" prot="public" virt="non-virtual"><scope>abcd</scope><name>nrhs</name></member>
+      <member refid="classabcd_1af5397b434eab1f94cbbe4e104e93723b" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmA</name></member>
+      <member refid="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmB</name></member>
+      <member refid="classabcd_1afd573b0c136c11086126ab0869cfb912" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmMtx</name></member>
+      <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmXf</name></member>
+      <member refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" prot="public" virt="non-virtual"><scope>abcd</scope><name>nz</name></member>
+      <member refid="classabcd_1aae46ce5a9ec879a0eb6ebba50381c62b" prot="private" virt="non-virtual"><scope>abcd</scope><name>nz_aug</name></member>
+      <member refid="classabcd_1a8256e8277b5d2200dba679d8dd71554a" prot="private" virt="non-virtual"><scope>abcd</scope><name>nz_l</name></member>
+      <member refid="classabcd_1ad0a81d878205a7333c9a674224f74b58" prot="private" virt="non-virtual"><scope>abcd</scope><name>nz_o</name></member>
+      <member refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" prot="public" virt="non-virtual"><scope>abcd</scope><name>operator()</name></member>
+      <member refid="classabcd_1a43aed50014aaac4c6442475410dce5f1" prot="private" virt="non-virtual"><scope>abcd</scope><name>p_sets</name></member>
+      <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" prot="public" virt="non-virtual"><scope>abcd</scope><name>parallel_cg</name></member>
+      <member refid="classabcd_1adbcae55b17045d4202388dad7a913c00" prot="private" virt="non-virtual"><scope>abcd</scope><name>part_to_glob</name></member>
+      <member refid="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitioning</name></member>
+      <member refid="classabcd_1aa886456ff67dc4a18e1c5cdb8b1d7ea3" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitionMatrix</name></member>
+      <member refid="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitions</name></member>
+      <member refid="classabcd_1aecdcfbeb7c8483e30a5696406c15f66f" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitionWeights</name></member>
+      <member refid="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" prot="private" virt="non-virtual"><scope>abcd</scope><name>parts</name></member>
+      <member refid="classabcd_1aaa986f7d93302b717d39c4d5c4662edb" prot="private" virt="non-virtual"><scope>abcd</scope><name>parts_id</name></member>
+      <member refid="classabcd_1af357842f3e0e35c69d2611d2bb20d7f1" prot="private" virt="non-virtual"><scope>abcd</scope><name>pcgS</name></member>
+      <member refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" prot="public" virt="non-virtual"><scope>abcd</scope><name>preprocessMatrix</name></member>
+      <member refid="classabcd_1a70a9ed1ef8d082ec9722eb0f529620cc" prot="private" virt="non-virtual"><scope>abcd</scope><name>prodSv</name></member>
+      <member refid="classabcd_1a6d0201d9f397728a0cb9f0504570e958" prot="public" virt="non-virtual"><scope>abcd</scope><name>rhs</name></member>
+      <member refid="classabcd_1a546571c42ff50c26f55fbfd4d66cf0ee" prot="private" virt="non-virtual"><scope>abcd</scope><name>row_perm</name></member>
+      <member refid="classabcd_1a3c69c57b283e3d97a9eb0176efcc2f70" prot="private" virt="non-virtual"><scope>abcd</scope><name>RRand</name></member>
+      <member refid="classabcd_1a1907cd9c727f334284fbcaffdd88b8b9" prot="private" virt="non-virtual"><scope>abcd</scope><name>runSolveS</name></member>
+      <member refid="classabcd_1a6494ba4a220da82e02622f38b25068db" prot="private" virt="non-virtual"><scope>abcd</scope><name>S</name></member>
+      <member refid="classabcd_1a28e5018dcc397bfef8ab9de001cc4506" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_cols</name></member>
+      <member refid="classabcd_1ae9dbae8b952ba08d0c8bf29c0f9d0779" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_nbcols</name></member>
+      <member refid="classabcd_1addecce43741a76bd852cd439cda77eae" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_nbrows</name></member>
+      <member refid="classabcd_1a482623996a6268d4b29cad1db5382122" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_nnz</name></member>
+      <member refid="classabcd_1ab1ae1de1a6d9e3864c07fe746ddc6fcd" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_rows</name></member>
+      <member refid="classabcd_1aba3ee1235942f0b5121ecb2b4d74a196" prot="private" virt="non-virtual"><scope>abcd</scope><name>S_vals</name></member>
+      <member refid="classabcd_1ae95e3e480eb2fad37901ef31bc45e274" prot="private" virt="non-virtual"><scope>abcd</scope><name>scaleMatrix</name></member>
+      <member refid="classabcd_1a92ee33baaed6bff47deff16943966123" prot="private" virt="non-virtual"><scope>abcd</scope><name>scaling</name></member>
+      <member refid="classabcd_1ad4a6632f5425fc1fb6cc15e3160ce91c" prot="private" virt="non-virtual"><scope>abcd</scope><name>selected_S_columns</name></member>
+      <member refid="classabcd_1aa7e0342f591210d552ffa8ad60bd0aee" prot="private" virt="non-virtual"><scope>abcd</scope><name>simpleProject</name></member>
+      <member refid="classabcd_1a299209b68954f61f840c16964438da55" prot="private" virt="non-virtual"><scope>abcd</scope><name>size_c</name></member>
+      <member refid="classabcd_1a976f04d4e48f36d0e6c5b38821654971" prot="private" virt="non-virtual"><scope>abcd</scope><name>skipped_S_columns</name></member>
+      <member refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" prot="public" virt="non-virtual"><scope>abcd</scope><name>sol</name></member>
+      <member refid="classabcd_1a4a2f088da09ed8daae94b7d3639e0418" prot="private" virt="non-virtual"><scope>abcd</scope><name>solution</name></member>
+      <member refid="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" prot="private" virt="non-virtual"><scope>abcd</scope><name>solveABCD</name></member>
+      <member refid="classabcd_1a07cb16265fca6e94b21f3cb546ec8bf8" prot="private" virt="non-virtual"><scope>abcd</scope><name>solveM</name></member>
+      <member refid="classabcd_1aa3d8082dc1f8bb53fecb6796983bc41f" prot="private" virt="non-virtual"><scope>abcd</scope><name>solveS</name></member>
+      <member refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" prot="public" virt="non-virtual"><scope>abcd</scope><name>solveSystem</name></member>
+      <member refid="classabcd_1aa6b92bcd620bc56a7bbe9847a5c8707b" prot="private" virt="non-virtual"><scope>abcd</scope><name>spSimpleProject</name></member>
+      <member refid="classabcd_1a455e4818649b17fb7454cd5660c173d4" prot="private" virt="non-virtual"><scope>abcd</scope><name>spSimpleProject</name></member>
+      <member refid="classabcd_1a29978bbf0d8de4a0c40daea6dc6376c4" prot="private" virt="non-virtual"><scope>abcd</scope><name>st_c_part</name></member>
+      <member refid="classabcd_1add4558f59ffb02eb4aa85648f324036b" prot="private" virt="non-virtual"><scope>abcd</scope><name>st_c_part_it</name></member>
+      <member refid="classabcd_1a6cdf5d4fe4ccb909ae7f247b1a6c2467" prot="private" virt="non-virtual"><scope>abcd</scope><name>start_index</name></member>
+      <member refid="classabcd_1a98bd0bc0703a2a0ff27223df81df6097" prot="private" virt="non-virtual"><scope>abcd</scope><name>stC</name></member>
+      <member refid="classabcd_1ad720ae148dc7e0aa94c19d20e655c187" prot="public" virt="non-virtual"><scope>abcd</scope><name>strow</name></member>
+      <member refid="classabcd_1a7c67e07b5a8d9c04013eeddcb38b2b56" prot="private" virt="non-virtual"><scope>abcd</scope><name>sumProject</name></member>
+      <member refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" prot="public" virt="non-virtual"><scope>abcd</scope><name>sym</name></member>
+      <member refid="classabcd_1a9eb7ac628f0bf6d4132ea384f46810d4" prot="private" virt="non-virtual"><scope>abcd</scope><name>use_xf</name></member>
+      <member refid="classabcd_1a1f9a7481b36c728f518a1391c83a37b7" prot="private" virt="non-virtual"><scope>abcd</scope><name>use_xk</name></member>
+      <member refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" prot="public" virt="non-virtual"><scope>abcd</scope><name>val</name></member>
+      <member refid="classabcd_1a202032f1d34ddce8f5155e7c2f2fad86" prot="private" virt="non-virtual"><scope>abcd</scope><name>val_aug</name></member>
+      <member refid="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" prot="private" virt="non-virtual"><scope>abcd</scope><name>verbose</name></member>
+      <member refid="classabcd_1a817a3c3999a828b77c7ba67dff64dc2c" prot="private" virt="non-virtual"><scope>abcd</scope><name>waitForSolve</name></member>
+      <member refid="classabcd_1ace2325edd418de592d36d4ba3d2ee983" prot="public" virt="non-virtual"><scope>abcd</scope><name>write_problem</name></member>
+      <member refid="classabcd_1af72a892a19a1d3eb640638d532770ce8" prot="public" virt="non-virtual"><scope>abcd</scope><name>write_s</name></member>
+      <member refid="classabcd_1a112a717bc087d569225694bada18c45f" prot="private" virt="non-virtual"><scope>abcd</scope><name>Xf</name></member>
+      <member refid="classabcd_1ad788028f06240ea4038c0c74eb0e7087" prot="private" virt="non-virtual"><scope>abcd</scope><name>Xk</name></member>
+      <member refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" prot="public" virt="non-virtual"><scope>abcd</scope><name>~abcd</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
