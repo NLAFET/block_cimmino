@@ -30,13 +30,6 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
-/*
- * abcd.h
- *
- *  Created on: Aug 15, 2012
- *      Author: Mohamed Zenadi
- */
-
 #ifndef ABCD_HXX_
 #define ABCD_HXX_
 
@@ -93,39 +86,34 @@
 #define inter_master() if(inter_comm.rank() == 0)
 
 #ifndef LINFO_
-
 #define LLOG_(v, l) LOG_IF(icntl[Controls::verbose_level] >= v, l)
 #define LINFO1 LLOG_(1, INFO)
 #define LINFO2 LLOG_(2, INFO)
 #define LINFO3 LLOG_(3, INFO)
-
 #define LDEBUG1 LLOG_(1, DEBUG)
 #define LDEBUG2 LLOG_(2, DEBUG)
 #define LDEBUG3 LLOG_(3, DEBUG)
-#endif
+#endif // LINFO_
 
 #ifdef LINFO
 #undef LINFO
 #define LINFO LINFO1
-#endif
+#endif //LINFO
 
 #ifdef LDEBUG
 #undef LDEBUG
 #define LDEBUG LDEBUG1
-#endif
+#endif // LDEBUG
 
 // disable all logging
 #ifdef NOLOGGING
-
 #ifdef LINFO
 #undef LINFO
-#endif
-
+#endif // LINFO
 #ifdef LDEBUG
 #undef LDEBUG
-#endif
-
-#endif
+#endif //LDEBUG
+#endif //NOLOGGING
 
 using namespace std;
 using namespace boost;
@@ -330,6 +318,11 @@ private:
     void centralizeVector(double *dest, int dest_lda, int dest_ncols,
                           double *src,  int src_lda,  int src_ncols,
                           std::vector<int> globalIndex, double *scale);
+
+    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
+    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
+    void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
+    void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     
 
 public:
@@ -381,11 +374,6 @@ public:
     int operator() (int job);
     abcd();
     ~abcd();
-
-    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
-    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
 };
 
 
