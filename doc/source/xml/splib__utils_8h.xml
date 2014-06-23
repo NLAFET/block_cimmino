@@ -1,0 +1,778 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="splib__utils_8h" kind="file">
+    <compoundname>splib_utils.h</compoundname>
+    <includedby refid="abcd_8h" local="yes">/home/mzenadi/projects/abcd/include/abcd.h</includedby>
+    <invincdepgraph>
+      <node id="135">
+        <label>/home/mzenadi/projects/abcd/src/cimmino.cpp</label>
+        <link refid="cimmino_8cpp"/>
+      </node>
+      <node id="152">
+        <label>/home/mzenadi/projects/abcd/src/splib_utils.cpp</label>
+        <link refid="splib__utils_8cpp"/>
+      </node>
+      <node id="151">
+        <label>/home/mzenadi/projects/abcd/src/solve.cpp</label>
+        <link refid="solve_8cpp"/>
+      </node>
+      <node id="133">
+        <label>/home/mzenadi/projects/abcd/src/abcd.cpp</label>
+        <link refid="abcd_8cpp"/>
+      </node>
+      <node id="137">
+        <label>/home/mzenadi/projects/abcd/src/communication.cpp</label>
+        <link refid="communication_8cpp"/>
+      </node>
+      <node id="136">
+        <label>/home/mzenadi/projects/abcd/src/comms.cpp</label>
+        <link refid="comms_8cpp"/>
+      </node>
+      <node id="148">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/cij_augment.cpp</label>
+        <link refid="cij__augment_8cpp"/>
+      </node>
+      <node id="153">
+        <label>/home/mzenadi/projects/abcd/src/structure.cpp</label>
+        <link refid="structure_8cpp"/>
+      </node>
+      <node id="145">
+        <label>/home/mzenadi/projects/abcd/src/mumps/sumproject.cpp</label>
+        <link refid="sumproject_8cpp"/>
+      </node>
+      <node id="132">
+        <label>/home/mzenadi/projects/abcd/include/abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="156" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+      </node>
+      <node id="149">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp</label>
+        <link refid="scaling_8cpp"/>
+      </node>
+      <node id="143">
+        <label>/home/mzenadi/projects/abcd/src/mumps/simple_sumproject.cpp</label>
+        <link refid="simple__sumproject_8cpp"/>
+      </node>
+      <node id="142">
+        <label>/home/mzenadi/projects/abcd/src/mumps/init.cpp</label>
+        <link refid="init_8cpp"/>
+      </node>
+      <node id="154">
+        <label>/home/mzenadi/projects/abcd/src/sutils/buildS.cpp</label>
+        <link refid="build_s_8cpp"/>
+      </node>
+      <node id="147">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/augmentation.cpp</label>
+        <link refid="augmentation_8cpp"/>
+      </node>
+      <node id="141">
+        <label>/home/mzenadi/projects/abcd/src/mumps/factorization.cpp</label>
+        <link refid="factorization_8cpp"/>
+      </node>
+      <node id="138">
+        <label>/home/mzenadi/projects/abcd/src/define_slaves.cpp</label>
+        <link refid="define__slaves_8cpp"/>
+      </node>
+      <node id="139">
+        <label>/home/mzenadi/projects/abcd/src/mumps/analysis.cpp</label>
+        <link refid="analysis_8cpp"/>
+      </node>
+      <node id="134">
+        <label>/home/mzenadi/projects/abcd/src/bcg.cpp</label>
+        <link refid="bcg_8cpp"/>
+      </node>
+      <node id="140">
+        <label>/home/mzenadi/projects/abcd/src/mumps/augmented_systems.cpp</label>
+        <link refid="augmented__systems_8cpp"/>
+      </node>
+      <node id="150">
+        <label>/home/mzenadi/projects/abcd/src/s_utils.cpp</label>
+        <link refid="s__utils_8cpp"/>
+      </node>
+      <node id="146">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp</label>
+        <link refid="aij__augment_8cpp"/>
+      </node>
+      <node id="156">
+        <label>/home/mzenadi/projects/abcd/src/utils/logger.cpp</label>
+        <link refid="logger_8cpp"/>
+      </node>
+      <node id="158">
+        <label>/home/mzenadi/projects/abcd/src/worker.cpp</label>
+        <link refid="worker_8cpp"/>
+      </node>
+      <node id="157">
+        <label>/home/mzenadi/projects/abcd/src/utils.cpp</label>
+        <link refid="utils_8cpp"/>
+      </node>
+      <node id="155">
+        <label>/home/mzenadi/projects/abcd/src/sutils/solveS.cpp</label>
+        <link refid="solve_s_8cpp"/>
+      </node>
+      <node id="144">
+        <label>/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp</label>
+        <link refid="sparse__simple__sumproject_8cpp"/>
+      </node>
+      <node id="131">
+        <label>/home/mzenadi/projects/abcd/include/splib_utils.h</label>
+        <link refid="splib_utils.h"/>
+        <childnode refid="132" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double squaredNorm</definition>
+        <argsstring>(CompRow_Mat_double &amp;M)</argsstring>
+        <name>squaredNorm</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="1" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a830a8d6dec0c2db24204f211b9ddcc6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double squaredNorm</definition>
+        <argsstring>(VECTOR_double &amp;V)</argsstring>
+        <name>squaredNorm</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="2" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1ab2c785209f07fb1eba5cefc0cddb204e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double squaredNorm</definition>
+        <argsstring>(VECTOR_double &amp;V, VECTOR_int &amp;I)</argsstring>
+        <name>squaredNorm</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <param>
+          <type>VECTOR_int &amp;</type>
+          <declname>I</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="3" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="72" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double infNorm</definition>
+        <argsstring>(VECTOR_double &amp;V)</argsstring>
+        <name>infNorm</name>
+        <param>
+          <type>VECTOR_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="4" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="54" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1aa0cc4ca9b09d6c78efad9a68627802b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double infNorm</definition>
+        <argsstring>(MV_ColMat_double &amp;V)</argsstring>
+        <name>infNorm</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="5" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="63" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1abfc7f8fc061d1a1c1c78448daeaab894" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double infNorm</definition>
+        <argsstring>(Coord_Mat_double &amp;M)</argsstring>
+        <name>infNorm</name>
+        <param>
+          <type>Coord_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="6" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a4cef34a4a8c30481d81e65f7b795bf69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double CSR_middleRows</definition>
+        <argsstring>(CompRow_Mat_double &amp;M, int st_row, int nb_rows, int nb_cols)</argsstring>
+        <name>CSR_middleRows</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>st_row</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nb_rows</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nb_cols</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="7" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1ae1a1dead02b35631ade961522e1b1680" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double CSC_middleRows</definition>
+        <argsstring>(CompRow_Mat_double &amp;M, int st_row, int nb_rows)</argsstring>
+        <name>CSC_middleRows</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>st_row</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nb_rows</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="8" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="112" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a82bc42018a1f31de48709b44ef8985dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double sub_matrix</definition>
+        <argsstring>(CompCol_Mat_double &amp;M, std::vector&lt; int &gt; &amp;ci)</argsstring>
+        <name>sub_matrix</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>ci</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="9" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="151" bodyend="210"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>VECTOR_double</type>
+        <definition>VECTOR_double middleCol</definition>
+        <argsstring>(CompCol_Mat_double &amp;M, int col_num)</argsstring>
+        <name>middleCol</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>col_num</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="10" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a9ffc1f08aa424b4625d510642270d805" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>VECTOR_double</type>
+        <definition>VECTOR_double middleCol</definition>
+        <argsstring>(CompCol_Mat_double &amp;M, int col_num, VECTOR_int &amp;ind)</argsstring>
+        <name>middleCol</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>col_num</declname>
+        </param>
+        <param>
+          <type>VECTOR_int &amp;</type>
+          <declname>ind</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="11" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="116" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double smmtm</definition>
+        <argsstring>(CompRow_Mat_double &amp;A, CompRow_Mat_double &amp;B, double prune)</argsstring>
+        <name>smmtm</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>prune</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="12" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a883ea693afae1a500340b8b59fd0fe25" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double smmtm</definition>
+        <argsstring>(CompCol_Mat_double &amp;A, CompCol_Mat_double &amp;B, double prune)</argsstring>
+        <name>smmtm</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>prune</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="13" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a2cc873631d0b18e7b0710fc8019de10b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double smmtm</definition>
+        <argsstring>(CompRow_Mat_double &amp;A, CompRow_Mat_double &amp;B)</argsstring>
+        <name>smmtm</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="14" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1aa7ca8d33589d40c39300c20d6b52e501" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double smmtm</definition>
+        <argsstring>(CompCol_Mat_double &amp;A, CompCol_Mat_double &amp;B)</argsstring>
+        <name>smmtm</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="15" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1ac52a7ef12ffc59dca94fa0bb0d9a0fdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double spmm</definition>
+        <argsstring>(CompRow_Mat_double &amp;A, CompRow_Mat_double &amp;B)</argsstring>
+        <name>spmm</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="16" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="220" bodyend="276"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double csc_transpose</definition>
+        <argsstring>(CompCol_Mat_double &amp;M)</argsstring>
+        <name>csc_transpose</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="17" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="286" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a85bb383c2d036e595901511cbe7a674f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double csc_transpose</definition>
+        <argsstring>(CompRow_Mat_double &amp;M)</argsstring>
+        <name>csc_transpose</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="18" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="293" bodyend="305"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double csr_transpose</definition>
+        <argsstring>(CompCol_Mat_double &amp;M)</argsstring>
+        <name>csr_transpose</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="19" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="314" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a0fbc2dfa59bb79f67e28a22fd0a4c3fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompRow_Mat_double</type>
+        <definition>CompRow_Mat_double csr_transpose</definition>
+        <argsstring>(CompRow_Mat_double &amp;M)</argsstring>
+        <name>csr_transpose</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="20" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="329" bodyend="332"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a423d8745f6289f20b18e9143b1cb00fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double resize_columns</definition>
+        <argsstring>(CompCol_Mat_double &amp;M, int new_size)</argsstring>
+        <name>resize_columns</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="21" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="342" bodyend="353"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1aa0dbb183d773929881d02c2c1641614c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CompCol_Mat_double</type>
+        <definition>CompCol_Mat_double concat_columns</definition>
+        <argsstring>(CompCol_Mat_double &amp;A, std::vector&lt; CompCol_Mat_double &gt; &amp;B, std::vector&lt; int &gt; st_cols)</argsstring>
+        <name>concat_columns</name>
+        <param>
+          <type>CompCol_Mat_double &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; CompCol_Mat_double &gt; &amp;</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <declname>st_cols</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="22" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="363" bodyend="411"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a217546c31621626c8eb05ad2883cfa2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double smv</definition>
+        <argsstring>(CompRow_Mat_double &amp;M, MV_ColMat_double &amp;V)</argsstring>
+        <name>smv</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="23" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="421" bodyend="432"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a0359a150367f51c85f7ee6a7114346ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double spsmv</definition>
+        <argsstring>(CompRow_Mat_double &amp;M, std::vector&lt; int &gt; &amp;col_ind, MV_ColMat_double &amp;V)</argsstring>
+        <name>spsmv</name>
+        <param>
+          <type>CompRow_Mat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>col_ind</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="24" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="442" bodyend="457"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double gemmColMat</definition>
+        <argsstring>(MV_ColMat_double &amp;L, MV_ColMat_double &amp;R)</argsstring>
+        <name>gemmColMat</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>R</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="25" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="459" bodyend="462"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a69cf5b56c209aaada6f797bb23a2af62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double gemmColMat</definition>
+        <argsstring>(MV_ColMat_double &amp;L, MV_ColMat_double &amp;R, bool transL, bool transR)</argsstring>
+        <name>gemmColMat</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>R</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transL</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transR</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="26" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="464" bodyend="491"/>
+      </memberdef>
+      <memberdef kind="function" id="splib__utils_8h_1a86f09802334491235367a2885834c0ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MV_ColMat_double</type>
+        <definition>MV_ColMat_double upperMat</definition>
+        <argsstring>(MV_ColMat_double &amp;M)</argsstring>
+        <name>upperMat</name>
+        <param>
+          <type>MV_ColMat_double &amp;</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/splib_utils.h" line="27" column="1" bodyfile="/home/mzenadi/projects/abcd/src/splib_utils.cpp" bodystart="493" bodyend="499"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(CompRow_Mat_double<sp/>&amp;M);</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(VECTOR_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(VECTOR_double<sp/>&amp;V,<sp/>VECTOR_int<sp/>&amp;I);</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(VECTOR_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(MV_ColMat_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(Coord_Mat_double<sp/>&amp;M);</highlight></codeline>
+<codeline lineno="7"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4cef34a4a8c30481d81e65f7b795bf69" kindref="member">CSR_middleRows</ref><sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_cols);</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1ae1a1dead02b35631ade961522e1b1680" kindref="member">CSC_middleRows</ref><sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows);</highlight></codeline>
+<codeline lineno="9"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref><sp/>(CompCol_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;ci);</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">VECTOR_double<sp/><ref refid="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" kindref="member">middleCol</ref>(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num);</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">VECTOR_double<sp/><ref refid="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" kindref="member">middleCol</ref>(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num,<sp/>VECTOR_int<sp/>&amp;ind);</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
+<codeline lineno="14"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1ac52a7ef12ffc59dca94fa0bb0d9a0fdd" kindref="member">spmm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" kindref="member">csc_transpose</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" kindref="member">csc_transpose</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" kindref="member">csr_transpose</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" kindref="member">csr_transpose</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a423d8745f6289f20b18e9143b1cb00fa" kindref="member">resize_columns</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_size<sp/>);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1aa0dbb183d773929881d02c2c1641614c" kindref="member">concat_columns</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;A,<sp/>std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;B,<sp/>std::vector&lt;int&gt;<sp/>st_cols<sp/>);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a217546c31621626c8eb05ad2883cfa2e" kindref="member">smv</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a0359a150367f51c85f7ee6a7114346ed" kindref="member">spsmv</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;col_ind,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" kindref="member">gemmColMat</ref>(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" kindref="member">gemmColMat</ref>(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transL,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transR);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a86f09802334491235367a2885834c0ec" kindref="member">upperMat</ref>(MV_ColMat_double<sp/>&amp;M);</highlight></codeline>
+    </programlisting>
+    <location file="/home/mzenadi/projects/abcd/include/splib_utils.h"/>
+  </compounddef>
+</doxygen>

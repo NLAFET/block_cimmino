@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_38ee114e808a2beb276c016ebd2ad5af" kind="dir">
+    <compoundname>/home/mzenadi/projects/abcd/src/preprocess</compoundname>
+    <innerfile refid="aij__augment_8cpp">aij_augment.cpp</innerfile>
+    <innerfile refid="augmentation_8cpp">augmentation.cpp</innerfile>
+    <innerfile refid="cij__augment_8cpp">cij_augment.cpp</innerfile>
+    <innerfile refid="partitioning_8cpp">partitioning.cpp</innerfile>
+    <innerfile refid="scaling_8cpp">scaling.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/src/preprocess/"/>
+  </compounddef>
+</doxygen>

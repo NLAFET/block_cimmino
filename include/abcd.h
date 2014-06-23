@@ -85,6 +85,9 @@
 #define inter_barrier() inter_comm.barrier()
 #define inter_master() if(inter_comm.rank() == 0)
 
+/// Get some goodies from C++11
+#define nullptr 0
+
 #ifndef LINFO_
 #define LLOG_(v, l) LOG_IF(icntl[Controls::verbose_level] >= v, l)
 #define LINFO1 LLOG_(1, INFO)

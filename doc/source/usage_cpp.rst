@@ -168,98 +168,22 @@ Moreover, due to the similarities between the ``C++`` code and the
 ``C`` one, we provide only the ``C++`` snippets unless there is a
 major difference.
 
+In the following, the syntax ``ctl = = val`` means that the enum variable ``ctl`` can be replaced by ``val``, its numerical value.
+
 The integer control array
 #########################
 
-* ``icntl[nbparts]`` or ``icntl[1]`` defines the number of partitions in our linear system, can be from ``1`` to ``m`` (the number of rows in the matrix)
+.. doxygenenum:: icontrols
+    :project: abcd
 
-    .. code-block:: cpp
-
-        // we have 8 partitions
-        obj.icntl[nbparts] = 8;
-
-* ``icntl[part_type]`` or ``icntl[2]`` defines the partitioning type. It can have the values:
-
-    - ``1``, manual partitioning, the *nbparts* partitions can be provided into the STL vector ``obj.nbrows[]``. Example:
-
-        .. code-block:: cpp
-
-
-            // use manual partitioning
-            obj.icntl[part_type] = 1;
-            // say that we want 20 rows per partition
-            obj.nrows.assign(obj.icntl[nbparts], 20);
-
-            // or 
-            obj.nrows.resize(obj.icntl[nbparts]);
-            obj.nrows[0] = 20;
-            obj.nrows[1] = 20;
-            //...
-
-        For ``C``:
-
-        .. code-block:: cpp
-
-
-            // use manual partitioning
-            obj->icntl[part_type] = 1;
-
-            obj->nrows =  (int*) malloc(sizeof(int)*(obj->icntl[nbparts]));
-
-            obj->nrows[0] = 20;
-            obj->nrows[1] = 20;
-            //...
-
-    - ``2`` (*default*), automatic uniform partitioning, creates *nbparts* partitions of similar size.
-
-        .. code-block:: cpp
-
-            // use patoh partitioning
-            obj.icntl[part_type] = 2;
-
-    - ``3``, automatic hypergraph partitioning, creates *nbparts* partitions using the hypergraph partitioner ``PaToH``. The imbalance between the partitions is handled using ``obj.dcntl[part_imbalance]``. Example:
-
-      .. code-block:: cpp
-
-            // use patoh partitioning
-            obj.icntl[part_type] = 3;
-            // say that we want an imbalance of 0.3 between the partitions
-            obj.dcntl[part_imbalance] = 0.3;
-
-* ``icntl[part_guess]`` or ``icntl[4]`` asks the solver to guess the appropriate number of partitions and overrides the defined *nbparts*. 
-
-    - ``0`` **default**, no guess
-    - ``1``, guess
-
-* ``icntl[scaling]`` or ``icntl[5]`` defines the type of scaling to be used.
-
-    - ``0``, no scaling
-    - ``1``, infinity norm ``MC77`` based scaling
-    - ``2`` **default**, combination of one norm and two norm ``MC77`` based scaling
-* ``icntl[itmax]`` or ``icntl[6]`` defines the maximum number of iterations in block-CG acceleration, default is ``1000``
-* ``icntl[block_size]`` or ``icntl[7]`` defines the block-size to be used by the block-CG acceleration, default is ``1`` for classical CG acceleration
-* ``icntl[verbose_level]`` or ``icntl[8]`` defines how verbose the solver has to be. 
-* ``icntl[aug_type]`` or ``icntl[10]`` defines the augmentation type.
-
-    - ``0`` **default**, no augmentation. This makes the solver run in
-    **regular block Cimmino** mode.
-
-    - ``1``, makes the solver run in **Augmented Block Cimmino** mode
-    with an augmentation of the matrix using the :math:`C_{ij}/-I`
-    technique. For numerical stability, this augmentation technique
-    has to be used with a scaling.
-
-    - ``2``, makes the solver run in **Augmented Block Cimmino** mode
-    with an augmentation of the matrix using the :math:`A_{ij}/-A_{ji}`
-    technique. This is the prefered augmentation technique.
-
-* ``icntl[aug_blocking]`` or ``icntl[11]`` defines the blocking factor
-  when building the auxiliary matrix :math:`S`, default is ``128``.
-* ``icntl[aug_analysis]`` or ``icntl[12]``, when set to a value different than ``0``, analyses the number of columns in the augmentation.
-* ``icntl[13]`` to ``icntl[16]`` are for development and testing purposes only.
+.. todo:: Talk about Work-In-Progress control parameters              
 
 The double precision control array
 ##################################
+
+.. doxygenenum:: dcontrols
+    :project: abcd
+
 * ``dcntl[part_imbalance]`` or ``obj.dcntl[1]`` defines the imbalance between the partitions when using ``PaToH`` (``icntl[part_imbalance] = 3``).
 * ``obj.dcntl[threshold]`` or ``dcntl[2]`` defines the stopping threshold for the block-CG acceleration, default is ``1e-12``.
 

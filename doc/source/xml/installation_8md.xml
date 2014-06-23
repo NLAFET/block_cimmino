@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="installation_8md" kind="file">
+    <compoundname>installation.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#<sp/>Installation<sp/>#</highlight></codeline>
+<codeline lineno="2"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal">The<sp/>ABCD<sp/>Solver<sp/>depends<sp/>on<sp/>a<sp/>few<sp/>libraries:<sp/>`<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>5.0<sp/>(custom)`,<sp/>`Sparselib++<sp/>(custom)`,<sp/>`PaToH`,<sp/>`lapack`<sp/>and<sp/>`Boost::MPI`.</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">First,<sp/>clone<sp/>the<sp/>latest<sp/>version<sp/>of<sp/>the<sp/>`ABCD<sp/>Solver`:</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">~~~~~~~~~~~~~~~{.bash}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>download<sp/>the<sp/>latest<sp/>stable<sp/>version</highlight></codeline>
+<codeline lineno="9"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>clone<sp/>https:</highlight><highlight class="comment">//gitlab.enseeiht.fr/mohamed.zenadi/abcd.git</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>get<sp/>the<sp/>dev<sp/>version</highlight></codeline>
+<codeline lineno="11"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>checkout<sp/>dev</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">-<sp/>`<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>5.0<sp/>(custom)`:<sp/>a<sp/>modified<sp/>version<sp/>of<sp/>`<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>`<sp/>to<sp/>suits<sp/>our<sp/>needs,<sp/>it<sp/>is<sp/>distributed<sp/>with<sp/>our<sp/>solver<sp/>in<sp/>the<sp/>`lib/mumps/`<sp/>directory.<sp/>The<sp/>distributed<sp/>version<sp/>is<sp/>compiled<sp/>in<sp/>`x86_64`<sp/>compilers,<sp/>a<sp/>`i686`<sp/>version<sp/>can<sp/>be<sp/>distributed<sp/>on<sp/>request.</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">-<sp/>`Sparselib++<sp/>(custom)`:<sp/>a<sp/>modified<sp/>version<sp/>of<sp/>`SparseLib++`<sp/>to<sp/>suits<sp/>our<sp/>needs,<sp/>to<sp/>download<sp/>it<sp/>run<sp/>the<sp/>following<sp/>commands:</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">~~~~~~~~~~~~~~~{.bash}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>get<sp/>into<sp/>the<sp/>solver<sp/>root<sp/>directory</highlight></codeline>
+<codeline lineno="18"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>cd<sp/><ref refid="classabcd" kindref="compound">abcd</ref></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>submodule<sp/>init</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>submodule<sp/>update</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">-<sp/>`PaToH`:<sp/>Can<sp/>be<sp/>downloaded<sp/>from</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/>[Ümit<sp/>V.<sp/>Çatalyürek](http:</highlight><highlight class="comment">//bmi.osu.edu/~umit/software.html)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/>webpage.<sp/>The<sp/>file<sp/>`libpatoh.a`<sp/>has<sp/>to<sp/>be<sp/>copied<sp/>into<sp/>the<sp/>`lib/`</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/>directory<sp/>and<sp/>the<sp/>header<sp/>`patho.h`<sp/>has<sp/>to<sp/>be<sp/>copied<sp/>into<sp/>the</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>`include`<sp/>directory.</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">To<sp/>summarize,<sp/>here<sp/>is<sp/>a<sp/>simple<sp/>script<sp/>that<sp/>will<sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>everything:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal">~~~~~~~~~~~~~~~{.sh}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>download<sp/>the<sp/>latest<sp/>stable<sp/>version</highlight></codeline>
+<codeline lineno="32"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>clone<sp/>https:</highlight><highlight class="comment">//gitlab.enseeiht.fr/mohamed.zenadi/abcd.git</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>get<sp/>the<sp/>dev<sp/>version</highlight></codeline>
+<codeline lineno="34"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>checkout<sp/>dev</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>cd<sp/><ref refid="classabcd" kindref="compound">abcd</ref></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>submodule<sp/>init</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>submodule<sp/>update</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>cd<sp/>lib</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>download<sp/>the<sp/>appropriate<sp/>version<sp/>of<sp/>patoh</highlight></codeline>
+<codeline lineno="42"><highlight class="preprocessor"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>replace<sp/>the<sp/>...<sp/>by<sp/>the<sp/>build<sp/>version</highlight></codeline>
+<codeline lineno="43"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>wget<sp/>http:</highlight><highlight class="comment">//bmi.osu.edu/~umit/PaToH/...tar.gz</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>extract</highlight></codeline>
+<codeline lineno="45"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>tar<sp/>xvzf<sp/>patoh-....tar.gz</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>cp<sp/>build/.../libpatoh.a<sp/>.</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>cp<sp/>build/.../patoh.h<sp/>../include/</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>rm<sp/>-rf<sp/>build<sp/>patoh-....tar.gz</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>cd<sp/>..</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">Now<sp/>that<sp/>everything<sp/>is<sp/>ready,<sp/>we<sp/>can<sp/>compile<sp/>the<sp/>solver.<sp/>To<sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>so,<sp/>we<sp/>need<sp/>a<sp/>configuration<sp/>file<sp/>from<sp/>the<sp/>`cmake.in`<sp/>directory,<sp/>suppose<sp/>we<sp/>are<sp/>going<sp/>to<sp/>use<sp/>the<sp/>`ACML`<sp/>library<sp/>(provides<sp/>`blas`<sp/>and<sp/>`lapack`).<sp/></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">~~~~~~~~~~~~~~~{.bash}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>get<sp/>the<sp/>appropriate<sp/>configuration<sp/>file</highlight></codeline>
+<codeline lineno="56"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>cp<sp/>cmake.in/abcdCmake.in.ACML<sp/>./abcdCmake.in</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">Edit<sp/>that<sp/>file<sp/>to<sp/>suite<sp/>your<sp/>configuration</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">~~~~~~~~~~~~~~~{.cmake}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#<sp/>where<sp/>to<sp/>find<sp/>Boost?</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(BOOST_ROOT<sp/>/path/to/boost/headers)</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>set(BOOST_LIBRARYDIR<sp/>/path/to/boost/libraries)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">#<sp/>the<sp/>compilers<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(CMAKE_CXX_COMPILER<sp/>mpic++)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>set(CMAKE_C_COMPILER<sp/>mpicc)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>set(CMAKE_FC_COMPILER<sp/>mpif90)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">#<sp/>where<sp/>to<sp/>find<sp/>ACML,<sp/>scalapack<sp/>and<sp/>blacs?</highlight></codeline>
+<codeline lineno="72"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(BLAS_LAPACK_SCALAPACK_DIRS<sp/>/path/to/acml/gfortran64/lib</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/path/to/scalapack-acml</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/path/to/blacs</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">#<sp/>the<sp/>different<sp/>libraries</highlight></codeline>
+<codeline lineno="77"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(BLAS_LAPACK_SCALAPACK_LIBS<sp/>acml</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>blacsF77init<sp/>blacsCinit<sp/>blacs<sp/>blacsF77init<sp/>blacsCinit</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scalapack</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">#<sp/>where<sp/>to<sp/>find<sp/>Openmpi<sp/>(or<sp/>any<sp/>mpi<sp/>distributuion)</highlight></codeline>
+<codeline lineno="83"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(MPI_LIB_DIR<sp/>/opt/openmpi-1.6.3-gnu/lib/)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>set(MPI_INC_DIR<sp/>/opt/openmpi-1.6.3-gnu/include/)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="preprocessor">#<sp/>the<sp/>corresponding<sp/>libraries</highlight></codeline>
+<codeline lineno="86"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>set(MPI_LIBRARIES<sp/></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi_f90</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi_f77</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi_cxx</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dl</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal">Notice<sp/>that<sp/>we<sp/>link<sp/>against<sp/>`scalapack`<sp/>and<sp/>`blacs`,<sp/>these<sp/>are<sp/>required<sp/>libraries<sp/>by<sp/>`<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>`.<sp/>If<sp/>we<sp/>want<sp/>to<sp/>use<sp/>`MKL`,<sp/>just<sp/>change<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>part:</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">~~~~~~~~~~~~~~~{.cmake}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>set(BLAS_LAPACK_SCALAPACK_DIRS<sp/>/path/to/mkl)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>set(BLAS_LAPACK_SCALAPACK_LIBS<sp/>mkl_lapack95_lp64<sp/>mkl_blas95_lp64</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mkl_scalapack_lp64<sp/>mkl_cdft_core<sp/>mkl_gf_lp64<sp/>mkl_sequential<sp/>mkl_core</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mkl_blacs_openmpi_lp64<sp/>mkl_lapack95_lp64<sp/>mkl_blas95_lp64</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">~~~~~~~~~~~~~~~</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">In<sp/>this<sp/>example<sp/>we<sp/>used<sp/>the<sp/>non-threaded<sp/>version<sp/>of<sp/>these<sp/>libraries,<sp/>for<sp/>the<sp/>`ACML`<sp/>library<sp/>use<sp/>the<sp/>`_mp`<sp/>suffix,<sp/>for<sp/>`MKL`<sp/>use<sp/>the<sp/>[Intel®<sp/>Math<sp/>Kernel<sp/>Library<sp/>Link<sp/>Line<sp/>Advisor](https:</highlight><highlight class="comment">//software.intel.com/en-us/articles/intel-mkl-link-line-advisor)<sp/>to<sp/>obtain<sp/>the<sp/>correct<sp/>set<sp/>of<sp/>libraries.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/mzenadi/projects/abcd/doc/old_doxygen/installation.md"/>
+  </compounddef>
+</doxygen>

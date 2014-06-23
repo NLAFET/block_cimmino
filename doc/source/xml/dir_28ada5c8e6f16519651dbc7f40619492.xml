@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_28ada5c8e6f16519651dbc7f40619492" kind="dir">
+    <compoundname>build</compoundname>
+    <innerdir refid="dir_c8a3a375903fbe108939f1488399eacb">build/html</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/doc/build/"/>
+  </compounddef>
+</doxygen>

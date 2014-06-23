@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="struct_m_u_m_p_s" kind="struct" prot="public">
+    <compoundname>MUMPS</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">DMUMPS_STRUC_C</basecompoundref>
+    <includes refid="mumps_8h" local="no">mumps.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MUMPS::initialized</definition>
+        <argsstring></argsstring>
+        <name>initialized</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="15" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_m_u_m_p_s_1adf68bbbd0d25691e1f3d46b78cf3d50d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>MUMPS::MUMPS</definition>
+        <argsstring>()</argsstring>
+        <name>MUMPS</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="16" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="16" bodyend="16"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a565f658601b879b6af7cceb6ab65ef8c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MUMPS::operator()</definition>
+        <argsstring>(int job_id)</argsstring>
+        <name>operator()</name>
+        <param>
+          <type>int</type>
+          <declname>job_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="17" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="17" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MUMPS::setIcntl</definition>
+        <argsstring>(int i, int v)</argsstring>
+        <name>setIcntl</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="22" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="22" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1aa2432953311e2753688a84fac29c1c7b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MUMPS::setCntl</definition>
+        <argsstring>(int i, double v)</argsstring>
+        <name>setCntl</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="23" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a04673f03636f7b3993ee6ef02dd8583e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const int</type>
+        <definition>const int MUMPS::getIcntl</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getIcntl</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="25" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="25" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a44b0fbe7cdf0384135f0149074d06a60" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double</type>
+        <definition>const double MUMPS::getCntl</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getCntl</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="26" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a0cb19453cec6726af88cfa432bed247d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const int</type>
+        <definition>const int MUMPS::getInfo</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getInfo</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="28" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a50527464722e7b00483f90f93324f03a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const int</type>
+        <definition>const int MUMPS::getInfoG</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getInfoG</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="29" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1afd037d16254c04c34e6f24a4c06a229d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double</type>
+        <definition>const double MUMPS::getRinfo</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getRinfo</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="30" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_m_u_m_p_s_1a8255db5ea962546e6b27d8c47de4ae6e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double</type>
+        <definition>const double MUMPS::getRinfoG</definition>
+        <argsstring>(int i) const </argsstring>
+        <name>getRinfoG</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="31" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>MUMPS</label>
+        <link refid="struct_m_u_m_p_s"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>DMUMPS_STRUC_C</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>MUMPS</label>
+        <link refid="struct_m_u_m_p_s"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>DMUMPS_STRUC_C</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mzenadi/projects/abcd/include/mumps.h" line="13" column="1" bodyfile="/home/mzenadi/projects/abcd/include/mumps.h" bodystart="13" bodyend="32"/>
+    <listofallmembers>
+      <member refid="struct_m_u_m_p_s_1a44b0fbe7cdf0384135f0149074d06a60" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getCntl</name></member>
+      <member refid="struct_m_u_m_p_s_1a04673f03636f7b3993ee6ef02dd8583e" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getIcntl</name></member>
+      <member refid="struct_m_u_m_p_s_1a0cb19453cec6726af88cfa432bed247d" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getInfo</name></member>
+      <member refid="struct_m_u_m_p_s_1a50527464722e7b00483f90f93324f03a" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getInfoG</name></member>
+      <member refid="struct_m_u_m_p_s_1afd037d16254c04c34e6f24a4c06a229d" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getRinfo</name></member>
+      <member refid="struct_m_u_m_p_s_1a8255db5ea962546e6b27d8c47de4ae6e" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>getRinfoG</name></member>
+      <member refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>initialized</name></member>
+      <member refid="struct_m_u_m_p_s_1adf68bbbd0d25691e1f3d46b78cf3d50d" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>MUMPS</name></member>
+      <member refid="struct_m_u_m_p_s_1a565f658601b879b6af7cceb6ab65ef8c" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>operator()</name></member>
+      <member refid="struct_m_u_m_p_s_1aa2432953311e2753688a84fac29c1c7b" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>setCntl</name></member>
+      <member refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" prot="public" virt="non-virtual"><scope>MUMPS</scope><name>setIcntl</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

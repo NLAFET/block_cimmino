@@ -13,12 +13,5 @@ The Augmented Block Cimmino Distributed Solver
    algorithm
    installation
    usage_cpp
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   api
+   todo

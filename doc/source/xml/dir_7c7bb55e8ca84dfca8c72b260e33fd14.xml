@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_7c7bb55e8ca84dfca8c72b260e33fd14" kind="dir">
+    <compoundname>source/exts</compoundname>
+    <innerdir refid="dir_181c9c860eabc4942181f3774ac29a17">source/exts/sphinxcontrib</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/doc/source/exts/"/>
+  </compounddef>
+</doxygen>

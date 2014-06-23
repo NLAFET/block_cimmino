@@ -3,8 +3,10 @@ The Algorithm
 =============
 
 The package `ABCD Solver` is a distributed hybrid (iterative/direct)
-solver for sparse linear systems :math:`Ax = b` where :math:`A` is a double
-precision matrix with. `ABCD Solver` uses two methods to solve the linear system:
+solver for sparse linear systems :math:`Ax = b` where :math:`A` is a
+double precision matrix :math:`m \times n`, :math:`x` an
+:math:`n`-vector and :math:`b` an :math:`m`-vector.
+`ABCD Solver` uses two methods to solve the linear system:
 
 - *Regular Block Cimmino*: A block-projection technique that iterates
    to solve the linear system. During the iterations it solves a set

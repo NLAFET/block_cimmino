@@ -1,11 +1,11 @@
-// Copyright Institut National Polytechnique de Toulouse (2014) 
+// Copyright Institut National Polytechnique de Toulouse (2014)
 // Contributor(s) :
 // M. Zenadi <mzenadi@enseeiht.fr>
 // D. Ruiz <ruiz@enseeiht.fr>
 // R. Guivarch <guivarch@enseeiht.fr>
 
 // This software is governed by the CeCILL-C license under French law and
-// abiding by the rules of distribution of free software.  You can  use, 
+// abiding by the rules of distribution of free software.  You can  use,
 // modify and/ or redistribute the software under the terms of the CeCILL-C
 // license as circulated by CEA, CNRS and INRIA at the following URL
 // "http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html"
@@ -14,7 +14,7 @@
 // modify and redistribute granted by the license, users are provided only
 // with a limited warranty  and the software's author,  the holder of the
 // economic rights,  and the successive licensors  have only  limited
-// liability. 
+// liability.
 
 // In this respect, the user's attention is drawn to the risks associated
 // with loading,  using,  modifying and/or developing or reproducing the
@@ -23,9 +23,9 @@
 // therefore means  that it is reserved for developers  and  experienced
 // professionals having in-depth computer knowledge. Users are therefore
 // encouraged to load and test the software's suitability as regards their
-// requirements in conditions enabling the security of their systems and/or 
-// data to be ensured and,  more generally, to use and operate it in the 
-// same conditions as regards security. 
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
 
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
@@ -36,21 +36,178 @@
 
 /// Defines the control parameters indices in a safe way
 namespace Controls{
+    //! To be used with the abcd::icntl vector.
     enum icontrols {
-        nbparts         = 1, ///< The number of partitions
-        part_type       = 2, ///< The partitioning type
-        part_guess      = 4, ///< Guess the number of partitions
-        scaling         = 5, ///< The scaling type
-        itmax           = 6, ///< The max number of iterations
-        block_size      = 7, ///< The Block-CG block-size
-        verbose_level   = 8, ///< The verbose level
-        use_gmgs2       = 9, ///< Force GMGS^2 in B-CG
+        /*! \brief Number of partitions
+         *
+         * Defines the number of partitions in our linear system,
+         * can be from ``1`` to ``m`` (the number of rows in the matrix)
+         *
+         * \rststar
+         *      .. code-block:: cpp
+         *
+         *          // we have 8 partitions
+         *          obj.icntl[nbparts] = 8;
+         * \endrststar
+         */
+        nbparts         = 1,
 
-        aug_type        = 10, ///< The augmentation type
-        aug_blocking    = 11, ///< The blocking factor when building S
-        aug_analysis    = 12, ///< Analyse the augmentation process
+        /*! \brief Partitioning strategy
+         *
+         * Defines the partitioning strategy, it can have the values:
+         * - 1, Manual partitioning, the nbparts partitions can be
+         *   provided into the STL vector abcd::nbrows. Example:
+         * \rststar
+         *     .. code-block:: cpp
+         *
+         *         // use manual partitioning
+         *         obj.icntl[part_type] = 1;
+         *         // say that we want 20 rows per partition
+         *         obj.nrows.assign(obj.icntl[nbparts], 20);
+         *
+         *         // or
+         *         obj.nrows.resize(obj.icntl[nbparts]);
+         *         obj.nrows[0] = 20;
+         *         obj.nrows[1] = 20;
+         *         //...
+         *
+         *     For C, the #nrows vector is an ``int`` array:
+         *
+         *     .. code-block:: cpp
+         *
+         *
+         *         // use manual partitioning
+         *         obj->icntl[part_type] = 1;
+         *
+         *         obj->nrows =  (int*) malloc(sizeof(int)*(obj->icntl[nbparts]));
+         *
+         *         obj->nrows[0] = 20;
+         *         obj->nrows[1] = 20;
+         *         //...
+         *
+         * \endrststar
+         *
+         * - 2, (*default*) Automatic uniform partitioning, creates
+         *    *nbparts* partitions of similar size.
+         * \rststar
+         *     .. code-block:: cpp
+         *
+         *
+         *         // use patoh partitioning
+         *         obj.icntl[part_type] = 2;
+         * \endrststar
+         *
+         * - 3, Automatic hypergraph partitioning, creates *nbparts*
+         *   partitions using the hypergraph partitioner
+         *   ``PaToH``. The imbalance between the partitions is
+         *   handled using ``obj.dcntl[part_imbalance]``. Example:
+         * \rststar
+         *     .. code-block:: cpp
+         *
+         *
+         *         // use patoh partitioning
+         *         obj.icntl[part_type] = 3;
+         *         // say that we want an imbalance of 0.3 between the partitions
+         *         obj.dcntl[part_imbalance] = 0.3;
+         *
+         * \endrststar
+         */
+        part_type       = 2,
 
-        exploit_sparcity= 13, ///< Exploit the sparcity in MUMPS
+        /*! \brief Guess the number of partitions
+         *
+         * Asks the solver to guess the appropriate number of
+         * partitions and overrides the defined *nbparts*.
+         *
+         * - 0 (*default*), The user has to provide the number of
+         * partitions by setting abcd::icntl[#nbparts]
+         * - 1, Guess the number of partitions
+         */
+        part_guess      = 4,
+
+        /*! \brief The scaling type
+         *
+         * Defines the type of scaling to be used.
+         * - 0, no scaling
+         * - 1, infinity norm ``MC77`` based scaling
+         * - 2 (*default*), combination of one norm and two norm
+         *   ``MC77`` based scaling
+         * - 3, infinity norm row-scaling
+        */
+        scaling         = 5,
+
+        /*! \brief The max number of iterations
+         *
+         * Defines the maximum number of iterations in block-CG
+         * acceleration, default is ``1000``
+         */
+        itmax           = 6,
+
+        /*! \brief Block-CG block-size
+         *
+         * Defines the block-size to be used by the block-CG
+         * acceleration, default is ``1`` for classical CG
+         * acceleration. When using a higher value than 1, the
+         * stabilized Block-CG is used.
+         */
+        block_size      = 7,
+
+        /*! \brief The verbose level
+         *
+         * Defines how verbose the solver has to be. 
+         */
+        verbose_level   = 8, 
+
+        /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
+         *
+         * Makes the Block-CG use the Modifed Gram-Schmidt with
+         * reorthogonalization rather than QR factorization during the
+         * stabilization process. The GMGS^2 algorithm is described by
+         * Björk in *Numerical Methods for Least Squares Problems*.
+         * This option is useful only if #block_size is greater than 1.
+         *
+         * - 0 (*default*), Use QR factorization
+         * - 1, Use Modified Gram-Schmidt with reorthogonalization
+         */
+        use_gmgs2       = 9,
+        
+        /*! \brief The augmentation type
+         *
+         * Possible values are:
+         *  - ``0`` (*default*), no augmentation. This makes the solver run in
+         *  **regular block Cimmino** mode.
+         *
+         *  - ``1``, makes the solver run in **Augmented Block Cimmino** mode
+         *  with an augmentation of the matrix using the \f$C_{ij}/-I\f$
+         *  technique. For numerical stability, this augmentation technique
+         *  has to be used with a scaling.
+         *
+         *  - ``2``, makes the solver run in **Augmented Block Cimmino** mode
+         *  with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
+         *  technique. This is the prefered augmentation technique.
+         */
+        aug_type        = 10,
+
+        /*! \brief The blocking factor when building \f$S\f$
+         *
+         * Defines the blocking factor when building the auxiliary matrix
+         * \f$S\f$, default is ``128``. It represents the number of
+         * columns of \f$S\f$ to be computed at once, the optimal
+         * value is hardware-related.
+         */
+        aug_blocking    = 11,
+
+        /*! \brief Analyse the augmentation process
+         *
+         * When set to a value different than ``0``, analyses the
+         * number of columns in the augmentation process.
+         * **Note**: This does not build \f$S\f$, but only augment the matrix.
+         */
+        aug_analysis    = 12,
+
+        /*! \brief Exploit the sparcity in MUMPS
+         */
+        exploit_sparcity= 13,
 
 #ifdef WIP
         aug_iterative   = 14, ///< \exp Enable or disable iterative solving of Sz=f
@@ -81,8 +238,5 @@ namespace Controls{
     };
 
 }
-
-/// Get some goodies from C++11
-#define nullptr 0
 
 #endif // _DEFAULTS_H_

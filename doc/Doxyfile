@@ -1,0 +1,54 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "ABCD Solver"
+PROJECT_NUMBER         = pre-alpha
+PROJECT_BRIEF          = "Augmented Block Cimmino Distributed Solver"
+OUTPUT_DIRECTORY       = ./source/
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+ABBREVIATE_BRIEF       = "The $name class" \
+                         "The $name widget" \
+                         "The $name file" \
+                         is \
+                         provides \
+                         specifies \
+                         contains \
+                         represents \
+                         a \
+                         an \
+                         the
+JAVADOC_AUTOBRIEF      = YES
+ALIASES  = "rst=\verbatim embed:rst"
+ALIASES += "endrst=\endverbatim"
+ALIASES += "rststar=\verbatim embed:rst:leading-asterisk"
+ALIASES += "endrststar=\endverbatim"
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+GENERATE_TODOLIST      = YES
+GENERATE_BUGLIST       = YES
+SHOW_USED_FILES        = YES
+SHOW_FILES             = YES
+SHOW_NAMESPACES        = YES
+QUIET                  = YES
+INPUT                  = ../src \
+                         ../include
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.c \
+                         *.cpp \
+                         *.h \
+                         *.hpp \
+                         *.md \
+                         *.f90 \
+                         *.f 
+RECURSIVE              = YES
+EXCLUDE                = ../include/easyloggingpp \
+                         ../include/easylogging++.h \
+                         ../include/blas.h \
+                         ../include/patoh.h
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+GENERATE_LATEX   = NO
+GENERATE_MAN     = NO
+GENERATE_RTF     = NO
+CASE_SENSE_NAMES = NO
+GENERATE_HTML = NO

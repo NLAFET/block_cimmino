@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="md_old_doxygen_installation" kind="page">
+    <compoundname>md_old_doxygen_installation</compoundname>
+    <title>Installation</title>
+    <detaileddescription>
+<para>The ABCD Solver depends on a few libraries: <computeroutput><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> 5.0 (custom)</computeroutput>, <computeroutput>Sparselib++ (custom)</computeroutput>, <computeroutput>PaToH</computeroutput>, <computeroutput>lapack</computeroutput> and <computeroutput>Boost::MPI</computeroutput>.</para><para>First, clone the latest version of the <computeroutput>ABCD Solver</computeroutput>:</para><para><programlisting><codeline><highlight class="preprocessor">#<sp/>download<sp/>the<sp/>latest<sp/>stable<sp/>version</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">git<sp/>clone<sp/>https:</highlight><highlight class="comment">//gitlab.enseeiht.fr/mohamed.zenadi/abcd.git</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>get<sp/>the<sp/>dev<sp/>version</highlight></codeline>
+<codeline><highlight class="preprocessor">git<sp/>checkout<sp/>dev</highlight></codeline>
+</programlisting></para><para><itemizedlist>
+<listitem><para><computeroutput><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> 5.0 (custom)</computeroutput>: a modified version of <computeroutput><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></computeroutput> to suits our needs, it is distributed with our solver in the <computeroutput>lib/mumps/</computeroutput> directory. The distributed version is compiled in <computeroutput>x86_64</computeroutput> compilers, a <computeroutput>i686</computeroutput> version can be distributed on request.</para></listitem><listitem><para><computeroutput>Sparselib++ (custom)</computeroutput>: a modified version of <computeroutput>SparseLib++</computeroutput> to suits our needs, to download it run the following commands: <programlisting><codeline><highlight class="preprocessor">#<sp/>get<sp/>into<sp/>the<sp/>solver<sp/>root<sp/>directory</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">cd<sp/><ref refid="classabcd" kindref="compound">abcd</ref></highlight></codeline>
+<codeline><highlight class="normal">git<sp/>submodule<sp/>init</highlight></codeline>
+<codeline><highlight class="normal">git<sp/>submodule<sp/>update</highlight></codeline>
+</programlisting></para></listitem><listitem><para><computeroutput>PaToH</computeroutput>: Can be downloaded from <ulink url="http://bmi.osu.edu/~umit/software.html">Ümit V. Çatalyürek</ulink> webpage. The file <computeroutput>libpatoh.a</computeroutput> has to be copied into the <computeroutput>lib/</computeroutput> directory and the header <computeroutput>patho.h</computeroutput> has to be copied into the <computeroutput>include</computeroutput> directory.</para></listitem></itemizedlist>
+</para><para>To summarize, here is a simple script that will do everything:</para><para><programlisting><codeline><highlight class="preprocessor">#<sp/>download<sp/>the<sp/>latest<sp/>stable<sp/>version</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">git<sp/>clone<sp/>https:</highlight><highlight class="comment">//gitlab.enseeiht.fr/mohamed.zenadi/abcd.git</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>get<sp/>the<sp/>dev<sp/>version</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">git<sp/>checkout<sp/>dev</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">cd<sp/><ref refid="classabcd" kindref="compound">abcd</ref></highlight></codeline>
+<codeline><highlight class="normal">git<sp/>submodule<sp/>init</highlight></codeline>
+<codeline><highlight class="normal">git<sp/>submodule<sp/>update</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>lib</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>download<sp/>the<sp/>appropriate<sp/>version<sp/>of<sp/>patoh</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="preprocessor">#<sp/>replace<sp/>the<sp/>...<sp/>by<sp/>the<sp/>build<sp/>version</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">wget<sp/>http:</highlight><highlight class="comment">//bmi.osu.edu/~umit/PaToH/...tar.gz</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>extract</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">tar<sp/>xvzf<sp/>patoh-....tar.gz</highlight></codeline>
+<codeline><highlight class="normal">cp<sp/>build/.../libpatoh.a<sp/>.</highlight></codeline>
+<codeline><highlight class="normal">cp<sp/>build/.../patoh.h<sp/>../include/</highlight></codeline>
+<codeline><highlight class="normal">rm<sp/>-rf<sp/>build<sp/>patoh-....tar.gz</highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>..</highlight></codeline>
+</programlisting></para><para>Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the <computeroutput>cmake.in</computeroutput> directory, suppose we are going to use the <computeroutput>ACML</computeroutput> library (provides <computeroutput>blas</computeroutput> and <computeroutput>lapack</computeroutput>).</para><para><programlisting><codeline><highlight class="preprocessor">#<sp/>get<sp/>the<sp/>appropriate<sp/>configuration<sp/>file</highlight></codeline>
+<codeline><highlight class="preprocessor">cp<sp/>cmake.in/abcdCmake.in.ACML<sp/>./abcdCmake.in</highlight></codeline>
+</programlisting></para><para>Edit that file to suite your configuration</para><para><programlisting><codeline><highlight class="preprocessor">#<sp/>where<sp/>to<sp/>find<sp/>Boost?</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(BOOST_ROOT<sp/>/path/to/boost/headers)</highlight></codeline>
+<codeline><highlight class="normal">set(BOOST_LIBRARYDIR<sp/>/path/to/boost/libraries)</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>the<sp/>compilers<sp/></highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(CMAKE_CXX_COMPILER<sp/>mpic++)</highlight></codeline>
+<codeline><highlight class="normal">set(CMAKE_C_COMPILER<sp/>mpicc)</highlight></codeline>
+<codeline><highlight class="normal">set(CMAKE_FC_COMPILER<sp/>mpif90)</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>where<sp/>to<sp/>find<sp/>ACML,<sp/>scalapack<sp/>and<sp/>blacs?</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(BLAS_LAPACK_SCALAPACK_DIRS<sp/>/path/to/acml/gfortran64/lib</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/path/to/scalapack-acml</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/path/to/blacs</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>the<sp/>different<sp/>libraries</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(BLAS_LAPACK_SCALAPACK_LIBS<sp/>acml</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>blacsF77init<sp/>blacsCinit<sp/>blacs<sp/>blacsF77init<sp/>blacsCinit</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>scalapack</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>where<sp/>to<sp/>find<sp/>Openmpi<sp/>(or<sp/>any<sp/>mpi<sp/>distributuion)</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(MPI_LIB_DIR<sp/>/opt/openmpi-1.6.3-gnu/lib/)</highlight></codeline>
+<codeline><highlight class="normal">set(MPI_INC_DIR<sp/>/opt/openmpi-1.6.3-gnu/include/)</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>the<sp/>corresponding<sp/>libraries</highlight></codeline>
+<codeline><highlight class="preprocessor"></highlight><highlight class="normal">set(MPI_LIBRARIES<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mpi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mpi_f90</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mpi_f77</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mpi_cxx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>dl</highlight></codeline>
+<codeline><highlight class="normal">)</highlight></codeline>
+</programlisting></para><para>Notice that we link against <computeroutput>scalapack</computeroutput> and <computeroutput>blacs</computeroutput>, these are required libraries by <computeroutput><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></computeroutput>. If we want to use <computeroutput>MKL</computeroutput>, just change this part:</para><para><programlisting><codeline><highlight class="normal">set(BLAS_LAPACK_SCALAPACK_DIRS<sp/>/path/to/mkl)</highlight></codeline>
+<codeline><highlight class="normal">set(BLAS_LAPACK_SCALAPACK_LIBS<sp/>mkl_lapack95_lp64<sp/>mkl_blas95_lp64</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mkl_scalapack_lp64<sp/>mkl_cdft_core<sp/>mkl_gf_lp64<sp/>mkl_sequential<sp/>mkl_core</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mkl_blacs_openmpi_lp64<sp/>mkl_lapack95_lp64<sp/>mkl_blas95_lp64</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+</programlisting></para><para>In this example we used the non-threaded version of these libraries, for the <computeroutput>ACML</computeroutput> library use the <computeroutput>_mp</computeroutput> suffix, for <computeroutput>MKL</computeroutput> use the <ulink url="https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor">Intel® Math Kernel Library Link Line Advisor</ulink> to obtain the correct set of libraries. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

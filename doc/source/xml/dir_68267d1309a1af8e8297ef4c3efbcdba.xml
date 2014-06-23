@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>/home/mzenadi/projects/abcd/src</compoundname>
+    <innerdir refid="dir_3de8cff75d796a08a479ea2780cdcbc1">/home/mzenadi/projects/abcd/src/mumps</innerdir>
+    <innerdir refid="dir_d4b9f83a19540dc7c75d093edde4313e">/home/mzenadi/projects/abcd/src/preprocess</innerdir>
+    <innerdir refid="dir_05511df6bcd56ecc2ec90168a490f6ee">/home/mzenadi/projects/abcd/src/sutils</innerdir>
+    <innerdir refid="dir_313caf1132e152dd9b58bea13a4052ca">/home/mzenadi/projects/abcd/src/utils</innerdir>
+    <innerfile refid="abcd_8cpp">abcd.cpp</innerfile>
+    <innerfile refid="bcg_8cpp">bcg.cpp</innerfile>
+    <innerfile refid="cimmino_8cpp">cimmino.cpp</innerfile>
+    <innerfile refid="comms_8cpp">comms.cpp</innerfile>
+    <innerfile refid="communication_8cpp">communication.cpp</innerfile>
+    <innerfile refid="define__slaves_8cpp">define_slaves.cpp</innerfile>
+    <innerfile refid="mc77ad_8f">mc77ad.f</innerfile>
+    <innerfile refid="mmio_8c">mmio.c</innerfile>
+    <innerfile refid="s__utils_8cpp">s_utils.cpp</innerfile>
+    <innerfile refid="solve_8cpp">solve.cpp</innerfile>
+    <innerfile refid="splib__utils_8cpp">splib_utils.cpp</innerfile>
+    <innerfile refid="structure_8cpp">structure.cpp</innerfile>
+    <innerfile refid="utils_8cpp">utils.cpp</innerfile>
+    <innerfile refid="worker_8cpp">worker.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/src/"/>
+  </compounddef>
+</doxygen>

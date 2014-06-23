@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="namespace_controls" kind="namespace">
+    <compoundname>Controls</compoundname>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6e" prot="public" static="no">
+        <name>icontrols</name>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" prot="public">
+          <name>nbparts</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>Number of partitions. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the number of partitions in our linear system, can be from <computeroutput>1</computeroutput> to <computeroutput>m</computeroutput> (the number of rows in the matrix)</para><para><verbatim>embed:rst:leading-asterisk
+     *      .. code-block:: cpp
+     *
+     *          // we have 8 partitions
+     *          obj.icntl[nbparts] = 8;
+     * </verbatim> </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" prot="public">
+          <name>part_type</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>Partitioning strategy. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the partitioning strategy, it can have the values:<itemizedlist>
+<listitem><para>1, Manual partitioning, the nbparts partitions can be provided into the STL vector <ref refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kindref="member">abcd::nbrows</ref>. Example: <verbatim>embed:rst:leading-asterisk
+     *     .. code-block:: cpp
+     *
+     *         // use manual partitioning
+     *         obj.icntl[part_type] = 1;
+     *         // say that we want 20 rows per partition
+     *         obj.nrows.assign(obj.icntl[nbparts], 20);
+     *
+     *         // or
+     *         obj.nrows.resize(obj.icntl[nbparts]);
+     *         obj.nrows[0] = 20;
+     *         obj.nrows[1] = 20;
+     *         //...
+     *
+     *     For C, the #nrows vector is an ``int`` array:
+     *
+     *     .. code-block:: cpp
+     *
+     *
+     *         // use manual partitioning
+     *         obj-&gt;icntl[part_type] = 1;
+     *
+     *         obj-&gt;nrows =  (int*) malloc(sizeof(int)*(obj-&gt;icntl[nbparts]));
+     *
+     *         obj-&gt;nrows[0] = 20;
+     *         obj-&gt;nrows[1] = 20;
+     *         //...
+     *
+     * </verbatim></para></listitem><listitem><para>2, (<emphasis>default</emphasis>) Automatic uniform partitioning, creates <emphasis>nbparts</emphasis> partitions of similar size. <verbatim>embed:rst:leading-asterisk
+     *     .. code-block:: cpp
+     *
+     *
+     *         // use patoh partitioning
+     *         obj.icntl[part_type] = 2;
+     * </verbatim></para></listitem><listitem><para>3, Automatic hypergraph partitioning, creates <emphasis>nbparts</emphasis> partitions using the hypergraph partitioner <computeroutput>PaToH</computeroutput>. The imbalance between the partitions is handled using <computeroutput>obj.dcntl[part_imbalance]</computeroutput>. Example: <verbatim>embed:rst:leading-asterisk
+     *     .. code-block:: cpp
+     *
+     *
+     *         // use patoh partitioning
+     *         obj.icntl[part_type] = 3;
+     *         // say that we want an imbalance of 0.3 between the partitions
+     *         obj.dcntl[part_imbalance] = 0.3;
+     *
+     * </verbatim> </para></listitem></itemizedlist>
+</para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" prot="public">
+          <name>part_guess</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+<para>Guess the number of partitions. </para>          </briefdescription>
+          <detaileddescription>
+<para>Asks the solver to guess the appropriate number of partitions and overrides the defined <emphasis>nbparts</emphasis>.</para><para><itemizedlist>
+<listitem><para>0 (<emphasis>default</emphasis>), The user has to provide the number of partitions by setting <ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">abcd::icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">nbparts</ref>]</para></listitem><listitem><para>1, Guess the number of partitions </para></listitem></itemizedlist>
+</para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" prot="public">
+          <name>scaling</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+<para>The scaling type. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the type of scaling to be used.<itemizedlist>
+<listitem><para>0, no scaling</para></listitem><listitem><para>1, infinity norm <computeroutput>MC77</computeroutput> based scaling</para></listitem><listitem><para>2 (<emphasis>default</emphasis>), combination of one norm and two norm <computeroutput>MC77</computeroutput> based scaling</para></listitem><listitem><para>3, infinity norm row-scaling </para></listitem></itemizedlist>
+</para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea6cd993d493cb532bed17907e8337d9ca" prot="public">
+          <name>itmax</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+<para>The max number of iterations. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the maximum number of iterations in block-CG acceleration, default is <computeroutput>1000</computeroutput> </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" prot="public">
+          <name>block_size</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+<para>Block-CG block-size. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the block-size to be used by the block-CG acceleration, default is <computeroutput>1</computeroutput> for classical CG acceleration. When using a higher value than 1, the stabilized Block-CG is used. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" prot="public">
+          <name>verbose_level</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+<para>The verbose level. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines how verbose the solver has to be. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" prot="public">
+          <name>use_gmgs2</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+<para>Force Gram-Schmidt with reorthogonalization in Block-CG. </para>          </briefdescription>
+          <detaileddescription>
+<para>Makes the Block-CG use the Modifed Gram-Schmidt with reorthogonalization rather than QR factorization during the stabilization process. The GMGS^2 algorithm is described by Björk in <emphasis>Numerical Methods for Least Squares Problems</emphasis>. This option is useful only if <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">block_size</ref> is greater than 1.</para><para><itemizedlist>
+<listitem><para>0 (<emphasis>default</emphasis>), Use QR factorization</para></listitem><listitem><para>1, Use Modified Gram-Schmidt with reorthogonalization </para></listitem></itemizedlist>
+</para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" prot="public">
+          <name>aug_type</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+<para>The augmentation type. </para>          </briefdescription>
+          <detaileddescription>
+<para>Possible values are:<itemizedlist>
+<listitem><para><computeroutput>0</computeroutput> (<emphasis>default</emphasis>), no augmentation. This makes the solver run in <bold>regular block Cimmino</bold> mode.</para></listitem><listitem><para><computeroutput>1</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="3">$C_{ij}/-I$</formula> technique. For numerical stability, this augmentation technique has to be used with a scaling.</para></listitem><listitem><para><computeroutput>2</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="4">$A_{ij}/-A_{ji}$</formula> technique. This is the prefered augmentation technique. </para></listitem></itemizedlist>
+</para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" prot="public">
+          <name>aug_blocking</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+<para>The blocking factor when building <formula id="5">$S$</formula>. </para>          </briefdescription>
+          <detaileddescription>
+<para>Defines the blocking factor when building the auxiliary matrix <formula id="5">$S$</formula>, default is <computeroutput>128</computeroutput>. It represents the number of columns of <formula id="5">$S$</formula> to be computed at once, the optimal value is hardware-related. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" prot="public">
+          <name>aug_analysis</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+<para>Analyse the augmentation process. </para>          </briefdescription>
+          <detaileddescription>
+<para>When set to a value different than <computeroutput>0</computeroutput>, analyses the number of columns in the augmentation process. <bold>Note</bold>: This does not build <formula id="5">$S$</formula>, but only augment the matrix. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" prot="public">
+          <name>exploit_sparcity</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+<para>Exploit the sparcity in <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>To be used with the <ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">abcd::icntl</ref> vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="40" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="40" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" prot="public" static="no">
+        <name>dcontrols</name>
+        <enumvalue id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" prot="public">
+          <name>part_imbalance</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>The imbalance factor in PaToH case. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" prot="public">
+          <name>threshold</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>The stoping threshold. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="219" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="219" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" prot="public" static="no">
+        <name>info</name>
+        <enumvalue id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" prot="public">
+          <name>status</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>Exit status. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" prot="public">
+          <name>nb_iter</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>Number of iterations after CG. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="228" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="228" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" prot="public" static="no">
+        <name>dinfo</name>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" prot="public">
+          <name>residual</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" prot="public">
+          <name>forward_error</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+<para>The resulting forward error. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" prot="public">
+          <name>backward</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" prot="public">
+          <name>scaled_residual</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+<para>The resulting residual. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="233" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="233" bodyend="238"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Defines the control parameters indices in a safe way. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="38" column="1"/>
+  </compounddef>
+</doxygen>
