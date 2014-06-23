@@ -3,6 +3,7 @@
   <compounddef id="struct_m_u_m_p_s" kind="struct" prot="public">
     <compoundname>MUMPS</compoundname>
     <basecompoundref prot="public" virt="non-virtual">DMUMPS_STRUC_C</basecompoundref>
+    <includes refid="mumps_8h" local="no">mumps.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -199,24 +200,24 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="6">
+      <node id="2">
         <label>MUMPS</label>
         <link refid="struct_m_u_m_p_s"/>
-        <childnode refid="7" relation="public-inheritance">
+        <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="7">
+      <node id="3">
         <label>DMUMPS_STRUC_C</label>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="8">
+      <node id="4">
         <label>MUMPS</label>
         <link refid="struct_m_u_m_p_s"/>
-        <childnode refid="9" relation="public-inheritance">
+        <childnode refid="5" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="9">
+      <node id="5">
         <label>DMUMPS_STRUC_C</label>
       </node>
     </collaborationgraph>

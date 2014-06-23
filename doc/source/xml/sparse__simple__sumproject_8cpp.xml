@@ -6,14 +6,189 @@
     <includes refid="mumps_8h" local="no">mumps.h</includes>
     <includes local="no">algorithm</includes>
     <incdepgraph>
-      <node id="118">
-        <label>/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp</label>
-        <link refid="sparse_simple_sumproject.cpp"/>
-        <childnode refid="119" relation="include">
+      <node id="593">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="602">
+        <label>functional</label>
+      </node>
+      <node id="580">
+        <label>iomanip</label>
+      </node>
+      <node id="595">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="596">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="588">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="589" relation="include">
         </childnode>
       </node>
-      <node id="119">
+      <node id="586">
+        <label>stdlib.h</label>
+      </node>
+      <node id="594">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="608">
+        <label>mvm.h</label>
+      </node>
+      <node id="601">
+        <label>cwchar</label>
+      </node>
+      <node id="577">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="578" relation="include">
+        </childnode>
+        <childnode refid="579" relation="include">
+        </childnode>
+        <childnode refid="580" relation="include">
+        </childnode>
+        <childnode refid="581" relation="include">
+        </childnode>
+        <childnode refid="582" relation="include">
+        </childnode>
+        <childnode refid="583" relation="include">
+        </childnode>
+        <childnode refid="584" relation="include">
+        </childnode>
+        <childnode refid="585" relation="include">
+        </childnode>
+        <childnode refid="586" relation="include">
+        </childnode>
+        <childnode refid="587" relation="include">
+        </childnode>
+        <childnode refid="588" relation="include">
+        </childnode>
+        <childnode refid="589" relation="include">
+        </childnode>
+        <childnode refid="590" relation="include">
+        </childnode>
+        <childnode refid="591" relation="include">
+        </childnode>
+        <childnode refid="592" relation="include">
+        </childnode>
+        <childnode refid="593" relation="include">
+        </childnode>
+        <childnode refid="594" relation="include">
+        </childnode>
+        <childnode refid="595" relation="include">
+        </childnode>
+        <childnode refid="596" relation="include">
+        </childnode>
+        <childnode refid="597" relation="include">
+        </childnode>
+        <childnode refid="598" relation="include">
+        </childnode>
+        <childnode refid="599" relation="include">
+        </childnode>
+        <childnode refid="600" relation="include">
+        </childnode>
+        <childnode refid="601" relation="include">
+        </childnode>
+        <childnode refid="602" relation="include">
+        </childnode>
+        <childnode refid="603" relation="include">
+        </childnode>
+        <childnode refid="604" relation="include">
+        </childnode>
+        <childnode refid="605" relation="include">
+        </childnode>
+        <childnode refid="606" relation="include">
+        </childnode>
+        <childnode refid="607" relation="include">
+        </childnode>
+        <childnode refid="608" relation="include">
+        </childnode>
+        <childnode refid="609" relation="include">
+        </childnode>
+        <childnode refid="610" relation="include">
+        </childnode>
+      </node>
+      <node id="581">
+        <label>numeric</label>
+      </node>
+      <node id="585">
+        <label>string</label>
+      </node>
+      <node id="587">
+        <label>map</label>
+      </node>
+      <node id="606">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="603">
+        <label>fstream</label>
+      </node>
+      <node id="591">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="592">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="610">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="583">
+        <label>cstdio</label>
+      </node>
+      <node id="597">
+        <label>ctime</label>
+      </node>
+      <node id="589">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="582">
+        <label>vector</label>
+      </node>
+      <node id="590">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="604">
+        <label>sstream</label>
+      </node>
+      <node id="607">
+        <label>coord_double.h</label>
+      </node>
+      <node id="599">
+        <label>cstdlib</label>
+      </node>
+      <node id="600">
+        <label>cctype</label>
+      </node>
+      <node id="579">
+        <label>iostream</label>
+      </node>
+      <node id="578">
+        <label>mpi.h</label>
+      </node>
+      <node id="605">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="576">
+        <label>/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp</label>
+        <link refid="sparse_simple_sumproject.cpp"/>
+        <childnode refid="577" relation="include">
+        </childnode>
+        <childnode refid="588" relation="include">
+        </childnode>
+        <childnode refid="584" relation="include">
+        </childnode>
+      </node>
+      <node id="584">
         <label>algorithm</label>
+      </node>
+      <node id="598">
+        <label>cstring</label>
+      </node>
+      <node id="609">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
     <briefdescription>
@@ -53,8 +228,8 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;mumps.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;<ref refid="mumps_8h" kindref="compound">mumps.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/><sp/></highlight><highlight class="normal">boost::lambda;</highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight></codeline>
@@ -97,7 +272,7 @@
 <codeline lineno="74"><highlight class="normal"></highlight></codeline>
 <codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Y<sp/>=<sp/>CompRow_Mat_double(Yt);</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r[k]<sp/>=<sp/>spmm(partitions[k],<sp/>Y)<sp/>;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1a58a53fd0e2a26cd9d01ceedf3ab82643" kindref="member">spmm</ref>(partitions[k],<sp/>Y)<sp/>;</highlight></codeline>
 <codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nzr_estim<sp/>+=<sp/>r[k].NumNonzeros();</highlight></codeline>
 <codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight></codeline>

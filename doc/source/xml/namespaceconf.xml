@@ -3,12 +3,29 @@
   <compounddef id="namespaceconf" kind="namespace">
     <compoundname>conf</compoundname>
       <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceconf_1acb47d2c0c2904fa7d36b63142533f383" prot="public" static="no" mutable="no">
+        <type>dictionary</type>
+        <definition>dictionary conf.breathe_projects</definition>
+        <argsstring></argsstring>
+        <name>breathe_projects</name>
+        <initializer>= {
+    &quot;abcd&quot;:&quot;xml/&quot;,
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="25" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="25" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="namespaceconf_1ae475e080536acb271a0a0efe56c3ba42" prot="public" static="no" mutable="no">
         <type>list</type>
         <definition>list conf.extensions</definition>
         <argsstring></argsstring>
         <name>extensions</name>
         <initializer>= [
+    &apos;breathe&apos;,
     &apos;sphinx.ext.autodoc&apos;,
     &apos;sphinx.ext.viewcode&apos;,
     &apos;sphinx.ext.doctest&apos;,
@@ -23,7 +40,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="34" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="34" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="38" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="38" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1ae850ae634911b713e036b43894fdd525" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -37,7 +54,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="45" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="45" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="50" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a10af2a769eb3bd3322e874f677e435b1" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -51,7 +68,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="48" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="48" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="53" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="53" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a6fcd7e5236f355b1e1a55f9d95988810" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -65,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="54" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="54" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="59" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="59" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a45653c983098153b78e33600e39230eb" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -79,7 +96,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="57" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="57" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="62" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="62" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a33fa97cf51dcb25970fbf53f10159589" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -93,7 +110,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="58" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="58" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="63" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="63" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1ade15c5b54093b64d7c428ec19ca5b1cb" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -107,7 +124,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="65" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="65" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="70" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="70" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a325dc746d8bf05c54d26351c35a21d90" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -121,7 +138,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="67" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="67" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="72" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="72" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a7ad48fb6f3e9b129c02346ea0d3527c1" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -135,7 +152,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="81" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="81" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="86" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="86" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a641130e096b26cba8a5d63ed38684de7" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -149,21 +166,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="99" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="99" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="104" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a6c3bfcc1a44546c1c75ce20f55bd0fd6" prot="public" static="no" mutable="no">
         <type>string</type>
         <definition>string conf.html_theme</definition>
         <argsstring></argsstring>
         <name>html_theme</name>
-        <initializer>= &apos;nature&apos;</initializer>
+        <initializer>= &apos;haiku&apos;</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="112" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="112" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="117" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="117" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1af4fb5d8851ccaade135c2668dd3ced41" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -177,7 +194,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="141" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="141" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="146" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="146" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1aab7fddb2766ce3c430d8246fbfdbc7b1" prot="public" static="no" mutable="no">
         <type>string</type>
@@ -191,7 +208,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="190" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="190" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="195" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="195" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a33619d385ad23765ac6ebb58bf82d43d" prot="public" static="no" mutable="no">
         <type>dictionary</type>
@@ -218,7 +235,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="195" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="195" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="200" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="200" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a7812f49970f3de0d15dd7b9b9a10e3a1" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -234,7 +251,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="213" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="213" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="218" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="218" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a85efc5fee48a26fa2d651f6eeb38fc2b" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -251,7 +268,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="242" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="242" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="247" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="247" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a54b0faed214ac92017d5689efbb10672" prot="public" static="no" mutable="no">
         <type>list</type>
@@ -269,7 +286,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="256" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="256" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="261" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="261" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceconf_1a8375f4f963de3ac8026eaa9beced9564" prot="public" static="no" mutable="no">
         <type>dictionary</type>
@@ -283,7 +300,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="276" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="276" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/doc/source/conf.py" line="281" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/source/conf.py" bodystart="281" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>

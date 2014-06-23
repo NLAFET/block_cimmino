@@ -6,19 +6,189 @@
     <includes local="no">iostream</includes>
     <includes local="no">fstream</includes>
     <incdepgraph>
-      <node id="150">
+      <node id="959">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="968">
+        <label>functional</label>
+      </node>
+      <node id="946">
+        <label>iomanip</label>
+      </node>
+      <node id="961">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="962">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="954">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="955" relation="include">
+        </childnode>
+      </node>
+      <node id="952">
+        <label>stdlib.h</label>
+      </node>
+      <node id="960">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="974">
+        <label>mvm.h</label>
+      </node>
+      <node id="967">
+        <label>cwchar</label>
+      </node>
+      <node id="943">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="944" relation="include">
+        </childnode>
+        <childnode refid="945" relation="include">
+        </childnode>
+        <childnode refid="946" relation="include">
+        </childnode>
+        <childnode refid="947" relation="include">
+        </childnode>
+        <childnode refid="948" relation="include">
+        </childnode>
+        <childnode refid="949" relation="include">
+        </childnode>
+        <childnode refid="950" relation="include">
+        </childnode>
+        <childnode refid="951" relation="include">
+        </childnode>
+        <childnode refid="952" relation="include">
+        </childnode>
+        <childnode refid="953" relation="include">
+        </childnode>
+        <childnode refid="954" relation="include">
+        </childnode>
+        <childnode refid="955" relation="include">
+        </childnode>
+        <childnode refid="956" relation="include">
+        </childnode>
+        <childnode refid="957" relation="include">
+        </childnode>
+        <childnode refid="958" relation="include">
+        </childnode>
+        <childnode refid="959" relation="include">
+        </childnode>
+        <childnode refid="960" relation="include">
+        </childnode>
+        <childnode refid="961" relation="include">
+        </childnode>
+        <childnode refid="962" relation="include">
+        </childnode>
+        <childnode refid="963" relation="include">
+        </childnode>
+        <childnode refid="964" relation="include">
+        </childnode>
+        <childnode refid="965" relation="include">
+        </childnode>
+        <childnode refid="966" relation="include">
+        </childnode>
+        <childnode refid="967" relation="include">
+        </childnode>
+        <childnode refid="968" relation="include">
+        </childnode>
+        <childnode refid="969" relation="include">
+        </childnode>
+        <childnode refid="970" relation="include">
+        </childnode>
+        <childnode refid="971" relation="include">
+        </childnode>
+        <childnode refid="972" relation="include">
+        </childnode>
+        <childnode refid="973" relation="include">
+        </childnode>
+        <childnode refid="974" relation="include">
+        </childnode>
+        <childnode refid="975" relation="include">
+        </childnode>
+        <childnode refid="976" relation="include">
+        </childnode>
+      </node>
+      <node id="947">
+        <label>numeric</label>
+      </node>
+      <node id="951">
+        <label>string</label>
+      </node>
+      <node id="942">
         <label>/home/mzenadi/projects/abcd/src/sutils/buildS.cpp</label>
         <link refid="buildS.cpp"/>
-        <childnode refid="151" relation="include">
+        <childnode refid="943" relation="include">
         </childnode>
-        <childnode refid="152" relation="include">
+        <childnode refid="945" relation="include">
+        </childnode>
+        <childnode refid="969" relation="include">
         </childnode>
       </node>
-      <node id="152">
+      <node id="953">
+        <label>map</label>
+      </node>
+      <node id="972">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="969">
         <label>fstream</label>
       </node>
-      <node id="151">
+      <node id="957">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="958">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="976">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="949">
+        <label>cstdio</label>
+      </node>
+      <node id="963">
+        <label>ctime</label>
+      </node>
+      <node id="955">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="948">
+        <label>vector</label>
+      </node>
+      <node id="956">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="970">
+        <label>sstream</label>
+      </node>
+      <node id="973">
+        <label>coord_double.h</label>
+      </node>
+      <node id="965">
+        <label>cstdlib</label>
+      </node>
+      <node id="966">
+        <label>cctype</label>
+      </node>
+      <node id="945">
         <label>iostream</label>
+      </node>
+      <node id="944">
+        <label>mpi.h</label>
+      </node>
+      <node id="971">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="950">
+        <label>algorithm</label>
+      </node>
+      <node id="964">
+        <label>cstring</label>
+      </node>
+      <node id="975">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
     <briefdescription>
@@ -58,7 +228,7 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight></codeline>
@@ -118,9 +288,9 @@
 <codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mincols<sp/>=<sp/>mpi::all_reduce(inter_comm,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>my_cols.size(),<sp/>mpi::minimum&lt;int&gt;());</highlight></codeline>
 <codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>total<sp/>=<sp/>mpi::all_reduce(inter_comm,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>my_cols.size(),<sp/>std::plus&lt;int&gt;());</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LDEBUG<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Max<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>maxcols;</highlight></codeline>
-<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LDEBUG<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Min<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mincols;</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LDEBUG<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Avg<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>total/<ref refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kindref="member">parallel_cg</ref>;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Max<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>maxcols;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Min<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mincols;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Avg<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>total/<ref refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kindref="member">parallel_cg</ref>;</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="97"><highlight class="normal"></highlight></codeline>
 <codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NO_MUMPS_ES</highlight></codeline>
@@ -133,7 +303,7 @@
 <codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
 <codeline lineno="106"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>we<sp/>need<sp/>to<sp/>fully<sp/>augment<sp/>the<sp/>matrix,<sp/>or<sp/>at<sp/>least<sp/>to<sp/>build<sp/>part<sp/>of<sp/>it</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>this<sp/>is<sp/>needed<sp/>only<sp/>in<sp/>ABCD<sp/>direct<sp/>and<sp/>iterative</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(dcntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0<sp/>||<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>==<sp/>2){</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0<sp/>||<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>==<sp/>2){</highlight></codeline>
 <codeline lineno="109"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
 <codeline lineno="110"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;::iterator<sp/>pos<sp/>=<sp/>my_cols.begin();</highlight></codeline>
@@ -199,7 +369,7 @@
 <codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>process.<sp/>We<sp/>repetedly<sp/>compute<sp/>m.n.s.<sp/>using<sp/>bcg()<sp/></highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="172"><highlight class="normal"></highlight></codeline>
 <codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>size_c;<sp/>i++){</highlight></codeline>
-<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)<sp/>LDEBUG<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Column<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>out<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)<sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Column<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>out<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
 <codeline lineno="175"><highlight class="normal"></highlight></codeline>
 <codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">Controls::block_size</ref>]<sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk<sp/>=<sp/>MV_ColMat_double(<ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>,<sp/>1,<sp/>0);</highlight></codeline>

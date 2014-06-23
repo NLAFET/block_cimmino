@@ -6,14 +6,198 @@
     <includes local="yes">blas.h</includes>
     <includes refid="mat__utils_8h" local="yes">mat_utils.h</includes>
     <incdepgraph>
-      <node id="159">
+      <node id="1031">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="1040">
+        <label>functional</label>
+      </node>
+      <node id="1018">
+        <label>iomanip</label>
+      </node>
+      <node id="1033">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="1034">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="1026">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="1027" relation="include">
+        </childnode>
+      </node>
+      <node id="1024">
+        <label>stdlib.h</label>
+      </node>
+      <node id="1032">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="1046">
+        <label>mvm.h</label>
+      </node>
+      <node id="1039">
+        <label>cwchar</label>
+      </node>
+      <node id="1015">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="1016" relation="include">
+        </childnode>
+        <childnode refid="1017" relation="include">
+        </childnode>
+        <childnode refid="1018" relation="include">
+        </childnode>
+        <childnode refid="1019" relation="include">
+        </childnode>
+        <childnode refid="1020" relation="include">
+        </childnode>
+        <childnode refid="1021" relation="include">
+        </childnode>
+        <childnode refid="1022" relation="include">
+        </childnode>
+        <childnode refid="1023" relation="include">
+        </childnode>
+        <childnode refid="1024" relation="include">
+        </childnode>
+        <childnode refid="1025" relation="include">
+        </childnode>
+        <childnode refid="1026" relation="include">
+        </childnode>
+        <childnode refid="1027" relation="include">
+        </childnode>
+        <childnode refid="1028" relation="include">
+        </childnode>
+        <childnode refid="1029" relation="include">
+        </childnode>
+        <childnode refid="1030" relation="include">
+        </childnode>
+        <childnode refid="1031" relation="include">
+        </childnode>
+        <childnode refid="1032" relation="include">
+        </childnode>
+        <childnode refid="1033" relation="include">
+        </childnode>
+        <childnode refid="1034" relation="include">
+        </childnode>
+        <childnode refid="1035" relation="include">
+        </childnode>
+        <childnode refid="1036" relation="include">
+        </childnode>
+        <childnode refid="1037" relation="include">
+        </childnode>
+        <childnode refid="1038" relation="include">
+        </childnode>
+        <childnode refid="1039" relation="include">
+        </childnode>
+        <childnode refid="1040" relation="include">
+        </childnode>
+        <childnode refid="1041" relation="include">
+        </childnode>
+        <childnode refid="1042" relation="include">
+        </childnode>
+        <childnode refid="1043" relation="include">
+        </childnode>
+        <childnode refid="1044" relation="include">
+        </childnode>
+        <childnode refid="1045" relation="include">
+        </childnode>
+        <childnode refid="1046" relation="include">
+        </childnode>
+        <childnode refid="1047" relation="include">
+        </childnode>
+        <childnode refid="1048" relation="include">
+        </childnode>
+      </node>
+      <node id="1019">
+        <label>numeric</label>
+      </node>
+      <node id="1023">
+        <label>string</label>
+      </node>
+      <node id="1025">
+        <label>map</label>
+      </node>
+      <node id="1044">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="1041">
+        <label>fstream</label>
+      </node>
+      <node id="1049">
         <label>blas.h</label>
       </node>
-      <node id="158">
+      <node id="1050">
+        <label>mat_utils.h</label>
+        <link refid="mat__utils_8h"/>
+        <childnode refid="1020" relation="include">
+        </childnode>
+      </node>
+      <node id="1029">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="1030">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="1048">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="1021">
+        <label>cstdio</label>
+      </node>
+      <node id="1035">
+        <label>ctime</label>
+      </node>
+      <node id="1027">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="1020">
+        <label>vector</label>
+      </node>
+      <node id="1028">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="1042">
+        <label>sstream</label>
+      </node>
+      <node id="1045">
+        <label>coord_double.h</label>
+      </node>
+      <node id="1037">
+        <label>cstdlib</label>
+      </node>
+      <node id="1038">
+        <label>cctype</label>
+      </node>
+      <node id="1017">
+        <label>iostream</label>
+      </node>
+      <node id="1014">
         <label>/home/mzenadi/projects/abcd/src/utils.cpp</label>
         <link refid="utils.cpp"/>
-        <childnode refid="159" relation="include">
+        <childnode refid="1015" relation="include">
         </childnode>
+        <childnode refid="1049" relation="include">
+        </childnode>
+        <childnode refid="1050" relation="include">
+        </childnode>
+      </node>
+      <node id="1016">
+        <label>mpi.h</label>
+      </node>
+      <node id="1043">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="1022">
+        <label>algorithm</label>
+      </node>
+      <node id="1036">
+        <label>cstring</label>
+      </node>
+      <node id="1047">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
       <sectiondef kind="func">
@@ -97,9 +281,9 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;blas.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;mat_utils.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="mat__utils_8h" kindref="compound">mat_utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">std;</highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">boost::lambda;</highlight></codeline>
@@ -261,7 +445,7 @@
 <codeline lineno="196"><highlight class="normal"></highlight></codeline>
 <codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>rn<sp/>;<sp/>j++){</highlight></codeline>
 <codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>loc_r_j<sp/>=<sp/>loc_r(j);</highlight></codeline>
-<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>loc_nrm<sp/>=<sp/>infNorm(loc_r_j);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>loc_nrm<sp/>=<sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(loc_r_j);</highlight></codeline>
 <codeline lineno="200"><highlight class="normal"></highlight></codeline>
 <codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_reduce(inter_comm,<sp/>&amp;loc_nrm,<sp/>1,<sp/>&amp;nrmR,<sp/>mpi::maximum&lt;double&gt;());</highlight></codeline>
 <codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_reduce(inter_comm,<sp/>&amp;nrmXV[j],<sp/>1,<sp/>&amp;nrmX,<sp/>std::plus&lt;double&gt;());</highlight></codeline>
@@ -270,13 +454,13 @@
 <codeline lineno="205"><highlight class="normal"></highlight></codeline>
 <codeline lineno="206"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="207"><highlight class="normal"></highlight></codeline>
-<codeline lineno="208"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>or_bin(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;a,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;b){</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="utils_8cpp_1ac832dfdd5ec260af2ae5908e45d5775d" kindref="member">or_bin</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;a,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;b){</highlight></codeline>
 <codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(a!=0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>a;</highlight></codeline>
 <codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(b!=0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>b;</highlight></codeline>
 <codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
 <codeline lineno="212"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="213"><highlight class="normal"></highlight></codeline>
-<codeline lineno="214"><highlight class="normal">std::vector&lt;int&gt;<sp/>sort_indexes(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*v,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_el)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal">std::vector&lt;int&gt;<sp/><ref refid="utils_8cpp_1a8e6eb297d5836a8959f84c0f953a1b41" kindref="member">sort_indexes</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*v,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_el)<sp/>{</highlight></codeline>
 <codeline lineno="215"><highlight class="normal"></highlight></codeline>
 <codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::pair&lt;int,int&gt;<sp/>pair_type;</highlight></codeline>
 <codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;<sp/>std::pair&lt;int,int&gt;<sp/>&gt;<sp/>vp;</highlight></codeline>
@@ -304,7 +488,7 @@
 <codeline lineno="240"><highlight class="normal"></highlight></codeline>
 <codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>source(src,<sp/>src_lda,<sp/>src_ncols,<sp/>MV_Matrix_::ref);</highlight></codeline>
 <codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="245"><highlight class="normal"></highlight></codeline>
 <codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>vdest(dest,<sp/>dest_lda,<sp/>dest_ncols,<sp/>MV_Matrix_::ref);</highlight></codeline>
@@ -333,7 +517,7 @@
 <codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(Xf.dim(0)<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>xf<sp/>=<sp/>MV_ColMat_double(dest_lda,<sp/>dest_ncols,<sp/>0);</highlight></codeline>
 <codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xf<sp/>=<sp/>Xf<sp/>-<sp/>vdest;</highlight></codeline>
-<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nrmxf<sp/>=<sp/><sp/>infNorm(xf);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nrmxf<sp/>=<sp/><sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(xf);</highlight></codeline>
 <codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kindref="member">dinfo</ref>[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" kindref="member">Controls::forward_error</ref>]<sp/>=<sp/><sp/>nrmxf/nrmXf;</highlight></codeline>
 <codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>

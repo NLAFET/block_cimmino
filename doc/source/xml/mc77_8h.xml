@@ -28,7 +28,7 @@
     <detaileddescription>
     </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>mc77id_(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*);</highlight></codeline>
+<codeline lineno="1"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="mc77_8h_1a844fc1858b5281bb1a386c1f2b2ecec1" kindref="member">mc77id_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*);</highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/include/mc77.h"/>
   </compounddef>

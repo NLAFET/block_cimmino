@@ -6,19 +6,189 @@
     <includes local="no">iostream</includes>
     <includes local="no">fstream</includes>
     <incdepgraph>
-      <node id="135">
+      <node id="811">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="820">
+        <label>functional</label>
+      </node>
+      <node id="798">
+        <label>iomanip</label>
+      </node>
+      <node id="813">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="814">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="806">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="807" relation="include">
+        </childnode>
+      </node>
+      <node id="804">
+        <label>stdlib.h</label>
+      </node>
+      <node id="812">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="826">
+        <label>mvm.h</label>
+      </node>
+      <node id="819">
+        <label>cwchar</label>
+      </node>
+      <node id="795">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="796" relation="include">
+        </childnode>
+        <childnode refid="797" relation="include">
+        </childnode>
+        <childnode refid="798" relation="include">
+        </childnode>
+        <childnode refid="799" relation="include">
+        </childnode>
+        <childnode refid="800" relation="include">
+        </childnode>
+        <childnode refid="801" relation="include">
+        </childnode>
+        <childnode refid="802" relation="include">
+        </childnode>
+        <childnode refid="803" relation="include">
+        </childnode>
+        <childnode refid="804" relation="include">
+        </childnode>
+        <childnode refid="805" relation="include">
+        </childnode>
+        <childnode refid="806" relation="include">
+        </childnode>
+        <childnode refid="807" relation="include">
+        </childnode>
+        <childnode refid="808" relation="include">
+        </childnode>
+        <childnode refid="809" relation="include">
+        </childnode>
+        <childnode refid="810" relation="include">
+        </childnode>
+        <childnode refid="811" relation="include">
+        </childnode>
+        <childnode refid="812" relation="include">
+        </childnode>
+        <childnode refid="813" relation="include">
+        </childnode>
+        <childnode refid="814" relation="include">
+        </childnode>
+        <childnode refid="815" relation="include">
+        </childnode>
+        <childnode refid="816" relation="include">
+        </childnode>
+        <childnode refid="817" relation="include">
+        </childnode>
+        <childnode refid="818" relation="include">
+        </childnode>
+        <childnode refid="819" relation="include">
+        </childnode>
+        <childnode refid="820" relation="include">
+        </childnode>
+        <childnode refid="821" relation="include">
+        </childnode>
+        <childnode refid="822" relation="include">
+        </childnode>
+        <childnode refid="823" relation="include">
+        </childnode>
+        <childnode refid="824" relation="include">
+        </childnode>
+        <childnode refid="825" relation="include">
+        </childnode>
+        <childnode refid="826" relation="include">
+        </childnode>
+        <childnode refid="827" relation="include">
+        </childnode>
+        <childnode refid="828" relation="include">
+        </childnode>
+      </node>
+      <node id="799">
+        <label>numeric</label>
+      </node>
+      <node id="803">
+        <label>string</label>
+      </node>
+      <node id="805">
+        <label>map</label>
+      </node>
+      <node id="824">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="821">
         <label>fstream</label>
       </node>
-      <node id="133">
+      <node id="809">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="810">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="828">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="801">
+        <label>cstdio</label>
+      </node>
+      <node id="815">
+        <label>ctime</label>
+      </node>
+      <node id="807">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="800">
+        <label>vector</label>
+      </node>
+      <node id="808">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="822">
+        <label>sstream</label>
+      </node>
+      <node id="794">
         <label>/home/mzenadi/projects/abcd/src/s_utils.cpp</label>
         <link refid="s_utils.cpp"/>
-        <childnode refid="134" relation="include">
+        <childnode refid="795" relation="include">
         </childnode>
-        <childnode refid="135" relation="include">
+        <childnode refid="797" relation="include">
+        </childnode>
+        <childnode refid="821" relation="include">
         </childnode>
       </node>
-      <node id="134">
+      <node id="825">
+        <label>coord_double.h</label>
+      </node>
+      <node id="817">
+        <label>cstdlib</label>
+      </node>
+      <node id="818">
+        <label>cctype</label>
+      </node>
+      <node id="797">
         <label>iostream</label>
+      </node>
+      <node id="796">
+        <label>mpi.h</label>
+      </node>
+      <node id="823">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="802">
+        <label>algorithm</label>
+      </node>
+      <node id="816">
+        <label>cstring</label>
+      </node>
+      <node id="827">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
     <briefdescription>
@@ -77,7 +247,7 @@
 <codeline lineno="49"><highlight class="comment"><sp/>*<sp/>=====================================================================================</highlight></codeline>
 <codeline lineno="50"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="55"><highlight class="normal"></highlight></codeline>
@@ -221,7 +391,7 @@
 <codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="195"><highlight class="normal"></highlight></codeline>
-<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>IBARRIER;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a86ce1665978a1c3d971cb82562b2d506" kindref="member">IBARRIER</ref>;</highlight></codeline>
 <codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*<sp/>Starting<sp/>Analysis<sp/>of<sp/>the<sp/>precond<sp/>*&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="199"><highlight class="normal"></highlight></codeline>
@@ -251,7 +421,7 @@
 <codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.icntl[2]<sp/>=<sp/>-1;</highlight></codeline>
 <codeline lineno="224"><highlight class="normal"></highlight></codeline>
 <codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(mu.info[0]<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/>IRANK<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>1<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mu.info[0]<sp/>&lt;&lt;<sp/><sp/></highlight><highlight class="stringliteral">&quot;<sp/>2<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mu.info[1]<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/><ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>1<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mu.info[0]<sp/>&lt;&lt;<sp/><sp/></highlight><highlight class="stringliteral">&quot;<sp/>2<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mu.info[1]<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(0);<sp/></highlight></codeline>
 <codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*-----------------------------------------------------------------------------</highlight></codeline>
@@ -265,7 +435,7 @@
 <codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>VECTOR_double</highlight></codeline>
 <codeline lineno="238"><highlight class="normal">abcd::solveM<sp/>(<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>&amp;mu,<sp/>VECTOR_double<sp/>&amp;z<sp/>)</highlight></codeline>
 <codeline lineno="239"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mu.rhs<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">[z.size()];</highlight></codeline>
 <codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>z.size();<sp/>i++)<sp/>mu.rhs[i]<sp/>=<sp/>z(i);</highlight></codeline>
 <codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mu.nrhs<sp/>=<sp/>1;</highlight></codeline>
@@ -273,7 +443,7 @@
 <codeline lineno="245"><highlight class="normal"></highlight></codeline>
 <codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.job<sp/>=<sp/>3;</highlight></codeline>
 <codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>dmumps_c(&amp;mu);</highlight></codeline>
-<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0){</highlight></codeline>
 <codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/><ref refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" kindref="member">sol</ref>(mu.rhs,<sp/>z.size());</highlight></codeline>
 <codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*sol_ptr<sp/>=<sp/><ref refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" kindref="member">sol</ref>.ptr();</highlight></codeline>
 <codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(inter_comm,<sp/>sol_ptr,<sp/>size_c,<sp/>0);</highlight></codeline>
@@ -298,7 +468,7 @@
 <codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_iter<sp/>=<sp/>size_c;</highlight></codeline>
 <codeline lineno="271"><highlight class="normal"></highlight></codeline>
 <codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>mu;</highlight></codeline>
-<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(dcntl[Controls::aug_precond]<sp/>!=<sp/>0)<sp/>mu<sp/>=<sp/>buildM();</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_precond]<sp/>!=<sp/>0)<sp/>mu<sp/>=<sp/>buildM();</highlight></codeline>
 <codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="275"><highlight class="normal"></highlight></codeline>
 <codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>VECTOR_double<sp/>p,<sp/>z,<sp/>q;</highlight></codeline>
@@ -323,15 +493,15 @@
 <codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="296"><highlight class="normal"></highlight></codeline>
 <codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>max_iter;<sp/>i++)<sp/>{</highlight></codeline>
-<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TIC;</highlight></codeline>
-<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(dcntl[Controls::aug_precond]<sp/>!=<sp/>0)<sp/>{<sp/></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a043fba147e9f9707cc6f201bedc9012b" kindref="member">TIC</ref>;</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_precond]<sp/>!=<sp/>0)<sp/>{<sp/></highlight></codeline>
 <codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>z<sp/>=<sp/>solveM(mu,<sp/>r);</highlight></codeline>
 <codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>z<sp/>=<sp/>r;</highlight></codeline>
 <codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//IFMASTER<sp/>clog<sp/>&lt;&lt;<sp/>&quot;<sp/>Time<sp/>in<sp/>solveM<sp/>&quot;<sp/>&lt;&lt;<sp/>TOC<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="305"><highlight class="normal"></highlight></codeline>
-<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TIC;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a043fba147e9f9707cc6f201bedc9012b" kindref="member">TIC</ref>;</highlight></codeline>
 <codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rho(0)<sp/>=<sp/>dot(r,<sp/>z);</highlight></codeline>
 <codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>==<sp/>1)</highlight></codeline>
@@ -343,16 +513,16 @@
 <codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>pv(p.ptr(),<sp/>size_c,<sp/>1);</highlight></codeline>
 <codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//IFMASTER<sp/>clog&lt;&lt;<sp/>&quot;Time<sp/>in<sp/>dot<sp/>&quot;<sp/>&lt;&lt;<sp/>TOC<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TIC;</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a043fba147e9f9707cc6f201bedc9012b" kindref="member">TIC</ref>;</highlight></codeline>
 <codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Szk<sp/>=<sp/>prodSv(pv);</highlight></codeline>
 <codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//IFMASTER<sp/>clog&lt;&lt;<sp/>&quot;Time<sp/>in<sp/>prodsv<sp/>&quot;<sp/>&lt;&lt;<sp/>TOC<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TIC;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a043fba147e9f9707cc6f201bedc9012b" kindref="member">TIC</ref>;</highlight></codeline>
 <codeline lineno="322"><highlight class="normal"></highlight></codeline>
 <codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*f_ptr<sp/>=<sp/>Szk.ptr();</highlight></codeline>
 <codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>ff(size_c,<sp/>1,<sp/>0);</highlight></codeline>
 <codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*f_o<sp/>=<sp/>ff.ptr();</highlight></codeline>
 <codeline lineno="326"><highlight class="normal"></highlight></codeline>
-<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_reduce(inter_comm,<sp/>f_ptr,<sp/>size_c,<sp/>f_o,<sp/>or_bin);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_reduce(inter_comm,<sp/>f_ptr,<sp/>size_c,<sp/>f_o,<sp/><ref refid="utils_8cpp_1ac832dfdd5ec260af2ae5908e45d5775d" kindref="member">or_bin</ref>);</highlight></codeline>
 <codeline lineno="328"><highlight class="normal"></highlight></codeline>
 <codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>q<sp/>=<sp/>ff(0);</highlight></codeline>
 <codeline lineno="330"><highlight class="normal"></highlight></codeline>
@@ -366,13 +536,13 @@
 <codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(resid<sp/>&lt;=<sp/>tol)<sp/>{</highlight></codeline>
 <codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tol<sp/>=<sp/>resid;</highlight></codeline>
 <codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max_iter<sp/>=<sp/>i;</highlight></codeline>
-<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0){</highlight></codeline>
 <codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Iteration<sp/>to<sp/>solve<sp/>Sz<sp/>=<sp/>f<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>with<sp/>a<sp/>residual<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>resid<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>in<sp/>iterations<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Iteration<sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>residual<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>resid<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\r&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>flush;</highlight></codeline>
 <codeline lineno="349"><highlight class="normal"></highlight></codeline>
 <codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//IFMASTER<sp/>clog&lt;&lt;<sp/>&quot;Time<sp/>in<sp/>otherstuffs<sp/>&quot;<sp/>&lt;&lt;<sp/>TOC<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
@@ -380,7 +550,7 @@
 <codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>tol<sp/>=<sp/>resid;</highlight></codeline>
-<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0){</highlight></codeline>
 <codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Iteration<sp/>to<sp/>solve<sp/>Sz<sp/>=<sp/>f<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>max_iter<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>with<sp/>a<sp/>residual<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>resid<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clog<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>in<sp/>iterations<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
 <codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>

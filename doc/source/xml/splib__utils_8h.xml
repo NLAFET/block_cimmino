@@ -3,6 +3,174 @@
   <compounddef id="splib__utils_8h" kind="file">
     <compoundname>splib_utils.h</compoundname>
     <includedby refid="abcd_8h" local="yes">/home/mzenadi/projects/abcd/include/abcd.h</includedby>
+    <invincdepgraph>
+      <node id="135">
+        <label>/home/mzenadi/projects/abcd/src/cimmino.cpp</label>
+        <link refid="cimmino_8cpp"/>
+      </node>
+      <node id="152">
+        <label>/home/mzenadi/projects/abcd/src/splib_utils.cpp</label>
+        <link refid="splib__utils_8cpp"/>
+      </node>
+      <node id="151">
+        <label>/home/mzenadi/projects/abcd/src/solve.cpp</label>
+        <link refid="solve_8cpp"/>
+      </node>
+      <node id="133">
+        <label>/home/mzenadi/projects/abcd/src/abcd.cpp</label>
+        <link refid="abcd_8cpp"/>
+      </node>
+      <node id="137">
+        <label>/home/mzenadi/projects/abcd/src/communication.cpp</label>
+        <link refid="communication_8cpp"/>
+      </node>
+      <node id="136">
+        <label>/home/mzenadi/projects/abcd/src/comms.cpp</label>
+        <link refid="comms_8cpp"/>
+      </node>
+      <node id="148">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/cij_augment.cpp</label>
+        <link refid="cij__augment_8cpp"/>
+      </node>
+      <node id="153">
+        <label>/home/mzenadi/projects/abcd/src/structure.cpp</label>
+        <link refid="structure_8cpp"/>
+      </node>
+      <node id="145">
+        <label>/home/mzenadi/projects/abcd/src/mumps/sumproject.cpp</label>
+        <link refid="sumproject_8cpp"/>
+      </node>
+      <node id="132">
+        <label>/home/mzenadi/projects/abcd/include/abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="156" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+      </node>
+      <node id="149">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp</label>
+        <link refid="scaling_8cpp"/>
+      </node>
+      <node id="143">
+        <label>/home/mzenadi/projects/abcd/src/mumps/simple_sumproject.cpp</label>
+        <link refid="simple__sumproject_8cpp"/>
+      </node>
+      <node id="142">
+        <label>/home/mzenadi/projects/abcd/src/mumps/init.cpp</label>
+        <link refid="init_8cpp"/>
+      </node>
+      <node id="154">
+        <label>/home/mzenadi/projects/abcd/src/sutils/buildS.cpp</label>
+        <link refid="build_s_8cpp"/>
+      </node>
+      <node id="147">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/augmentation.cpp</label>
+        <link refid="augmentation_8cpp"/>
+      </node>
+      <node id="141">
+        <label>/home/mzenadi/projects/abcd/src/mumps/factorization.cpp</label>
+        <link refid="factorization_8cpp"/>
+      </node>
+      <node id="138">
+        <label>/home/mzenadi/projects/abcd/src/define_slaves.cpp</label>
+        <link refid="define__slaves_8cpp"/>
+      </node>
+      <node id="139">
+        <label>/home/mzenadi/projects/abcd/src/mumps/analysis.cpp</label>
+        <link refid="analysis_8cpp"/>
+      </node>
+      <node id="134">
+        <label>/home/mzenadi/projects/abcd/src/bcg.cpp</label>
+        <link refid="bcg_8cpp"/>
+      </node>
+      <node id="140">
+        <label>/home/mzenadi/projects/abcd/src/mumps/augmented_systems.cpp</label>
+        <link refid="augmented__systems_8cpp"/>
+      </node>
+      <node id="150">
+        <label>/home/mzenadi/projects/abcd/src/s_utils.cpp</label>
+        <link refid="s__utils_8cpp"/>
+      </node>
+      <node id="146">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp</label>
+        <link refid="aij__augment_8cpp"/>
+      </node>
+      <node id="156">
+        <label>/home/mzenadi/projects/abcd/src/utils/logger.cpp</label>
+        <link refid="logger_8cpp"/>
+      </node>
+      <node id="158">
+        <label>/home/mzenadi/projects/abcd/src/worker.cpp</label>
+        <link refid="worker_8cpp"/>
+      </node>
+      <node id="157">
+        <label>/home/mzenadi/projects/abcd/src/utils.cpp</label>
+        <link refid="utils_8cpp"/>
+      </node>
+      <node id="155">
+        <label>/home/mzenadi/projects/abcd/src/sutils/solveS.cpp</label>
+        <link refid="solve_s_8cpp"/>
+      </node>
+      <node id="144">
+        <label>/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp</label>
+        <link refid="sparse__simple__sumproject_8cpp"/>
+      </node>
+      <node id="131">
+        <label>/home/mzenadi/projects/abcd/include/splib_utils.h</label>
+        <link refid="splib_utils.h"/>
+        <childnode refid="132" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
       <sectiondef kind="func">
       <memberdef kind="function" id="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -577,33 +745,33 @@
     <detaileddescription>
     </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>squaredNorm(CompRow_Mat_double<sp/>&amp;M);</highlight></codeline>
-<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>squaredNorm(VECTOR_double<sp/>&amp;V);</highlight></codeline>
-<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>squaredNorm(VECTOR_double<sp/>&amp;V,<sp/>VECTOR_int<sp/>&amp;I);</highlight></codeline>
-<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>infNorm(VECTOR_double<sp/>&amp;V);</highlight></codeline>
-<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>infNorm(MV_ColMat_double<sp/>&amp;V);</highlight></codeline>
-<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>infNorm(Coord_Mat_double<sp/>&amp;M);</highlight></codeline>
-<codeline lineno="7"><highlight class="normal">CompRow_Mat_double<sp/>CSR_middleRows<sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_cols);</highlight></codeline>
-<codeline lineno="8"><highlight class="normal">CompCol_Mat_double<sp/>CSC_middleRows<sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows);</highlight></codeline>
-<codeline lineno="9"><highlight class="normal">CompCol_Mat_double<sp/>sub_matrix<sp/>(CompCol_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;ci);</highlight></codeline>
-<codeline lineno="10"><highlight class="normal">VECTOR_double<sp/>middleCol(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num);</highlight></codeline>
-<codeline lineno="11"><highlight class="normal">VECTOR_double<sp/>middleCol(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num,<sp/>VECTOR_int<sp/>&amp;ind);</highlight></codeline>
-<codeline lineno="12"><highlight class="normal">CompRow_Mat_double<sp/>smmtm<sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
-<codeline lineno="13"><highlight class="normal">CompRow_Mat_double<sp/>smmtm<sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
-<codeline lineno="14"><highlight class="normal">CompRow_Mat_double<sp/>smmtm<sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
-<codeline lineno="15"><highlight class="normal">CompRow_Mat_double<sp/>smmtm<sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B);</highlight></codeline>
-<codeline lineno="16"><highlight class="normal">CompRow_Mat_double<sp/>spmm<sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
-<codeline lineno="17"><highlight class="normal">CompCol_Mat_double<sp/>csc_transpose<sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
-<codeline lineno="18"><highlight class="normal">CompCol_Mat_double<sp/>csc_transpose<sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
-<codeline lineno="19"><highlight class="normal">CompRow_Mat_double<sp/>csr_transpose<sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
-<codeline lineno="20"><highlight class="normal">CompRow_Mat_double<sp/>csr_transpose<sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
-<codeline lineno="21"><highlight class="normal">CompCol_Mat_double<sp/>resize_columns<sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_size<sp/>);</highlight></codeline>
-<codeline lineno="22"><highlight class="normal">CompCol_Mat_double<sp/>concat_columns<sp/>(<sp/>CompCol_Mat_double<sp/>&amp;A,<sp/>std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;B,<sp/>std::vector&lt;int&gt;<sp/>st_cols<sp/>);</highlight></codeline>
-<codeline lineno="23"><highlight class="normal">MV_ColMat_double<sp/>smv<sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
-<codeline lineno="24"><highlight class="normal">MV_ColMat_double<sp/>spsmv<sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;col_ind,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
-<codeline lineno="25"><highlight class="normal">MV_ColMat_double<sp/>gemmColMat(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R);</highlight></codeline>
-<codeline lineno="26"><highlight class="normal">MV_ColMat_double<sp/>gemmColMat(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transL,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transR);</highlight></codeline>
-<codeline lineno="27"><highlight class="normal">MV_ColMat_double<sp/>upperMat(MV_ColMat_double<sp/>&amp;M);</highlight></codeline>
+<codeline lineno="1"><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(CompRow_Mat_double<sp/>&amp;M);</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(VECTOR_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1a0e2d4f2728a85d5f8bb9ff2d3b60ae6e" kindref="member">squaredNorm</ref>(VECTOR_double<sp/>&amp;V,<sp/>VECTOR_int<sp/>&amp;I);</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(VECTOR_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(MV_ColMat_double<sp/>&amp;V);</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="splib__utils_8h_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(Coord_Mat_double<sp/>&amp;M);</highlight></codeline>
+<codeline lineno="7"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4cef34a4a8c30481d81e65f7b795bf69" kindref="member">CSR_middleRows</ref><sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_cols);</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1ae1a1dead02b35631ade961522e1b1680" kindref="member">CSC_middleRows</ref><sp/>(CompRow_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>st_row,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_rows);</highlight></codeline>
+<codeline lineno="9"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref><sp/>(CompCol_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;ci);</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">VECTOR_double<sp/><ref refid="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" kindref="member">middleCol</ref>(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num);</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">VECTOR_double<sp/><ref refid="splib__utils_8h_1a47c40f201357b91009123d1d81c7cea4" kindref="member">middleCol</ref>(CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>col_num,<sp/>VECTOR_int<sp/>&amp;ind);</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>prune);</highlight></codeline>
+<codeline lineno="14"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a4b5cb912313db5a3a404ed9ca7680bd9" kindref="member">smmtm</ref><sp/>(CompCol_Mat_double<sp/>&amp;A,<sp/>CompCol_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1ac52a7ef12ffc59dca94fa0bb0d9a0fdd" kindref="member">spmm</ref><sp/>(CompRow_Mat_double<sp/>&amp;A,<sp/>CompRow_Mat_double<sp/>&amp;B);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" kindref="member">csc_transpose</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a9cd60db25328649bc6fd839217b256f7" kindref="member">csc_transpose</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" kindref="member">csr_transpose</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">CompRow_Mat_double<sp/><ref refid="splib__utils_8h_1a32e83fa3657a40e24f110cccf947e28e" kindref="member">csr_transpose</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M<sp/>);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1a423d8745f6289f20b18e9143b1cb00fa" kindref="member">resize_columns</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;M,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_size<sp/>);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">CompCol_Mat_double<sp/><ref refid="splib__utils_8h_1aa0dbb183d773929881d02c2c1641614c" kindref="member">concat_columns</ref><sp/>(<sp/>CompCol_Mat_double<sp/>&amp;A,<sp/>std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;B,<sp/>std::vector&lt;int&gt;<sp/>st_cols<sp/>);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a217546c31621626c8eb05ad2883cfa2e" kindref="member">smv</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a0359a150367f51c85f7ee6a7114346ed" kindref="member">spsmv</ref><sp/>(<sp/>CompRow_Mat_double<sp/>&amp;M,<sp/>std::vector&lt;int&gt;<sp/>&amp;col_ind,<sp/>MV_ColMat_double<sp/>&amp;V<sp/>);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" kindref="member">gemmColMat</ref>(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1acfe4867dae920089f48b51f70e0c08ae" kindref="member">gemmColMat</ref>(MV_ColMat_double<sp/>&amp;L,<sp/>MV_ColMat_double<sp/>&amp;R,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transL,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transR);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">MV_ColMat_double<sp/><ref refid="splib__utils_8h_1a86f09802334491235367a2885834c0ec" kindref="member">upperMat</ref>(MV_ColMat_double<sp/>&amp;M);</highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/include/splib_utils.h"/>
   </compounddef>

@@ -3,6 +3,188 @@
   <compounddef id="logger_8cpp" kind="file">
     <compoundname>logger.cpp</compoundname>
     <includes refid="abcd_8h" local="yes">abcd.h</includes>
+    <incdepgraph>
+      <node id="1077">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="1086">
+        <label>functional</label>
+      </node>
+      <node id="1064">
+        <label>iomanip</label>
+      </node>
+      <node id="1079">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="1080">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="1072">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="1073" relation="include">
+        </childnode>
+      </node>
+      <node id="1070">
+        <label>stdlib.h</label>
+      </node>
+      <node id="1078">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="1092">
+        <label>mvm.h</label>
+      </node>
+      <node id="1085">
+        <label>cwchar</label>
+      </node>
+      <node id="1061">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="1062" relation="include">
+        </childnode>
+        <childnode refid="1063" relation="include">
+        </childnode>
+        <childnode refid="1064" relation="include">
+        </childnode>
+        <childnode refid="1065" relation="include">
+        </childnode>
+        <childnode refid="1066" relation="include">
+        </childnode>
+        <childnode refid="1067" relation="include">
+        </childnode>
+        <childnode refid="1068" relation="include">
+        </childnode>
+        <childnode refid="1069" relation="include">
+        </childnode>
+        <childnode refid="1070" relation="include">
+        </childnode>
+        <childnode refid="1071" relation="include">
+        </childnode>
+        <childnode refid="1072" relation="include">
+        </childnode>
+        <childnode refid="1073" relation="include">
+        </childnode>
+        <childnode refid="1074" relation="include">
+        </childnode>
+        <childnode refid="1075" relation="include">
+        </childnode>
+        <childnode refid="1076" relation="include">
+        </childnode>
+        <childnode refid="1077" relation="include">
+        </childnode>
+        <childnode refid="1078" relation="include">
+        </childnode>
+        <childnode refid="1079" relation="include">
+        </childnode>
+        <childnode refid="1080" relation="include">
+        </childnode>
+        <childnode refid="1081" relation="include">
+        </childnode>
+        <childnode refid="1082" relation="include">
+        </childnode>
+        <childnode refid="1083" relation="include">
+        </childnode>
+        <childnode refid="1084" relation="include">
+        </childnode>
+        <childnode refid="1085" relation="include">
+        </childnode>
+        <childnode refid="1086" relation="include">
+        </childnode>
+        <childnode refid="1087" relation="include">
+        </childnode>
+        <childnode refid="1088" relation="include">
+        </childnode>
+        <childnode refid="1089" relation="include">
+        </childnode>
+        <childnode refid="1090" relation="include">
+        </childnode>
+        <childnode refid="1091" relation="include">
+        </childnode>
+        <childnode refid="1092" relation="include">
+        </childnode>
+        <childnode refid="1093" relation="include">
+        </childnode>
+        <childnode refid="1094" relation="include">
+        </childnode>
+      </node>
+      <node id="1065">
+        <label>numeric</label>
+      </node>
+      <node id="1069">
+        <label>string</label>
+      </node>
+      <node id="1071">
+        <label>map</label>
+      </node>
+      <node id="1090">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="1087">
+        <label>fstream</label>
+      </node>
+      <node id="1075">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="1076">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="1094">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="1067">
+        <label>cstdio</label>
+      </node>
+      <node id="1081">
+        <label>ctime</label>
+      </node>
+      <node id="1073">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="1066">
+        <label>vector</label>
+      </node>
+      <node id="1074">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="1088">
+        <label>sstream</label>
+      </node>
+      <node id="1091">
+        <label>coord_double.h</label>
+      </node>
+      <node id="1083">
+        <label>cstdlib</label>
+      </node>
+      <node id="1084">
+        <label>cctype</label>
+      </node>
+      <node id="1060">
+        <label>/home/mzenadi/projects/abcd/src/utils/logger.cpp</label>
+        <link refid="logger.cpp"/>
+        <childnode refid="1061" relation="include">
+        </childnode>
+      </node>
+      <node id="1063">
+        <label>iostream</label>
+      </node>
+      <node id="1062">
+        <label>mpi.h</label>
+      </node>
+      <node id="1089">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="1068">
+        <label>algorithm</label>
+      </node>
+      <node id="1082">
+        <label>cstring</label>
+      </node>
+      <node id="1093">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
     <innernamespace refid="namespaceeasyloggingpp">easyloggingpp</innernamespace>
       <sectiondef kind="func">
       <memberdef kind="function" id="logger_8cpp_1a130a459360662ae529f33e443f3258e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -77,11 +259,11 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;abcd.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">easyloggingpp;</highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>configure_logger(std::string<sp/>log_output)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="logger_8cpp_1a130a459360662ae529f33e443f3258e7" kindref="member">configure_logger</ref>(std::string<sp/>log_output)</highlight></codeline>
 <codeline lineno="38"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>Configurations<sp/>abcd_conf;</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"></highlight></codeline>
@@ -104,7 +286,7 @@
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>Loggers::reconfigureAllLoggers(abcd_conf);</highlight></codeline>
 <codeline lineno="58"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="59"><highlight class="normal"></highlight></codeline>
-<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>logger_set_filename(std::string<sp/>log_output)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="logger_8cpp_1aa5b050be7887f0214c6391779dfe330c" kindref="member">logger_set_filename</ref>(std::string<sp/>log_output)</highlight></codeline>
 <codeline lineno="61"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>Configurations<sp/>c;</highlight></codeline>
 <codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>

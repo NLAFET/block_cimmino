@@ -3,6 +3,188 @@
   <compounddef id="augmentation_8cpp" kind="file">
     <compoundname>augmentation.cpp</compoundname>
     <includes refid="abcd_8h" local="yes">abcd.h</includes>
+    <incdepgraph>
+      <node id="701">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="710">
+        <label>functional</label>
+      </node>
+      <node id="688">
+        <label>iomanip</label>
+      </node>
+      <node id="703">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="704">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="696">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="697" relation="include">
+        </childnode>
+      </node>
+      <node id="694">
+        <label>stdlib.h</label>
+      </node>
+      <node id="702">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="716">
+        <label>mvm.h</label>
+      </node>
+      <node id="709">
+        <label>cwchar</label>
+      </node>
+      <node id="685">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="686" relation="include">
+        </childnode>
+        <childnode refid="687" relation="include">
+        </childnode>
+        <childnode refid="688" relation="include">
+        </childnode>
+        <childnode refid="689" relation="include">
+        </childnode>
+        <childnode refid="690" relation="include">
+        </childnode>
+        <childnode refid="691" relation="include">
+        </childnode>
+        <childnode refid="692" relation="include">
+        </childnode>
+        <childnode refid="693" relation="include">
+        </childnode>
+        <childnode refid="694" relation="include">
+        </childnode>
+        <childnode refid="695" relation="include">
+        </childnode>
+        <childnode refid="696" relation="include">
+        </childnode>
+        <childnode refid="697" relation="include">
+        </childnode>
+        <childnode refid="698" relation="include">
+        </childnode>
+        <childnode refid="699" relation="include">
+        </childnode>
+        <childnode refid="700" relation="include">
+        </childnode>
+        <childnode refid="701" relation="include">
+        </childnode>
+        <childnode refid="702" relation="include">
+        </childnode>
+        <childnode refid="703" relation="include">
+        </childnode>
+        <childnode refid="704" relation="include">
+        </childnode>
+        <childnode refid="705" relation="include">
+        </childnode>
+        <childnode refid="706" relation="include">
+        </childnode>
+        <childnode refid="707" relation="include">
+        </childnode>
+        <childnode refid="708" relation="include">
+        </childnode>
+        <childnode refid="709" relation="include">
+        </childnode>
+        <childnode refid="710" relation="include">
+        </childnode>
+        <childnode refid="711" relation="include">
+        </childnode>
+        <childnode refid="712" relation="include">
+        </childnode>
+        <childnode refid="713" relation="include">
+        </childnode>
+        <childnode refid="714" relation="include">
+        </childnode>
+        <childnode refid="715" relation="include">
+        </childnode>
+        <childnode refid="716" relation="include">
+        </childnode>
+        <childnode refid="717" relation="include">
+        </childnode>
+        <childnode refid="718" relation="include">
+        </childnode>
+      </node>
+      <node id="689">
+        <label>numeric</label>
+      </node>
+      <node id="693">
+        <label>string</label>
+      </node>
+      <node id="695">
+        <label>map</label>
+      </node>
+      <node id="714">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="684">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/augmentation.cpp</label>
+        <link refid="augmentation.cpp"/>
+        <childnode refid="685" relation="include">
+        </childnode>
+      </node>
+      <node id="711">
+        <label>fstream</label>
+      </node>
+      <node id="699">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="700">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="718">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="691">
+        <label>cstdio</label>
+      </node>
+      <node id="705">
+        <label>ctime</label>
+      </node>
+      <node id="697">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="690">
+        <label>vector</label>
+      </node>
+      <node id="698">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="712">
+        <label>sstream</label>
+      </node>
+      <node id="715">
+        <label>coord_double.h</label>
+      </node>
+      <node id="707">
+        <label>cstdlib</label>
+      </node>
+      <node id="708">
+        <label>cctype</label>
+      </node>
+      <node id="687">
+        <label>iostream</label>
+      </node>
+      <node id="686">
+        <label>mpi.h</label>
+      </node>
+      <node id="713">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="692">
+        <label>algorithm</label>
+      </node>
+      <node id="706">
+        <label>cstring</label>
+      </node>
+      <node id="717">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -40,7 +222,7 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;abcd.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">/*<sp/></highlight></codeline>
 <codeline lineno="36"><highlight class="comment"><sp/>*<sp/>===<sp/><sp/>FUNCTION<sp/><sp/>======================================================================</highlight></codeline>

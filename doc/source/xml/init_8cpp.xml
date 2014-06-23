@@ -4,6 +4,190 @@
     <compoundname>init.cpp</compoundname>
     <includes refid="mumps_8h" local="no">mumps.h</includes>
     <includes refid="abcd_8h" local="no">abcd.h</includes>
+    <incdepgraph>
+      <node id="521">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="530">
+        <label>functional</label>
+      </node>
+      <node id="510">
+        <label>iomanip</label>
+      </node>
+      <node id="523">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="524">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="505">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="506" relation="include">
+        </childnode>
+      </node>
+      <node id="516">
+        <label>stdlib.h</label>
+      </node>
+      <node id="522">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="536">
+        <label>mvm.h</label>
+      </node>
+      <node id="529">
+        <label>cwchar</label>
+      </node>
+      <node id="507">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="508" relation="include">
+        </childnode>
+        <childnode refid="509" relation="include">
+        </childnode>
+        <childnode refid="510" relation="include">
+        </childnode>
+        <childnode refid="511" relation="include">
+        </childnode>
+        <childnode refid="512" relation="include">
+        </childnode>
+        <childnode refid="513" relation="include">
+        </childnode>
+        <childnode refid="514" relation="include">
+        </childnode>
+        <childnode refid="515" relation="include">
+        </childnode>
+        <childnode refid="516" relation="include">
+        </childnode>
+        <childnode refid="517" relation="include">
+        </childnode>
+        <childnode refid="505" relation="include">
+        </childnode>
+        <childnode refid="506" relation="include">
+        </childnode>
+        <childnode refid="518" relation="include">
+        </childnode>
+        <childnode refid="519" relation="include">
+        </childnode>
+        <childnode refid="520" relation="include">
+        </childnode>
+        <childnode refid="521" relation="include">
+        </childnode>
+        <childnode refid="522" relation="include">
+        </childnode>
+        <childnode refid="523" relation="include">
+        </childnode>
+        <childnode refid="524" relation="include">
+        </childnode>
+        <childnode refid="525" relation="include">
+        </childnode>
+        <childnode refid="526" relation="include">
+        </childnode>
+        <childnode refid="527" relation="include">
+        </childnode>
+        <childnode refid="528" relation="include">
+        </childnode>
+        <childnode refid="529" relation="include">
+        </childnode>
+        <childnode refid="530" relation="include">
+        </childnode>
+        <childnode refid="531" relation="include">
+        </childnode>
+        <childnode refid="532" relation="include">
+        </childnode>
+        <childnode refid="533" relation="include">
+        </childnode>
+        <childnode refid="534" relation="include">
+        </childnode>
+        <childnode refid="535" relation="include">
+        </childnode>
+        <childnode refid="536" relation="include">
+        </childnode>
+        <childnode refid="537" relation="include">
+        </childnode>
+        <childnode refid="538" relation="include">
+        </childnode>
+      </node>
+      <node id="511">
+        <label>numeric</label>
+      </node>
+      <node id="504">
+        <label>/home/mzenadi/projects/abcd/src/mumps/init.cpp</label>
+        <link refid="init.cpp"/>
+        <childnode refid="505" relation="include">
+        </childnode>
+        <childnode refid="507" relation="include">
+        </childnode>
+      </node>
+      <node id="515">
+        <label>string</label>
+      </node>
+      <node id="517">
+        <label>map</label>
+      </node>
+      <node id="534">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="531">
+        <label>fstream</label>
+      </node>
+      <node id="519">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="520">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="538">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="513">
+        <label>cstdio</label>
+      </node>
+      <node id="525">
+        <label>ctime</label>
+      </node>
+      <node id="506">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="512">
+        <label>vector</label>
+      </node>
+      <node id="518">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="532">
+        <label>sstream</label>
+      </node>
+      <node id="535">
+        <label>coord_double.h</label>
+      </node>
+      <node id="527">
+        <label>cstdlib</label>
+      </node>
+      <node id="528">
+        <label>cctype</label>
+      </node>
+      <node id="509">
+        <label>iostream</label>
+      </node>
+      <node id="508">
+        <label>mpi.h</label>
+      </node>
+      <node id="533">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="514">
+        <label>algorithm</label>
+      </node>
+      <node id="526">
+        <label>cstring</label>
+      </node>
+      <node id="537">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -41,8 +225,8 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;mumps.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="mumps_8h" kindref="compound">mumps.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::initializeMumps(<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>&amp;mu)</highlight></codeline>
 <codeline lineno="37"><highlight class="normal">{</highlight></codeline>
@@ -59,14 +243,14 @@
 <codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>intra_comm<sp/>=<sp/>mpi::communicator(inter_comm,<sp/>grp);</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(instance_type<sp/>==<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r.push_back(comm.rank());</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r.push_back(<ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.rank());</highlight></codeline>
 <codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r.push_back(my_master);</highlight></codeline>
 <codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::copy(my_slaves.begin(),<sp/>my_slaves.end(),<sp/>std::back_inserter(r));</highlight></codeline>
 <codeline lineno="56"><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::group<sp/>grp<sp/>=<sp/>comm.group().include(r.begin(),<sp/>r.end());</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>intra_comm<sp/>=<sp/>mpi::communicator(comm,<sp/>grp);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::group<sp/>grp<sp/>=<sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.group().include(r.begin(),<sp/>r.end());</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>intra_comm<sp/>=<sp/>mpi::communicator(<ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>,<sp/>grp);</highlight></codeline>
 <codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.sym<sp/>=<sp/>2;</highlight></codeline>
@@ -75,19 +259,19 @@
 <codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.comm_fortran<sp/>=<sp/>MPI_Comm_c2f((MPI_Comm)<sp/>intra_comm);</highlight></codeline>
 <codeline lineno="65"><highlight class="normal"></highlight></codeline>
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>dmumps_c(&amp;mu);</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(mu.getInfo(1)<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>mu.getInfo(1);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(mu.<ref refid="struct_m_u_m_p_s_1a0cb19453cec6726af88cfa432bed247d" kindref="member">getInfo</ref>(1)<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>mu.<ref refid="struct_m_u_m_p_s_1a0cb19453cec6726af88cfa432bed247d" kindref="member">getInfo</ref>(1);</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.initialized<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" kindref="member">initialized</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(1,<sp/>-1);</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(2,<sp/>-1);</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(3,<sp/>-1);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(1,<sp/>-1);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(2,<sp/>-1);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(3,<sp/>-1);</highlight></codeline>
 <codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(6,<sp/>5);</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(7,<sp/>5);</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(8,<sp/>-2);</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(12,<sp/>2);</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.setIcntl(14,<sp/>90);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(6,<sp/>5);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(7,<sp/>5);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(8,<sp/>-2);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(12,<sp/>2);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>mu.<ref refid="struct_m_u_m_p_s_1a880e35b468bf7b0e1dd109f6971680a2" kindref="member">setIcntl</ref>(14,<sp/>90);</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)<sp/>strcpy(mu.write_problem,</highlight><highlight class="stringliteral">&quot;/tmp/test.mm&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="81"><highlight class="normal">}</highlight></codeline>
     </programlisting>

@@ -7,26 +7,197 @@
     <includes local="no">exception</includes>
     <includes local="no">ctime</includes>
     <incdepgraph>
-      <node id="82">
+      <node id="184">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="193">
+        <label>functional</label>
+      </node>
+      <node id="171">
+        <label>iomanip</label>
+      </node>
+      <node id="186">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="167">
         <label>/home/mzenadi/projects/abcd/src/abcd.cpp</label>
         <link refid="abcd.cpp"/>
-        <childnode refid="83" relation="include">
+        <childnode refid="168" relation="include">
         </childnode>
-        <childnode refid="84" relation="include">
+        <childnode refid="175" relation="include">
         </childnode>
-        <childnode refid="85" relation="include">
+        <childnode refid="202" relation="include">
+        </childnode>
+        <childnode refid="188" relation="include">
         </childnode>
       </node>
-      <node id="84">
+      <node id="187">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="179">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="180" relation="include">
+        </childnode>
+      </node>
+      <node id="177">
+        <label>stdlib.h</label>
+      </node>
+      <node id="185">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="199">
+        <label>mvm.h</label>
+      </node>
+      <node id="192">
+        <label>cwchar</label>
+      </node>
+      <node id="168">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="172" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="174" relation="include">
+        </childnode>
+        <childnode refid="175" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+        <childnode refid="177" relation="include">
+        </childnode>
+        <childnode refid="178" relation="include">
+        </childnode>
+        <childnode refid="179" relation="include">
+        </childnode>
+        <childnode refid="180" relation="include">
+        </childnode>
+        <childnode refid="181" relation="include">
+        </childnode>
+        <childnode refid="182" relation="include">
+        </childnode>
+        <childnode refid="183" relation="include">
+        </childnode>
+        <childnode refid="184" relation="include">
+        </childnode>
+        <childnode refid="185" relation="include">
+        </childnode>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="187" relation="include">
+        </childnode>
+        <childnode refid="188" relation="include">
+        </childnode>
+        <childnode refid="189" relation="include">
+        </childnode>
+        <childnode refid="190" relation="include">
+        </childnode>
+        <childnode refid="191" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+        <childnode refid="193" relation="include">
+        </childnode>
+        <childnode refid="194" relation="include">
+        </childnode>
+        <childnode refid="195" relation="include">
+        </childnode>
+        <childnode refid="196" relation="include">
+        </childnode>
+        <childnode refid="197" relation="include">
+        </childnode>
+        <childnode refid="198" relation="include">
+        </childnode>
+        <childnode refid="199" relation="include">
+        </childnode>
+        <childnode refid="200" relation="include">
+        </childnode>
+        <childnode refid="201" relation="include">
+        </childnode>
+      </node>
+      <node id="172">
+        <label>numeric</label>
+      </node>
+      <node id="176">
+        <label>string</label>
+      </node>
+      <node id="178">
+        <label>map</label>
+      </node>
+      <node id="197">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="202">
         <label>exception</label>
       </node>
-      <node id="85">
+      <node id="194">
+        <label>fstream</label>
+      </node>
+      <node id="182">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="183">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="201">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="174">
+        <label>cstdio</label>
+      </node>
+      <node id="188">
         <label>ctime</label>
       </node>
-      <node id="83">
+      <node id="180">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="173">
+        <label>vector</label>
+      </node>
+      <node id="181">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="195">
+        <label>sstream</label>
+      </node>
+      <node id="198">
+        <label>coord_double.h</label>
+      </node>
+      <node id="190">
+        <label>cstdlib</label>
+      </node>
+      <node id="191">
+        <label>cctype</label>
+      </node>
+      <node id="170">
+        <label>iostream</label>
+      </node>
+      <node id="169">
+        <label>mpi.h</label>
+      </node>
+      <node id="196">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="175">
         <label>algorithm</label>
       </node>
+      <node id="189">
+        <label>cstring</label>
+      </node>
+      <node id="200">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
     </incdepgraph>
+    <innernamespace refid="namespacestd">std</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -64,7 +235,7 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;exception&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight></codeline>
@@ -73,7 +244,7 @@
 <codeline lineno="39"><highlight class="normal"></highlight></codeline>
 <codeline lineno="40"><highlight class="normal">_INITIALIZE_EASYLOGGINGPP</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43" refid="classabcd_1a5e503b1e89268fbfad4399194895b683" refkind="member"><highlight class="normal"><ref refid="classabcd_1a5e503b1e89268fbfad4399194895b683" kindref="member">abcd::abcd</ref>()</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><ref refid="classabcd_1a5e503b1e89268fbfad4399194895b683" kindref="member">abcd::abcd</ref>()</highlight></codeline>
 <codeline lineno="44"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>last_called_job<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
@@ -93,8 +264,8 @@
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>icntl.assign(20,<sp/>0);</highlight></codeline>
 <codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>dcntl.assign(20,<sp/>0);</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>info.assign(10,<sp/>0);</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>dinfo.assign(5,<sp/>0);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>.assign(10,<sp/>0);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kindref="member">dinfo</ref>.assign(5,<sp/>0);</highlight></codeline>
 <codeline lineno="65"><highlight class="normal"></highlight></codeline>
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kindref="member">Controls::aug_blocking</ref>]<sp/>=<sp/>256;</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"></highlight></codeline>
@@ -108,8 +279,8 @@
 <codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>dcntl[<ref refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kindref="member">Controls::threshold</ref>]<sp/>=<sp/>1e-12;</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"></highlight></codeline>
 <codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" kindref="member">Controls::verbose_level</ref>]<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" kindref="member">Controls::nb_iter</ref>]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa1bbeb510d505e69c2725c7c6523302fc" kindref="member">Controls::nb_iter</ref>]<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight></codeline>
 <codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>mpi::communicator<sp/>world;</highlight></codeline>
 <codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>comm<sp/>=<sp/>world;</highlight></codeline>
@@ -127,36 +298,36 @@
 <codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>tt(timeString);</highlight></codeline>
 <codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_output<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;/tmp/log_abcd_&quot;</highlight><highlight class="normal"><sp/>+<sp/>tt<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;.log&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>configure_logger(log_output);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="logger_8cpp_1a130a459360662ae529f33e443f3258e7" kindref="member">configure_logger</ref>(log_output);</highlight></codeline>
 <codeline lineno="98"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="99"><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal">abcd::~abcd()</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><ref refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" kindref="member">abcd::~abcd</ref>()</highlight></codeline>
 <codeline lineno="101"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="102"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(mumps.initialized)<sp/>{</highlight></codeline>
 <codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps(-2);</highlight></codeline>
 <codeline lineno="104"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
 <codeline lineno="105"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="106"><highlight class="normal"></highlight></codeline>
-<codeline lineno="108" refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kindref="member">abcd::initializeMatrix</ref>()</highlight></codeline>
+<codeline lineno="108"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kindref="member">abcd::initializeMatrix</ref>()</highlight></codeline>
 <codeline lineno="109"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialization&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialization&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(comm.rank()<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
 <codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Check<sp/>that<sp/>the<sp/>matrix<sp/>data<sp/>is<sp/>present</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(irn<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>||<sp/>jcn<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>||<sp/>val<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
 <codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Hey!!<sp/>where<sp/>is<sp/>my<sp/>data?</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-1;</highlight></codeline>
 <codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(irn<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;irn<sp/>is<sp/>not<sp/>allocated&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(jcn<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;jcn<sp/>is<sp/>not<sp/>allocated&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(val<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;val<sp/>is<sp/>not<sp/>allocated&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Unallocated<sp/>matrix<sp/>vectors&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;M<sp/><sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>m<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>N<sp/><sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>n<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>NZ<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nz;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;M<sp/><sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>m<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>N<sp/><sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>n<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/><sp/>NZ<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nz;</highlight></codeline>
 <codeline lineno="125"><highlight class="normal"></highlight></codeline>
 <codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(m<sp/>&lt;=<sp/>0<sp/>||<sp/>n<sp/>&lt;=<sp/>0<sp/>||<sp/>nz<sp/>&lt;=<sp/>0){</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(m<sp/>&lt;=<sp/>0,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;m<sp/>is<sp/>negative<sp/>or<sp/>zero&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(n<sp/>&lt;=<sp/>0,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;n<sp/>is<sp/>negative<sp/>or<sp/>zero&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LOG_IF(nz&lt;=<sp/>0,<sp/>ERROR)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;nz<sp/>is<sp/>negative<sp/>or<sp/>zero&quot;</highlight><highlight class="normal">;</highlight></codeline>
@@ -168,7 +339,7 @@
 <codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>chose<sp/>0-based<sp/>or<sp/>1-based</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>irn[0]<sp/>==<sp/>0<sp/>||<sp/>jcn[0]<sp/>==<sp/>0<sp/>)<sp/>st_point<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="138"><highlight class="normal"></highlight></codeline>
-<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Using<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>st_point<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;-based<sp/>arrays&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Using<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>st_point<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;-based<sp/>arrays&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="140"><highlight class="normal"></highlight></codeline>
 <codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(sym)<sp/>{</highlight></codeline>
 <codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//over<sp/>estimate<sp/>nz</highlight><highlight class="normal"></highlight></codeline>
@@ -197,7 +368,7 @@
 <codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A<sp/>=<sp/>CompRow_Mat_double(t_A);</highlight></codeline>
 <codeline lineno="168"><highlight class="normal"></highlight></codeline>
-<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialized<sp/>in<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>setprecision(2)<sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialized<sp/>in<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>setprecision(2)<sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>t_irn;</highlight></codeline>
 <codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>t_jcn;</highlight></codeline>
 <codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>t_val;</highlight></codeline>
@@ -212,7 +383,7 @@
 <codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t_A<sp/>=<sp/>Coord_Mat_double(m,<sp/>n,<sp/>nz,<sp/>val,<sp/>irn,<sp/>jcn,<sp/>MV_Matrix_::ref);</highlight></codeline>
 <codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A<sp/>=<sp/>CompRow_Mat_double(t_A);</highlight></codeline>
 <codeline lineno="183"><highlight class="normal"></highlight></codeline>
-<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialized<sp/>in<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>setprecision(2)<sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Local<sp/>matrix<sp/>initialized<sp/>in<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>setprecision(2)<sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>n_o<sp/>=<sp/>n;</highlight></codeline>
@@ -222,11 +393,11 @@
 <codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/></highlight></codeline>
 <codeline lineno="192"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="193"><highlight class="normal"></highlight></codeline>
-<codeline lineno="195" refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kindref="member">abcd::preprocessMatrix</ref>()</highlight></codeline>
+<codeline lineno="195"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kindref="member">abcd::preprocessMatrix</ref>()</highlight></codeline>
 <codeline lineno="196"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="197"><highlight class="normal"></highlight></codeline>
-<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Starting<sp/>Preprocessing<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Starting<sp/>Preprocessing<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>tot<sp/>=<sp/>t;</highlight></codeline>
 <codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>err<sp/>=<sp/>0;</highlight></codeline>
@@ -234,7 +405,7 @@
 <codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(comm.rank()<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>err,<sp/>0);</highlight></codeline>
 <codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(err<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>err;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>err;</highlight></codeline>
 <codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;The<sp/>master<sp/>asked<sp/>me<sp/>to<sp/>stop.&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>err;</highlight></codeline>
@@ -246,19 +417,19 @@
 <codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::partitionMatrix();</highlight></codeline>
 <codeline lineno="218"><highlight class="normal"></highlight></codeline>
-<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Time<sp/>to<sp/>partition<sp/>the<sp/>matrix:<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Time<sp/>to<sp/>partition<sp/>the<sp/>matrix:<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::scaling();</highlight></codeline>
 <codeline lineno="225"><highlight class="normal"></highlight></codeline>
-<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Time<sp/>to<sp/>scale<sp/>the<sp/>matrix:<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Time<sp/>to<sp/>scale<sp/>the<sp/>matrix:<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="228"><highlight class="normal"></highlight></codeline>
 <codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::analyseFrame();</highlight></codeline>
-<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Total<sp/>time<sp/>to<sp/>preprocess:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>tot<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;<sp/>Total<sp/>time<sp/>to<sp/>preprocess:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>tot<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;*----------------------------------*&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="232"><highlight class="normal"></highlight></codeline>
 <codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>everything<sp/>is<sp/>alright,<sp/>tell<sp/>the<sp/>others<sp/>that<sp/>we&apos;re<sp/>done<sp/>here</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>err,<sp/>0);</highlight></codeline>
@@ -266,7 +437,7 @@
 <codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
 <codeline lineno="237"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="238"><highlight class="normal"></highlight></codeline>
-<codeline lineno="240" refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kindref="member">abcd::factorizeAugmentedSystems</ref>()</highlight></codeline>
+<codeline lineno="240"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kindref="member">abcd::factorizeAugmentedSystems</ref>()</highlight></codeline>
 <codeline lineno="241"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Create<sp/>the<sp/>group<sp/>of<sp/>CG<sp/>instances</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::createInterComm();</highlight></codeline>
@@ -294,41 +465,41 @@
 <codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::initializeCimmino();</highlight></codeline>
 <codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0)</highlight></codeline>
-<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>MUMPS<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>MUMPS<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::analyseAugmentedSystems(mumps);</highlight></codeline>
 <codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Initialization<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Initialization<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
 <codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>MUMPS<sp/>factorization&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>MUMPS<sp/>factorization&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="278"><highlight class="normal"></highlight></codeline>
 <codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kindref="member">abcd::factorizeAugmentedSystems</ref>(mumps);</highlight></codeline>
 <codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(IRANK<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Factorization<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="abcd_8h_1a3a3c32757077f85a0d108c0cbff65bb8" kindref="member">IRANK</ref><sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Factorization<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
 <codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="285"><highlight class="normal"></highlight></codeline>
 <codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
 <codeline lineno="287"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="288"><highlight class="normal"></highlight></codeline>
-<codeline lineno="290" refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" kindref="member">abcd::solveSystem</ref>()</highlight></codeline>
+<codeline lineno="290"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" kindref="member">abcd::solveSystem</ref>()</highlight></codeline>
 <codeline lineno="291"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nrhs<sp/>&lt;<sp/>1)<sp/>{</highlight></codeline>
-<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-9;</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-9;</highlight></codeline>
 <codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>right-hand<sp/>sides<sp/>should<sp/>be<sp/>at<sp/>least<sp/>one<sp/>(1)&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">Controls::block_size</ref>]<sp/>&lt;<sp/>1)<sp/>{</highlight></codeline>
-<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-10;</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-10;</highlight></codeline>
 <codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Block<sp/>size<sp/>should<sp/>be<sp/>at<sp/>least<sp/>one<sp/>(1)&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
 <codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(instance_type<sp/>==<sp/>0)<sp/>inter_comm.barrier();</highlight></codeline>
 <codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>Solve&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>Solve&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(instance_type<sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="306"><highlight class="normal"></highlight></codeline>
@@ -336,7 +507,7 @@
 <codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(inter_comm,<sp/>dcntl,<sp/>0);</highlight></codeline>
 <codeline lineno="309"><highlight class="normal"></highlight></codeline>
 <codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(size_c<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>!=<sp/>0){</highlight></codeline>
-<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>S<sp/>is<sp/>0,<sp/>therefore<sp/>launching<sp/>bcg&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>S<sp/>is<sp/>0,<sp/>therefore<sp/>launching<sp/>bcg&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="314"><highlight class="normal"></highlight></codeline>
@@ -360,12 +531,12 @@
 <codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(intra_comm,<sp/>job,<sp/>0);</highlight></codeline>
 <codeline lineno="333"><highlight class="normal"></highlight></codeline>
 <codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO1<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Backward<sp/>error<sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" kindref="member">Controls::backward</ref>];</highlight></codeline>
-<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO1<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;||r||_inf<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" kindref="member">Controls::residual</ref>];</highlight></codeline>
-<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO1<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;||r||_inf/||b||_inf<sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" kindref="member">Controls::scaled_residual</ref>];</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a03f32d7db91dbdfbfc4324df0de98a2d" kindref="member">LINFO1</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Backward<sp/>error<sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/><ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kindref="member">dinfo</ref>[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5ad220275e32e6b989ee83abf57954eb51" kindref="member">Controls::backward</ref>];</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a03f32d7db91dbdfbfc4324df0de98a2d" kindref="member">LINFO1</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;||r||_inf<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a2fb40e0932ecee4e66abca44d04c2fff" kindref="member">Controls::residual</ref>];</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a03f32d7db91dbdfbfc4324df0de98a2d" kindref="member">LINFO1</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;||r||_inf/||b||_inf<sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5a3f69f99e5d0064746b02c1558ec585ca" kindref="member">Controls::scaled_residual</ref>];</highlight></codeline>
 <codeline lineno="338"><highlight class="normal"></highlight></codeline>
 <codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(Xf.dim(0)<sp/>!=<sp/>0)</highlight></codeline>
-<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Forward<sp/>error<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Forward<sp/>error<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;</highlight></codeline>
 <codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scientific<sp/>&lt;&lt;<sp/>dinfo[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" kindref="member">Controls::forward_error</ref>];</highlight></codeline>
 <codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="343"><highlight class="normal"></highlight></codeline>
@@ -383,34 +554,34 @@
 <codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
 <codeline lineno="356"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="363" refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" refkind="member"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kindref="member">abcd::operator()</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>job)</highlight></codeline>
+<codeline lineno="363"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kindref="member">abcd::operator()</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>job)</highlight></codeline>
 <codeline lineno="364"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="366"><highlight class="normal"></highlight></codeline>
-<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/>LDEBUG3<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;MPI-Process<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>comm.rank()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>called<sp/>job<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>job;</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a811512f7b437be6fe22033afa14ecb1a" kindref="member">LDEBUG3</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;MPI-Process<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>comm.rank()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>called<sp/>job<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>job;</highlight></codeline>
 <codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>job<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>last_called_job<sp/>!=<sp/>-1<sp/>)<sp/>{</highlight></codeline>
-<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Did<sp/>you<sp/>forget<sp/>to<sp/>call<sp/>job<sp/>=<sp/>-1?<sp/>&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="373"><highlight class="normal"></highlight></codeline>
 <codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>job<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>job<sp/>&lt;=<sp/>3<sp/>&amp;&amp;<sp/>last_called_job<sp/>!=<sp/>1)<sp/>{</highlight></codeline>
-<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Did<sp/>you<sp/>forget<sp/>to<sp/>call<sp/>job<sp/>=<sp/>1?<sp/>&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="378"><highlight class="normal"></highlight></codeline>
 <codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>job<sp/>==<sp/>3<sp/>&amp;&amp;<sp/>last_called_job<sp/>!=<sp/>2<sp/>&amp;&amp;<sp/>last_called_job<sp/>!=<sp/>3<sp/>)<sp/>{</highlight></codeline>
-<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Did<sp/>you<sp/>forget<sp/>to<sp/>call<sp/>job<sp/>=<sp/>2?<sp/>&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="383"><highlight class="normal"></highlight></codeline>
 <codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>job<sp/>&lt;<sp/>last_called_job<sp/>&amp;&amp;<sp/>job<sp/>!=<sp/>3)<sp/>{</highlight></codeline>
-<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;You<sp/>cannot<sp/>go<sp/>back<sp/>in<sp/>time&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="388"><highlight class="normal"></highlight></codeline>
 <codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>job<sp/>==<sp/>last_called_job<sp/>&amp;&amp;<sp/>job<sp/>!=<sp/>3)<sp/>{</highlight></codeline>
-<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;You<sp/>cannot<sp/>re-run<sp/>the<sp/>same<sp/>job<sp/>unless<sp/>you<sp/>want<sp/>to<sp/>re-run<sp/>job_id<sp/>=<sp/>3<sp/>&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
@@ -432,7 +603,7 @@
 <codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_output<sp/>=<sp/>log_output<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;_&quot;</highlight><highlight class="normal"><sp/>+<sp/>s;</highlight></codeline>
 <codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>logger_set_filename(log_output);</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="logger_8cpp_1aa5b050be7887f0214c6391779dfe330c" kindref="member">logger_set_filename</ref>(log_output);</highlight></codeline>
 <codeline lineno="413"><highlight class="normal"></highlight></codeline>
 <codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>initializeMatrix();</highlight></codeline>
 <codeline lineno="415"><highlight class="normal"></highlight></codeline>
@@ -496,7 +667,7 @@
 <codeline lineno="473"><highlight class="normal"></highlight></codeline>
 <codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Wrong<sp/>job<sp/>id</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-1;</highlight></codeline>
 <codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Wrong<sp/>job<sp/>id.&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>

@@ -3,6 +3,188 @@
   <compounddef id="aij__augment_8cpp" kind="file">
     <compoundname>aij_augment.cpp</compoundname>
     <includes refid="abcd_8h" local="yes">abcd.h</includes>
+    <incdepgraph>
+      <node id="665">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="674">
+        <label>functional</label>
+      </node>
+      <node id="652">
+        <label>iomanip</label>
+      </node>
+      <node id="667">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="668">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="660">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="661" relation="include">
+        </childnode>
+      </node>
+      <node id="658">
+        <label>stdlib.h</label>
+      </node>
+      <node id="666">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="680">
+        <label>mvm.h</label>
+      </node>
+      <node id="673">
+        <label>cwchar</label>
+      </node>
+      <node id="649">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="650" relation="include">
+        </childnode>
+        <childnode refid="651" relation="include">
+        </childnode>
+        <childnode refid="652" relation="include">
+        </childnode>
+        <childnode refid="653" relation="include">
+        </childnode>
+        <childnode refid="654" relation="include">
+        </childnode>
+        <childnode refid="655" relation="include">
+        </childnode>
+        <childnode refid="656" relation="include">
+        </childnode>
+        <childnode refid="657" relation="include">
+        </childnode>
+        <childnode refid="658" relation="include">
+        </childnode>
+        <childnode refid="659" relation="include">
+        </childnode>
+        <childnode refid="660" relation="include">
+        </childnode>
+        <childnode refid="661" relation="include">
+        </childnode>
+        <childnode refid="662" relation="include">
+        </childnode>
+        <childnode refid="663" relation="include">
+        </childnode>
+        <childnode refid="664" relation="include">
+        </childnode>
+        <childnode refid="665" relation="include">
+        </childnode>
+        <childnode refid="666" relation="include">
+        </childnode>
+        <childnode refid="667" relation="include">
+        </childnode>
+        <childnode refid="668" relation="include">
+        </childnode>
+        <childnode refid="669" relation="include">
+        </childnode>
+        <childnode refid="670" relation="include">
+        </childnode>
+        <childnode refid="671" relation="include">
+        </childnode>
+        <childnode refid="672" relation="include">
+        </childnode>
+        <childnode refid="673" relation="include">
+        </childnode>
+        <childnode refid="674" relation="include">
+        </childnode>
+        <childnode refid="675" relation="include">
+        </childnode>
+        <childnode refid="676" relation="include">
+        </childnode>
+        <childnode refid="677" relation="include">
+        </childnode>
+        <childnode refid="678" relation="include">
+        </childnode>
+        <childnode refid="679" relation="include">
+        </childnode>
+        <childnode refid="680" relation="include">
+        </childnode>
+        <childnode refid="681" relation="include">
+        </childnode>
+        <childnode refid="682" relation="include">
+        </childnode>
+      </node>
+      <node id="653">
+        <label>numeric</label>
+      </node>
+      <node id="657">
+        <label>string</label>
+      </node>
+      <node id="659">
+        <label>map</label>
+      </node>
+      <node id="678">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="675">
+        <label>fstream</label>
+      </node>
+      <node id="663">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="664">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="682">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="655">
+        <label>cstdio</label>
+      </node>
+      <node id="669">
+        <label>ctime</label>
+      </node>
+      <node id="661">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="654">
+        <label>vector</label>
+      </node>
+      <node id="662">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="676">
+        <label>sstream</label>
+      </node>
+      <node id="679">
+        <label>coord_double.h</label>
+      </node>
+      <node id="648">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp</label>
+        <link refid="aij_augment.cpp"/>
+        <childnode refid="649" relation="include">
+        </childnode>
+      </node>
+      <node id="671">
+        <label>cstdlib</label>
+      </node>
+      <node id="672">
+        <label>cctype</label>
+      </node>
+      <node id="651">
+        <label>iostream</label>
+      </node>
+      <node id="650">
+        <label>mpi.h</label>
+      </node>
+      <node id="677">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="656">
+        <label>algorithm</label>
+      </node>
+      <node id="670">
+        <label>cstring</label>
+      </node>
+      <node id="681">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -40,7 +222,7 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;abcd.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::aijAugmentMatrix(std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;M)</highlight></codeline>
 <codeline lineno="36"><highlight class="normal">{</highlight></codeline>
@@ -49,7 +231,7 @@
 <codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,std::vector&lt;CompCol_Mat_double&gt;<sp/>&gt;<sp/>C;</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,std::vector&lt;int&gt;<sp/>&gt;<sp/>stCols;</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
-<codeline lineno="42"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>filter_c<sp/>=<sp/>dcntl[Controls::aug_filter];</highlight></codeline>
+<codeline lineno="42"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>filter_c<sp/>=<sp/><ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_filter];</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//WIP</highlight></codeline>
 <codeline lineno="44"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>stC<sp/>=<sp/>std::vector&lt;int&gt;(M.size(),<sp/>-1);</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"></highlight></codeline>
@@ -61,8 +243,8 @@
 <codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::back_inserter(intersect));</highlight></codeline>
 <codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(intersect.empty())<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>A_ij<sp/>=<sp/>sub_matrix(M[i],<sp/>intersect);</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>A_ji<sp/>=<sp/>sub_matrix(M[j],<sp/>intersect);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>A_ij<sp/>=<sp/><ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(M[i],<sp/>intersect);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>A_ji<sp/>=<sp/><ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(M[j],<sp/>intersect);</highlight></codeline>
 <codeline lineno="56"><highlight class="normal"></highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>A_ji.NumNonzeros();<sp/>k++)</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A_ji.val(k)<sp/>*=<sp/>double(-1);</highlight></codeline>
@@ -80,13 +262,13 @@
 <codeline lineno="70"><highlight class="normal"></highlight></codeline>
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>A_ij.dim(1);<sp/>++k){</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_int<sp/>A_ij_k_ind,<sp/>A_ji_k_ind;</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ij_k<sp/>=<sp/>middleCol(A_ij,<sp/>k,<sp/>A_ij_k_ind);</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ji_k<sp/>=<sp/>middleCol(A_ji,<sp/>k,<sp/>A_ji_k_ind);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ij_k<sp/>=<sp/><ref refid="splib__utils_8cpp_1a9ffc1f08aa424b4625d510642270d805" kindref="member">middleCol</ref>(A_ij,<sp/>k,<sp/>A_ij_k_ind);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ji_k<sp/>=<sp/><ref refid="splib__utils_8cpp_1a9ffc1f08aa424b4625d510642270d805" kindref="member">middleCol</ref>(A_ji,<sp/>k,<sp/>A_ji_k_ind);</highlight></codeline>
 <codeline lineno="75"><highlight class="normal"></highlight></codeline>
 <codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>card_current<sp/>=<sp/>A_ij_k_ind.size()<sp/>*<sp/>A_ji_k_ind.size();</highlight></codeline>
 <codeline lineno="77"><highlight class="normal"></highlight></codeline>
 <codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>exploit<sp/>the<sp/>sparcity<sp/>of<sp/>the<sp/>vectors!</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frob_ij.push_back(sqrt(<sp/>squaredNorm(A_ij_k,<sp/>A_ij_k_ind)<sp/>*<sp/>squaredNorm(A_ji_k,<sp/>A_ji_k_ind)));</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frob_ij.push_back(sqrt(<sp/><ref refid="splib__utils_8cpp_1ab2c785209f07fb1eba5cefc0cddb204e" kindref="member">squaredNorm</ref>(A_ij_k,<sp/>A_ij_k_ind)<sp/>*<sp/><ref refid="splib__utils_8cpp_1ab2c785209f07fb1eba5cefc0cddb204e" kindref="member">squaredNorm</ref>(A_ji_k,<sp/>A_ji_k_ind)));</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frob_sum<sp/>+=<sp/>frob_ij[k];</highlight></codeline>
 <codeline lineno="81"><highlight class="normal"></highlight></codeline>
 <codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>card_max<sp/>=<sp/>card_max<sp/>&gt;<sp/>card_current<sp/>?<sp/>card_max<sp/>:<sp/>card_current;</highlight></codeline>
@@ -96,11 +278,11 @@
 <codeline lineno="86"><highlight class="normal"></highlight></codeline>
 <codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>A_ij.dim(1);<sp/>++k){</highlight></codeline>
 <codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_int<sp/>A_ij_k_ind,<sp/>A_ji_k_ind;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ij_k<sp/>=<sp/>middleCol(A_ij,<sp/>k,<sp/>A_ij_k_ind);</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ji_k<sp/>=<sp/>middleCol(A_ji,<sp/>k,<sp/>A_ji_k_ind);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ij_k<sp/>=<sp/><ref refid="splib__utils_8cpp_1a9ffc1f08aa424b4625d510642270d805" kindref="member">middleCol</ref>(A_ij,<sp/>k,<sp/>A_ij_k_ind);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VECTOR_double<sp/>A_ji_k<sp/>=<sp/><ref refid="splib__utils_8cpp_1a9ffc1f08aa424b4625d510642270d805" kindref="member">middleCol</ref>(A_ji,<sp/>k,<sp/>A_ji_k_ind);</highlight></codeline>
 <codeline lineno="91"><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>inf_ij<sp/>=<sp/>infNorm(A_ij_k);</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>inf_ji<sp/>=<sp/>infNorm(A_ji_k);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>inf_ij<sp/>=<sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(A_ij_k);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>inf_ji<sp/>=<sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(A_ji_k);</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"></highlight></codeline>
 <codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>p<sp/>=<sp/>0,<sp/>q<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/>l<sp/>&lt;<sp/>A_ij_k_ind.size();<sp/>++l){</highlight></codeline>
@@ -121,13 +303,13 @@
 <codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="112"><highlight class="normal"></highlight></codeline>
 <codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>!=<sp/>0){<sp/></highlight></codeline>
-<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dcntl[Controls::aug_precond]<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o)<sp/>%<sp/>abs((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)dcntl[Controls::aug_precond])<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_precond]<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o)<sp/>%<sp/>abs((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_precond])<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>selected_S_columns.push_back(<sp/>nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o);</highlight></codeline>
 <codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>skipped_S_columns.push_back(<sp/>nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o);</highlight></codeline>
 <codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(mu_ij_k<sp/>&gt;=<sp/>dcntl[Controls::aug_precond])</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(mu_ij_k<sp/>&gt;=<sp/><ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[Controls::aug_precond])</highlight></codeline>
 <codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>selected_S_columns.push_back(<sp/>nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o);</highlight></codeline>
 <codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>skipped_S_columns.push_back(<sp/>nbcols<sp/>+<sp/>k<sp/>-<sp/>n_o);</highlight></codeline>
@@ -139,8 +321,8 @@
 <codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(selected_cols.empty())<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="130"><highlight class="normal"></highlight></codeline>
 <codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>!=<sp/>2<sp/>)<sp/>{<sp/></highlight><highlight class="comment">//<sp/>don&apos;t<sp/>reduce<sp/>the<sp/>A_ij/A_ji,<sp/>we<sp/>just<sp/>need<sp/>the<sp/>selected<sp/>columns!</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A_ij<sp/>=<sp/>sub_matrix(A_ij,<sp/>selected_cols);</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A_ji<sp/>=<sp/>sub_matrix(A_ji,<sp/>selected_cols);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A_ij<sp/>=<sp/><ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(A_ij,<sp/>selected_cols);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A_ji<sp/>=<sp/><ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(A_ji,<sp/>selected_cols);</highlight></codeline>
 <codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="136"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//WIP</highlight></codeline>
@@ -156,7 +338,7 @@
 <codeline lineno="146"><highlight class="normal"></highlight></codeline>
 <codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>size_c<sp/>=<sp/>nbcols<sp/>-<sp/>A.dim(1);</highlight></codeline>
 <codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref><sp/>=<sp/>nbcols;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>C<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>C<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
 <codeline lineno="150"><highlight class="normal"></highlight></codeline>
 <codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" kindref="member">Controls::aug_analysis</ref>]<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="152"><highlight class="normal"></highlight></codeline>
@@ -165,8 +347,8 @@
 <codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(stCols[k].size()<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>now<sp/>augment<sp/>each<sp/>partition!</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stC[k]<sp/>=<sp/>stCols[k][0];</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/>concat_columns(M[k],<sp/>C[k],<sp/>stCols[k]);</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/>resize_columns(M[k],<sp/>nbcols);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1aa0dbb183d773929881d02c2c1641614c" kindref="member">concat_columns</ref>(M[k],<sp/>C[k],<sp/>stCols[k]);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1a423d8745f6289f20b18e9143b1cb00fa" kindref="member">resize_columns</ref>(M[k],<sp/>nbcols);</highlight></codeline>
 <codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="161"><highlight class="normal">}</highlight></codeline>
     </programlisting>

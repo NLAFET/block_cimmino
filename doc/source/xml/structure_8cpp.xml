@@ -10,29 +10,214 @@
     <includes refid="vect__utils_8h" local="no">vect_utils.h</includes>
     <includes local="no">boost/lambda/lambda.hpp</includes>
     <incdepgraph>
-      <node id="148">
+      <node id="920">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="144">
+      <node id="929">
+        <label>functional</label>
+      </node>
+      <node id="907">
+        <label>iomanip</label>
+      </node>
+      <node id="940">
+        <label>vect_utils.h</label>
+        <link refid="vect__utils_8h"/>
+        <childnode refid="909" relation="include">
+        </childnode>
+        <childnode refid="914" relation="include">
+        </childnode>
+      </node>
+      <node id="922">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="923">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="915">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="916" relation="include">
+        </childnode>
+      </node>
+      <node id="903">
         <label>/home/mzenadi/projects/abcd/src/structure.cpp</label>
         <link refid="structure.cpp"/>
-        <childnode refid="145" relation="include">
+        <childnode refid="904" relation="include">
         </childnode>
-        <childnode refid="146" relation="include">
+        <childnode refid="938" relation="include">
         </childnode>
-        <childnode refid="147" relation="include">
+        <childnode refid="906" relation="include">
         </childnode>
-        <childnode refid="148" relation="include">
+        <childnode refid="930" relation="include">
+        </childnode>
+        <childnode refid="939" relation="include">
+        </childnode>
+        <childnode refid="940" relation="include">
+        </childnode>
+        <childnode refid="920" relation="include">
         </childnode>
       </node>
-      <node id="146">
+      <node id="913">
+        <label>stdlib.h</label>
+      </node>
+      <node id="921">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="935">
+        <label>mvm.h</label>
+      </node>
+      <node id="928">
+        <label>cwchar</label>
+      </node>
+      <node id="904">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="905" relation="include">
+        </childnode>
+        <childnode refid="906" relation="include">
+        </childnode>
+        <childnode refid="907" relation="include">
+        </childnode>
+        <childnode refid="908" relation="include">
+        </childnode>
+        <childnode refid="909" relation="include">
+        </childnode>
+        <childnode refid="910" relation="include">
+        </childnode>
+        <childnode refid="911" relation="include">
+        </childnode>
+        <childnode refid="912" relation="include">
+        </childnode>
+        <childnode refid="913" relation="include">
+        </childnode>
+        <childnode refid="914" relation="include">
+        </childnode>
+        <childnode refid="915" relation="include">
+        </childnode>
+        <childnode refid="916" relation="include">
+        </childnode>
+        <childnode refid="917" relation="include">
+        </childnode>
+        <childnode refid="918" relation="include">
+        </childnode>
+        <childnode refid="919" relation="include">
+        </childnode>
+        <childnode refid="920" relation="include">
+        </childnode>
+        <childnode refid="921" relation="include">
+        </childnode>
+        <childnode refid="922" relation="include">
+        </childnode>
+        <childnode refid="923" relation="include">
+        </childnode>
+        <childnode refid="924" relation="include">
+        </childnode>
+        <childnode refid="925" relation="include">
+        </childnode>
+        <childnode refid="926" relation="include">
+        </childnode>
+        <childnode refid="927" relation="include">
+        </childnode>
+        <childnode refid="928" relation="include">
+        </childnode>
+        <childnode refid="929" relation="include">
+        </childnode>
+        <childnode refid="930" relation="include">
+        </childnode>
+        <childnode refid="931" relation="include">
+        </childnode>
+        <childnode refid="932" relation="include">
+        </childnode>
+        <childnode refid="933" relation="include">
+        </childnode>
+        <childnode refid="934" relation="include">
+        </childnode>
+        <childnode refid="935" relation="include">
+        </childnode>
+        <childnode refid="936" relation="include">
+        </childnode>
+        <childnode refid="937" relation="include">
+        </childnode>
+      </node>
+      <node id="908">
+        <label>numeric</label>
+      </node>
+      <node id="912">
+        <label>string</label>
+      </node>
+      <node id="914">
+        <label>map</label>
+      </node>
+      <node id="933">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="930">
         <label>fstream</label>
       </node>
-      <node id="145">
+      <node id="938">
+        <label>mat_utils.h</label>
+        <link refid="mat__utils_8h"/>
+        <childnode refid="909" relation="include">
+        </childnode>
+      </node>
+      <node id="918">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="919">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="937">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="910">
+        <label>cstdio</label>
+      </node>
+      <node id="924">
+        <label>ctime</label>
+      </node>
+      <node id="916">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="909">
+        <label>vector</label>
+      </node>
+      <node id="917">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="931">
+        <label>sstream</label>
+      </node>
+      <node id="934">
+        <label>coord_double.h</label>
+      </node>
+      <node id="926">
+        <label>cstdlib</label>
+      </node>
+      <node id="927">
+        <label>cctype</label>
+      </node>
+      <node id="906">
         <label>iostream</label>
       </node>
-      <node id="147">
+      <node id="939">
         <label>patoh.h</label>
+      </node>
+      <node id="905">
+        <label>mpi.h</label>
+      </node>
+      <node id="932">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="911">
+        <label>algorithm</label>
+      </node>
+      <node id="925">
+        <label>cstring</label>
+      </node>
+      <node id="936">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
     <briefdescription>
@@ -72,12 +257,12 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;mat_utils.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="mat__utils_8h" kindref="compound">mat_utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;patoh.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vect_utils.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="vect__utils_8h" kindref="compound">vect_utils.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/lambda/lambda.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="40"><highlight class="normal"></highlight></codeline>
 <codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">boost::lambda;</highlight></codeline>
@@ -103,13 +288,13 @@
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>ceil((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)m_o<sp/>/<sp/>20000);</highlight></codeline>
 <codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Estimated<sp/>number<sp/>of<sp/>partitions:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Estimated<sp/>number<sp/>of<sp/>partitions:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];</highlight></codeline>
 <codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parallel_cg<sp/>=<sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>&lt;<sp/>comm.size()<sp/>?<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>:<sp/>comm.size();</highlight></codeline>
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"></highlight></codeline>
 <codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>==<sp/>0){</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-3;</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;FATAL<sp/>ERROR:<sp/>Number<sp/>of<sp/>partitions<sp/>is<sp/>zero&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>&lt;<sp/>parallel_cg)<sp/>{</highlight></codeline>
@@ -138,7 +323,7 @@
 <codeline lineno="96"><highlight class="normal"></highlight></codeline>
 <codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" kindref="member">Controls::part_type</ref>]<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>nbrows.size()<sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-4;</highlight></codeline>
-<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;nbrows<sp/>not<sp/>initialized<sp/>for<sp/>manual<sp/>partitioning&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
@@ -199,7 +384,7 @@
 <codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>t_A<sp/>=<sp/>Coord_Mat_double(A);</highlight></codeline>
 <codeline lineno="158"><highlight class="normal"></highlight></codeline>
 <codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
-<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>PaToH&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>PaToH&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="161"><highlight class="normal"></highlight></codeline>
 <codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PaToH_Initialize_Parameters(&amp;args,<sp/>PATOH_CONPART,<sp/>PATOH_SUGPARAM_DEFAULT);</highlight></codeline>
 <codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>args._k<sp/>=<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];</highlight></codeline>
@@ -227,7 +412,7 @@
 <codeline lineno="185"><highlight class="normal"></highlight></codeline>
 <codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>ret<sp/>=<sp/>PaToH_Alloc(&amp;args,<sp/>_c,<sp/>_n,<sp/>_nconst,<sp/>cwghts,<sp/>nwghts,<sp/>xpins,<sp/>pins)<sp/>){</highlight></codeline>
 <codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-5;</highlight></codeline>
-<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stringstream<sp/>err;<sp/></highlight></codeline>
 <codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LERROR<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;Error<sp/>:<sp/>PaToH<sp/>Allocation<sp/>problem<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>ret;</highlight></codeline>
 <codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(err.str());</highlight></codeline>
@@ -248,12 +433,12 @@
 <codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];<sp/>i++)<sp/>{</highlight></codeline>
 <codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(partweights[i]<sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-6;</highlight></codeline>
-<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;FATAL<sp/>ERROR:<sp/>PaToH<sp/>produced<sp/>an<sp/>empty<sp/>partition,<sp/>Try<sp/>to<sp/>reduce<sp/>the<sp/>imbalancing<sp/>factor&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="213"><highlight class="normal"></highlight></codeline>
-<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>row_perm<sp/>=<sp/>sort_indexes(partvec,<sp/>_c);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>row_perm<sp/>=<sp/><ref refid="utils_8cpp_1a8e6eb297d5836a8959f84c0f953a1b41" kindref="member">sort_indexes</ref>(partvec,<sp/>_c);</highlight></codeline>
 <codeline lineno="215"><highlight class="normal"></highlight></codeline>
 <codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Permutation</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*iro<sp/>=<sp/>A.rowptr_ptr();</highlight></codeline>
@@ -275,7 +460,7 @@
 <codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sr<sp/>+=<sp/>iro[cur<sp/>+<sp/>1]<sp/>-<sp/>iro[cur];</highlight></codeline>
 <codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ir[m_o]<sp/>=<sp/>nz_o;</highlight></codeline>
-<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Done<sp/>with<sp/>PaToH,<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Done<sp/>with<sp/>PaToH,<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="238"><highlight class="normal"></highlight></codeline>
 <codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A<sp/>=<sp/>CompRow_Mat_double(m_o,<sp/>n_o,<sp/>nz_o,<sp/>val,<sp/>ir,<sp/>jc);</highlight></codeline>
@@ -290,7 +475,7 @@
 <codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>row_sum<sp/>+=<sp/>nbrows[k];</highlight></codeline>
 <codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="250"><highlight class="normal"></highlight></codeline>
-<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Finished<sp/>Partitioning,<sp/>time:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Finished<sp/>Partitioning,<sp/>time:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>ir;</highlight></codeline>
 <codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>jc;</highlight></codeline>
@@ -304,14 +489,14 @@
 <codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PaToH_Free();</highlight></codeline>
 <codeline lineno="263"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight></codeline>
 <codeline lineno="264"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-7;</highlight></codeline>
-<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Trying<sp/>to<sp/>use<sp/>PaToH<sp/>while<sp/>it<sp/>is<sp/>not<sp/>available&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="267"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
 <codeline lineno="268"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="270"><highlight class="normal"></highlight></codeline>
 <codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(write_problem.length()<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Writing<sp/>the<sp/>problem<sp/>to<sp/>the<sp/>file:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>write_problem;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Writing<sp/>the<sp/>problem<sp/>to<sp/>the<sp/>file:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>write_problem;</highlight></codeline>
 <codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ir<sp/>=<sp/>A.rowptr_ptr();</highlight></codeline>
 <codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jc<sp/>=<sp/>A.colind_ptr();</highlight></codeline>
 <codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*val<sp/>=<sp/>A.val_ptr();</highlight></codeline>
@@ -340,7 +525,7 @@
 <codeline lineno="298"><highlight class="normal"></highlight></codeline>
 <codeline lineno="299"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::analyseFrame()</highlight></codeline>
 <codeline lineno="300"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>frame<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>frame<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;CompCol_Mat_double<sp/>&gt;<sp/>loc_parts;</highlight></codeline>
 <codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>ci_sizes;</highlight></codeline>
 <codeline lineno="304"><highlight class="normal"></highlight></codeline>
@@ -349,24 +534,24 @@
 <codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/>column_index.resize(icntl[Controls::nbparts]);</highlight></codeline>
 <codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/>loc_parts.resize(icntl[Controls::nbparts]);</highlight></codeline>
 <codeline lineno="309"><highlight class="normal"></highlight></codeline>
-<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Creating<sp/>partitions&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Creating<sp/>partitions&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>int)icntl[Controls::nbparts];<sp/>++k)<sp/>{</highlight></codeline>
-<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>part(CSC_middleRows(A,<sp/>strow[k],<sp/>nbrows[k]));</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>part(<ref refid="splib__utils_8cpp_1ae1a1dead02b35631ade961522e1b1680" kindref="member">CSC_middleRows</ref>(A,<sp/>strow[k],<sp/>nbrows[k]));</highlight></codeline>
 <codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*col_ptr<sp/>=<sp/>part.colptr_ptr();</highlight></codeline>
-<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index[k]<sp/>=<sp/><sp/>getColumnIndex(col_ptr,<sp/>part.dim(1));</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index[k]<sp/>=<sp/><sp/><ref refid="compress__columns_8cpp_1ac8a19f75d3e1ac628f664c854599617c" kindref="member">getColumnIndex</ref>(col_ptr,<sp/>part.dim(1));</highlight></codeline>
 <codeline lineno="317"><highlight class="normal"></highlight></codeline>
 <codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>no<sp/>augmentation,<sp/>then<sp/>create<sp/>the<sp/>parts</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parts[k]<sp/>=<sp/>CompRow_Mat_double(sub_matrix(part,<sp/>column_index[k]));</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parts[k]<sp/>=<sp/>CompRow_Mat_double(<ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(part,<sp/>column_index[k]));</highlight></codeline>
 <codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight></codeline>
 <codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loc_parts[k]<sp/>=<sp/>CompCol_Mat_double(part);</highlight></codeline>
 <codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Partitions<sp/>created<sp/>in:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Partitions<sp/>created<sp/>in:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="329"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
 <codeline lineno="330"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>test<sp/>augmentation!</highlight><highlight class="normal"></highlight></codeline>
@@ -375,7 +560,7 @@
 <codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>size_c<sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(size_c<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>f<sp/>&lt;<sp/>0.9){</highlight></codeline>
 <codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dcntl[Controls::aug_filter]<sp/>=<sp/>f;</highlight></codeline>
-<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LDEBUG<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;filter<sp/>value:\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>fixed<sp/>&lt;&lt;<sp/>setprecision(5)<sp/>&lt;&lt;<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>gives<sp/>:<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;filter<sp/>value:\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>fixed<sp/>&lt;&lt;<sp/>setprecision(5)<sp/>&lt;&lt;<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>gives<sp/>:<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::augmentMatrix(loc_parts);</highlight></codeline>
 <codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>f+=0.025;</highlight></codeline>
 <codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -386,7 +571,7 @@
 <codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::augmentMatrix(loc_parts);</highlight></codeline>
-<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Augmentation<sp/>time:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Augmentation<sp/>time:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;s.&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="348"><highlight class="normal"></highlight></codeline>
 <codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index.clear();</highlight></codeline>
 <codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index.resize(icntl[Controls::nbparts]);</highlight></codeline>
@@ -398,7 +583,7 @@
 <codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CompCol_Mat_double<sp/>&amp;part<sp/>=<sp/>loc_parts[k];</highlight></codeline>
 <codeline lineno="357"><highlight class="normal"></highlight></codeline>
 <codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Build<sp/>the<sp/>column<sp/>index<sp/>of<sp/>part</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index[k]<sp/>=<sp/>getColumnIndex(</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>column_index[k]<sp/>=<sp/><ref refid="compress__columns_8cpp_1ac8a19f75d3e1ac628f664c854599617c" kindref="member">getColumnIndex</ref>(</highlight></codeline>
 <codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>part.colptr_ptr(),<sp/>part.dim(1)</highlight></codeline>
 <codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
 <codeline lineno="362"><highlight class="normal"></highlight></codeline>
@@ -406,10 +591,10 @@
 <codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ci_sizes[k]<sp/>=<sp/>ci.size();</highlight></codeline>
 <codeline lineno="366"><highlight class="normal"></highlight></codeline>
-<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parts[k]<sp/>=<sp/>CompRow_Mat_double(sub_matrix(part,<sp/>ci));</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parts[k]<sp/>=<sp/>CompRow_Mat_double(<ref refid="splib__utils_8cpp_1a82bc42018a1f31de48709b44ef8985dd" kindref="member">sub_matrix</ref>(part,<sp/>ci));</highlight></codeline>
 <codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>!=<sp/>0)</highlight></codeline>
-<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>to<sp/>regenerate<sp/>partitions:\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>to<sp/>regenerate<sp/>partitions:\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
 <codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size_c<sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LWARNING<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;WARNING:<sp/>Size<sp/>of<sp/>C<sp/>is<sp/>zero,<sp/>switching<sp/>to<sp/>classical<sp/>cg&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>=<sp/>0;</highlight></codeline>
@@ -436,7 +621,7 @@
 <codeline lineno="394"><highlight class="normal"></highlight></codeline>
 <codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
 <codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-8;</highlight></codeline>
-<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/>info[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Unkown<sp/>augmentation<sp/>scheme.&quot;</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="400"><highlight class="normal"></highlight></codeline>

@@ -3,6 +3,188 @@
   <compounddef id="define__slaves_8cpp" kind="file">
     <compoundname>define_slaves.cpp</compoundname>
     <includes refid="abcd_8h" local="no">abcd.h</includes>
+    <incdepgraph>
+      <node id="368">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="377">
+        <label>functional</label>
+      </node>
+      <node id="355">
+        <label>iomanip</label>
+      </node>
+      <node id="370">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="371">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="363">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="364" relation="include">
+        </childnode>
+      </node>
+      <node id="361">
+        <label>stdlib.h</label>
+      </node>
+      <node id="369">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="383">
+        <label>mvm.h</label>
+      </node>
+      <node id="376">
+        <label>cwchar</label>
+      </node>
+      <node id="352">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="353" relation="include">
+        </childnode>
+        <childnode refid="354" relation="include">
+        </childnode>
+        <childnode refid="355" relation="include">
+        </childnode>
+        <childnode refid="356" relation="include">
+        </childnode>
+        <childnode refid="357" relation="include">
+        </childnode>
+        <childnode refid="358" relation="include">
+        </childnode>
+        <childnode refid="359" relation="include">
+        </childnode>
+        <childnode refid="360" relation="include">
+        </childnode>
+        <childnode refid="361" relation="include">
+        </childnode>
+        <childnode refid="362" relation="include">
+        </childnode>
+        <childnode refid="363" relation="include">
+        </childnode>
+        <childnode refid="364" relation="include">
+        </childnode>
+        <childnode refid="365" relation="include">
+        </childnode>
+        <childnode refid="366" relation="include">
+        </childnode>
+        <childnode refid="367" relation="include">
+        </childnode>
+        <childnode refid="368" relation="include">
+        </childnode>
+        <childnode refid="369" relation="include">
+        </childnode>
+        <childnode refid="370" relation="include">
+        </childnode>
+        <childnode refid="371" relation="include">
+        </childnode>
+        <childnode refid="372" relation="include">
+        </childnode>
+        <childnode refid="373" relation="include">
+        </childnode>
+        <childnode refid="374" relation="include">
+        </childnode>
+        <childnode refid="375" relation="include">
+        </childnode>
+        <childnode refid="376" relation="include">
+        </childnode>
+        <childnode refid="377" relation="include">
+        </childnode>
+        <childnode refid="378" relation="include">
+        </childnode>
+        <childnode refid="379" relation="include">
+        </childnode>
+        <childnode refid="380" relation="include">
+        </childnode>
+        <childnode refid="381" relation="include">
+        </childnode>
+        <childnode refid="382" relation="include">
+        </childnode>
+        <childnode refid="383" relation="include">
+        </childnode>
+        <childnode refid="384" relation="include">
+        </childnode>
+        <childnode refid="385" relation="include">
+        </childnode>
+      </node>
+      <node id="356">
+        <label>numeric</label>
+      </node>
+      <node id="360">
+        <label>string</label>
+      </node>
+      <node id="362">
+        <label>map</label>
+      </node>
+      <node id="381">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="378">
+        <label>fstream</label>
+      </node>
+      <node id="351">
+        <label>/home/mzenadi/projects/abcd/src/define_slaves.cpp</label>
+        <link refid="define_slaves.cpp"/>
+        <childnode refid="352" relation="include">
+        </childnode>
+      </node>
+      <node id="366">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="367">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="385">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="358">
+        <label>cstdio</label>
+      </node>
+      <node id="372">
+        <label>ctime</label>
+      </node>
+      <node id="364">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="357">
+        <label>vector</label>
+      </node>
+      <node id="365">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="379">
+        <label>sstream</label>
+      </node>
+      <node id="382">
+        <label>coord_double.h</label>
+      </node>
+      <node id="374">
+        <label>cstdlib</label>
+      </node>
+      <node id="375">
+        <label>cctype</label>
+      </node>
+      <node id="354">
+        <label>iostream</label>
+      </node>
+      <node id="353">
+        <label>mpi.h</label>
+      </node>
+      <node id="380">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="359">
+        <label>algorithm</label>
+      </node>
+      <node id="373">
+        <label>cstring</label>
+      </node>
+      <node id="384">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -40,7 +222,7 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::allocateMumpsSlaves(<ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref><sp/>&amp;mu)</highlight></codeline>
 <codeline lineno="36"><highlight class="normal">{</highlight></codeline>
@@ -49,7 +231,7 @@
 <codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::pair&lt;long,<sp/>int&gt;<sp/>&gt;<sp/>flops_s;</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>slaves_for_me(inter_comm.size());</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>slaves_for_me_t(inter_comm.size());</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_gather(inter_comm,<sp/>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">)<sp/>mu.getRinfo(1),<sp/>flops);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::all_gather(inter_comm,<sp/>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">)<sp/>mu.<ref refid="struct_m_u_m_p_s_1afd037d16254c04c34e6f24a4c06a229d" kindref="member">getRinfo</ref>(1),<sp/>flops);</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"></highlight></codeline>
 <codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>s<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx<sp/>=<sp/>0;<sp/>idx<sp/>&lt;<sp/>inter_comm.size();<sp/>idx++)<sp/>{</highlight></codeline>
@@ -62,7 +244,7 @@
 <codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bind(&amp;std::pair&lt;long,<sp/>int&gt;::first,<sp/>_2));</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"></highlight></codeline>
 <codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>shares;</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_slaves<sp/>=<sp/>comm.size()<sp/>-<sp/>inter_comm.size();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nb_slaves<sp/>=<sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.size()<sp/>-<sp/>inter_comm.size();</highlight></codeline>
 <codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slaves_left<sp/>=<sp/>nb_slaves;</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>top<sp/>=<sp/>1,<sp/>low<sp/>=<sp/>0.90;</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"></highlight></codeline>
@@ -98,7 +280,7 @@
 <codeline lineno="88"><highlight class="normal"></highlight></codeline>
 <codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>let<sp/>the<sp/>master<sp/>handle<sp/>this!</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>comm.send(current_slave,<sp/>11,<sp/><sp/>your_master);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.send(current_slave,<sp/>11,<sp/><sp/>your_master);</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"></highlight></codeline>
 <codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>your_master)<sp/>{</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>my_slaves.push_back(current_slave);</highlight></codeline>
@@ -109,16 +291,16 @@
 <codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Now<sp/>that<sp/>the<sp/>slaves<sp/>know<sp/>who&apos;s<sp/>their<sp/>daddy,<sp/>tell<sp/>who<sp/>are<sp/>their<sp/>brothers</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(std::vector&lt;int&gt;::iterator<sp/>slave<sp/>=<sp/>my_slaves.begin();<sp/>slave<sp/>!=<sp/>my_slaves.end();<sp/>++slave)<sp/>{</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>comm.send(*slave,<sp/>12,<sp/>my_slaves);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.send(*slave,<sp/>12,<sp/>my_slaves);</highlight></codeline>
 <codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="104"><highlight class="normal"></highlight></codeline>
 <codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>comm.recv(0,<sp/>11,<sp/>my_master);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.recv(0,<sp/>11,<sp/>my_master);</highlight></codeline>
 <codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Store<sp/>in<sp/>my_slaves<sp/>my<sp/>brothers<sp/>in<sp/>slavery</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>comm.recv(my_master,<sp/>12,<sp/>my_slaves);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.recv(my_master,<sp/>12,<sp/>my_slaves);</highlight></codeline>
 <codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="110"><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>LINFO2<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Process<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>inter_comm.rank()</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a3680e2fb0255f53d8c1811bb93f36fa1" kindref="member">LINFO2</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Process<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>inter_comm.rank()</highlight></codeline>
 <codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>has<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>my_slaves.size()</highlight></codeline>
 <codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>workers&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="114"><highlight class="normal">}</highlight></codeline>

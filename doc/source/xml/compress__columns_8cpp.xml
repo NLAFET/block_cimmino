@@ -7,23 +7,39 @@
     <includes local="no">iostream</includes>
     <includes local="no">assert.h</includes>
     <incdepgraph>
-      <node id="164">
+      <node id="1053">
+        <label>vect_utils.h</label>
+        <link refid="vect__utils_8h"/>
+        <childnode refid="1054" relation="include">
+        </childnode>
+        <childnode refid="1055" relation="include">
+        </childnode>
+      </node>
+      <node id="1058">
         <label>assert.h</label>
       </node>
-      <node id="161">
+      <node id="1055">
+        <label>map</label>
+      </node>
+      <node id="1054">
+        <label>vector</label>
+      </node>
+      <node id="1052">
         <label>/home/mzenadi/projects/abcd/src/utils/compress_columns.cpp</label>
         <link refid="compress_columns.cpp"/>
-        <childnode refid="162" relation="include">
+        <childnode refid="1053" relation="include">
         </childnode>
-        <childnode refid="163" relation="include">
+        <childnode refid="1056" relation="include">
         </childnode>
-        <childnode refid="164" relation="include">
+        <childnode refid="1057" relation="include">
+        </childnode>
+        <childnode refid="1058" relation="include">
         </childnode>
       </node>
-      <node id="163">
+      <node id="1057">
         <label>iostream</label>
       </node>
-      <node id="162">
+      <node id="1056">
         <label>climits</label>
       </node>
     </incdepgraph>
@@ -166,13 +182,13 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;vect_utils.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vect__utils_8h" kindref="compound">vect_utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;climits&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">std;</highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal">std::vector&lt;int&gt;<sp/>getColumnIndex(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*col_ptr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_size)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">std::vector&lt;int&gt;<sp/><ref refid="compress__columns_8cpp_1ac8a19f75d3e1ac628f664c854599617c" kindref="member">getColumnIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*col_ptr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_size)</highlight></codeline>
 <codeline lineno="44"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>column_index;</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*index1<sp/>=<sp/>col_ptr,</highlight></codeline>
@@ -193,7 +209,7 @@
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>column_index;</highlight></codeline>
 <codeline lineno="62"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="63"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal">std::vector&lt;int&gt;<sp/>mergeSortedVectors(std::vector&lt;std::vector&lt;int&gt;<sp/>&gt;<sp/>&amp;vectors)</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">std::vector&lt;int&gt;<sp/><ref refid="compress__columns_8cpp_1a5fbcdca088251d8f40f28d15525fe01f" kindref="member">mergeSortedVectors</ref>(std::vector&lt;std::vector&lt;int&gt;<sp/>&gt;<sp/>&amp;vectors)</highlight></codeline>
 <codeline lineno="68"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(vectors.size()<sp/>==<sp/>1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>vectors[0];</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>merge;</highlight></codeline>
@@ -259,7 +275,7 @@
 <codeline lineno="130"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="131"><highlight class="normal"></highlight></codeline>
 <codeline lineno="136"><highlight class="normal">std::pair&lt;std::vector&lt;int&gt;,<sp/>std::vector&lt;int&gt;<sp/>&gt;</highlight></codeline>
-<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>getIntersectionIndices(std::vector&lt;int&gt;<sp/>&amp;v1,<sp/>std::vector&lt;int&gt;<sp/>&amp;v2)</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="compress__columns_8cpp_1abd925b6861001e52ab0b82655487f228" kindref="member">getIntersectionIndices</ref>(std::vector&lt;int&gt;<sp/>&amp;v1,<sp/>std::vector&lt;int&gt;<sp/>&amp;v2)</highlight></codeline>
 <codeline lineno="138"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="139"><highlight class="normal"></highlight></codeline>
 <codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>inter1;</highlight></codeline>

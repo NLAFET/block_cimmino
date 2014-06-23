@@ -9,21 +9,51 @@
     <includedby refid="structure_8cpp" local="no">/home/mzenadi/projects/abcd/src/structure.cpp</includedby>
     <includedby refid="compress__columns_8cpp" local="yes">/home/mzenadi/projects/abcd/src/utils/compress_columns.cpp</includedby>
     <incdepgraph>
-      <node id="78">
+      <node id="159">
         <label>/home/mzenadi/projects/abcd/include/vect_utils.h</label>
         <link refid="vect_utils.h"/>
-        <childnode refid="79" relation="include">
+        <childnode refid="160" relation="include">
         </childnode>
-        <childnode refid="80" relation="include">
+        <childnode refid="161" relation="include">
         </childnode>
       </node>
-      <node id="80">
+      <node id="161">
         <label>map</label>
       </node>
-      <node id="79">
+      <node id="160">
         <label>vector</label>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="162">
+        <label>/home/mzenadi/projects/abcd/include/vect_utils.h</label>
+        <link refid="vect_utils.h"/>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+      </node>
+      <node id="164">
+        <label>/home/mzenadi/projects/abcd/src/communication.cpp</label>
+        <link refid="communication_8cpp"/>
+      </node>
+      <node id="163">
+        <label>/home/mzenadi/projects/abcd/src/comms.cpp</label>
+        <link refid="comms_8cpp"/>
+      </node>
+      <node id="165">
+        <label>/home/mzenadi/projects/abcd/src/structure.cpp</label>
+        <link refid="structure_8cpp"/>
+      </node>
+      <node id="166">
+        <label>/home/mzenadi/projects/abcd/src/utils/compress_columns.cpp</label>
+        <link refid="compress__columns_8cpp"/>
+      </node>
+    </invincdepgraph>
       <sectiondef kind="func">
       <memberdef kind="function" id="vect__utils_8h_1ac8a19f75d3e1ac628f664c854599617c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::vector&lt; int &gt;</type>
@@ -169,12 +199,12 @@
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal">std::vector&lt;int&gt;<sp/>getColumnIndex(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*col_ptr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_size);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">std::vector&lt;int&gt;<sp/><ref refid="vect__utils_8h_1ac8a19f75d3e1ac628f664c854599617c" kindref="member">getColumnIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*col_ptr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_size);</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"></highlight></codeline>
-<codeline lineno="41"><highlight class="normal">std::vector&lt;int&gt;<sp/>mergeSortedVectors(std::vector&lt;std::vector&lt;int&gt;<sp/>&gt;<sp/>&amp;vectors);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">std::vector&lt;int&gt;<sp/><ref refid="vect__utils_8h_1a5fbcdca088251d8f40f28d15525fe01f" kindref="member">mergeSortedVectors</ref>(std::vector&lt;std::vector&lt;int&gt;<sp/>&gt;<sp/>&amp;vectors);</highlight></codeline>
 <codeline lineno="42"><highlight class="normal"></highlight></codeline>
 <codeline lineno="43"><highlight class="normal">std::pair&lt;std::vector&lt;int&gt;,<sp/>std::vector&lt;int&gt;<sp/>&gt;</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>getIntersectionIndices(std::vector&lt;int&gt;<sp/>&amp;v1,<sp/>std::vector&lt;int&gt;<sp/>&amp;v2);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="vect__utils_8h_1abd925b6861001e52ab0b82655487f228" kindref="member">getIntersectionIndices</ref>(std::vector&lt;int&gt;<sp/>&amp;v1,<sp/>std::vector&lt;int&gt;<sp/>&amp;v2);</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"></highlight></codeline>
 <codeline lineno="46"><highlight class="normal"></highlight></codeline>
 <codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>MAT_UTILS_HXX_</highlight></codeline>

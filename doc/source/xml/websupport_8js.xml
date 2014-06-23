@@ -88,22 +88,22 @@
         <definition>var popupTemplate</definition>
         <argsstring></argsstring>
         <name>popupTemplate</name>
-        <initializer>= &apos;\
-    &lt;div class=&quot;sphinx-comments&quot; id=&quot;sc&lt;%id%&gt;&quot;&gt;\
-      &lt;p class=&quot;sort-options&quot;&gt;\
-        Sort by:\
-        &lt;a href=&quot;#&quot; class=&quot;sort-option byrating&quot;&gt;best rated&lt;/a&gt;\
-        &lt;a href=&quot;#&quot; class=&quot;sort-option byascage&quot;&gt;newest&lt;/a&gt;\
-        &lt;a href=&quot;#&quot; class=&quot;sort-option byage&quot;&gt;oldest&lt;/a&gt;\
-      &lt;/p&gt;\
-      &lt;div class=&quot;comment-header&quot;&gt;Comments&lt;/div&gt;\
-      &lt;div class=&quot;comment-loading&quot; id=&quot;cn&lt;%id%&gt;&quot;&gt;\
-        loading comments... &lt;img src=&quot;&lt;%loadingImage%&gt;&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;\
-      &lt;ul id=&quot;cl&lt;%id%&gt;&quot; class=&quot;comment-ul&quot;&gt;&lt;/ul&gt;\
-      &lt;div id=&quot;ca&lt;%id%&gt;&quot;&gt;\
-      &lt;p class=&quot;add-a-comment&quot;&gt;Add a comment\
-        (&lt;a href=&quot;#&quot; class=&quot;comment-markup&quot; id=&quot;ab&lt;%id%&gt;&quot;&gt;markup&lt;/a&gt;):&lt;/p&gt;\
-      &lt;div class=&quot;comment-markup-box&quot; id=&quot;mb&lt;%id%&gt;&quot;&gt;\
+        <initializer>= &apos;
+    &lt;div class=&quot;sphinx-comments&quot; id=&quot;sc&lt;%id%&gt;&quot;&gt;
+      &lt;p class=&quot;sort-options&quot;&gt;
+        Sort by:
+        &lt;a href=&quot;#&quot; class=&quot;sort-option byrating&quot;&gt;best rated&lt;/a&gt;
+        &lt;a href=&quot;#&quot; class=&quot;sort-option byascage&quot;&gt;newest&lt;/a&gt;
+        &lt;a href=&quot;#&quot; class=&quot;sort-option byage&quot;&gt;oldest&lt;/a&gt;
+      &lt;/p&gt;
+      &lt;div class=&quot;comment-header&quot;&gt;Comments&lt;/div&gt;
+      &lt;div class=&quot;comment-loading&quot; id=&quot;cn&lt;%id%&gt;&quot;&gt;
+        loading comments... &lt;img src=&quot;&lt;%loadingImage%&gt;&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;
+      &lt;ul id=&quot;cl&lt;%id%&gt;&quot; class=&quot;comment-ul&quot;&gt;&lt;/ul&gt;
+      &lt;div id=&quot;ca&lt;%id%&gt;&quot;&gt;
+      &lt;p class=&quot;add-a-comment&quot;&gt;Add a comment
+        (&lt;a href=&quot;#&quot; class=&quot;comment-markup&quot; id=&quot;ab&lt;%id%&gt;&quot;&gt;markup&lt;/a&gt;):&lt;/p&gt;
+      &lt;div class=&quot;comment-markup-box&quot; id=&quot;mb&lt;%id%&gt;&quot;&gt;
         reStructured text markup: &lt;i&gt;*emph*&lt;/i&gt;</initializer>
         <briefdescription>
         </briefdescription>
@@ -126,12 +126,12 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/doc/build/html/_static/websupport.js" line="704" column="1" bodyfile="/home/mzenadi/projects/abcd/doc/build/html/_static/websupport.js" bodystart="686" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="websupport_8js_1ac276746d810f03810d1966b42ca252c7" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="websupport_8js_1ad81146f09caafaa283052268da7dfac7" prot="public" static="no" mutable="no">
         <type>&lt;/a &gt;&lt; ahref=&quot;#&quot;id=&quot;hc&lt;%id%&gt;</type>
-        <definition>&lt;/a&gt;&lt;ahref=&quot;#&quot;id=&quot;hc&lt;%id%&gt; class</definition>
+        <definition>&lt;/a&gt;&lt;ahref=&quot;#&quot;id=&quot;dc&lt;%id%&gt; class</definition>
         <argsstring></argsstring>
         <name>class</name>
-        <initializer>=&quot;hide-propose-change&quot;&gt;\
+        <initializer>=&quot;hide-propose-change&quot;&gt;
             Propose a change &amp;#9663</initializer>
         <briefdescription>
         </briefdescription>
@@ -146,13 +146,13 @@
         <definition>&lt;/a&gt;&lt;/p&gt;&lt;textareaname=&quot;proposal&quot;id=&quot;pt&lt;%id%&gt; cols</definition>
         <argsstring></argsstring>
         <name>cols</name>
-        <initializer>=&quot;80&quot;\
-                  spellcheck=&quot;false&quot;&gt;&lt;/textarea&gt;\
-        &lt;input type=&quot;submit&quot; value=&quot;Add comment&quot; /&gt;\
-        &lt;input type=&quot;hidden&quot; name=&quot;node&quot; value=&quot;&lt;%id%&gt;&quot; /&gt;\
-        &lt;input type=&quot;hidden&quot; name=&quot;parent&quot; value=&quot;&quot; /&gt;\
-      &lt;/form&gt;\
-      &lt;/div&gt;\
+        <initializer>=&quot;80&quot;
+                  spellcheck=&quot;false&quot;&gt;&lt;/textarea&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Add comment&quot; /&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;node&quot; value=&quot;&lt;%id%&gt;&quot; /&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;parent&quot; value=&quot;&quot; /&gt;
+      &lt;/form&gt;
+      &lt;/div&gt;
     &lt;/div&gt;&apos;</initializer>
         <briefdescription>
         </briefdescription>
@@ -167,34 +167,34 @@
         <definition>var commentTemplate</definition>
         <argsstring></argsstring>
         <name>commentTemplate</name>
-        <initializer>= &apos;\
-    &lt;div id=&quot;cd&lt;%id%&gt;&quot; class=&quot;sphinx-comment&lt;%css_class%&gt;&quot;&gt;\
-      &lt;div class=&quot;vote&quot;&gt;\
-        &lt;div class=&quot;arrow&quot;&gt;\
-          &lt;a href=&quot;#&quot; id=&quot;uv&lt;%id%&gt;&quot; class=&quot;vote&quot; title=&quot;vote up&quot;&gt;\
-            &lt;img src=&quot;&lt;%upArrow%&gt;&quot; /&gt;\
-          &lt;/a&gt;\
-          &lt;a href=&quot;#&quot; id=&quot;uu&lt;%id%&gt;&quot; class=&quot;un vote&quot; title=&quot;vote up&quot;&gt;\
-            &lt;img src=&quot;&lt;%upArrowPressed%&gt;&quot; /&gt;\
-          &lt;/a&gt;\
-        &lt;/div&gt;\
-        &lt;div class=&quot;arrow&quot;&gt;\
-          &lt;a href=&quot;#&quot; id=&quot;dv&lt;%id%&gt;&quot; class=&quot;vote&quot; title=&quot;vote down&quot;&gt;\
-            &lt;img src=&quot;&lt;%downArrow%&gt;&quot; id=&quot;da&lt;%id%&gt;&quot; /&gt;\
-          &lt;/a&gt;\
-          &lt;a href=&quot;#&quot; id=&quot;du&lt;%id%&gt;&quot; class=&quot;un vote&quot; title=&quot;vote down&quot;&gt;\
-            &lt;img src=&quot;&lt;%downArrowPressed%&gt;&quot; /&gt;\
-          &lt;/a&gt;\
-        &lt;/div&gt;\
-      &lt;/div&gt;\
-      &lt;div class=&quot;comment-content&quot;&gt;\
-        &lt;p class=&quot;tagline comment&quot;&gt;\
-          &lt;span class=&quot;user-id&quot;&gt;&lt;%username%&gt;&lt;/span&gt;\
-          &lt;span class=&quot;rating&quot;&gt;&lt;%pretty_rating%&gt;&lt;/span&gt;\
-          &lt;span class=&quot;delta&quot;&gt;&lt;%time.delta%&gt;&lt;/span&gt;\
-        &lt;/p&gt;\
-        &lt;div class=&quot;comment-text comment&quot;&gt;&lt;#text#&gt;&lt;/div&gt;\
-        &lt;p class=&quot;comment-opts comment&quot;&gt;\
+        <initializer>= &apos;
+    &lt;div id=&quot;cd&lt;%id%&gt;&quot; class=&quot;sphinx-comment&lt;%css_class%&gt;&quot;&gt;
+      &lt;div class=&quot;vote&quot;&gt;
+        &lt;div class=&quot;arrow&quot;&gt;
+          &lt;a href=&quot;#&quot; id=&quot;uv&lt;%id%&gt;&quot; class=&quot;vote&quot; title=&quot;vote up&quot;&gt;
+            &lt;img src=&quot;&lt;%upArrow%&gt;&quot; /&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#&quot; id=&quot;uu&lt;%id%&gt;&quot; class=&quot;un vote&quot; title=&quot;vote up&quot;&gt;
+            &lt;img src=&quot;&lt;%upArrowPressed%&gt;&quot; /&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;arrow&quot;&gt;
+          &lt;a href=&quot;#&quot; id=&quot;dv&lt;%id%&gt;&quot; class=&quot;vote&quot; title=&quot;vote down&quot;&gt;
+            &lt;img src=&quot;&lt;%downArrow%&gt;&quot; id=&quot;da&lt;%id%&gt;&quot; /&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#&quot; id=&quot;du&lt;%id%&gt;&quot; class=&quot;un vote&quot; title=&quot;vote down&quot;&gt;
+            &lt;img src=&quot;&lt;%downArrowPressed%&gt;&quot; /&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;comment-content&quot;&gt;
+        &lt;p class=&quot;tagline comment&quot;&gt;
+          &lt;span class=&quot;user-id&quot;&gt;&lt;%username%&gt;&lt;/span&gt;
+          &lt;span class=&quot;rating&quot;&gt;&lt;%pretty_rating%&gt;&lt;/span&gt;
+          &lt;span class=&quot;delta&quot;&gt;&lt;%time.delta%&gt;&lt;/span&gt;
+        &lt;/p&gt;
+        &lt;div class=&quot;comment-text comment&quot;&gt;&lt;#text#&gt;&lt;/div&gt;
+        &lt;p class=&quot;comment-opts comment&quot;&gt;
           &lt;a href=&quot;#&quot; class=&quot;reply hidden&quot; id=&quot;rl&lt;%id%&gt;&quot;&gt;reply &amp;#9657</initializer>
         <briefdescription>
         </briefdescription>
@@ -209,17 +209,17 @@
         <definition>var replyTemplate</definition>
         <argsstring></argsstring>
         <name>replyTemplate</name>
-        <initializer>= &apos;\
-    &lt;li&gt;\
-      &lt;div class=&quot;reply-div&quot; id=&quot;rd&lt;%id%&gt;&quot;&gt;\
-        &lt;form id=&quot;rf&lt;%id%&gt;&quot;&gt;\
-          &lt;textarea name=&quot;comment&quot; cols=&quot;80&quot;&gt;&lt;/textarea&gt;\
-          &lt;input type=&quot;submit&quot; value=&quot;Add reply&quot; /&gt;\
-          &lt;input type=&quot;button&quot; value=&quot;Cancel&quot; /&gt;\
-          &lt;input type=&quot;hidden&quot; name=&quot;parent&quot; value=&quot;&lt;%id%&gt;&quot; /&gt;\
-          &lt;input type=&quot;hidden&quot; name=&quot;node&quot; value=&quot;&quot; /&gt;\
-        &lt;/form&gt;\
-      &lt;/div&gt;\
+        <initializer>= &apos;
+    &lt;li&gt;
+      &lt;div class=&quot;reply-div&quot; id=&quot;rd&lt;%id%&gt;&quot;&gt;
+        &lt;form id=&quot;rf&lt;%id%&gt;&quot;&gt;
+          &lt;textarea name=&quot;comment&quot; cols=&quot;80&quot;&gt;&lt;/textarea&gt;
+          &lt;input type=&quot;submit&quot; value=&quot;Add reply&quot; /&gt;
+          &lt;input type=&quot;button&quot; value=&quot;Cancel&quot; /&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;parent&quot; value=&quot;&lt;%id%&gt;&quot; /&gt;
+          &lt;input type=&quot;hidden&quot; name=&quot;node&quot; value=&quot;&quot; /&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
     &lt;/li&gt;&apos;</initializer>
         <briefdescription>
         </briefdescription>

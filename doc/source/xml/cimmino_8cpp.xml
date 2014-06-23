@@ -5,14 +5,187 @@
     <includes refid="abcd_8h" local="no">abcd.h</includes>
     <includes local="no">fstream</includes>
     <incdepgraph>
-      <node id="91">
+      <node id="241">
         <label>/home/mzenadi/projects/abcd/src/cimmino.cpp</label>
         <link refid="cimmino.cpp"/>
-        <childnode refid="92" relation="include">
+        <childnode refid="242" relation="include">
+        </childnode>
+        <childnode refid="268" relation="include">
         </childnode>
       </node>
-      <node id="92">
+      <node id="258">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="267">
+        <label>functional</label>
+      </node>
+      <node id="245">
+        <label>iomanip</label>
+      </node>
+      <node id="260">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="261">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="253">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="254" relation="include">
+        </childnode>
+      </node>
+      <node id="251">
+        <label>stdlib.h</label>
+      </node>
+      <node id="259">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="273">
+        <label>mvm.h</label>
+      </node>
+      <node id="266">
+        <label>cwchar</label>
+      </node>
+      <node id="242">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="243" relation="include">
+        </childnode>
+        <childnode refid="244" relation="include">
+        </childnode>
+        <childnode refid="245" relation="include">
+        </childnode>
+        <childnode refid="246" relation="include">
+        </childnode>
+        <childnode refid="247" relation="include">
+        </childnode>
+        <childnode refid="248" relation="include">
+        </childnode>
+        <childnode refid="249" relation="include">
+        </childnode>
+        <childnode refid="250" relation="include">
+        </childnode>
+        <childnode refid="251" relation="include">
+        </childnode>
+        <childnode refid="252" relation="include">
+        </childnode>
+        <childnode refid="253" relation="include">
+        </childnode>
+        <childnode refid="254" relation="include">
+        </childnode>
+        <childnode refid="255" relation="include">
+        </childnode>
+        <childnode refid="256" relation="include">
+        </childnode>
+        <childnode refid="257" relation="include">
+        </childnode>
+        <childnode refid="258" relation="include">
+        </childnode>
+        <childnode refid="259" relation="include">
+        </childnode>
+        <childnode refid="260" relation="include">
+        </childnode>
+        <childnode refid="261" relation="include">
+        </childnode>
+        <childnode refid="262" relation="include">
+        </childnode>
+        <childnode refid="263" relation="include">
+        </childnode>
+        <childnode refid="264" relation="include">
+        </childnode>
+        <childnode refid="265" relation="include">
+        </childnode>
+        <childnode refid="266" relation="include">
+        </childnode>
+        <childnode refid="267" relation="include">
+        </childnode>
+        <childnode refid="268" relation="include">
+        </childnode>
+        <childnode refid="269" relation="include">
+        </childnode>
+        <childnode refid="270" relation="include">
+        </childnode>
+        <childnode refid="271" relation="include">
+        </childnode>
+        <childnode refid="272" relation="include">
+        </childnode>
+        <childnode refid="273" relation="include">
+        </childnode>
+        <childnode refid="274" relation="include">
+        </childnode>
+        <childnode refid="275" relation="include">
+        </childnode>
+      </node>
+      <node id="246">
+        <label>numeric</label>
+      </node>
+      <node id="250">
+        <label>string</label>
+      </node>
+      <node id="252">
+        <label>map</label>
+      </node>
+      <node id="271">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="268">
         <label>fstream</label>
+      </node>
+      <node id="256">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="257">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="275">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="248">
+        <label>cstdio</label>
+      </node>
+      <node id="262">
+        <label>ctime</label>
+      </node>
+      <node id="254">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="247">
+        <label>vector</label>
+      </node>
+      <node id="255">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="269">
+        <label>sstream</label>
+      </node>
+      <node id="272">
+        <label>coord_double.h</label>
+      </node>
+      <node id="264">
+        <label>cstdlib</label>
+      </node>
+      <node id="265">
+        <label>cctype</label>
+      </node>
+      <node id="244">
+        <label>iostream</label>
+      </node>
+      <node id="243">
+        <label>mpi.h</label>
+      </node>
+      <node id="270">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="249">
+        <label>algorithm</label>
+      </node>
+      <node id="263">
+        <label>cstring</label>
+      </node>
+      <node id="274">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
       </node>
     </incdepgraph>
     <briefdescription>
@@ -52,19 +225,19 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::initializeCimmino()</highlight></codeline>
 <codeline lineno="37"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*sym_perm;</highlight></codeline>
 <codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>mpi::broadcast(<ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>,<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>],<sp/>0);</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(comm.size()<sp/>&gt;<sp/><ref refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kindref="member">parallel_cg</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kindref="member">comm</ref>.size()<sp/>&gt;<sp/><ref refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kindref="member">parallel_cg</ref>)<sp/>{</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(instance_type<sp/>==<sp/>0)<sp/>{</highlight></codeline>
 <codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0)</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Initializing<sp/>MUMPS&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Initializing<sp/>MUMPS&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>initializeMumps(mumps,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>createAugmentedSystems(n_aug,<sp/>nz_aug,<sp/>irn_aug,<sp/>jcn_aug,<sp/>val_aug);</highlight></codeline>
 <codeline lineno="48"><highlight class="normal"></highlight></codeline>
@@ -75,7 +248,7 @@
 <codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.a<sp/>=<sp/>&amp;val_aug[0];</highlight></codeline>
 <codeline lineno="54"><highlight class="normal"></highlight></codeline>
 <codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0)</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>Initial<sp/>MUMPS<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>Initial<sp/>MUMPS<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>analyseAugmentedSystems(mumps);</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sym_perm<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">[mumps.n];</highlight></codeline>
@@ -88,7 +261,7 @@
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.job<sp/>=<sp/>-2;</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dmumps_c(&amp;mumps);</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.initialized<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.<ref refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" kindref="member">initialized</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="71"><highlight class="normal"></highlight></codeline>
 <codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>allocateMumpsSlaves(mumps);</highlight></codeline>

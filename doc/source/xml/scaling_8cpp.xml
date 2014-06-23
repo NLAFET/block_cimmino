@@ -3,6 +3,188 @@
   <compounddef id="scaling_8cpp" kind="file">
     <compoundname>scaling.cpp</compoundname>
     <includes refid="abcd_8h" local="no">abcd.h</includes>
+    <incdepgraph>
+      <node id="775">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="784">
+        <label>functional</label>
+      </node>
+      <node id="762">
+        <label>iomanip</label>
+      </node>
+      <node id="777">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="778">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="770">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="771" relation="include">
+        </childnode>
+      </node>
+      <node id="768">
+        <label>stdlib.h</label>
+      </node>
+      <node id="776">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="790">
+        <label>mvm.h</label>
+      </node>
+      <node id="783">
+        <label>cwchar</label>
+      </node>
+      <node id="759">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="760" relation="include">
+        </childnode>
+        <childnode refid="761" relation="include">
+        </childnode>
+        <childnode refid="762" relation="include">
+        </childnode>
+        <childnode refid="763" relation="include">
+        </childnode>
+        <childnode refid="764" relation="include">
+        </childnode>
+        <childnode refid="765" relation="include">
+        </childnode>
+        <childnode refid="766" relation="include">
+        </childnode>
+        <childnode refid="767" relation="include">
+        </childnode>
+        <childnode refid="768" relation="include">
+        </childnode>
+        <childnode refid="769" relation="include">
+        </childnode>
+        <childnode refid="770" relation="include">
+        </childnode>
+        <childnode refid="771" relation="include">
+        </childnode>
+        <childnode refid="772" relation="include">
+        </childnode>
+        <childnode refid="773" relation="include">
+        </childnode>
+        <childnode refid="774" relation="include">
+        </childnode>
+        <childnode refid="775" relation="include">
+        </childnode>
+        <childnode refid="776" relation="include">
+        </childnode>
+        <childnode refid="777" relation="include">
+        </childnode>
+        <childnode refid="778" relation="include">
+        </childnode>
+        <childnode refid="779" relation="include">
+        </childnode>
+        <childnode refid="780" relation="include">
+        </childnode>
+        <childnode refid="781" relation="include">
+        </childnode>
+        <childnode refid="782" relation="include">
+        </childnode>
+        <childnode refid="783" relation="include">
+        </childnode>
+        <childnode refid="784" relation="include">
+        </childnode>
+        <childnode refid="785" relation="include">
+        </childnode>
+        <childnode refid="786" relation="include">
+        </childnode>
+        <childnode refid="787" relation="include">
+        </childnode>
+        <childnode refid="788" relation="include">
+        </childnode>
+        <childnode refid="789" relation="include">
+        </childnode>
+        <childnode refid="790" relation="include">
+        </childnode>
+        <childnode refid="791" relation="include">
+        </childnode>
+        <childnode refid="792" relation="include">
+        </childnode>
+      </node>
+      <node id="758">
+        <label>/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp</label>
+        <link refid="scaling.cpp"/>
+        <childnode refid="759" relation="include">
+        </childnode>
+      </node>
+      <node id="763">
+        <label>numeric</label>
+      </node>
+      <node id="767">
+        <label>string</label>
+      </node>
+      <node id="769">
+        <label>map</label>
+      </node>
+      <node id="788">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="785">
+        <label>fstream</label>
+      </node>
+      <node id="773">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="774">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="792">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="765">
+        <label>cstdio</label>
+      </node>
+      <node id="779">
+        <label>ctime</label>
+      </node>
+      <node id="771">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="764">
+        <label>vector</label>
+      </node>
+      <node id="772">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="786">
+        <label>sstream</label>
+      </node>
+      <node id="789">
+        <label>coord_double.h</label>
+      </node>
+      <node id="781">
+        <label>cstdlib</label>
+      </node>
+      <node id="782">
+        <label>cctype</label>
+      </node>
+      <node id="761">
+        <label>iostream</label>
+      </node>
+      <node id="760">
+        <label>mpi.h</label>
+      </node>
+      <node id="787">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="766">
+        <label>algorithm</label>
+      </node>
+      <node id="780">
+        <label>cstring</label>
+      </node>
+      <node id="791">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
       <sectiondef kind="func">
       <memberdef kind="function" id="scaling_8cpp_1a844fc1858b5281bb1a386c1f2b2ecec1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -134,14 +316,14 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>fact<sp/>that<sp/>you<sp/>are<sp/>presently<sp/>reading<sp/>this<sp/>means<sp/>that<sp/>you<sp/>have<sp/>had</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>knowledge<sp/>of<sp/>the<sp/>CeCILL-C<sp/>license<sp/>and<sp/>that<sp/>you<sp/>accept<sp/>its<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;abcd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>mc77id_(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*);</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>mc77ad_(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*job,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*m,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*nnz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jcst,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*irn,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*a,</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="scaling_8cpp_1a844fc1858b5281bb1a386c1f2b2ecec1" kindref="member">mc77id_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="scaling_8cpp_1a8989e493beee3e4aa409ce008c4cf589" kindref="member">mc77ad_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*job,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*m,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*nnz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jcst,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*irn,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*a,</highlight></codeline>
 <codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*iw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*liw,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*dw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ldw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*icntl,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*cntl,</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*info,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*rinfo);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*rinfo);</highlight></codeline>
 <codeline lineno="41"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="42"><highlight class="normal"></highlight></codeline>
 <codeline lineno="43"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::scaling()</highlight></codeline>
@@ -158,7 +340,7 @@
 <codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="55"><highlight class="normal"></highlight></codeline>
 <codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" kindref="member">Controls::scaling</ref>]<sp/>&gt;=<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Row-Scaling<sp/>with<sp/>Infinity&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Row-Scaling<sp/>with<sp/>Infinity&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"></highlight></codeline>
 <codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>rsum;</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dcol_.assign(<ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">(1));</highlight></codeline>
@@ -175,16 +357,16 @@
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"></highlight></codeline>
 <codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" kindref="member">Controls::scaling</ref>]<sp/>&gt;=<sp/>1)<sp/>{</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Infinity&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Infinity&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::scaleMatrix(0);</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="77"><highlight class="normal"></highlight></codeline>
 <codeline lineno="78"><highlight class="normal"></highlight></codeline>
 <codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" kindref="member">Controls::scaling</ref>]<sp/>==<sp/>2)<sp/>{</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Norm<sp/>1&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Norm<sp/>1&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::scaleMatrix(1);</highlight></codeline>
 <codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Norm<sp/>2&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>with<sp/>Norm<sp/>2&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::scaleMatrix(2);</highlight></codeline>
 <codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="86"><highlight class="normal">}</highlight></codeline>
@@ -201,7 +383,7 @@
 <codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*a_cp<sp/>=<sp/>A.colind_ptr();</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*a_vp<sp/>=<sp/>A.val_ptr();</highlight></codeline>
 <codeline lineno="99"><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>mc77id_(mc77_icntl,<sp/>mc77_dcntl);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="scaling_8cpp_1a844fc1858b5281bb1a386c1f2b2ecec1" kindref="member">mc77id_</ref>(mc77_icntl,<sp/>mc77_dcntl);</highlight></codeline>
 <codeline lineno="101"><highlight class="normal"></highlight></codeline>
 <codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(mc77_icntl[4]<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ldw<sp/>=<sp/><ref refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kindref="member">nz</ref>;</highlight></codeline>
@@ -239,16 +421,16 @@
 <codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>mc77_icntl[6]<sp/>=<sp/>10;</highlight></codeline>
 <codeline lineno="136"><highlight class="normal"></highlight></codeline>
 <codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>job<sp/>=<sp/>norm;</highlight></codeline>
-<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>mc77ad_(&amp;job,<sp/>&amp;m,<sp/>&amp;n,<sp/>&amp;nz,<sp/>a_rp,<sp/>a_cp,<sp/>a_vp,</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="scaling_8cpp_1a8989e493beee3e4aa409ce008c4cf589" kindref="member">mc77ad_</ref>(&amp;job,<sp/>&amp;m,<sp/>&amp;n,<sp/>&amp;nz,<sp/>a_rp,<sp/>a_cp,<sp/>a_vp,</highlight></codeline>
 <codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iw,<sp/>&amp;liw,<sp/>dw,<sp/>&amp;ldw,<sp/>mc77_icntl,<sp/>mc77_dcntl,<sp/>mc77_info,<sp/>mc77_rinfo);</highlight></codeline>
 <codeline lineno="140"><highlight class="normal"></highlight></codeline>
 <codeline lineno="141"><highlight class="normal"></highlight></codeline>
 <codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(mc77_info[0]<sp/>&lt;<sp/>0)<sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>-<sp/>100<sp/>+<sp/>mc77_info[0];</highlight></codeline>
 <codeline lineno="143"><highlight class="normal"></highlight></codeline>
 <codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(norm<sp/>==<sp/>0)</highlight></codeline>
-<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO2<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Distance<sp/>from<sp/>1<sp/>(norm<sp/>inf)<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mc77_rinfo[0];</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a3680e2fb0255f53d8c1811bb93f36fa1" kindref="member">LINFO2</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Distance<sp/>from<sp/>1<sp/>(norm<sp/>inf)<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mc77_rinfo[0];</highlight></codeline>
 <codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LINFO2<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Distance<sp/>from<sp/>1<sp/>(norm<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>norm<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mc77_rinfo[0];</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a3680e2fb0255f53d8c1811bb93f36fa1" kindref="member">LINFO2</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Distance<sp/>from<sp/>1<sp/>(norm<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>norm<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mc77_rinfo[0];</highlight></codeline>
 <codeline lineno="148"><highlight class="normal"></highlight></codeline>
 <codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>put<sp/>them<sp/>back<sp/>to<sp/>0-based<sp/>for<sp/>C/C++</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>n<sp/>+<sp/>1<sp/>;<sp/>k++)<sp/>{</highlight></codeline>
@@ -293,7 +475,7 @@
 <codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A.val(j)<sp/>=<sp/>A.val(j)<sp/>*<sp/>dcol[A.col_ind(j)];</highlight></codeline>
 <codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="192"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::diagscal<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::diagscal<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="193"><highlight class="normal"></highlight></codeline>
 <codeline lineno="194"><highlight class="normal"></highlight></codeline>
 <codeline lineno="195"><highlight class="normal"></highlight><highlight class="comment">/*<sp/></highlight></codeline>
@@ -309,7 +491,7 @@
 <codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b(i)<sp/>=<sp/>b(i)*drow_[i];</highlight></codeline>
 <codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="207"><highlight class="normal"></highlight></codeline>
-<codeline lineno="208"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::scalRhs<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::scalRhs<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="210"><highlight class="normal">abcd::diagScaleRhs<sp/>(<sp/>MV_ColMat_double<sp/>&amp;B)</highlight></codeline>
 <codeline lineno="211"><highlight class="normal">{</highlight></codeline>
@@ -317,7 +499,7 @@
 <codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>B.dim(1);<sp/>j++<sp/>)<sp/></highlight></codeline>
 <codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>B(i,j)<sp/>=<sp/>B(i,j)*drow_[i];</highlight></codeline>
 <codeline lineno="215"><highlight class="normal"></highlight></codeline>
-<codeline lineno="216"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::scalRhs<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::scalRhs<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp"/>
   </compounddef>

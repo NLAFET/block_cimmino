@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="dir_3de8cff75d796a08a479ea2780cdcbc1" kind="dir">
+    <compoundname>/home/mzenadi/projects/abcd/src/mumps</compoundname>
+    <innerfile refid="analysis_8cpp">analysis.cpp</innerfile>
+    <innerfile refid="augmented__systems_8cpp">augmented_systems.cpp</innerfile>
+    <innerfile refid="factorization_8cpp">factorization.cpp</innerfile>
+    <innerfile refid="init_8cpp">init.cpp</innerfile>
+    <innerfile refid="simple__sumproject_8cpp">simple_sumproject.cpp</innerfile>
+    <innerfile refid="sparse__simple__sumproject_8cpp">sparse_simple_sumproject.cpp</innerfile>
+    <innerfile refid="sumproject_8cpp">sumproject.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mzenadi/projects/abcd/src/mumps/"/>
+  </compounddef>
+</doxygen>
