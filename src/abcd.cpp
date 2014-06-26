@@ -355,43 +355,43 @@ int abcd::solveSystem()
     return 0;
 }
     
-///  The gateway function that launches all other options
-///
-/// \param job The job id
-/// \return Status code
-/// @TODO Replace the number of jobs by identifiers easy to remember
-int abcd::operator()(int job)
+/// The gateway function that launches all other options
+/// 
+/// \param job_id Identifies the operation to be run by the solver
+/// \todo Replace the number of jobs by identifiers easy to remember
+/// 
+int abcd::operator()(int job_id)
 {
     info[Controls::status] = 0;
 
-    LDEBUG3 << "MPI-Process " << comm.rank() << " called job = " << job;
+    LDEBUG3 << "MPI-Process " << comm.rank() << " called job_id = " << job_id;
     
-    if ( job == 1 && last_called_job != -1 ) {
+    if ( job_id == 1 && last_called_job != -1 ) {
         info[Controls::status] = -2;
-        throw std::runtime_error("Did you forget to call job = -1? ");
+        throw std::runtime_error("Did you forget to call job_id = -1? ");
+    }                                                           
+                                                                
+    if ( job_id == 2 && job <= 3 && last_called_job != 1) {        
+        info[Controls::status] = -2;                            
+        throw std::runtime_error("Did you forget to call job_id = 1? ");
+    }                                                           
+                                                                
+    if ( job_id == 3 && last_called_job != 2 && last_called_job_id != 3 ) {
+        info[Controls::status] = -2;                        
+        throw std::runtime_error("Did you forget to call job_id = 2? ");
     }
 
-    if ( job == 2 && job <= 3 && last_called_job != 1) {
-        info[Controls::status] = -2;
-        throw std::runtime_error("Did you forget to call job = 1? ");
-    }
-
-    if ( job == 3 && last_called_job != 2 && last_called_job != 3 ) {
-        info[Controls::status] = -2;
-        throw std::runtime_error("Did you forget to call job = 2? ");
-    }
-
-    if ( job < last_called_job && job != 3) {
+    if ( job_id < last_called_job && job_id != 3) {
         info[Controls::status] = -2;
         throw std::runtime_error("You cannot go back in time");
     }
 
-    if ( job == last_called_job && job != 3) {
+    if ( job_id == last_called_job && job_id != 3) {
         info[Controls::status] = -2;
         throw std::runtime_error("You cannot re-run the same job unless you want to re-run job_id = 3 ");
     }
     
-    switch(job) {
+    switch(job_id) {
 
     case -1:
         // in case the user decided to change the log_file name or
@@ -414,7 +414,7 @@ int abcd::operator()(int job)
         initializeMatrix();
 
         // if everything went alright, remember the job
-        last_called_job = job;
+        last_called_job = job_id;
 
         break;
 
@@ -422,7 +422,7 @@ int abcd::operator()(int job)
         preprocessMatrix();
 
         // if everything went alright, remember the job
-        last_called_job = job;
+        last_called_job = job_id;
 
         break;
 
@@ -430,7 +430,7 @@ int abcd::operator()(int job)
         factorizeAugmentedSystems();
 
         // if everything went alright, remember the job
-        last_called_job = job;
+        last_called_job = job_id;
 
         break;
 
@@ -438,7 +438,7 @@ int abcd::operator()(int job)
         solveSystem();
 
         // if everything went alright, remember the job
-        last_called_job = job;
+        last_called_job = job_id;
 
         break;
 
@@ -474,7 +474,7 @@ int abcd::operator()(int job)
     default:
         // Wrong job id
         info[Controls::status] = -1;
-        throw std::runtime_error("Wrong job id.");
+        throw std::runtime_error("Wrong job_id id.");
     }
     return 0;
 }

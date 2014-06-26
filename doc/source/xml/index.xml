@@ -1,6 +1,27 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.6">
   <compound refid="classabcd" kind="class"><name>abcd</name>
+    <member refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kind="variable"><name>m</name></member>
+    <member refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kind="variable"><name>n</name></member>
+    <member refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kind="variable"><name>nz</name></member>
+    <member refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kind="variable"><name>sym</name></member>
+    <member refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kind="variable"><name>irn</name></member>
+    <member refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kind="variable"><name>jcn</name></member>
+    <member refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kind="variable"><name>val</name></member>
+    <member refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kind="variable"><name>nrhs</name></member>
+    <member refid="classabcd_1a6d0201d9f397728a0cb9f0504570e958" kind="variable"><name>rhs</name></member>
+    <member refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" kind="variable"><name>sol</name></member>
+    <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kind="variable"><name>icntl</name></member>
+    <member refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kind="variable"><name>dcntl</name></member>
+    <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" kind="variable"><name>info</name></member>
+    <member refid="classabcd_1a8929be2a941d94806c90eb40a7366c9a" kind="variable"><name>dinfo</name></member>
+    <member refid="classabcd_1ace2325edd418de592d36d4ba3d2ee983" kind="variable"><name>write_problem</name></member>
+    <member refid="classabcd_1af72a892a19a1d3eb640638d532770ce8" kind="variable"><name>write_s</name></member>
+    <member refid="classabcd_1a6dbfdab8785ca4e04335b514df06cf57" kind="variable"><name>log_output</name></member>
+    <member refid="classabcd_1ad720ae148dc7e0aa94c19d20e655c187" kind="variable"><name>strow</name></member>
+    <member refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kind="variable"><name>nbrows</name></member>
+    <member refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kind="variable"><name>comm</name></member>
+    <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kind="variable"><name>parallel_cg</name></member>
     <member refid="classabcd_1af5397b434eab1f94cbbe4e104e93723b" kind="variable"><name>nrmA</name></member>
     <member refid="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" kind="variable"><name>nrmB</name></member>
     <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" kind="variable"><name>nrmXf</name></member>
@@ -69,27 +90,17 @@
     <member refid="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" kind="variable"><name>verbose</name></member>
     <member refid="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" kind="variable"><name>inter_comm</name></member>
     <member refid="classabcd_1a272df4807f77f34dc90146a76fc1a230" kind="variable"><name>intra_comm</name></member>
-    <member refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kind="variable"><name>m</name></member>
-    <member refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kind="variable"><name>n</name></member>
-    <member refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kind="variable"><name>nz</name></member>
-    <member refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kind="variable"><name>nrhs</name></member>
-    <member refid="classabcd_1ace2325edd418de592d36d4ba3d2ee983" kind="variable"><name>write_problem</name></member>
-    <member refid="classabcd_1af72a892a19a1d3eb640638d532770ce8" kind="variable"><name>write_s</name></member>
-    <member refid="classabcd_1a6dbfdab8785ca4e04335b514df06cf57" kind="variable"><name>log_output</name></member>
-    <member refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kind="variable"><name>irn</name></member>
-    <member refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kind="variable"><name>jcn</name></member>
-    <member refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kind="variable"><name>val</name></member>
-    <member refid="classabcd_1a6d0201d9f397728a0cb9f0504570e958" kind="variable"><name>rhs</name></member>
-    <member refid="classabcd_1ab5028be6534dc00db080cbba9ee23bd1" kind="variable"><name>sol</name></member>
-    <member refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kind="variable"><name>sym</name></member>
-    <member refid="classabcd_1ad720ae148dc7e0aa94c19d20e655c187" kind="variable"><name>strow</name></member>
-    <member refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kind="variable"><name>nbrows</name></member>
-    <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kind="variable"><name>parallel_cg</name></member>
-    <member refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kind="variable"><name>comm</name></member>
-    <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kind="variable"><name>icntl</name></member>
-    <member refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kind="variable"><name>dcntl</name></member>
-    <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" kind="variable"><name>info</name></member>
-    <member refid="classabcd_1a8929be2a941d94806c90eb40a7366c9a" kind="variable"><name>dinfo</name></member>
+    <member refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kind="function"><name>operator()</name></member>
+    <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kind="function"><name>initializeMatrix</name></member>
+    <member refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kind="function"><name>preprocessMatrix</name></member>
+    <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kind="function"><name>factorizeAugmentedSystems</name></member>
+    <member refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" kind="function"><name>solveSystem</name></member>
+    <member refid="classabcd_1a5e503b1e89268fbfad4399194895b683" kind="function"><name>abcd</name></member>
+    <member refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" kind="function"><name>~abcd</name></member>
+    <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" kind="function"><name>gqr</name></member>
+    <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" kind="function"><name>gqr</name></member>
+    <member refid="classabcd_1aedb08f01ec4ef119160da403cee682ea" kind="function"><name>gmgs</name></member>
+    <member refid="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" kind="function"><name>gmgs</name></member>
     <member refid="classabcd_1a92ee33baaed6bff47deff16943966123" kind="function"><name>scaling</name></member>
     <member refid="classabcd_1ae95e3e480eb2fad37901ef31bc45e274" kind="function"><name>scaleMatrix</name></member>
     <member refid="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" kind="function"><name>diagScaleMatrix</name></member>
@@ -140,17 +151,6 @@
     <member refid="classabcd_1ae9dbae8b952ba08d0c8bf29c0f9d0779" kind="function"><name>S_nbcols</name></member>
     <member refid="classabcd_1a482623996a6268d4b29cad1db5382122" kind="function"><name>S_nnz</name></member>
     <member refid="classabcd_1a33e3410c567ea50aa84a31c745b296ca" kind="function"><name>centralizeVector</name></member>
-    <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kind="function"><name>initializeMatrix</name></member>
-    <member refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kind="function"><name>preprocessMatrix</name></member>
-    <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kind="function"><name>factorizeAugmentedSystems</name></member>
-    <member refid="classabcd_1a973820a5a1f281828e47b70ee7f2da7f" kind="function"><name>solveSystem</name></member>
-    <member refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kind="function"><name>operator()</name></member>
-    <member refid="classabcd_1a5e503b1e89268fbfad4399194895b683" kind="function"><name>abcd</name></member>
-    <member refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" kind="function"><name>~abcd</name></member>
-    <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" kind="function"><name>gqr</name></member>
-    <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" kind="function"><name>gqr</name></member>
-    <member refid="classabcd_1aedb08f01ec4ef119160da403cee682ea" kind="function"><name>gmgs</name></member>
-    <member refid="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" kind="function"><name>gmgs</name></member>
   </compound>
   <compound refid="struct_m_u_m_p_s" kind="struct"><name>MUMPS</name>
     <member refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" kind="variable"><name>initialized</name></member>
@@ -455,6 +455,8 @@
     <member refid="logger_8cpp_1aa5b050be7887f0214c6391779dfe330c" kind="function"><name>logger_set_filename</name></member>
   </compound>
   <compound refid="worker_8cpp" kind="file"><name>worker.cpp</name>
+  </compound>
+  <compound refid="todo" kind="page"><name>todo</name>
   </compound>
   <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>/home/mzenadi/projects/abcd/include</name>
   </compound>

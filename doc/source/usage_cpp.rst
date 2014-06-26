@@ -12,10 +12,86 @@ the linear system entries) or by the solver once it's generated (such
 as the solution vector). The user can refer to :ref:`section_controls`
 for more details.
 
-Instantiating and calling the solver
-------------------------------------
+Instantiating the solver
+------------------------
+To use the solver, the user has to instantiate the class `abcd`. In
+the case of C, the user creates a structure object using the function
+#new_solver().  During the construction of the instance, the control
+parameters are initialized to their default value, see ::ref::`the
+controls description <section_controls>` for the list of the control
+parameters and their default value.
 
-To use the solver, the user has to instantiate the class `abcd`.
+For C++:
+
+.. code-block:: cpp
+
+    abcd obj; // instantiating the class
+
+For C, the solver is a structure called ``struct abcd``:
+
+.. todo:: write documentation in abcd_c.h file
+
+.. code-block:: c
+
+    structure abcd_solver *obj = new_solver(); // create a new solver
+
+Input matrix and right-hand side
+--------------------------------
+
+The current version of the ABCD Solver accepts only real, centralized, linear systems. The definition of the linear system uses the following information:
+
+.. doxygenclass:: abcd
+    :project: abcd                  
+    :members: m, n, nz, sym, irn, jcn, val, rhs, nrhs
+
+If either of the row and column indices start with **0** the arrays
+are supposed to be zero based (`C` arrays indexation), otherwise, if
+they start with **1** the arrays are supposed to be one based (`Fortran`
+arrays indexation). If however, none starts with **0** or **1** then there
+is either an empty row or an empty column and the solver raises an exception.
+
+In C++:
+
+.. code-block:: cpp
+
+    // Create an object for each mpi-process
+    abcd obj;
+    obj.n = 7;
+    obj.m = 7;
+    obj.nz = 15;
+    obj.sym = false;
+    if (world.rank() == 0) { // only the master is required to provide the matrix
+        // allocate the arrays
+        obj.irn = new int[obj.nz]
+        // put the data in the arrays
+        obj.irn[0] = 1;
+        //..
+    }
+
+In C:
+
+.. code-block:: cpp
+
+    // Create an object for each mpi-process
+    structure abcd_solver *obj = new_solver();
+
+    obj->n = 7;
+    obj->m = 7;
+    obj->nz = 15;
+    obj->sym = 0; 
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+
+    if (myrank == 0) { // only the master is required to provide the matrix
+        // allocate the arrays
+        obj->irn = (int*) malloc(sizeof(int)*(obj->nz));
+        // put the data in the arrays
+        obj->irn[0] = 1;
+        //..
+    }
+
+Calling the solver
+------------------------------------
 During the construction of the instance, the default parameters are
 initialized. The user can then call the object as a function
 (*functor*) with the job number as an argument.
@@ -37,29 +113,9 @@ values **-1**, and **1** through **6**. The order in
 which these jobs have to be called is described in :ref:`Job
 dependencies <job_flow>`.
 
-* **-1**, initializes the internal matrix used by the solver. Prior to this call, the user must provide:
-
-  - The information about the matrix ``m``, ``n``, ``nz``,
-    ``sym``, ``irn[]``, ``jcn[]``, ``val[]`` have to be initialized
-    before the call. See [Input matrix and right-hand side] for more detail.
-  - After the call, the arrays ``irn[]``, ``jcn[]``, ``val[]`` are no longer used by the solver.
-* **1**, performs the preprocessing. During this call, the solver
-  scales the matrix, partition it, and if required by the user
-  performs the augmentation of the matrix. Prior to this call, the
-  user must provide:
-
-  - The number of partitions to create (see ``icntl[nbparts]``) or ask the solver to guess the appropriate number of partitions (see ``icntl[part_guess]``)
-  - The type of scaling to perform (see ``icntl[scaling]``)
-  - The type of augmentation to perform (see ``icntl[aug_type]``)
-* **2**, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.
-* **3**, performs the solution step, the right-hand sides and their number are required prior to this call.
-
-  - The right-hand sides have to be given through the array ``rhs[]`` and their number in ``nrhs``.
-  - The block-size to be used during the bloc-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.
-  - The solution is centralized (on the master) in the array ``sol[]``.
-* **4**, regroups the call to the phases 1 and 2. 
-* **5**, regroups the call to the phases 2 and 3. 
-* **6**, regroups the call to the phases 1, 2 and 3.
+.. doxygenclass:: abcd
+    :project: abcd                  
+    :members: operator()
 
 .. _job_flow:
 
@@ -82,67 +138,6 @@ dependencies <job_flow>`.
     \path [line] (preprocess) -- (augsys);
     \path [line] (augsys) -- (solve);
     \path [line] (solve) -- +(0,-1.5) -| (retsol);
-
-Input matrix and right-hand side
---------------------------------
-
-The current version of the ABCD Solver accepts only real, centralized, linear systems. The definition of the linear system uses 7 members:
-
-- ``m`` (type: ``int``), the number of rows.
-- ``n`` (type: ``int``), the number of columns. 
-- ``nz`` (type: ``int``), the number of entries.
-- ``sym`` (type: ``bool``), the symmetry of the matrix. If the matrix is symmetric, the matrix must be given in a lower-triangular form.
-- ``irn`` (type: ``int *``), the row indices. 
-- ``jcn`` (type: ``int *``), the column indices.
-- ``val`` (type: ``double *``), the matrix entries.
-- ``rhs`` (type: ``double *``), the right-hand sides.
-- ``nrhs`` (type: ``int``), the number of right-hand sides (default value is 1)
-
-If either of the row and column indices start with **0** the arrays
-are supposed to be zero based (`C` arrays indexation), otherwise, if
-they start with **1** the arrays are supposed to be one based (`Fortran`
-arrays indexation). If however, none starts with **0** or **1** then there
-is either an empty row or an empty column and the solver raises an exception.
-
-In ``C++``:
-
-.. code-block:: cpp
-
-    // Create an object for each mpi-process
-    abcd obj;
-    obj.n = 7;
-    obj.m = 7;
-    obj.nz = 15;
-    obj.sym = false;
-    if (world.rank() == 0) { // only the master is required to provide the matrix
-        // allocate the arrays
-        obj.irn = new int[obj.nz]
-        // put the data in the arrays
-        obj.irn[0] = 1;
-        //..
-    }
-
-In ``C``:
-
-.. code-block:: cpp
-
-    // Create an object for each mpi-process
-    structure abcd_solver *obj = new_solver();
-
-    obj->n = 7;
-    obj->m = 7;
-    obj->nz = 15;
-    obj->sym = 0; 
-
-    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
-
-    if (myrank == 0) { // only the master is required to provide the matrix
-        // allocate the arrays
-        obj->irn = (int*) malloc(sizeof(int)*(obj->nz));
-        // put the data in the arrays
-        obj->irn[0] = 1;
-        //..
-    }
 
 .. _section_controls:
 

@@ -138,6 +138,135 @@ using namespace boost::lambda;
 
 class abcd
 {
+
+public:
+    /***************************************************************************
+     * Matrix information
+     **************************************************************************/
+    /*! The number of rows in the matrix */
+    int m;
+
+    /*!  The number of columns in the matrix */
+    int n; 
+
+    /*! The number of entries in the matrix */
+    int nz;
+
+    /*! The symmetry of the matrix
+     *
+     * - ``true``, The matrix is symmetric and should be given in a lower-triangular form
+     * - ``false``, The matrix is unsymmetric
+     */
+    bool sym;
+
+    /*! The row indices of size #nz */
+    int *irn;
+
+    /*! The column indices of size #nz */
+    int *jcn;
+
+    /*! The entries of the matrix of size #nz */
+    double *val;
+
+    /*! The number of right-hand sides to solve, default is 1 */
+    int nrhs;
+
+    /*! The right-hand side of size #m * #nrhs */
+    double *rhs;
+
+    /*!  The solution vector of size #n * #nrhs */
+    double *sol;
+
+    /*!  The gateway function that launches all other options
+     *
+     * Run an operation identified by the value of #job_id, it can be
+     * either of:
+     * - -1, initializes the internal matrix used by the
+     *      solver. Prior to this call, the user must provide:
+     *    * The information about the matrix #m, #n, #nz,
+     *      #sym, #irn, #jcn and #val have to be initialized before the
+     *      call.
+     *    * After the call, the arrays #irn, #jcn and #val
+     *      are no longer used by the solver.
+     * - 1, performs the preprocessing. During this call, the solver
+     *    scales the matrix, partition it, and if required by the user
+     *    performs the augmentation of the matrix. Prior to this call, the
+     *    user must provide:
+     *  
+     *    * The number of partitions to create (see #nbparts)
+     *       or ask the solver to guess the appropriate number of
+     *       partitions (see #part_guess)
+     *    * The type of scaling to perform (see #scaling)
+     *    * The type of augmentation to perform (see #aug_type)
+     * - 2, creates the augmented systems, analyses them, creates
+     *     the mapping between the different mpi-processes and
+     *     factorizes the augmented systems.
+     * - 3, performs the solution step, the right-hand sides and
+     *     their number are required prior to this call.
+     *     * The right-hand sides have to be given through the array
+     *        ``rhs[]`` and their number in ``nrhs``.
+     *     * The block-size to be used during the bloc-CG
+     *        acceleration. Its value is used only during the regular
+     *        block Cimmino solve, and by default its value is 1.
+     *     * The solution is centralized (on the master) in the array
+     *        ``sol[]``.
+     * - 4, regroups the call to the phases 1 and 2. 
+     * - 5, regroups the call to the phases 2 and 3. 
+     * - 6, regroups the call to the phases 1, 2 and 3.
+     *
+     * \param job_id Identifies the operation to be run by the solver
+     */
+    int operator() (int job);
+    
+    /***************************************************************************
+     * Communication info
+    ***************************************************************************/
+    /*! The integer control array, see Controls::icontrols for the possible values*/
+    std::vector<int> icntl;
+    std::vector<double> dcntl;
+    std::vector<int> info;
+    std::vector<double> dinfo;
+
+    /***************************************************************************
+     * Write problem and log
+    ***************************************************************************/
+    /*! The path where to write the matrix \f$PD_rAD_cP^T\f$ */
+    std::string write_problem;
+    /*! The path where to write the matrix \f$S_k\f$ where \f$k\f$ is the mpi-process rank */
+    std::string write_s;
+    /*! The file where to write logging information */
+    std::string log_output;
+    
+
+    /***************************************************************************
+     * Partitioning informations
+    ***************************************************************************/
+    /*! The starting row index of each partition */
+    std::vector<int> strow;
+    /*! The number of rows per partition */
+    std::vector<int> nbrows;
+
+
+    /***************************************************************************
+     * Communication info
+    ***************************************************************************/
+    /*! The global communicator */
+    mpi::communicator comm; 
+    /*! The number of parallel CG instances */
+    int parallel_cg;
+
+    int initializeMatrix();
+    int preprocessMatrix();
+    int factorizeAugmentedSystems();
+    int solveSystem();
+    
+    abcd();
+    ~abcd();
+
+    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
+    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
+    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
 private:
     // Types to be used localy
     double nrmA;
@@ -335,60 +464,6 @@ private:
                           std::vector<int> globalIndex, double *scale);
     
 
-public:
-    /***************************************************************************
-     * Matrix information
-     */
-    int m; ///< The number of rows in the linear system
-    int n; ///< The number of columns in the linear system
-    int nz; ///< The number of nonzeros in the linear system
-    int nrhs; ///< The number of right-hand sides to solve
-
-    
-    std::string write_problem; ///< The path where to write the matrix \f$PD_rAD_cP^T\f$
-    std::string write_s; ///< The path where to write the matrix \f$S_k\f$ where \f$k\f$ is the mpi-process rank
-    std::string log_output; ///< The file where to write logging information
-
-    int *irn; ///< The row indices
-    int *jcn; ///< The column indices
-    double *val; ///< The entries of the matrix
-    double *rhs; ///< The right-hand side
-    double *sol; ///<  The solution vector
-    
-    bool sym; ///< The symmetry of the matrix
-
-    /***************************************************************************
-     * Partitioning informations
-    ***************************************************************************/
-    std::vector<int> strow; /// The starting row index of each partition
-    std::vector<int> nbrows; /// The number of rows per partition
-
-
-    /***************************************************************************
-     * Communication info
-    ***************************************************************************/
-    int parallel_cg; ///< The number of parallel CG instances
-    mpi::communicator comm; 
-    
-    /// @ref Controls
-    std::vector<int> icntl;
-    std::vector<double> dcntl;
-    std::vector<int> info;
-    std::vector<double> dinfo;
-
-    int initializeMatrix();
-    int preprocessMatrix();
-    int factorizeAugmentedSystems();
-    int solveSystem();
-
-    int operator() (int job);
-    abcd();
-    ~abcd();
-
-    int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
-    int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
-    void gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
 };
 
 
