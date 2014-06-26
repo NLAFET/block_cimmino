@@ -41,21 +41,27 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
 #ifdef WIP
     double filter_c = dcntl[Controls::aug_filter];
 #endif //WIP
-    stC = std::vector<int>(M.size(), -1);
+    stC.assign(M.size(), -1);
 
     for( size_t i = 0; i < M.size() - 1; i++ ){
         for ( size_t j = i+1; j < M.size(); j++ ) {
             std::vector<int> intersect;
-            std::set_intersection(column_index[i].begin(), column_index[i].end(),
-                                    column_index[j].begin(), column_index[j].end(),
-                                    std::back_inserter(intersect));
+            std::set_intersection(column_index[i].begin(),
+                                  column_index[i].end(),
+                                  column_index[j].begin(),
+                                  column_index[j].end(),
+                                  std::back_inserter(intersect));
+
             if (intersect.empty()) continue;
 
-            CompCol_Mat_double A_ij = sub_matrix(M[i], intersect);
-            CompCol_Mat_double A_ji = sub_matrix(M[j], intersect);
+            CompCol_Mat_double A_ij(sub_matrix(M[i], intersect));
+            CompCol_Mat_double A_ji(sub_matrix(M[j], intersect));
 
-            for(int k = 0; k < A_ji.NumNonzeros(); k++)
-                A_ji.val(k) *= double(-1);
+            double *jv = A_ji.val_ptr();
+            for (int k = 0; k < A_ji.NumNonzeros(); k++) {
+                jv[k] *= -1.0;
+            }
+            
 
 #ifdef WIP
             if(filter_c != 0 || icntl[Controls::aug_iterative] != 0) {

@@ -371,12 +371,12 @@ int abcd::operator()(int job_id)
         throw std::runtime_error("Did you forget to call job_id = -1? ");
     }                                                           
                                                                 
-    if ( job_id == 2 && job <= 3 && last_called_job != 1) {        
+    if ( job_id == 2 && job_id <= 3 && last_called_job != 1) {        
         info[Controls::status] = -2;                            
         throw std::runtime_error("Did you forget to call job_id = 1? ");
     }                                                           
                                                                 
-    if ( job_id == 3 && last_called_job != 2 && last_called_job_id != 3 ) {
+    if ( job_id == 3 && last_called_job != 2 && last_called_job != 3 ) {
         info[Controls::status] = -2;                        
         throw std::runtime_error("Did you forget to call job_id = 2? ");
     }

@@ -43,34 +43,39 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     std::vector<double> rv;
     std::vector<int> target, target_idx;
 
-    CompRow_Mat_double *r = new CompRow_Mat_double[nb_local_parts];
     std::vector<std::map<int,int> > loc_cols(nb_local_parts);
 
     int nzr_estim = 0;
 
+    // The right-hand sides to be used with the direct solver 
+    std::vector<CompRow_Mat_double> r(nb_local_parts);
+
+    // r_k = A_k Y^T
     for(int k = 0; k < nb_local_parts; k++) {
 
         CompRow_Mat_double Y;
 
-        VECTOR_int yr(mycols.size(), 0);
-        VECTOR_int yc(mycols.size(), 0);
-        VECTOR_double yv(mycols.size(), 0);
+        std::vector<int> yr(mycols.size());
+        std::vector<int> yc(mycols.size());
+        std::vector<double> yv(mycols.size(), 1);
+        
         int c;
 
         int ct = 0;
+
         for(size_t i = 0; i < mycols.size(); i++){
             c = mycols[i];
             if(glob_to_part[k].find(n_o + c) != glob_to_part[k].end()){
                 yr[ct] = glob_to_part[k][n_o + c];
                 yc[ct] = i;
-                yv[ct] = 1;
 
                 ct++;
                 loc_cols[k][i] = 1;
             }
         }
 
-        Coord_Mat_double Yt(partitions[k].dim(1), s, ct, yv.ptr(), yr.ptr(), yc.ptr());
+        Coord_Mat_double Yt(partitions[k].dim(1),
+                            s, ct, &yv[0], &yr[0], &yc[0]);
 
         Y = CompRow_Mat_double(Yt);
 
@@ -109,7 +114,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
             int pos = 0;
             for(int k = 0; k < nb_local_parts; k++) {
-                CompRow_Mat_double rtt = r[k];
+                CompRow_Mat_double & rtt = r[k];
                 int _dim1 = partitions[k].dim(1);
                 int _dim0 = partitions[k].dim(0);
 
@@ -277,6 +282,4 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     } else {
         delete[] mumps.rhs;
     }
-
-    delete[] r;
 }

@@ -34,16 +34,21 @@
 #include "blas.h"
 
 #include <iostream>
+
+/// Uses Block-CG to solve Hx = k where H is the sum of projectors
+///  and k is \sum A_i^+ b_i
+///
+/// The block-size is defined in icntl[Controls::block_size]
+/// \param b The right-hand side
 void abcd::bcg(MV_ColMat_double &b)
 {
     std::streamsize oldprec = std::cout.precision();
-
     double t, t1, t2, t1_total, t2_total;
     
-    double threshold = dcntl[Controls::threshold];
-    int block_size = icntl[Controls::block_size];
+    const double threshold = dcntl[Controls::threshold];
+    const int block_size = icntl[Controls::block_size];
+    const int itmax = icntl[Controls::itmax];
 
-    int itmax = icntl[Controls::itmax];
     // s is the block size of the current run
     int s = std::max<int>(block_size, nrhs);
 
@@ -54,13 +59,12 @@ void abcd::bcg(MV_ColMat_double &b)
         throw std::runtime_error("Max iter number should be at least zero (0)");
     }
 
-    //exit(0);
     if(!use_xk) {
         Xk = MV_ColMat_double(n, nrhs, 0);
     }
 
-    // temporary solution
     MV_ColMat_double u(m, nrhs, 0);
+    // get a reference to the nrhs first columns
     u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
 
     MV_ColMat_double p(n, s, 0);
@@ -72,7 +76,8 @@ void abcd::bcg(MV_ColMat_double &b)
     MV_ColMat_double prod_gamma(nrhs, nrhs, 0);
     MV_ColMat_double e1(s, nrhs, 0);
 
-
+    MV_ColMat_double gu, bu, pl;
+    
     double thresh = threshold;
 
     double *qp_ptr = qp.ptr();
@@ -109,19 +114,19 @@ void abcd::bcg(MV_ColMat_double &b)
 
 
     t1_total = MPI_Wtime() - t1_total;
+
     // orthogonalize
     // r = r*gamma^-1
-
     if(icntl[Controls::use_gmgs2] != 0){
-        gmgs(r, r, gammak, s, false);
+        gmgs2(r, r, gammak, s, false);
     } else if(gqr(r, r, gammak, s, false) != 0){
-        gmgs(r, r, gammak, s, false);
+        gmgs2(r, r, gammak, s, false);
     }
 
     p = r;
     {
         MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
-        prod_gamma = MV_ColMat_double(upperMat(gu));
+        prod_gamma = upperMat(gu);
     }
 
 
@@ -142,25 +147,27 @@ void abcd::bcg(MV_ColMat_double &b)
         it++;
         t = MPI_Wtime();
 
+        // qp = Hp
         qp = sumProject(0e0, b, 1e0, p);
 
         t1 = MPI_Wtime() - t;
 
+        // betak^T betak = chol(p^Tqp)
         if(icntl[Controls::use_gmgs2] != 0){
-            gmgs(p, qp, betak, s, true);
+            gmgs2(p, qp, betak, s, true);
         } else if(gqr(p, qp, betak, s, true) != 0){
-            gmgs(p, qp, betak, s, true);
+            gmgs2(p, qp, betak, s, true);
         }
 
         lambdak = e1;
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
 
+        // pl = p * lambda_k * prod_gamma
         lambdak = gemmColMat(lambdak, prod_gamma);
+        pl = gemmColMat(p, lambdak);
 
-
-        MV_ColMat_double pl = gemmColMat(p, lambdak);
-
+        // x = x + pl
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
 
@@ -175,15 +182,19 @@ void abcd::bcg(MV_ColMat_double &b)
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 
-        if(gqr(r, r, gammak, s, false) != 0)
-            gmgs(r, r, gammak, s, false);
+        if(icntl[Controls::use_gmgs2] != 0){
+            gmgs2(r, r, gammak, s, false);
+        } else if(gqr(r, r, gammak, s, false) != 0){
+            gmgs2(r, r, gammak, s, false);
+        }
 
-        MV_ColMat_double gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
-        gu = MV_ColMat_double(upperMat(gu));
+        gu = gammak(MV_VecIndex(0, nrhs -1), MV_VecIndex(0, nrhs -1));
+        gu = upperMat(gu);
 
         prod_gamma = gemmColMat(gu, prod_gamma);
+        
         gammak = upperMat(gammak);
-        MV_ColMat_double bu = upperMat(betak);
+        bu = upperMat(betak);
 
         // bu * gammak^T
         betak = gemmColMat(bu, gammak, false, true);
@@ -239,7 +250,7 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
     return rho;
 }
 
-void abcd::gmgs(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)
+void abcd::gmgs2(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a)
 {
 
     int *gr = new int[AP.dim(0)];
@@ -255,7 +266,7 @@ void abcd::gmgs(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, 
 
     CompCol_Mat_double G(AP.dim(0), AP.dim(0), AP.dim(0), gv, gr, gc);
 
-    abcd::gmgs(P, AP, R, G, s, use_a);
+    abcd::gmgs2(P, AP, R, G, s, use_a);
     delete[] gr;
     delete[] gc;
     delete[] gv;
@@ -283,10 +294,10 @@ int abcd::gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, in
     return gqr(P, AP, R, G, s, use_a);
 }
 
-/** Generalized modifed Gram-Schmidt
+/** Generalized modifed Gram-Schmidt squared
  *
  */
-void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
+void abcd::gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
                 CompCol_Mat_double g, int s, bool use_a)
 {
     r = MV_ColMat_double(s, s, 0);
@@ -312,6 +323,14 @@ void abcd::gmgs(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         }
         // if all is fine, do an sqrt:
         r(k, k) = sqrt(r(k, k));
+
+        if (r(k,k) != r(k,k)) {
+            info[Controls::status] = -12;
+            mpi::broadcast(intra_comm, info[Controls::status], 0);
+
+            throw std::runtime_error("Error with GMGS2, stability issues.");
+        }
+        
         p_k = p_k / r(k, k);
         
         p.setCol(p_k, k);
@@ -343,7 +362,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     MV_ColMat_double loc_r(s, s, 0);
 
     int pos = 0;
-    //  A corriger 
     if(use_a) {
         for(int i = 0; i < n; i++) {
             if(comm_map[i] == 1) {

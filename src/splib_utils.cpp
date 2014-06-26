@@ -160,7 +160,7 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
 
 
     // Compute the number of non-zeros
-    for(int k=0; k < ci.size(); k++){
+    for(int k=0; k < ci.size(); ++k){
         st_col = M_col_ptr[ci[k]];
         ed_col = M_col_ptr[ci[k] + 1];
 
@@ -170,7 +170,7 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
         if (st_col == ed_col) continue;
 
         c += nzc;
-        j++;
+        ++j;
     }
 
     std::vector<int> v_sm_c(ci.size() + 1);

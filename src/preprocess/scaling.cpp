@@ -60,13 +60,15 @@ void abcd::scaling()
         dcol_.assign(n, double(1));
         drow_.resize(m);
 
-        for(int r = 0; r < m; r++) {
+#pragma omp parallel for private(rsum)
+        for(int r = 0; r < m; ++r) {
             rsum = 0;
             for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
                 rsum += pow(A(r, A.col_ind(c)), 2);
             }
             drow_[r] = 1/sqrt(rsum);
         }
+
         abcd::diagScaleMatrix(drow_, dcol_);
     }
 
@@ -147,10 +149,12 @@ void abcd::scaleMatrix(int norm)
         LINFO2 << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
 
     // put them back to 0-based for C/C++
-    for(int k = 0; k < n + 1 ; k++) {
+    #pragma omp parallel for
+    for(int k = 0; k < n + 1 ; ++k) {
         a_rp[k]--;
     }
-    for(int k = 0; k < nz ; k++) {
+    #pragma omp parallel for
+    for(int k = 0; k < nz ; ++k) {
         a_cp[k]--;
     }
 
@@ -158,11 +162,13 @@ void abcd::scaleMatrix(int norm)
     std::vector<double> dr(m, double(1));
     
     // Scale the matrix
+    #pragma omp parallel for
     for(int k = 0; k < n; k++) {
         dc[k] = double(1) / dw[k];
         dcol_[k] *= double(1) / dw[k];
     }
 
+    #pragma omp parallel for
     for(int k = 0; k < m; k++) {
         dr[k] = double(1) / dw[k + n];
         drow_[k] *= double(1) / dw[k + n];
@@ -183,10 +189,15 @@ void abcd::scaleMatrix(int norm)
     void
 abcd::diagScaleMatrix (std::vector<double> &drow, std::vector<double> &dcol)
 {
+    int *rp = A.rowptr_ptr();
+    int *ci = A.colind_ptr();
+    double *v = A.val_ptr();
+    
+    #pragma omp parallel for
     for ( int i = 0; i < A.dim(0); i++ ) {
-        for ( int j = A.row_ptr(i); j < A.row_ptr(i+1); j++ ) {
-            A.val(j) = drow[i] * A.val(j); 
-            A.val(j) = A.val(j) * dcol[A.col_ind(j)];
+        for ( int j = rp[i]; j < rp[i+1]; j++ ) {
+            v[j] = drow[i] * v[j]; 
+            v[j] = v[j] * dcol[ci[j]];
         }
     }
 }		/* -----  end of function abcd::diagscal  ----- */
@@ -201,6 +212,7 @@ abcd::diagScaleMatrix (std::vector<double> &drow, std::vector<double> &dcol)
     void
 abcd::diagScaleRhs ( VECTOR_double &b)
 {
+    #pragma omp parallel for
     for ( int i = 0; i < m; i++ ) {
         b(i) = b(i)*drow_[i];
     }
@@ -209,6 +221,7 @@ abcd::diagScaleRhs ( VECTOR_double &b)
     void
 abcd::diagScaleRhs ( MV_ColMat_double &B)
 {
+    #pragma omp parallel for
     for ( int i = 0; i < B.dim(0); i++ ) 
         for ( int j = 0; j < B.dim(1); j++ ) 
             B(i,j) = B(i,j)*drow_[i];

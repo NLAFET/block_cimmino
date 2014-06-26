@@ -52,15 +52,18 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     for( size_t i = 0; i < M.size() - 1; i++ ){
         for ( size_t j = i+1; j < M.size(); j++ ) {
             std::vector<int> intersect;
-            std::set_intersection(column_index[i].begin(), column_index[i].end(),
-                                    column_index[j].begin(), column_index[j].end(),
-                                    std::back_inserter(intersect));
+            std::set_intersection(column_index[i].begin(),
+                                  column_index[i].end(),
+                                  column_index[j].begin(),
+                                  column_index[j].end(),
+                                  std::back_inserter(intersect));
+
             if (intersect.empty()) continue;
 
             CompCol_Mat_double C_ij;
             {
-                CompRow_Mat_double A_ij = CompRow_Mat_double(sub_matrix(M[i], intersect));
-                CompRow_Mat_double A_ji = CompRow_Mat_double(sub_matrix(M[j], intersect));
+                CompRow_Mat_double A_ij(sub_matrix(M[i], intersect));
+                CompRow_Mat_double A_ji(sub_matrix(M[j], intersect)));
                 CompRow_Mat_double A_jiT = csr_transpose(A_ji);
                 C_ij = spmm(A_ij, A_jiT);
             }
@@ -160,13 +163,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
 
             int n_cij_before = C_ij.dim(1);
 
-
-            // C_ij = CompCol_Mat_double(C_ij.dim(0), ci.size(), C_ij.NumNonzeros(),
-            //         C_ij.val(MV_VecIndex()), C_ij.row_ind(MV_VecIndex()),
-            //         C_ij.col_ptr(MV_VecIndex(0,ci.size())));
-            // cout << C_ij << endl;
             C_ij = sub_matrix(C_ij, ci);
-
 
             //// Build compressed I
             CompCol_Mat_double I;
@@ -177,7 +174,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                 for(int k = 0; k < C_ij.dim(1); k++){
                     ir(k) = ci[k];
                     ic(k) = k;
-                    iv(k) = (double) -1.0;
+                    iv(k) = -1.0;
                 }
                 ic(C_ij.dim(1)) = C_ij.dim(1) + 1;
 
