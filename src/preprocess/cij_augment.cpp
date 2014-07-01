@@ -63,7 +63,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
             CompCol_Mat_double C_ij;
             {
                 CompRow_Mat_double A_ij(sub_matrix(M[i], intersect));
-                CompRow_Mat_double A_ji(sub_matrix(M[j], intersect)));
+                CompRow_Mat_double A_ji(sub_matrix(M[j], intersect));
                 CompRow_Mat_double A_jiT = csr_transpose(A_ji);
                 C_ij = spmm(A_ij, A_jiT);
             }

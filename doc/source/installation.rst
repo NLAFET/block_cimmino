@@ -2,9 +2,9 @@
 Installation
 ============
 
-The ABCD Solver depends on a few libraries: ``MUMPS 5.0``, ``Sparselib++ (custom)``, ``PaToH``, ``lapack`` and ``Boost::MPI``.
+The ABCD Solver depends on a few external libraries: ``MUMPS 5.0``, ``Sparselib++ (custom)``, ``PaToH``, ``lapack`` and ``Boost::MPI``.
 
-The installation can be done by writing the following commands:
+The installation can be done by typing the following commands in your terminal
 
 .. code-block:: bash
 

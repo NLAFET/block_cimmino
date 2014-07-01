@@ -258,13 +258,13 @@ public:
     abcd();
     ~abcd();
 
+
+private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
     void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
     void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
-    
 
-private:
     // Types to be used localy
     double nrmA;
     double nrmB;
@@ -384,9 +384,9 @@ private:
     std::vector<double> drow_;
     std::vector<double> dcol_;
 
-    /***************************************************************************
+    /**************************************************************************
      * The matrix object itself
-    ***************************************************************************/
+    **************************************************************************/
     MUMPS mumps_S;
     Coord_Mat_double S;
     std::vector<int> S_rows;
