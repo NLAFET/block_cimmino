@@ -355,11 +355,7 @@ int abcd::solveSystem()
     return 0;
 }
     
-/// The gateway function that launches all other options
-/// 
-/// \param job_id Identifies the operation to be run by the solver
-/// \todo Replace the number of jobs by identifiers easy to remember
-/// 
+// The gateway function that launches all other options
 int abcd::operator()(int job_id)
 {
     info[Controls::status] = 0;

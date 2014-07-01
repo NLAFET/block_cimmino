@@ -141,9 +141,6 @@ public:
     int nz;
 
     /*! The symmetry of the matrix
-     *
-     * - ``true``, The matrix is symmetric and should be given in a lower-triangular form
-     * - ``false``, The matrix is unsymmetric
      */
     bool sym;
 
@@ -167,7 +164,7 @@ public:
 
     /*!  The gateway function that launches all other options
      *
-     * Run an operation identified by the value of #job_id, it can be
+     * Run an operation identified by the value of job_id, it can be
      * either of:
      * - -1, initializes the internal matrix used by the
      *      solver. Prior to this call, the user must provide:
@@ -181,11 +178,11 @@ public:
      *    performs the augmentation of the matrix. Prior to this call, the
      *    user must provide:
      *  
-     *    * The number of partitions to create (see #nbparts)
+     *    * The number of partitions to create (see Controls#nbparts)
      *       or ask the solver to guess the appropriate number of
-     *       partitions (see #part_guess)
-     *    * The type of scaling to perform (see #scaling)
-     *    * The type of augmentation to perform (see #aug_type)
+     *       partitions (see Controls#part_guess)
+     *    * The type of scaling to perform (see Controls#scaling)
+     *    * The type of augmentation to perform (see Controls#aug_type)
      * - 2, creates the augmented systems, analyses them, creates
      *     the mapping between the different mpi-processes and
      *     factorizes the augmented systems.
@@ -193,7 +190,7 @@ public:
      *     their number are required prior to this call.
      *     * The right-hand sides have to be given through the array
      *        ``rhs[]`` and their number in ``nrhs``.
-     *     * The block-size to be used during the bloc-CG
+     *     * The block-size to be used during the block-CG
      *        acceleration. Its value is used only during the regular
      *        block Cimmino solve, and by default its value is 1.
      *     * The solution is centralized (on the master) in the array
@@ -204,7 +201,7 @@ public:
      *
      * \param job_id Identifies the operation to be run by the solver
      */
-    int operator() (int job);
+    int operator() (int job_id);
     
     /**************************************************************************
      * Communication info

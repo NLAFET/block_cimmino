@@ -90,7 +90,7 @@
     <member refid="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" kind="variable"><name>verbose</name></member>
     <member refid="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" kind="variable"><name>inter_comm</name></member>
     <member refid="classabcd_1a272df4807f77f34dc90146a76fc1a230" kind="variable"><name>intra_comm</name></member>
-    <member refid="classabcd_1a4d617e37e84b29b8a1ff17ebb5ffcd19" kind="function"><name>operator()</name></member>
+    <member refid="classabcd_1a1d6bfabb85f3219d7b4695f8af018dbf" kind="function"><name>operator()</name></member>
     <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" kind="function"><name>initializeMatrix</name></member>
     <member refid="classabcd_1a710c61735ebd14882d3ccb1fd34b39fb" kind="function"><name>preprocessMatrix</name></member>
     <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kind="function"><name>factorizeAugmentedSystems</name></member>
@@ -99,8 +99,8 @@
     <member refid="classabcd_1aa8cd8cb4ff2a6943c08e418f16442302" kind="function"><name>~abcd</name></member>
     <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" kind="function"><name>gqr</name></member>
     <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" kind="function"><name>gqr</name></member>
-    <member refid="classabcd_1aedb08f01ec4ef119160da403cee682ea" kind="function"><name>gmgs</name></member>
-    <member refid="classabcd_1a41d222dbab738ad1cbc067bdf7ed964b" kind="function"><name>gmgs</name></member>
+    <member refid="classabcd_1af89e88ee8b11f36c47fd09df323d187d" kind="function"><name>gmgs2</name></member>
+    <member refid="classabcd_1a57ffae86b1a9461163c887e5163a11ac" kind="function"><name>gmgs2</name></member>
     <member refid="classabcd_1a92ee33baaed6bff47deff16943966123" kind="function"><name>scaling</name></member>
     <member refid="classabcd_1ae95e3e480eb2fad37901ef31bc45e274" kind="function"><name>scaleMatrix</name></member>
     <member refid="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" kind="function"><name>diagScaleMatrix</name></member>
@@ -455,8 +455,6 @@
     <member refid="logger_8cpp_1aa5b050be7887f0214c6391779dfe330c" kind="function"><name>logger_set_filename</name></member>
   </compound>
   <compound refid="worker_8cpp" kind="file"><name>worker.cpp</name>
-  </compound>
-  <compound refid="todo" kind="page"><name>todo</name>
   </compound>
   <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>/home/mzenadi/projects/abcd/include</name>
   </compound>

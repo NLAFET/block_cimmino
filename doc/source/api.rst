@@ -2,9 +2,10 @@
 API (work in progress)
 **********************************************
 
-.. doxygenclass:: abcd
-    :project: abcd
-    :members: 
+..
+   .. doxygenclass:: abcd
+       :project: abcd
+       :members: 
 
-.. doxygenfile:: defaults.h
-   :project: abcd
+   .. doxygenfile:: defaults.h
+      :project: abcd

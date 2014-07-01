@@ -2,42 +2,21 @@
 Installation
 ============
 
-The ABCD Solver depends on a few libraries: ``MUMPS 5.0 (custom)``, ``Sparselib++ (custom)``, ``PaToH``, ``lapack`` and ``Boost::MPI``.
+The ABCD Solver depends on a few libraries: ``MUMPS 5.0``, ``Sparselib++ (custom)``, ``PaToH``, ``lapack`` and ``Boost::MPI``.
 
-First, clone the latest version of the ``ABCD Solver``:
-
-.. code-block:: bash
-
-    # download the latest stable version
-    git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    # get the dev version
-    git checkout dev
-
-* ``MUMPS 5.0 (custom)``: a modified version of ``MUMPS`` to suits our
-  needs, it is distributed with our solver in the ``lib/mumps/``
-  directory. The distributed version is compiled in ``x86_64``
-  compilers, a ``i686`` version can be distributed on request.
-* ``Sparselib++ (custom)``: a modified version of ``SparseLib++`` to suits our needs, is also distributed with our solver in the ``lib/sparselib`` directory.
-
-- ``PaToH``: Can be downloaded from
-  [Ümit V. Çatalyürek](http://bmi.osu.edu/~umit/software.html)
-  webpage. The file ``libpatoh.a`` has to be copied into the ``lib/``
-  directory and the header `patho.h` has to be copied into the
-  ``include`` directory.
-
-To summarize, here is a simple script that will do everything:
+The installation can be done by writing the following commands:
 
 .. code-block:: bash
 
     # download the latest stable version
     git clone https://gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
-    # get the dev version
-    git checkout dev
 
+    # we need to download PaToH
     cd abcd/lib
 
     # download the appropriate version of patoh
-    # replace the ... by the build version
+    # replace the ... by the build version as described on
+    # http://bmi.osu.edu/~umit/software.html
     wget http://bmi.osu.edu/~umit/PaToH/...tar.gz
     # extract
     tar xvzf patoh-....tar.gz
@@ -45,6 +24,20 @@ To summarize, here is a simple script that will do everything:
     cp build/.../patoh.h ../include/
     rm -rf build patoh-....tar.gz
     cd ..
+
+* ``MUMPS 5.0``: The latest version of ``MUMPS``, it is distributed
+  with our solver in the ``lib/mumps/`` directory. The distributed
+  version is compiled in ``x86_64`` compilers, a ``i686`` version can
+  be distributed on request.
+* ``Sparselib++ (custom)``: a modified version of ``SparseLib++`` to
+  suits our needs, is also distributed with our solver in the
+  ``lib/sparselib`` directory.
+
+- ``PaToH``: Can be downloaded from
+  `Ümit V. Çatalyürek <http://bmi.osu.edu/~umit/software.html>`_.
+  webpage. The file ``libpatoh.a`` has to be copied into the ``lib/``
+  directory and the header `patho.h` has to be copied into the
+  ``include`` directory.
 
 Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the ``cmake.in`` directory, suppose we are going to use the ``ACML`` library (provides ``blas`` and ``lapack``). 
 
@@ -71,7 +64,7 @@ use the file ``cmake.in/abcdCmake.in.MKL``, or just change this part:
         )
 
 In this example we used the non-threaded version of these libraries,
-for the ``ACML`` library use the ``_mp`` suffix, for ``MKL`` use the [Intel®
-Math Kernel Library Link Line
-Advisor](https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor)
+for the ``ACML`` library use the ``_mp`` suffix, for ``MKL`` use the
+`Intel® Math Kernel Library Link Line
+Advisor <https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor>`_
 to obtain the correct set of libraries.

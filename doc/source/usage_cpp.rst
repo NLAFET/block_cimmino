@@ -17,7 +17,7 @@ Instantiating the solver
 To use the solver, the user has to instantiate the class `abcd`. In
 the case of C, the user creates a structure object using the function
 #new_solver().  During the construction of the instance, the control
-parameters are initialized to their default value, see ::ref::`the
+parameters are initialized to their default value, see :ref:`the
 controls description <section_controls>` for the list of the control
 parameters and their default value.
 
