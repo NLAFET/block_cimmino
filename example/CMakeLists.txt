@@ -5,6 +5,8 @@ set(BUILD_TYPE "Release")
 include(../abcdCmake.in)
 project(example)
 
+set(CMAKE_CXX_FLAGS "-fopenmp")
+
 find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
