@@ -27,9 +27,7 @@ int main(int argc, char* argv[])
     if(obj.comm.rank() == 0) { // the master
 
         // we want that only the master logs data
-        obj.icntl[Controls::verbose_level] = 2;
-        obj.icntl[Controls::block_size] = 2;
-        obj.icntl[Controls::aug_type] = 2;
+        obj.icntl[Controls::verbose_level] = 1;
 
         init_2d_lap(obj, 1000);
 
@@ -42,7 +40,7 @@ int main(int argc, char* argv[])
 
     try {
         obj(-1);
-        obj(1); // equivalent to running 1, 2 and 3 successively
+        obj(6); // equivalent to running 1, 2 and 3 successively
     } catch (runtime_error err) {
         cout << "An error occured: " << err.what() << endl;
     }
