@@ -27,9 +27,9 @@ int main(int argc, char* argv[])
     if(obj.comm.rank() == 0) { // the master
 
         // we want that only the master logs data
-        obj.icntl[Controls::verbose_level] = 1;
+        obj.icntl[Controls::verbose_level] = 2;
 
-        init_2d_lap(obj, 1000);
+        init_2d_lap(obj, 400);
 
         // set the rhs
         obj.rhs = new double[obj.m];
