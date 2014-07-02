@@ -5,7 +5,9 @@ docs/doxy/*
 \.*
 !.gitignore
 !.gitmodules
-doc_output/*
+example/*
+!example/example.cpp
+!example/CMakeLists.txt
 
 
 # Compiled Object files
