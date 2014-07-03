@@ -8,6 +8,7 @@ docs/doxy/*
 example/*
 !example/example.cpp
 !example/CMakeLists.txt
+*.kdev4
 
 
 # Compiled Object files
