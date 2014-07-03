@@ -265,29 +265,26 @@ private:
     void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, int s, bool use_a);
     void gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
 
-    // Types to be used localy
+    // norms
     double nrmA;
     double nrmB;
     double nrmXf;
     double nrmMtx;
 
+    // to check the order of calls
     int last_called_job;
 
     // preprocess stuffs
+    std::vector<double> drow_;
+    std::vector<double> dcol_;
+
     void scaling();
-    /**
-     * Scales the matrix
-     * @norm the norm at which the matrix is scaled
-     */
+
+    // Scales the matrix
     void scaleMatrix(int norm);
     void diagScaleMatrix(std::vector<double> & , std::vector<double> & );
     void diagScaleRhs(VECTOR_double &);
     void diagScaleRhs(MV_ColMat_double &);
-    /**
-     * Computes the norm of the matrix
-     * @todo implement it!
-     */
-    void computeNorms();
 
     // structure functions
     /// Partitions the matrix into abcd::nbrows
@@ -304,9 +301,8 @@ private:
      */
     int instance_type;
     
-    /*-----------------------------------------------------------------------------
-     *  Build the augmented version of the matrix (ABCD)
-     *-----------------------------------------------------------------------------*/
+    // Build the augmented version of the matrix (ABCD)
+    int size_c;
     void augmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
     void cijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
     void aijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
@@ -318,19 +314,27 @@ private:
 
     void distributeData();
 
+    void solveABCD(MV_ColMat_double &b);
+    MV_ColMat_double solveS ( MV_ColMat_double &f );
+
+    void buildS(std::vector<int> &rows,
+                std::vector<int> &cols,
+                std::vector<double> &vals);
+
+    void buildS(std::vector<int> &rows,
+                std::vector<int> &cols,
+                std::vector<double> &vals,
+                std::vector<int> &columns_to_build);
+
+    Coord_Mat_double buildS();
+    Coord_Mat_double buildS(std::vector<int>);
+
     // Cimmino
     void initializeCimmino();
     void distributeRhs();
     void distributeNewRhs();
     void bcg(MV_ColMat_double &b);
-    void solveABCD(MV_ColMat_double &b);
-    MV_ColMat_double solveS ( MV_ColMat_double &f );
 
-    void buildS(std::vector<int> &rows, std::vector<int> &cols, std::vector<double> &vals);
-    void buildS(std::vector<int> &rows, std::vector<int> &cols, std::vector<double> &vals, std::vector<int> &columns_to_build);
-
-    Coord_Mat_double buildS();
-    Coord_Mat_double buildS(std::vector<int>);
     MUMPS buildM();
     VECTOR_double solveM ( MUMPS &mu, VECTOR_double &z );
     MV_ColMat_double prodSv(MV_ColMat_double &);
@@ -339,12 +343,10 @@ private:
     std::vector<int> skipped_S_columns;
     double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U);
     std::vector<double> normres;
-    int size_c;
 
     // MUMPS
     int m_n;
     int m_nz;
-
     int n_aug, nz_aug;
     std::vector<int> irn_aug, jcn_aug;
     std::vector<double> val_aug;
@@ -352,48 +354,46 @@ private:
     MUMPS mumps;
     void initializeMumps(MUMPS &, bool local);
     void initializeMumps(MUMPS &);
-    void createAugmentedSystems(int &n_aug, int &nz_aug, std::vector<int> &irn_aug, std::vector<int> &jcn_aug, std::vector<double> &val_aug);
+    void createAugmentedSystems(int &n_aug,
+                                int &nz_aug,
+                                std::vector<int> &irn_aug,
+                                std::vector<int> &jcn_aug,
+                                std::vector<double> &val_aug);
     void analyseAugmentedSystems(MUMPS &);
     void allocateMumpsSlaves(MUMPS &);
     void factorizeAugmentedSystems(MUMPS &);
-    std::vector<int> my_slaves;
-    int my_master;
-    MV_ColMat_double sumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X);
-    MV_ColMat_double coupleSumProject(double alpha, MV_ColMat_double &Rhs, double beta, MV_ColMat_double &X, int my_bro);
 
-    MV_ColMat_double simpleProject(MV_ColMat_double &X);
-
+    MV_ColMat_double sumProject(double alpha,
+                                MV_ColMat_double &Rhs,
+                                double beta,
+                                MV_ColMat_double &X);
     MV_ColMat_double spSimpleProject(std::vector<int> mycols);
-
     void spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
                          std::vector<int> &vcols, std::vector<double> &vvals);
+
+    int my_master;
+    std::vector<int> my_slaves;
+
 
     void waitForSolve();
     std::vector<int> comm_map;
 
     // SOme utilities
-    void partitionWeights(std::vector<std::vector<int> > &, std::vector<int>, int);
+    void partitionWeights(std::vector<std::vector<int> > &parts,
+                          std::vector<int> weights, int nb_parts);
     void partitioning(std::vector<std::vector<int> > &, std::vector<int>, int);
     double ddot(VECTOR_double &p, VECTOR_double &ap);
-    void get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX);
+    void get_nrmres(MV_ColMat_double &x,
+                    MV_ColMat_double &b,
+                    double &nrmR,
+                    double &nrmX,
+                    double &nrmXfmX);
 
-
-    /*
-     * Scaling information
-     */
-    std::vector<double> drow_;
-    std::vector<double> dcol_;
-
-    /**************************************************************************
-     * The matrix object itself
-    **************************************************************************/
     MUMPS mumps_S;
     Coord_Mat_double S;
     std::vector<int> S_rows;
     std::vector<int> S_cols;
     std::vector<double> S_vals;
-    inline int S_nbrows() { return size_c; }
-    inline int S_nbcols() { return size_c; }
     inline int S_nnz() { return S_vals.size(); }
 
     std::map<int, CompRow_Mat_double> parts;

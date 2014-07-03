@@ -59,9 +59,11 @@ void abcd::distributeData()
                 inter_comm.send(i, 1, parts[j].NumNonzeros());
                 inter_comm.send(i, 2, sh);
                 inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 3, parts[j].colind_ptr(),
+                                parts[j].NumNonzeros());
                 inter_comm.send(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
-                inter_comm.send(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 5, parts[j].val_ptr(),
+                                parts[j].NumNonzeros());
 
                 inter_comm.send(i, 6, column_index[j]);
 

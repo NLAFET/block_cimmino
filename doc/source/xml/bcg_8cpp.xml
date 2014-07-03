@@ -239,7 +239,7 @@
 <codeline lineno="43"><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::bcg(MV_ColMat_double<sp/>&amp;b)</highlight></codeline>
 <codeline lineno="44"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streamsize<sp/>oldprec<sp/>=<sp/>std::cout.precision();</highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t,<sp/>t1,<sp/>t2,<sp/>t1_total,<sp/>t2_total;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t1_total,<sp/>t2_total;</highlight></codeline>
 <codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kindref="member">threshold</ref><sp/>=<sp/><ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[<ref refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kindref="member">Controls::threshold</ref>];</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">block_size</ref><sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">Controls::block_size</ref>];</highlight></codeline>
@@ -341,12 +341,12 @@
 <codeline lineno="145"><highlight class="normal"></highlight></codeline>
 <codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(</highlight><highlight class="keyword">true</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
 <codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>it++;</highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="149"><highlight class="normal"></highlight></codeline>
 <codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>qp<sp/>=<sp/>Hp</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qp<sp/>=<sp/>sumProject(0e0,<sp/>b,<sp/>1e0,<sp/>p);</highlight></codeline>
 <codeline lineno="152"><highlight class="normal"></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t1<sp/>=<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t1<sp/>=<sp/>MPI_Wtime()<sp/>-<sp/>t;</highlight></codeline>
 <codeline lineno="154"><highlight class="normal"></highlight></codeline>
 <codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>betak^T<sp/>betak<sp/>=<sp/>chol(p^Tqp)</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" kindref="member">Controls::use_gmgs2</ref>]<sp/>!=<sp/>0){</highlight></codeline>
@@ -367,7 +367,7 @@
 <codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk(MV_VecIndex(0,<sp/>Xk.dim(0)<sp/>-<sp/>1),<sp/>MV_VecIndex(0,<sp/><ref refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kindref="member">nrhs</ref><sp/>-1))<sp/>+=<sp/></highlight></codeline>
 <codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pl(MV_VecIndex(0,<sp/>pl.dim(0)-1),<sp/>MV_VecIndex(0,<sp/><ref refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kindref="member">nrhs</ref><sp/>-<sp/>1));</highlight></codeline>
 <codeline lineno="173"><highlight class="normal"></highlight></codeline>
-<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t2<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t2<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rho<sp/>=<sp/>abcd::compute_rho(Xk,<sp/>u);</highlight></codeline>
 <codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t2<sp/>=<sp/>MPI_Wtime()<sp/>-<sp/>t2;</highlight></codeline>
 <codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>normres.push_back(rho);</highlight></codeline>

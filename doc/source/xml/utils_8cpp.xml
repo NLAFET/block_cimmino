@@ -515,19 +515,18 @@
 <codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="268"><highlight class="normal"></highlight></codeline>
 <codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(Xf.dim(0)<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>xf<sp/>=<sp/>MV_ColMat_double(dest_lda,<sp/>dest_ncols,<sp/>0);</highlight></codeline>
-<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xf<sp/>=<sp/>Xf<sp/>-<sp/>vdest;</highlight></codeline>
-<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nrmxf<sp/>=<sp/><sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(xf);</highlight></codeline>
-<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kindref="member">dinfo</ref>[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" kindref="member">Controls::forward_error</ref>]<sp/>=<sp/><sp/>nrmxf/nrmXf;</highlight></codeline>
-<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>x(src,<sp/>src<sp/>+<sp/>src_lda<sp/>*<sp/>src_ncols);</highlight></codeline>
-<codeline lineno="278"><highlight class="normal"></highlight></codeline>
-<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>71,<sp/>x);</highlight></codeline>
-<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>72,<sp/>glob_to_local_ind);</highlight></codeline>
-<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>73,<sp/>src_lda);</highlight></codeline>
-<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="283"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>xf<sp/>=<sp/><sp/>Xf<sp/>-<sp/>vdest;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nrmxf<sp/>=<sp/><sp/><ref refid="splib__utils_8cpp_1abe0e0888fbbe00bf5576a3a35842ef5c" kindref="member">infNorm</ref>(xf);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" kindref="member">dinfo</ref>[<ref refid="namespace_controls_1a18be51e659933b4054bc1427e05b24c5afdbba2862390bc508b7c109a5db2b2d1" kindref="member">Controls::forward_error</ref>]<sp/>=<sp/><sp/>nrmxf/nrmXf;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>x(src,<sp/>src<sp/>+<sp/>src_lda<sp/>*<sp/>src_ncols);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>71,<sp/>x);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>72,<sp/>glob_to_local_ind);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inter_comm.send(0,<sp/>73,<sp/>src_lda);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/src/utils.cpp"/>
   </compounddef>

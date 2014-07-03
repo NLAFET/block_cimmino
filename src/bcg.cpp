@@ -43,7 +43,7 @@
 void abcd::bcg(MV_ColMat_double &b)
 {
     std::streamsize oldprec = std::cout.precision();
-    double t, t1, t2, t1_total, t2_total;
+    double t1_total, t2_total;
     
     const double threshold = dcntl[Controls::threshold];
     const int block_size = icntl[Controls::block_size];
@@ -145,12 +145,12 @@ void abcd::bcg(MV_ColMat_double &b)
 
     while(true) {
         it++;
-        t = MPI_Wtime();
+        double t = MPI_Wtime();
 
         // qp = Hp
         qp = sumProject(0e0, b, 1e0, p);
 
-        t1 = MPI_Wtime() - t;
+        double t1 = MPI_Wtime() - t;
 
         // betak^T betak = chol(p^Tqp)
         if(icntl[Controls::use_gmgs2] != 0){
@@ -171,7 +171,7 @@ void abcd::bcg(MV_ColMat_double &b)
         Xk(MV_VecIndex(0, Xk.dim(0) - 1), MV_VecIndex(0, nrhs -1)) += 
             pl(MV_VecIndex(0, pl.dim(0)-1), MV_VecIndex(0, nrhs - 1));
 
-        t2 = MPI_Wtime();
+        double t2 = MPI_Wtime();
         rho = abcd::compute_rho(Xk, u);
         t2 = MPI_Wtime() - t2;
         normres.push_back(rho);

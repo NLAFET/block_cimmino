@@ -13,5 +13,3 @@ The Augmented Block Cimmino Distributed Solver
    algorithm
    installation
    usage_cpp
-   api
-   todo

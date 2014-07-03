@@ -79,7 +79,7 @@ std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
 
     int min;
     std::vector<int> to_delete;
-    while(its.size() != 0)
+    while(!its.empty())
     {
         min = INT_MAX;
         std::vector<int>::iterator min_it;

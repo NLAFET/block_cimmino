@@ -190,5 +190,5 @@ the regular block Cimmino scheme, we comment the interesting parts and
 explain how they fit together.  
 Refer to [Calling a job], [The linear system], and [The Controls] for more details.
 
-.. literalinclude:: ../../test/src/example.cpp
+.. literalinclude:: ../../example/example.cpp
                     :language: cpp

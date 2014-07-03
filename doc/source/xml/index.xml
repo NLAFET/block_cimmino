@@ -27,11 +27,13 @@
     <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" kind="variable"><name>nrmXf</name></member>
     <member refid="classabcd_1afd573b0c136c11086126ab0869cfb912" kind="variable"><name>nrmMtx</name></member>
     <member refid="classabcd_1ac7dad2825c69db177a9e616a386c3131" kind="variable"><name>last_called_job</name></member>
+    <member refid="classabcd_1a9def8962f21d58d5b61975ffecc1af96" kind="variable"><name>drow_</name></member>
+    <member refid="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" kind="variable"><name>dcol_</name></member>
     <member refid="classabcd_1a7228c63e7b61ad01935612d5c68f2564" kind="variable"><name>instance_type</name></member>
+    <member refid="classabcd_1a299209b68954f61f840c16964438da55" kind="variable"><name>size_c</name></member>
     <member refid="classabcd_1ad4a6632f5425fc1fb6cc15e3160ce91c" kind="variable"><name>selected_S_columns</name></member>
     <member refid="classabcd_1a976f04d4e48f36d0e6c5b38821654971" kind="variable"><name>skipped_S_columns</name></member>
     <member refid="classabcd_1aa1a229ff3c4713418623c6416bd13f6b" kind="variable"><name>normres</name></member>
-    <member refid="classabcd_1a299209b68954f61f840c16964438da55" kind="variable"><name>size_c</name></member>
     <member refid="classabcd_1aa080d0df3ebb1813d70fe3fc3e7f4055" kind="variable"><name>m_n</name></member>
     <member refid="classabcd_1a5de04c7b1e0749991df158b8758fcd7a" kind="variable"><name>m_nz</name></member>
     <member refid="classabcd_1a65a26d9b5e26a6fc735fc0a44269c274" kind="variable"><name>n_aug</name></member>
@@ -40,11 +42,9 @@
     <member refid="classabcd_1a983804bd5a2990ffce8182a767175b83" kind="variable"><name>jcn_aug</name></member>
     <member refid="classabcd_1a202032f1d34ddce8f5155e7c2f2fad86" kind="variable"><name>val_aug</name></member>
     <member refid="classabcd_1a878bd4b6a03057799978bb745b44cd15" kind="variable"><name>mumps</name></member>
-    <member refid="classabcd_1ae11d9fd2b4ffecd11c6a5a4f66049160" kind="variable"><name>my_slaves</name></member>
     <member refid="classabcd_1a0f5749acc76c44b96da4752557ac0580" kind="variable"><name>my_master</name></member>
+    <member refid="classabcd_1ae11d9fd2b4ffecd11c6a5a4f66049160" kind="variable"><name>my_slaves</name></member>
     <member refid="classabcd_1a8a415661419f06b656382390896827a3" kind="variable"><name>comm_map</name></member>
-    <member refid="classabcd_1a9def8962f21d58d5b61975ffecc1af96" kind="variable"><name>drow_</name></member>
-    <member refid="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" kind="variable"><name>dcol_</name></member>
     <member refid="classabcd_1a4476fbb15765c2e6276d70131212baba" kind="variable"><name>mumps_S</name></member>
     <member refid="classabcd_1a6494ba4a220da82e02622f38b25068db" kind="variable"><name>S</name></member>
     <member refid="classabcd_1ab1ae1de1a6d9e3864c07fe746ddc6fcd" kind="variable"><name>S_rows</name></member>
@@ -106,7 +106,6 @@
     <member refid="classabcd_1ad127e6de70d15e071bb1c3c61eb18389" kind="function"><name>diagScaleMatrix</name></member>
     <member refid="classabcd_1a66529e5682d33cf80934c0f596a461a7" kind="function"><name>diagScaleRhs</name></member>
     <member refid="classabcd_1ae8c0947316be4c38301332074fda0339" kind="function"><name>diagScaleRhs</name></member>
-    <member refid="classabcd_1a09091f9c7c3dc22cde07ff661dbef576" kind="function"><name>computeNorms</name></member>
     <member refid="classabcd_1aa886456ff67dc4a18e1c5cdb8b1d7ea3" kind="function"><name>partitionMatrix</name></member>
     <member refid="classabcd_1abc87b17b4a945955631d21220c544117" kind="function"><name>analyseFrame</name></member>
     <member refid="classabcd_1af62d114097b0e9039c05392c1ce17cb5" kind="function"><name>augmentMatrix</name></member>
@@ -116,16 +115,16 @@
     <member refid="classabcd_1a2d28aace9f0b39f4a42f73c9a1065552" kind="function"><name>distributePartitions</name></member>
     <member refid="classabcd_1aa290bca49b911d694e128ce85057e058" kind="function"><name>createInterconnections</name></member>
     <member refid="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" kind="function"><name>distributeData</name></member>
-    <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" kind="function"><name>initializeCimmino</name></member>
-    <member refid="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" kind="function"><name>distributeRhs</name></member>
-    <member refid="classabcd_1a51b5418bb8de6589d5456f7657b31b67" kind="function"><name>distributeNewRhs</name></member>
-    <member refid="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" kind="function"><name>bcg</name></member>
     <member refid="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" kind="function"><name>solveABCD</name></member>
     <member refid="classabcd_1aa3d8082dc1f8bb53fecb6796983bc41f" kind="function"><name>solveS</name></member>
     <member refid="classabcd_1a8da6dd9fb704f3669d56a309384424fd" kind="function"><name>buildS</name></member>
     <member refid="classabcd_1abc3798083b0d66d028984023a7a79e04" kind="function"><name>buildS</name></member>
     <member refid="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" kind="function"><name>buildS</name></member>
     <member refid="classabcd_1a955d4b1e0db10d8674b92bd23d215870" kind="function"><name>buildS</name></member>
+    <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" kind="function"><name>initializeCimmino</name></member>
+    <member refid="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" kind="function"><name>distributeRhs</name></member>
+    <member refid="classabcd_1a51b5418bb8de6589d5456f7657b31b67" kind="function"><name>distributeNewRhs</name></member>
+    <member refid="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" kind="function"><name>bcg</name></member>
     <member refid="classabcd_1ae2707391ee22a24e3a704e12b89e87aa" kind="function"><name>buildM</name></member>
     <member refid="classabcd_1a07cb16265fca6e94b21f3cb546ec8bf8" kind="function"><name>solveM</name></member>
     <member refid="classabcd_1a70a9ed1ef8d082ec9722eb0f529620cc" kind="function"><name>prodSv</name></member>
@@ -138,17 +137,13 @@
     <member refid="classabcd_1a1df8d0625f241fdc4b31826674a114d7" kind="function"><name>allocateMumpsSlaves</name></member>
     <member refid="classabcd_1a0ad19a4110240dfa7f241567e205e731" kind="function"><name>factorizeAugmentedSystems</name></member>
     <member refid="classabcd_1a7c67e07b5a8d9c04013eeddcb38b2b56" kind="function"><name>sumProject</name></member>
-    <member refid="classabcd_1ac3d0bae5d7774e31f2c5551447b358ea" kind="function"><name>coupleSumProject</name></member>
-    <member refid="classabcd_1aa7e0342f591210d552ffa8ad60bd0aee" kind="function"><name>simpleProject</name></member>
     <member refid="classabcd_1aa6b92bcd620bc56a7bbe9847a5c8707b" kind="function"><name>spSimpleProject</name></member>
     <member refid="classabcd_1a455e4818649b17fb7454cd5660c173d4" kind="function"><name>spSimpleProject</name></member>
     <member refid="classabcd_1a817a3c3999a828b77c7ba67dff64dc2c" kind="function"><name>waitForSolve</name></member>
-    <member refid="classabcd_1aecdcfbeb7c8483e30a5696406c15f66f" kind="function"><name>partitionWeights</name></member>
+    <member refid="classabcd_1a3c3cecf6b55954862c809ba9877f4921" kind="function"><name>partitionWeights</name></member>
     <member refid="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" kind="function"><name>partitioning</name></member>
     <member refid="classabcd_1a262aae8ba8a72bb202f5f56c88e4457e" kind="function"><name>ddot</name></member>
     <member refid="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" kind="function"><name>get_nrmres</name></member>
-    <member refid="classabcd_1addecce43741a76bd852cd439cda77eae" kind="function"><name>S_nbrows</name></member>
-    <member refid="classabcd_1ae9dbae8b952ba08d0c8bf29c0f9d0779" kind="function"><name>S_nbcols</name></member>
     <member refid="classabcd_1a482623996a6268d4b29cad1db5382122" kind="function"><name>S_nnz</name></member>
     <member refid="classabcd_1a33e3410c567ea50aa84a31c745b296ca" kind="function"><name>centralizeVector</name></member>
   </compound>

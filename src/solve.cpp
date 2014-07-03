@@ -146,7 +146,6 @@ void abcd::solveABCD ( MV_ColMat_double &b )
             continue;
         }
     }
-    f = MV_ColMat_double(n, 1, 0);
 
 #ifdef WIP
     if(dcntl[Controls::aug_filter] == 0){
@@ -156,6 +155,7 @@ void abcd::solveABCD ( MV_ColMat_double &b )
 #ifdef WIP
     } else {
         use_xk = false;
+        f = MV_ColMat_double(n, 1, 0);
 
         if(!use_xk){
             int st = 0;

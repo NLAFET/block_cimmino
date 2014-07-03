@@ -268,8 +268,7 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
 
         ///@TODO Move this away
         if(Xf.dim(0) != 0) {
-            MV_ColMat_double xf = MV_ColMat_double(dest_lda, dest_ncols, 0);
-            xf = Xf - vdest;
+            MV_ColMat_double xf =  Xf - vdest;
             double nrmxf =  infNorm(xf);
             dinfo[Controls::forward_error] =  nrmxf/nrmXf;
         }

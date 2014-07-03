@@ -13,6 +13,8 @@ The ABCD Solver depends on a few external libraries: ``MUMPS 5.0``, ``Sparselib+
   be distributed on request.
 * ``Sparselib++ (custom)``: a modified version of ``SparseLib++`` to
   suits our needs, is also distributed with our solver in the
+  ``lib/sparselib`` directory. The library is compiled same as MUMPS,
+  but you still can recompile it by running ``make all`` in
   ``lib/sparselib`` directory.
 * ``PaToH``: Can be downloaded from
   `Ümit V. Çatalyürek <http://bmi.osu.edu/~umit/software.html>`_.
@@ -41,7 +43,7 @@ The installation can be done by typing the following commands in your terminal
     rm -rf build patoh-xyz.tar.gz
     cd ..
 
-Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the ``cmake.in`` directory, suppose we are going to use the ``ACML`` library (provides ``blas`` and ``lapack``). 
+Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the ``cmake.in`` directory, suppose we are going to use the ``ACML`` library that provides ``blas`` and ``lapack``. 
 
 .. code-block:: bash
 
@@ -49,10 +51,8 @@ Now that everything is ready, we can compile the solver. To do so, we need a con
     cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
 
 Edit that file to suite your configuration. Notice that we link
-against ``scalapack`` and ``blacs``, these are required libraries by
-``MUMPS``.
-
-To use ``MKL``, copy the file ``abcdCmake.in.MKL``:
+against ``scalapack`` and ``blacs``, these libraries are required by
+``MUMPS``. To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
 
 .. code-block:: bash
 
