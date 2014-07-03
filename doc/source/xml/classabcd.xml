@@ -671,11 +671,11 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="400" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="400" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classabcd_1a43aed50014aaac4c6442475410dce5f1" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classabcd_1ab45f87e05f46304b5140db068dfb37a3" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
-        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; abcd::p_sets</definition>
+        <definition>std::vector&lt;std::vector&lt;int&gt; &gt; abcd::partitionsSets</definition>
         <argsstring></argsstring>
-        <name>p_sets</name>
+        <name>partitionsSets</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -1582,11 +1582,11 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="308" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp" bodystart="35" bodyend="167"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1a36948f6756943f0e42a6c7bf604d4493" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
-        <definition>void abcd::createInterComm</definition>
+        <definition>void abcd::createInterCommunicators</definition>
         <argsstring>()</argsstring>
-        <name>createInterComm</name>
+        <name>createInterCommunicators</name>
         <briefdescription>
 <para>Assignes each mpi-process to its category : CG-master or MUMPS-Slave. </para>        </briefdescription>
         <detaileddescription>
@@ -1619,7 +1619,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="313" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="192" bodyend="282"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="313" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="201" bodyend="292"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1632,7 +1632,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="315" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="36" bodyend="190"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="315" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="36" bodyend="199"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1751,11 +1751,11 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="330" column="1"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1a75d9e77a43a5d869788a13150ce18395" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
-        <definition>void abcd::initializeCimmino</definition>
+        <definition>void abcd::initializeDirectSolver</definition>
         <argsstring>()</argsstring>
-        <name>initializeCimmino</name>
+        <name>initializeDirectSolver</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -2303,7 +2303,7 @@
       <member refid="classabcd_1a8a415661419f06b656382390896827a3" prot="private" virt="non-virtual"><scope>abcd</scope><name>comm_map</name></member>
       <member refid="classabcd_1ad3ed7b03a3b928931f4ebcb95e6786a3" prot="private" virt="non-virtual"><scope>abcd</scope><name>compute_rho</name></member>
       <member refid="classabcd_1ac35f58e16199bd8730bec922906b6af5" prot="private" virt="non-virtual"><scope>abcd</scope><name>createAugmentedSystems</name></member>
-      <member refid="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" prot="private" virt="non-virtual"><scope>abcd</scope><name>createInterComm</name></member>
+      <member refid="classabcd_1a36948f6756943f0e42a6c7bf604d4493" prot="private" virt="non-virtual"><scope>abcd</scope><name>createInterCommunicators</name></member>
       <member refid="classabcd_1aa290bca49b911d694e128ce85057e058" prot="private" virt="non-virtual"><scope>abcd</scope><name>createInterconnections</name></member>
       <member refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" prot="public" virt="non-virtual"><scope>abcd</scope><name>dcntl</name></member>
       <member refid="classabcd_1a7ffdc3ec79ff5a2aed96cbd76bf6addf" prot="private" virt="non-virtual"><scope>abcd</scope><name>dcol_</name></member>
@@ -2331,7 +2331,7 @@
       <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="private" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
       <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" prot="public" virt="non-virtual"><scope>abcd</scope><name>icntl</name></member>
       <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" prot="public" virt="non-virtual"><scope>abcd</scope><name>info</name></member>
-      <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeCimmino</name></member>
+      <member refid="classabcd_1a75d9e77a43a5d869788a13150ce18395" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeDirectSolver</name></member>
       <member refid="classabcd_1abc697f84c0c41893ac22cdb42acd7693" prot="public" virt="non-virtual"><scope>abcd</scope><name>initializeMatrix</name></member>
       <member refid="classabcd_1a4a38fc2cf3a288e6cbfbf9cebe961599" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeMumps</name></member>
       <member refid="classabcd_1a93a2700765821fc8f648923fe31fb731" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeMumps</name></member>
@@ -2372,12 +2372,12 @@
       <member refid="classabcd_1a8256e8277b5d2200dba679d8dd71554a" prot="private" virt="non-virtual"><scope>abcd</scope><name>nz_l</name></member>
       <member refid="classabcd_1ad0a81d878205a7333c9a674224f74b58" prot="private" virt="non-virtual"><scope>abcd</scope><name>nz_o</name></member>
       <member refid="classabcd_1a1d6bfabb85f3219d7b4695f8af018dbf" prot="public" virt="non-virtual"><scope>abcd</scope><name>operator()</name></member>
-      <member refid="classabcd_1a43aed50014aaac4c6442475410dce5f1" prot="private" virt="non-virtual"><scope>abcd</scope><name>p_sets</name></member>
       <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" prot="public" virt="non-virtual"><scope>abcd</scope><name>parallel_cg</name></member>
       <member refid="classabcd_1adbcae55b17045d4202388dad7a913c00" prot="private" virt="non-virtual"><scope>abcd</scope><name>part_to_glob</name></member>
       <member refid="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitioning</name></member>
       <member refid="classabcd_1aa886456ff67dc4a18e1c5cdb8b1d7ea3" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitionMatrix</name></member>
       <member refid="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitions</name></member>
+      <member refid="classabcd_1ab45f87e05f46304b5140db068dfb37a3" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitionsSets</name></member>
       <member refid="classabcd_1a3c3cecf6b55954862c809ba9877f4921" prot="private" virt="non-virtual"><scope>abcd</scope><name>partitionWeights</name></member>
       <member refid="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" prot="private" virt="non-virtual"><scope>abcd</scope><name>parts</name></member>
       <member refid="classabcd_1aaa986f7d93302b717d39c4d5c4662edb" prot="private" virt="non-virtual"><scope>abcd</scope><name>parts_id</name></member>

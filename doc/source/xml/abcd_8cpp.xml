@@ -440,7 +440,7 @@
 <codeline lineno="240"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" kindref="member">abcd::factorizeAugmentedSystems</ref>()</highlight></codeline>
 <codeline lineno="241"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Create<sp/>the<sp/>group<sp/>of<sp/>CG<sp/>instances</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::createInterComm();</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::createInterCommunicators();</highlight></codeline>
 <codeline lineno="244"><highlight class="normal"></highlight></codeline>
 <codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>MPI_Wtime();</highlight></codeline>
 <codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
@@ -462,7 +462,7 @@
 <codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::createInterconnections();</highlight></codeline>
 <codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::initializeCimmino();</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>abcd::initializeDirectSolver();</highlight></codeline>
 <codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>instance_type<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Launching<sp/>MUMPS<sp/>analysis&quot;</highlight><highlight class="normal">;</highlight></codeline>

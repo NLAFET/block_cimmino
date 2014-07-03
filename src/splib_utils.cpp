@@ -227,7 +227,7 @@ spmm ( CompRow_Mat_double &A, CompRow_Mat_double &BT )
     ic[0] = 0;
 
     double scal;
-    int i, ka, kb, j, k, jcol, jpos, len=0;
+    int i, ka, kb, j, jcol, len=0;
 
     for( i = 0; i < A.dim(0); i++){
         for ( ka = A.row_ptr(i); ka < A.row_ptr(i+1); ka++){

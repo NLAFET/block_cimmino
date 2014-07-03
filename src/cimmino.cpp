@@ -33,7 +33,7 @@
 #include <abcd.h>
 #include <fstream>
 
-void abcd::initializeCimmino()
+void abcd::initializeDirectSolver()
 {
     int *sym_perm;
 

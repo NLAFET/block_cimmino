@@ -240,7 +240,7 @@ int abcd::preprocessMatrix()
 int abcd::factorizeAugmentedSystems()
 {
     // Create the group of CG instances
-    abcd::createInterComm();
+    abcd::createInterCommunicators();
 
     double t = MPI_Wtime();
     
@@ -262,7 +262,7 @@ int abcd::factorizeAugmentedSystems()
         abcd::createInterconnections();
     }
     
-    abcd::initializeCimmino();
+    abcd::initializeDirectSolver();
     
     if(inter_comm.rank() == 0 && instance_type == 0)
         LINFO << "Launching MUMPS analysis";

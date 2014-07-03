@@ -34,7 +34,7 @@
 #include <vect_utils.h>
 
 /// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
-void abcd::createInterComm()
+void abcd::createInterCommunicators()
 {
     mpi::group grp = comm.group();
 
@@ -184,8 +184,8 @@ void abcd::distributeRhs()
 
         for(int k = 1; k < parallel_cg; k++) {
             for(int j = 0; j < icntl[Controls::block_size]; j++) {
-                for(size_t i = 0; i < p_sets[k].size(); i++){
-                    int p = p_sets[k][i];
+                for(size_t i = 0; i < partitionsSets[k].size(); i++){
+                    int p = partitionsSets[k][i];
                     inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
                 }
             }
@@ -196,8 +196,8 @@ void abcd::distributeRhs()
 
             B = MV_ColMat_double(m, icntl[Controls::block_size], 0);
             int pos = 0;
-            for(size_t i = 0; i < p_sets[0].size(); i++){
-                int p = p_sets[0][i];
+            for(size_t i = 0; i < partitionsSets[0].size(); i++){
+                int p = partitionsSets[0][i];
                 for(int j = 0; j < nbrows[p]; j++){
                     for(int k = 0; k < icntl[Controls::block_size]; k++){
                         B(pos, k) = BB(strow[p] + j, k);

@@ -45,29 +45,34 @@ void abcd::distributeData()
             m_parts.push_back(parts[k].dim(0));
         }
 
-        abcd::partitionWeights(p_sets, m_parts, parallel_cg);
+        abcd::partitionWeights(partitionsSets, m_parts, parallel_cg);
 
         for(int i = 1; i < parallel_cg ; i++) {
-            inter_comm.send(i, 0, p_sets[i]);
+            inter_comm.send(i, 0, partitionsSets[i]);
 
-            for(unsigned int k = 0; k < p_sets[i].size(); k++){
-                int j = p_sets[i][k];
+            for(unsigned int k = 0; k < partitionsSets[i].size(); k++){
+                int j = partitionsSets[i][k];
 
-                std::vector<int> sh;
-                sh.push_back(parts[j].dim(0));
-                sh.push_back(parts[j].dim(1));
+                std::vector<int> dims;
+                dims.push_back(parts[j].dim(0));
+                dims.push_back(parts[j].dim(1));
+		
+		// send the nnz
                 inter_comm.send(i, 1, parts[j].NumNonzeros());
-                inter_comm.send(i, 2, sh);
+		// send the dimensions
+                inter_comm.send(i, 2, dims);
+		// send the origin number of columns of the matrix
                 inter_comm.send(i, 21, n);
-                inter_comm.send(i, 3, parts[j].colind_ptr(),
-                                parts[j].NumNonzeros());
-                inter_comm.send(i, 4, parts[j].rowptr_ptr(), sh[0] + 1);
-                inter_comm.send(i, 5, parts[j].val_ptr(),
-                                parts[j].NumNonzeros());
+		
+		// send the partitions data
+                inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
+                inter_comm.send(i, 4, parts[j].rowptr_ptr(), dims[0] + 1);
+                inter_comm.send(i, 5, parts[j].val_ptr(), parts[j].NumNonzeros());
 
+		// send the column index data
                 inter_comm.send(i, 6, column_index[j]);
 
-
+		// if we augment the matrix, send the indices where C starts
                 if(icntl[Controls::aug_type] > 0) inter_comm.send(i, 61, stC[j]);
             }
 
@@ -78,25 +83,28 @@ void abcd::distributeData()
         n_l = n;
 
         if(parallel_cg != 1){
-            std::vector<std::vector<int> > cis;
+            std::vector<std::vector<int> > columnIndices;
             std::vector<int> stcs;
 
-            for(unsigned int i = 0; i < p_sets[0].size(); i++){
-                int j = p_sets[0][i];
+	    // duplicate my partitions data so that we clear other 
+	    // processes data from the master's memory
+            for(unsigned int i = 0; i < partitionsSets[0].size(); i++){
+                int j = partitionsSets[0][i];
                 partitions.push_back(parts[j]);
                 m += parts[j].dim(0);
                 nz += parts[j].NumNonzeros();
 
-                cis.push_back(column_index[j]);
+                columnIndices.push_back(column_index[j]);
                 if(icntl[Controls::aug_type] != 0) stcs.push_back(stC[j]);
             }
             parts.clear();
             column_index.clear();
             nb_local_parts = partitions.size();
+	    
             if(icntl[Controls::aug_type] != 0) stC.clear();
             for(int i = 0; i < nb_local_parts; i++){
                 //partitions[i] = tp[i];
-                column_index.push_back(cis[i]);
+                column_index.push_back(columnIndices[i]);
                 if(icntl[Controls::aug_type] != 0) stC.push_back(stcs[i]);
             }
         } else {
@@ -123,13 +131,13 @@ void abcd::distributeData()
 
 
             // THe partition data
-            std::vector<int> sh;
+            std::vector<int> dims;
             int l_nz, l_m, l_n;
             inter_comm.recv(0, 1, l_nz);
-            inter_comm.recv(0, 2, sh);
+            inter_comm.recv(0, 2, dims);
             inter_comm.recv(0, 21, n);
-            l_m = sh[0];
-            l_n = sh[1];
+            l_m = dims[0];
+            l_n = dims[1];
 
             int *l_jcn = new int[l_nz];
             int *l_irst = new int[l_m + 1];
@@ -171,6 +179,7 @@ void abcd::distributeData()
     mpi::broadcast(inter_comm, m_l, 0);
     mpi::broadcast(inter_comm, n_l, 0);
 
+    // compute the matrix inf-norm in a distributed maner
     nrmMtx = 0;
     double nrmP = 0;
     for(int i = 0; i < partitions.size(); ++i) {
@@ -243,6 +252,7 @@ void abcd::createInterconnections()
     }
 
 
+    // All-to-all exchange of column indices
     std::map<int, std::vector<int> > their_cols;
     std::vector<mpi::request> reqs_c;
     for (int i = 0; i < parallel_cg; i++) {

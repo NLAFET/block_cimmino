@@ -308,7 +308,7 @@ private:
     void aijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
 
     // Communication stuffs
-    void createInterComm();
+    void createInterCommunicators();
     void distributePartitions();
     void createInterconnections();
 
@@ -330,7 +330,7 @@ private:
     Coord_Mat_double buildS(std::vector<int>);
 
     // Cimmino
-    void initializeCimmino();
+    void initializeDirectSolver();
     void distributeRhs();
     void distributeNewRhs();
     void bcg(MV_ColMat_double &b);
@@ -398,7 +398,7 @@ private:
 
     std::map<int, CompRow_Mat_double> parts;
     std::vector<CompRow_Mat_double> partitions;
-    std::vector<std::vector<int> > p_sets;
+    std::vector<std::vector<int> > partitionsSets;
 
     MV_ColMat_double Xf;
     MV_ColMat_double B;

@@ -114,9 +114,7 @@ abcd::waitForSolve()
             if(mumps.info[0] < 0) continue;
 
             int part = 0;
-            int x_pos = 0;
-
-            x_pos = start_c;
+	    
             int end_c = column_index[part].size();
             int i_loc = 0;
 

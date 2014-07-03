@@ -52,7 +52,7 @@
     <member refid="classabcd_1aba3ee1235942f0b5121ecb2b4d74a196" kind="variable"><name>S_vals</name></member>
     <member refid="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" kind="variable"><name>parts</name></member>
     <member refid="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" kind="variable"><name>partitions</name></member>
-    <member refid="classabcd_1a43aed50014aaac4c6442475410dce5f1" kind="variable"><name>p_sets</name></member>
+    <member refid="classabcd_1ab45f87e05f46304b5140db068dfb37a3" kind="variable"><name>partitionsSets</name></member>
     <member refid="classabcd_1a112a717bc087d569225694bada18c45f" kind="variable"><name>Xf</name></member>
     <member refid="classabcd_1a4a0f44796d9dadf39f0b9655ada8df67" kind="variable"><name>B</name></member>
     <member refid="classabcd_1a3c69c57b283e3d97a9eb0176efcc2f70" kind="variable"><name>RRand</name></member>
@@ -111,7 +111,7 @@
     <member refid="classabcd_1af62d114097b0e9039c05392c1ce17cb5" kind="function"><name>augmentMatrix</name></member>
     <member refid="classabcd_1ad4c94bb95e057c3a0e8e67fac4f613fd" kind="function"><name>cijAugmentMatrix</name></member>
     <member refid="classabcd_1adf0919f439b050435990bccef88dd74b" kind="function"><name>aijAugmentMatrix</name></member>
-    <member refid="classabcd_1ab317d742fc7c0db435e8fa9c012f52bd" kind="function"><name>createInterComm</name></member>
+    <member refid="classabcd_1a36948f6756943f0e42a6c7bf604d4493" kind="function"><name>createInterCommunicators</name></member>
     <member refid="classabcd_1a2d28aace9f0b39f4a42f73c9a1065552" kind="function"><name>distributePartitions</name></member>
     <member refid="classabcd_1aa290bca49b911d694e128ce85057e058" kind="function"><name>createInterconnections</name></member>
     <member refid="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" kind="function"><name>distributeData</name></member>
@@ -121,7 +121,7 @@
     <member refid="classabcd_1abc3798083b0d66d028984023a7a79e04" kind="function"><name>buildS</name></member>
     <member refid="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" kind="function"><name>buildS</name></member>
     <member refid="classabcd_1a955d4b1e0db10d8674b92bd23d215870" kind="function"><name>buildS</name></member>
-    <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" kind="function"><name>initializeCimmino</name></member>
+    <member refid="classabcd_1a75d9e77a43a5d869788a13150ce18395" kind="function"><name>initializeDirectSolver</name></member>
     <member refid="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" kind="function"><name>distributeRhs</name></member>
     <member refid="classabcd_1a51b5418bb8de6589d5456f7657b31b67" kind="function"><name>distributeNewRhs</name></member>
     <member refid="classabcd_1ab806f5207d6ddd9769df20286fdc0cb4" kind="function"><name>bcg</name></member>
