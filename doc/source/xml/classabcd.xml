@@ -1278,7 +1278,9 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="259" column="1" bodyfile="/home/mzenadi/projects/abcd/src/abcd.cpp" bodystart="100" bodyend="105"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
         <definition>int abcd::gqr</definition>
         <argsstring>(MV_ColMat_double &amp;P, MV_ColMat_double &amp;AP, MV_ColMat_double &amp;R, int s, bool use_a)</argsstring>
@@ -1309,9 +1311,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="261" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="275" bodyend="295"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="263" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="275" bodyend="295"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
         <definition>int abcd::gqr</definition>
         <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, CompCol_Mat_double g, int s, bool use_a)</argsstring>
@@ -1346,9 +1348,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="262" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="357" bodyend="441"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="264" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="357" bodyend="441"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1af89e88ee8b11f36c47fd09df323d187d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1af89e88ee8b11f36c47fd09df323d187d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void abcd::gmgs2</definition>
         <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, int s, bool use_a)</argsstring>
@@ -1379,9 +1381,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="263" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="253" bodyend="273"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="265" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="253" bodyend="273"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1a57ffae86b1a9461163c887e5163a11ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1a57ffae86b1a9461163c887e5163a11ac" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void abcd::gmgs2</definition>
         <argsstring>(MV_ColMat_double &amp;p, MV_ColMat_double &amp;ap, MV_ColMat_double &amp;r, CompCol_Mat_double g, int s, bool use_a)</argsstring>
@@ -1416,10 +1418,8 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="264" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="300" bodyend="355"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="266" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="300" bodyend="355"/>
       </memberdef>
-      </sectiondef>
-      <sectiondef kind="private-func">
       <memberdef kind="function" id="classabcd_1a92ee33baaed6bff47deff16943966123" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void abcd::scaling</definition>
@@ -2416,10 +2416,10 @@
       <member refid="classabcd_1a1707bed55d487b558424d13d8afafda3" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_c</name></member>
       <member refid="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_ind</name></member>
       <member refid="classabcd_1a526c2c2ba72f32aea9a49c785d1cb8b2" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_part</name></member>
-      <member refid="classabcd_1af89e88ee8b11f36c47fd09df323d187d" prot="public" virt="non-virtual"><scope>abcd</scope><name>gmgs2</name></member>
-      <member refid="classabcd_1a57ffae86b1a9461163c887e5163a11ac" prot="public" virt="non-virtual"><scope>abcd</scope><name>gmgs2</name></member>
-      <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="public" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
-      <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="public" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
+      <member refid="classabcd_1af89e88ee8b11f36c47fd09df323d187d" prot="private" virt="non-virtual"><scope>abcd</scope><name>gmgs2</name></member>
+      <member refid="classabcd_1a57ffae86b1a9461163c887e5163a11ac" prot="private" virt="non-virtual"><scope>abcd</scope><name>gmgs2</name></member>
+      <member refid="classabcd_1a8286dac973a697a9dbfaec0f9476ddaf" prot="private" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
+      <member refid="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="private" virt="non-virtual"><scope>abcd</scope><name>gqr</name></member>
       <member refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" prot="public" virt="non-virtual"><scope>abcd</scope><name>icntl</name></member>
       <member refid="classabcd_1a692d4ed8d0b517ab5a2e044107c73ba3" prot="public" virt="non-virtual"><scope>abcd</scope><name>info</name></member>
       <member refid="classabcd_1a3173f007bbfbf0fd73885428b145d8ff" prot="private" virt="non-virtual"><scope>abcd</scope><name>initializeCimmino</name></member>
