@@ -826,7 +826,7 @@
 <codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>ic[0]<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="228"><highlight class="normal"></highlight></codeline>
 <codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>scal;</highlight></codeline>
-<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i,<sp/>ka,<sp/>kb,<sp/>j,<sp/>k,<sp/>jcol,<sp/>jpos,<sp/>len=0;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i,<sp/>ka,<sp/>kb,<sp/>j,<sp/>jcol,<sp/>len=0;</highlight></codeline>
 <codeline lineno="231"><highlight class="normal"></highlight></codeline>
 <codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>A.dim(0);<sp/>i++){</highlight></codeline>
 <codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>ka<sp/>=<sp/>A.row_ptr(i);<sp/>ka<sp/>&lt;<sp/>A.row_ptr(i+1);<sp/>ka++){</highlight></codeline>

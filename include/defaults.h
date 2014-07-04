@@ -50,7 +50,7 @@ namespace Controls{
          *          obj.icntl[nbparts] = 8;
          * \endrststar
          */
-        nbparts         = 1,
+        nbparts            ,
 
         /*! \brief Partitioning strategy
          *
@@ -112,7 +112,7 @@ namespace Controls{
          *
          * \endrststar
          */
-        part_type       = 2,
+        part_type          ,
 
         /*! \brief Guess the number of partitions
          *
@@ -123,7 +123,7 @@ namespace Controls{
          * partitions by setting abcd::icntl[#nbparts]
          * - 1, Guess the number of partitions
          */
-        part_guess      = 4,
+        part_guess         ,
 
         /*! \brief The scaling type
          *
@@ -134,14 +134,14 @@ namespace Controls{
          *   ``MC77`` based scaling
          * - 3, infinity norm row-scaling
         */
-        scaling         = 5,
+        scaling            ,
 
         /*! \brief The max number of iterations
          *
          * Defines the maximum number of iterations in block-CG
          * acceleration, default is ``1000``
          */
-        itmax           = 6,
+        itmax              ,
 
         /*! \brief Block-CG block-size
          *
@@ -150,13 +150,13 @@ namespace Controls{
          * acceleration. When using a higher value than 1, the
          * stabilized Block-CG is used.
          */
-        block_size      = 7,
+        block_size         ,
 
         /*! \brief The verbose level
          *
          * Defines how verbose the solver has to be. 
          */
-        verbose_level   = 8, 
+        verbose_level      , 
 
         /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
          *
@@ -169,7 +169,7 @@ namespace Controls{
          * - 0 (*default*), Use QR factorization
          * - 1, Use Modified Gram-Schmidt with reorthogonalization
          */
-        use_gmgs2       = 9,
+        use_gmgs2          ,
         
         /*! \brief The augmentation type
          *
@@ -186,7 +186,7 @@ namespace Controls{
          *  with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
          *  technique. This is the prefered augmentation technique.
          */
-        aug_type        = 10,
+        aug_type            ,
 
         /*! \brief The blocking factor when building \f$S\f$
          *
@@ -195,7 +195,7 @@ namespace Controls{
          * columns of \f$S\f$ to be computed at once, the optimal
          * value is hardware-related.
          */
-        aug_blocking    = 11,
+        aug_blocking        ,
 
         /*! \brief Analyse the augmentation process
          *
@@ -203,38 +203,38 @@ namespace Controls{
          * number of columns in the augmentation process.
          * **Note**: This does not build \f$S\f$, but only augment the matrix.
          */
-        aug_analysis    = 12,
+        aug_analysis        ,
 
         /*! \brief Exploit the sparcity in MUMPS
          */
-        exploit_sparcity= 13,
+        exploit_sparcity    ,
 
 #ifdef WIP
-        aug_iterative   = 14, ///< \exp Enable or disable iterative solving of Sz=f
+        aug_iterative   , ///< \exp Enable or disable iterative solving of Sz=f
 
-        aug_project     = 15, ///< \deprecated Compute the projection only
-        aug_dense       = 16, ///< \deprecated Use dense RHS when doing the computation
+        aug_project     , ///< \deprecated Compute the projection only
+        aug_dense       , ///< \deprecated Use dense RHS when doing the computation
 #endif //WIP
     };
     enum dcontrols {
-        part_imbalance  = 1, ///< The imbalance factor in PaToH case
-        threshold       = 2, ///< The stoping threshold
+        part_imbalance, ///< The imbalance factor in PaToH case
+        threshold     , ///< The stoping threshold
 
 #ifdef WIP
-        aug_filter      = 10, ///< \deprecated The filtering value
-        aug_precond     = 11, ///< \exp The preconditioner criteria of selection
+        aug_filter    , ///< \deprecated The filtering value
+        aug_precond   , ///< \exp The preconditioner criteria of selection
 #endif //WIP
     };
     enum info {
-        status          = 1, ///< Exit status
-        nb_iter         = 2, ///< Number of iterations after CG
+        status        , ///< Exit status
+        nb_iter       , ///< Number of iterations after CG
     };
 
     enum dinfo {
-        residual        = 1, ///< The resulting residual
-        forward_error   = 2, ///< The resulting forward error
-        backward        = 3, ///< The resulting residual
-        scaled_residual = 4, ///< The resulting residual
+        residual       , ///< The resulting residual
+        forward_error  , ///< The resulting forward error
+        backward       , ///< The resulting residual
+        scaled_residual, ///< The resulting residual
     };
 
 }

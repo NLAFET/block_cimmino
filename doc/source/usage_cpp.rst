@@ -153,15 +153,11 @@ Moreover, due to the similarities between the ``C++`` code and the
 ``C`` one, we provide only the ``C++`` snippets unless there is a
 major difference.
 
-In the following, the syntax ``ctl = = val`` means that the enum variable ``ctl`` can be replaced by ``val``, its numerical value.
-
 The integer control array
 #########################
 
 .. doxygenenum:: icontrols
     :project: abcd
-
-.. todo:: Talk about Work-In-Progress control parameters              
 
 The double precision control array
 ##################################
