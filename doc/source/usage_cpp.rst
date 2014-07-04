@@ -2,16 +2,6 @@
 Using the solver
 =======================
 
-The solver is in the form of a class named ``abcd`` and the user has to
-instantiate it on each MPI-process to be involved.
-In the following, we refer to the members of the class by ``member``
-and to the methods by ``method()``. Arrays will have ``[]`` appended
-to them, if we specify a size then the array is pre-allocated at
-construction, otherwise it is either allocated by the user (such as
-the linear system entries) or by the solver once it's generated (such
-as the solution vector). The user can refer to :ref:`section_controls`
-for more details.
-
 Instantiating the solver
 ------------------------
 To use the solver, the user has to instantiate the class `abcd`. In
