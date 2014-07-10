@@ -39,8 +39,16 @@ int main(int argc, char* argv[])
     }
 
     try {
+        // initialize the solver with matrix data
         obj(-1);
-        obj(6); // equivalent to running 1, 2 and 3 successively
+        // equivalent to running 1, 2 and 3 successively
+        // 1 -> Analyse, Scales, Partitions, etc.
+        // 2 -> Create augmented systems, distribute them, factorize them
+        // 3 -> Solve the linear system
+        obj(6);
+
+        // solve again
+        obj(3);
     } catch (runtime_error err) {
         cout << "An error occured: " << err.what() << endl;
     }

@@ -175,11 +175,8 @@
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea6cd993d493cb532bed17907e8337d9ca" kind="enumvalue"><name>itmax</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kind="enumvalue"><name>block_size</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" kind="enumvalue"><name>verbose_level</name></member>
-    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" kind="enumvalue"><name>use_gmgs2</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kind="enumvalue"><name>aug_type</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kind="enumvalue"><name>aug_blocking</name></member>
-    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" kind="enumvalue"><name>aug_analysis</name></member>
-    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kind="enumvalue"><name>exploit_sparcity</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" kind="enum"><name>dcontrols</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" kind="enumvalue"><name>part_imbalance</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kind="enumvalue"><name>threshold</name></member>

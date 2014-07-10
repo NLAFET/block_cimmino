@@ -152,7 +152,12 @@ products.
 
   * The first way to augment the matrix to make all the partitions mutually orthogonal to each other is obtained by putting the product :math:`C_{ij} = A_{ij}A_{ji}^T` on the right of the partition :math:`A_i` and adding :math:`-I` on the right of :math:`A_j` viz.
 
+.. _cij_i_aug:
+
   .. math::
+   :nowrap:
+
+    \begin{equation}
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
@@ -160,13 +165,19 @@ products.
                 & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -I       &         & C_{2,3}\\
                 &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -I      & -I
     \end{array}\right].
+    \end{equation}
 
     
   * The second way is to repeat the submatrices :math:`A_{ij}` and
     :math:`A_{ji}`, reversing the signs of one of them to obtain the
     augmented matrix :math:`\bar{A}` as in the following
 
+.. _aij_aji_aug:
+
   .. math::
+   :nowrap:
+
+    \begin{equation}
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
@@ -174,6 +185,7 @@ products.
                 & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -A_{2,1} &         & A_{2,3}\\
                 &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -A_{3,1}& -A_{3,2}
     \end{array}\right].
+    \end{equation}
 
   This way :math:`\bar{A}_i\bar{A}_j^T` is zero for any pair :math:`i/j`, hence the new matrix has mutually orthogonal partitions.
 

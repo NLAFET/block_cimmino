@@ -157,19 +157,6 @@ namespace Controls{
          * Defines how verbose the solver has to be. 
          */
         verbose_level      , 
-
-        /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
-         *
-         * Makes the Block-CG use the Modifed Gram-Schmidt with
-         * reorthogonalization rather than QR factorization during the
-         * stabilization process. The GMGS^2 algorithm is described by
-         * Björk in *Numerical Methods for Least Squares Problems*.
-         * This option is useful only if #block_size is greater than 1.
-         *
-         * - 0 (*default*), Use QR factorization
-         * - 1, Use Modified Gram-Schmidt with reorthogonalization
-         */
-        use_gmgs2          ,
         
         /*! \brief The augmentation type
          *
@@ -177,25 +164,42 @@ namespace Controls{
          *  - ``0`` (*default*), no augmentation. This makes the solver run in
          *  **regular block Cimmino** mode.
          *
-         *  - ``1``, makes the solver run in **Augmented Block Cimmino** mode
-         *  with an augmentation of the matrix using the \f$C_{ij}/-I\f$
-         *  technique. For numerical stability, this augmentation technique
-         *  has to be used with a scaling.
+         *  - ``1``, makes the solver run in **Augmented Block
+         *  Cimmino** mode with an augmentation of the matrix using
+         *  the \f$C_{ij}\f$ augmentation strategy. For numerical
+         *  stability, this augmentation technique has to be used with
+         *  a scaling.
          *
-         *  - ``2``, makes the solver run in **Augmented Block Cimmino** mode
-         *  with an augmentation of the matrix using the \f$A_{ij}/-A_{ji}\f$
-         *  technique. This is the prefered augmentation technique.
+         *  - ``2``, makes the solver run in **Augmented Block
+         *  Cimmino** mode with an augmentation of the matrix using
+         *  the \f$A_{ij}\f$ augmentation starategy.
          */
         aug_type            ,
 
-        /*! \brief The blocking factor when building \f$S\f$
+        /*! \brief The blocking factor in ABCD
          *
-         * Defines the blocking factor when building the auxiliary matrix
-         * \f$S\f$, default is ``128``. It represents the number of
-         * columns of \f$S\f$ to be computed at once, the optimal
-         * value is hardware-related.
+         *
+         * Defines the blocking factor used by the solver during the
+         * solution phase, its default value is 128. This allows to
+         * take advantage of BLAS3 Kernels.  The optimal value is
+         * hardware and problem size related. The user has also to
+         * find a compromise between memory versus computing time.
          */
         aug_blocking        ,
+
+#ifdef WIP
+        /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
+         *
+         * Makes the Block-CG use the Modifed Gram-Schmidt with
+         * reorthogonalization rather than QR factorization during the
+         * stabilization process. The :math:`GMGS^2` algorithm is described by
+         * Björk in *Numerical Methods for Least Squares Problems*.
+         * This option is useful only if #block_size is greater than 1.
+         *
+         * - 0 (*default*), Use QR factorization
+         * - 1, Use Modified Gram-Schmidt with reorthogonalization
+         */
+        use_gmgs2          ,
 
         /*! \brief Analyse the augmentation process
          *
@@ -209,7 +213,6 @@ namespace Controls{
          */
         exploit_sparcity    ,
 
-#ifdef WIP
         aug_iterative   , ///< \exp Enable or disable iterative solving of Sz=f
 
         aug_project     , ///< \deprecated Compute the projection only

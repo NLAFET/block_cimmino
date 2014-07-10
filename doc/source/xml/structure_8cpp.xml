@@ -555,7 +555,7 @@
 <codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="329"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
 <codeline lineno="330"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>test<sp/>augmentation!</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" kindref="member">Controls::aug_analysis</ref>]<sp/>==<sp/>2){</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[Controls::aug_analysis]<sp/>==<sp/>2){</highlight></codeline>
 <codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>size_c<sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(size_c<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>f<sp/>&lt;<sp/>0.9){</highlight></codeline>
@@ -601,7 +601,7 @@
 <codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>only<sp/>the<sp/>size<sp/>of<sp/>C</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" kindref="member">Controls::aug_analysis</ref>]<sp/>==<sp/>1)<sp/>exit(0);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[Controls::aug_analysis]<sp/>==<sp/>1)<sp/>exit(0);</highlight></codeline>
 <codeline lineno="378"><highlight class="normal"></highlight></codeline>
 <codeline lineno="379"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="380"><highlight class="normal"></highlight></codeline>

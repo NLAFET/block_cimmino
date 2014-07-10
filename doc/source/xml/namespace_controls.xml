@@ -108,44 +108,21 @@
           <detaileddescription>
 <para>Defines how verbose the solver has to be. </para>          </detaileddescription>
         </enumvalue>
-        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc442c7643be04c87d20f12935d9b41a" prot="public">
-          <name>use_gmgs2</name>
-          <briefdescription>
-<para>Force Gram-Schmidt with reorthogonalization in Block-CG. </para>          </briefdescription>
-          <detaileddescription>
-<para>Makes the Block-CG use the Modifed Gram-Schmidt with reorthogonalization rather than QR factorization during the stabilization process. The GMGS^2 algorithm is described by Björk in <emphasis>Numerical Methods for Least Squares Problems</emphasis>. This option is useful only if <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">block_size</ref> is greater than 1.</para><para><itemizedlist>
-<listitem><para>0 (<emphasis>default</emphasis>), Use QR factorization</para></listitem><listitem><para>1, Use Modified Gram-Schmidt with reorthogonalization </para></listitem></itemizedlist>
-</para>          </detaileddescription>
-        </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" prot="public">
           <name>aug_type</name>
           <briefdescription>
 <para>The augmentation type. </para>          </briefdescription>
           <detaileddescription>
 <para>Possible values are:<itemizedlist>
-<listitem><para><computeroutput>0</computeroutput> (<emphasis>default</emphasis>), no augmentation. This makes the solver run in <bold>regular block Cimmino</bold> mode.</para></listitem><listitem><para><computeroutput>1</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="3">$C_{ij}/-I$</formula> technique. For numerical stability, this augmentation technique has to be used with a scaling.</para></listitem><listitem><para><computeroutput>2</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="4">$A_{ij}/-A_{ji}$</formula> technique. This is the prefered augmentation technique. </para></listitem></itemizedlist>
+<listitem><para><computeroutput>0</computeroutput> (<emphasis>default</emphasis>), no augmentation. This makes the solver run in <bold>regular block Cimmino</bold> mode.</para></listitem><listitem><para><computeroutput>1</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="3">$C_{ij}$</formula> augmentation strategy. For numerical stability, this augmentation technique has to be used with a scaling.</para></listitem><listitem><para><computeroutput>2</computeroutput>, makes the solver run in <bold>Augmented Block Cimmino</bold> mode with an augmentation of the matrix using the <formula id="4">$A_{ij}$</formula> augmentation starategy. </para></listitem></itemizedlist>
 </para>          </detaileddescription>
         </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" prot="public">
           <name>aug_blocking</name>
           <briefdescription>
-<para>The blocking factor when building <formula id="5">$S$</formula>. </para>          </briefdescription>
+<para>The blocking factor in ABCD. </para>          </briefdescription>
           <detaileddescription>
-<para>Defines the blocking factor when building the auxiliary matrix <formula id="5">$S$</formula>, default is <computeroutput>128</computeroutput>. It represents the number of columns of <formula id="5">$S$</formula> to be computed at once, the optimal value is hardware-related. </para>          </detaileddescription>
-        </enumvalue>
-        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eadd0c78ddff9417b400d95b2cbdfd679e" prot="public">
-          <name>aug_analysis</name>
-          <briefdescription>
-<para>Analyse the augmentation process. </para>          </briefdescription>
-          <detaileddescription>
-<para>When set to a value different than <computeroutput>0</computeroutput>, analyses the number of columns in the augmentation process. <bold>Note</bold>: This does not build <formula id="5">$S$</formula>, but only augment the matrix. </para>          </detaileddescription>
-        </enumvalue>
-        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" prot="public">
-          <name>exploit_sparcity</name>
-          <briefdescription>
-<para>Exploit the sparcity in <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>. </para>          </briefdescription>
-          <detaileddescription>
-          </detaileddescription>
+<para>Defines the blocking factor used by the solver during the solution phase, its default value is 128. This allows to take advantage of BLAS3 Kernels. The optimal value is hardware and problem size related. The user has also to find a compromise between memory versus computing time. </para>          </detaileddescription>
         </enumvalue>
         <briefdescription>
 <para>To be used with the <ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">abcd::icntl</ref> vector. </para>        </briefdescription>
@@ -153,7 +130,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="40" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="40" bodyend="218"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="40" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="40" bodyend="221"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" prot="public" static="no">
         <name>dcontrols</name>
@@ -177,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="219" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="219" bodyend="227"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="222" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="222" bodyend="230"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" prot="public" static="no">
         <name>info</name>
@@ -201,7 +178,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="228" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="228" bodyend="231"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="231" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="231" bodyend="234"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" prot="public" static="no">
         <name>dinfo</name>
@@ -239,7 +216,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="233" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="233" bodyend="238"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="236" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="236" bodyend="241"/>
       </memberdef>
       </sectiondef>
     <briefdescription>

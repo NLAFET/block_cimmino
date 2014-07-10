@@ -91,7 +91,7 @@ initialized. The user can then call the object as a function
     abcd obj; // instantiating the class
     obj(job_id); // call the solver with a job identifier job_id
 
-For ``C``, the solver is a structure called ``struct abcd``:
+For C, the solver is a structure called ``struct abcd``:
 
 .. code-block:: c
 

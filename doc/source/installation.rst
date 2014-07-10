@@ -7,10 +7,10 @@ Obtaining the source code
 
 The ABCD Solver depends on a few external libraries: ``MUMPS 5.0``, ``Sparselib++ (custom)``, ``PaToH``, ``lapack`` and ``Boost::MPI`` version 1.50 or higher.
 
-* ``MUMPS 5.0``: The latest version of ``MUMPS``, it is distributed
-  with our solver in the ``lib/mumps/`` directory. The distributed
-  version is compiled in ``x86_64`` compilers, an ``i686`` version can
-  be distributed on request.
+* A patched version of ``MUMPS`` is distributed with our solver in the
+  ``lib/mumps/`` directory. The distributed version is compiled with
+  ``x86_64`` compilers. An ``i686`` version can be distributed on
+  request. When ``MUMPS 5.0`` is released, it should be used instead.
 * ``Sparselib++ (custom)``: a modified version of ``SparseLib++`` to
   suits our needs, is also distributed with our solver in the
   ``lib/sparselib`` directory. The library is compiled same as MUMPS,
@@ -22,26 +22,31 @@ The ABCD Solver depends on a few external libraries: ``MUMPS 5.0``, ``Sparselib+
   directory and the header `patho.h` has to be copied into the
   ``include`` directory.
 
+.. todo:: talk about lapack (ACML, MKL), Boost::MPI
+
 The installation can be done by typing the following commands in your terminal
 
 .. code-block:: bash
 
     # download the latest stable version
+    # it will create a directory named abcd
     git clone git@gitlab.enseeiht.fr/mohamed.zenadi/abcd.git
 
     # we need to download PaToH
-    cd abcd/lib
+    cd /tmp
 
     # download the appropriate version of patoh
-    # replace the `xyz` by the build version as described on
+    # replace the `xyz` by the build version as described in
     # http://bmi.osu.edu/~umit/software.html
     wget http://bmi.osu.edu/~umit/PaToH/xyz.tar.gz
     # extract
     tar xvzf patoh-xyz.tar.gz
-    cp build/xyz/libpatoh.a .
-    cp build/xyz/patoh.h ../include/
-    rm -rf build patoh-xyz.tar.gz
-    cd ..
+    # copy the files to the abcd solver directories lib and include
+    cp build/xyz/libpatoh.a /path/to/abcd/lib/
+    cp build/xyz/patoh.h /path/to/abcd/include/
+
+    # return to /path/to/abcd/
+    cd -
 
 Now that everything is ready, we can compile the solver. To do so, we need a configuration file from the ``cmake.in`` directory, suppose we are going to use the ``ACML`` library that provides ``blas`` and ``lapack``. 
 
@@ -52,15 +57,20 @@ Now that everything is ready, we can compile the solver. To do so, we need a con
 
 Edit that file to suite your configuration. Notice that we link
 against ``scalapack`` and ``blacs``, these libraries are required by
-``MUMPS``. To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
+``MUMPS``.
+
+To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
 
 .. code-block:: bash
 
     # get the appropriate configuration file
     cp cmake.in/abcdCmake.in.MKL ./abcdCmake.in
 
+.. todo:: separate the following
+   
 In this example we used the non-threaded version of these libraries,
-for the ``ACML`` library use the ``_mp`` suffix, for ``MKL`` use the
+for the ``ACML`` library use the ``_mp`` suffix,
+for ``MKL`` use the
 `Intel® Math Kernel Library Link Line
 Advisor <https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor>`_
 to obtain the correct set of libraries.
@@ -87,9 +97,10 @@ The build process is done using ``cmake``:
 
 
 If cmake does not finish correctly, here are some possible reasons:
-- ``mpic++`` is either not installed or there is an issue with ``mpi`` libraries, check also that you gave the right path in your ``abcdCmake.in`` file.
-- ``Boost`` is either not installed, or the version is too old. Check also that ``Boost::MPI`` is installed.
-- The path to some libraries is not well defined in ``abcdCmake.in``.
+
+* ``mpic++`` is either not installed or there is an issue with ``mpi`` libraries, check also that you gave the right path in your ``abcdCmake.in`` file.
+* ``Boost`` is either not installed, or the version is too old. Check also that ``Boost::MPI`` is installed.
+* The path to some libraries is not well defined in ``abcdCmake.in``.
   
 
 Building the example
