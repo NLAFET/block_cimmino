@@ -74,10 +74,10 @@ endif()
 if(TEST MATCHES ON)
 
   add_executable(
-    test_abcd_c_interface
-    src/c_test.c
-    src/c_interface.cc
-    )
+          test_abcd_c_interface
+          src/c_exemple.c
+          src/c_interface.cc
+  )
 
 
   #Configuration de l'édition de liens
