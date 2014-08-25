@@ -202,7 +202,9 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     size_c = nbcols - A.dim(1);
     n = nbcols;
 
+#ifdef WIP    
     if(icntl[Controls::aug_analysis] != 0) return;
+#endif //WIP
 
     // Augment the matrices
     for(size_t k = 0; k < M.size(); k++){

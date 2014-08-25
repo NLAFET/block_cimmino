@@ -80,12 +80,18 @@ MV_ColMat_double abcd::sumProject(double alpha, MV_ColMat_double &Rhs, double be
 
             if(alpha != 0 && beta !=0){
                 MV_ColMat_double rr(part->dim(0), s);
-                rr = Rhs(MV_VecIndex(b_pos, b_pos + part->dim(0) - 1), MV_VecIndex(0, s -1));
+
+                for (int i = b_pos; i < b_pos + part->dim(0); ++i)
+                    for (int j = 0; j < s; ++j) 
+                        rr(i - b_pos, j) = Rhs(i, j);
+
                 r = r + rr * alpha;
             }
 
             if(alpha != 0 && beta ==0){
-                r = Rhs(MV_VecIndex(b_pos, b_pos + part->dim(0) - 1), MV_VecIndex(0, s -1)) * alpha;
+                for (int i = b_pos; i < b_pos + part->dim(0); ++i)
+                    for (int j = 0; j < s; ++j) 
+                        r(i - b_pos, j) = Rhs(i, j) * alpha;
             }
 
             b_pos += part->dim(0);

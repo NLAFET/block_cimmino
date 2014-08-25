@@ -373,8 +373,11 @@ void abcd::analyseFrame()
             icntl[Controls::aug_type] = 0;
         }
     }
+
+#ifdef WIP
     // print only the size of C
     if(icntl[Controls::aug_analysis] == 1) exit(0);
+#endif // WIP
 
 }
 

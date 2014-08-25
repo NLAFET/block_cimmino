@@ -267,7 +267,7 @@ private:
 
     // norms
     double nrmA;
-    double nrmB;
+    std::vector<double> nrmB;
     double nrmXf;
     double nrmMtx;
 
@@ -385,9 +385,8 @@ private:
     double ddot(VECTOR_double &p, VECTOR_double &ap);
     void get_nrmres(MV_ColMat_double &x,
                     MV_ColMat_double &b,
-                    double &nrmR,
-                    double &nrmX,
-                    double &nrmXfmX);
+                    VECTOR_double &nrmR,
+                    VECTOR_double &nrmX);
 
     MUMPS mumps_S;
     Coord_Mat_double S;

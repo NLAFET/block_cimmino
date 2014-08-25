@@ -39,9 +39,15 @@ void abcd::solveABCD ( MV_ColMat_double &b )
     {
         MV_ColMat_double u(m, nrhs, 0);
         u = b(MV_VecIndex(0, b.dim(0)-1), MV_VecIndex(0,nrhs-1));
-        double lnrmBs = infNorm(u);
-        // Sync B norm :
-        mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
+
+        nrmB = std::vector<double>(nrhs, 0);
+        for(int j = 0; j < nrhs; ++j) {
+            VECTOR_double u_j = u(j);
+            double lnrmBs = infNorm(u_j);
+
+            // Sync B norm :
+            mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB[0] + j, mpi::maximum<double>());
+        }
         mpi::broadcast(inter_comm, nrmMtx, 0);
     }
 

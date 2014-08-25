@@ -84,10 +84,16 @@ void abcd::bcg(MV_ColMat_double &b)
     double *betak_ptr = betak.ptr();
     double *l_ptr = lambdak.ptr();
 
-    double lnrmBs = infNorm(u);
+    nrmB = std::vector<double>(nrhs, 0);
+    
+    for(int j = 0; j < nrhs; ++j) {
+        VECTOR_double u_j = u(j);
+        double lnrmBs = infNorm(u_j);
 
-    // Sync B norm :
-    mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB, mpi::maximum<double>());
+        // Sync B norm :
+        mpi::all_reduce(inter_comm, &lnrmBs, 1,  &nrmB[0] + j, mpi::maximum<double>());
+    }
+    
     mpi::broadcast(inter_comm, nrmMtx, 0);
 
     for(int k =0; k < e1.dim(1); k++) e1(0,k) = 1;
@@ -112,14 +118,16 @@ void abcd::bcg(MV_ColMat_double &b)
         r.setCols(sp, 0, s);
     }
 
-
     t1_total = MPI_Wtime() - t1_total;
 
     // orthogonalize
     // r = r*gamma^-1
+#ifdef WIP
     if(icntl[Controls::use_gmgs2] != 0){
         gmgs2(r, r, gammak, s, false);
-    } else if(gqr(r, r, gammak, s, false) != 0){
+    } else
+#endif //WIP        
+    if(gqr(r, r, gammak, s, false) != 0){
         gmgs2(r, r, gammak, s, false);
     }
 
@@ -142,7 +150,7 @@ void abcd::bcg(MV_ColMat_double &b)
     if(comm.rank() == 0) {
         LINFO2 << "ITERATION 0  rho = " << scientific << rho << setprecision(oldprec);
     }
-
+        
     while(true) {
         it++;
         double t = MPI_Wtime();
@@ -153,12 +161,14 @@ void abcd::bcg(MV_ColMat_double &b)
         double t1 = MPI_Wtime() - t;
 
         // betak^T betak = chol(p^Tqp)
+#ifdef WIP            
         if(icntl[Controls::use_gmgs2] != 0){
             gmgs2(p, qp, betak, s, true);
-        } else if(gqr(p, qp, betak, s, true) != 0){
+        } else
+#endif //WIP        
+        if(gqr(p, qp, betak, s, true) != 0){
             gmgs2(p, qp, betak, s, true);
         }
-
         lambdak = e1;
 
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
@@ -182,9 +192,12 @@ void abcd::bcg(MV_ColMat_double &b)
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 
+#ifdef WIP        
         if(icntl[Controls::use_gmgs2] != 0){
             gmgs2(r, r, gammak, s, false);
-        } else if(gqr(r, r, gammak, s, false) != 0){
+        } else
+#endif //WIP            
+        if(gqr(r, r, gammak, s, false) != 0){
             gmgs2(r, r, gammak, s, false);
         }
 
@@ -216,7 +229,6 @@ void abcd::bcg(MV_ColMat_double &b)
         t1_total += t1;
         t2_total += t2;
     }
-    
 
     if(inter_comm.rank() == 0) {
         LINFO2 << "BCG Rho: " << scientific << rho ;
@@ -240,13 +252,28 @@ void abcd::bcg(MV_ColMat_double &b)
 
 double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
 {
-    double nrmXfmX;
-    double nrmR, nrmX, rho;
-    abcd::get_nrmres(x, u, nrmR, nrmX, nrmXfmX);
-    rho = nrmR / (nrmMtx*nrmX + nrmB);
+    double rho = 999.999, minNrmR = 999.999;
+    int min_j = 0;
+    
+    VECTOR_double nrmX(nrhs, 0);
+    VECTOR_double nrmR(nrhs, 0);
+
+    abcd::get_nrmres(x, u, nrmR, nrmX);
+    
+    double temp_rho = 0;
+    for(int j = 0; j < nrhs; ++j) {
+        temp_rho = nrmR(j) / (nrmMtx*nrmX(j) + nrmB[j]);
+        rho = temp_rho < rho ? temp_rho : rho;
+
+        if (minNrmR > nrmR(j)){
+            minNrmR =  nrmR(j);
+            min_j = j;
+        }
+    }
+    
     dinfo[Controls::backward] = rho;
-    dinfo[Controls::residual] = nrmR;
-    dinfo[Controls::scaled_residual] = nrmR/nrmB;
+    dinfo[Controls::residual] = minNrmR;
+    dinfo[Controls::scaled_residual] = minNrmR/nrmB[min_j];
     return rho;
 }
 
@@ -309,18 +336,20 @@ void abcd::gmgs2(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
         r(k, k) = abcd::ddot(p_k, ap_k);
 
         if(abs(r(k, k)) < abs(r(0,0))*1e-16) {
-            r(k, k) = 1;
             LWARNING << "PROBLEM IN GMGS : FOUND AN EXT. SMALL ELMENT " <<  r(k, k) << " postion " << k;
+            r(k, k) = 1;
+            if (k > 0) r(k, k) = pow(r(k -1, k -1), 2);
         }
         // if it's negative, make it positive
         if(abs(r(k, k)) < 0) {
-            r(k, k) = abs(r(k, k));
             LWARNING << "PROBLEM IN GMGS : FOUND A NEGATIVE ELMENT " << r(k, k) << " postion " << k;
+            r(k, k) = abs(r(k, k));
         }
         if(r(k, k) == 0) {
-            r(k, k) = 1;
             LWARNING << "PROBLEM IN GMGS : FOUND A ZERO ELMENT " <<  r(k, k) << " postion " << k;
+            r(k, k) = 1;
         }
+
         // if all is fine, do an sqrt:
         r(k, k) = sqrt(r(k, k));
 
@@ -375,7 +404,7 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
     } else {
         for(int i = 0; i < p.dim(0); i++) {
             if(comm_map[i] == 1) {
-                for(int j = 0; j < p.dim(1); j++) {
+                for(int j = 0; j < s; j++) {
                     loc_p(pos, j) = p(i, j);
                 }
                 pos++;
@@ -408,8 +437,6 @@ int abcd::gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r,
 
         dgemm_(&trans, &no, &s, &s, &loc_n, &alpha, p_ptr, &lda_p, p_ptr, &lda_p, &beta, l_r_ptr, &s);
     }
-
-
 
     char up = 'U';
     char right = 'R';

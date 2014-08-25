@@ -29,26 +29,36 @@ int main(int argc, char* argv[])
         // we want that only the master logs data
         obj.icntl[Controls::verbose_level] = 2;
 
-        init_2d_lap(obj, 400);
+        // scaling 
+        obj.icntl[Controls::scaling] = 2;
+
+        init_2d_lap(obj, 2);
 
         // set the rhs
-        obj.rhs = new double[obj.m];
-        for (size_t i = 0; i < obj.m; i++) {
-            obj.rhs[i] = ((double) i + 1)/obj.m;
-        }
+        obj.rhs = new double[obj.m * obj.nrhs];
+        
+        for (size_t j = 0; j < obj.nrhs; ++j)
+            for (size_t i = 0; i < obj.m; ++i) {
+                obj.rhs[i + j * obj.m] = ((double) i * (j + 1))/obj.m;
+            }
     }
 
     try {
         // initialize the solver with matrix data
         obj(-1);
+
         // equivalent to running 1, 2 and 3 successively
         // 1 -> Analyse, Scales, Partitions, etc.
         // 2 -> Create augmented systems, distribute them, factorize them
         // 3 -> Solve the linear system
         obj(6);
+        // if(obj.comm.rank() == 0)
+        //     for (size_t i = 0; i < obj.n; ++i) {
+        //         for (size_t j = 0; j < obj.nrhs; ++j)
+        //             cout << obj.sol[i + j*obj.n] << '\t';
+        //         cout << endl;
+        //     }
 
-        // solve again
-        obj(3);
     } catch (runtime_error err) {
         cout << "An error occured: " << err.what() << endl;
     }

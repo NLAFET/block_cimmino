@@ -141,9 +141,10 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
  *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
  * =====================================================================================
  */
-void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, double &nrmX, double &nrmXfmX)
+void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
+                      VECTOR_double &nrmR, VECTOR_double &nrmX)
 {
-    int rn = 1;
+    int rn = x.dim(1);
     int rm = x.dim(0);
 
     nrmX = 0;
@@ -184,9 +185,6 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
             int c = 0;
             for(int i = pos; i < pos + partitions[p].dim(0); i++)
                 loc_r(i, j) = vj[c++];
-            //VECTOR_double vj = loc_r(j);
-            //vj(MV_VecIndex(pos, pos+partitions[p].dim(0) - 1)) = partitions[p] * compressed_x;
-            //loc_r.setCol(vj, j);
         }
 
         pos += partitions[p].dim(0);
@@ -194,14 +192,13 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b, double &nrmR, do
 
     loc_r  = b - loc_r;
 
-    for(int j = 0; j < rn ; j++){
+    for(int j = 0; j < rn; j++){
         VECTOR_double loc_r_j = loc_r(j);
-        double loc_nrm = infNorm(loc_r_j);
-
-        mpi::all_reduce(inter_comm, &loc_nrm, 1, &nrmR, mpi::maximum<double>());
-        mpi::all_reduce(inter_comm, &nrmXV[j], 1, &nrmX, std::plus<double>());
-
+        nrmRV(j) = infNorm(loc_r_j);
     }
+
+    mpi::all_reduce(inter_comm, nrmRV.ptr(), rn, nrmR.ptr(), mpi::maximum<double>());
+    mpi::all_reduce(inter_comm, nrmXV.ptr(), rn, nrmX.ptr(), std::plus<double>());
 
 }
 
@@ -261,9 +258,10 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
                     vdest(ci, j) = xo[k][i + j * lo[k]] * scale[ci];
                 }
         }
+        
         for(int j = 0; j < dest_ncols; ++j)
             for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < n_o; ++i){
-                vdest(globalIndex[i], 0) = source(i, j) * dcol_[globalIndex[i]];
+                vdest(globalIndex[i], j) = source(i, j) * dcol_[globalIndex[i]];
             }
 
         ///@TODO Move this away

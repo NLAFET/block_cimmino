@@ -80,6 +80,7 @@ void abcd::initializeDirectSolver()
 
     }
 
+    cout << IRANK << "\t" << m << '\t' << n_aug << '\t' << nz_aug << endl;
     if(instance_type == 0) {
         mumps.n = n_aug;
         mumps.nz = nz_aug;

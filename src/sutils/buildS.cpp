@@ -95,18 +95,19 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
         LDEBUG << "Avg number of cols is " << total/parallel_cg;
     }
 
+#ifdef WIP    
+
 #ifndef NO_MUMPS_ES
     mumps.keep[235 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[261 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[495 - 1] = icntl[Controls::exploit_sparcity];
     mumps.keep[497 - 1] = icntl[Controls::exploit_sparcity];
-#endif
+#endif //no mumps exploits parsity
 
-#ifdef WIP
     // If we need to fully augment the matrix, or at least to build part of it
     // this is needed only in ABCD direct and iterative
     if(dcntl[Controls::aug_type] == 0 || icntl[Controls::aug_iterative] == 2){
-#endif
+#endif //wip
 
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
