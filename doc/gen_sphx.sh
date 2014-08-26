@@ -8,6 +8,17 @@ function do_job {
   if [ "$1" == "pdf" ]
       then
         cd build/latex
+        sed -n '
+        1h
+        1!H
+        $ {
+          g
+          s/\\begin{fulllineitems}\n*\\end{fulllineitems}//g
+          p
+        }' ABCDSolver.tex > temp.tex
+        rm ABCDSolver.tex
+        mv temp.tex ABCDSolver.tex
+        make clean
         make
         cd -
   fi

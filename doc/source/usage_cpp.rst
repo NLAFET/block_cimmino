@@ -4,12 +4,12 @@ Using the solver
 
 Instantiating the solver
 ------------------------
-To use the solver, the user has to instantiate the class `abcd`. In
-the case of C, the user creates a structure object using the function
-#new_solver().  During the construction of the instance, the control
-parameters are initialized to their default value, see :ref:`the
-controls description <section_controls>` for the list of the control
-parameters and their default value.
+To use the solver, the user has to instantiate the class ``abcd`` for
+C++. In the case of C, the user creates a structure object using the
+function ``new_solver()``.  During the construction of the instance,
+the control parameters are initialized to their default value, see
+:ref:`the controls description <section_controls>` for the list of the
+control parameters and their default value.
 
 For C++:
 
@@ -18,8 +18,6 @@ For C++:
     abcd obj; // instantiating the class
 
 For C, the solver is a structure called ``struct abcd``:
-
-.. todo:: write documentation in abcd_c.h file
 
 .. code-block:: c
 
@@ -34,13 +32,16 @@ The current version of the ABCD Solver accepts only real, centralized, linear sy
     :project: abcd                  
     :members: m, n, nz, sym, irn, jcn, val, rhs, nrhs
 
-If either of the row and column indices start with **0** the arrays
-are supposed to be zero based (`C` arrays indexation), otherwise, if
+
+If any of the row or column indices starts with **0** the arrays
+are assumed to be zero based (`C` arrays indexation), otherwise, if
 they start with **1** the arrays are supposed to be one based (`Fortran`
 arrays indexation). If however, none starts with **0** or **1** then there
 is either an empty row or an empty column and the solver raises an exception.
 
-In C++:
+**Note** The solver does not check for empty rows or empty columns for the moment, and assumes that the given row indices are sorted.
+
+To initialize the linear system in C++:
 
 .. code-block:: cpp
 
@@ -82,7 +83,7 @@ In C:
 
 Calling the solver
 ------------------------------------
-During the construction of the instance, the default parameters are
+During the construction of the solver object, the default parameters are
 initialized. The user can then call the object as a function
 (*functor*) with the job number as an argument.
 
@@ -101,7 +102,7 @@ For C, the solver is a structure called ``struct abcd``:
 ``job_id`` defines which operation the solver has to run. It can have
 values **-1**, and **1** through **6**. The order in
 which these jobs have to be called is described in :ref:`Job
-dependencies <job_flow>`.
+dependencies <job_flow>` figure.
 
 .. doxygenclass:: abcd
     :project: abcd                  

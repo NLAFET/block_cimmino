@@ -11,11 +11,11 @@ linear system:
 
 - *Regular Block Cimmino*: A block-projection technique that iterates
    to solve the linear system. During the iterations it solves a set
-   of small problems (augmented systems built using the partitions of
-   the original system).
+   of small problems (augmented systems built using partitions of the
+   original system).
 - *Augmented Block Cimmino*: A pseudo-direct solver that augments the
-   original system and constructs the solution directly out of
-   independent solves using the augmented subsystems.
+   original system and constructs the solution directly independent
+   solves using the augmented subsystems.
 
 The regular block Cimmino
 -------------------------
@@ -41,7 +41,7 @@ rows as follows:
         b_1 \\ b_2 \\ \vdots \\ b_p
       \end{array}
     \right)
-   \end{eqnarray*}
+   \end{eqnarray*}.
 
 Let :math:`P_{\mathcal{R}(A_i^T)}` be the projector onto the range of
 :math:`A_i^T` and :math:`{A_i}^+` be the Moore-Penrose pseudo-inverse of the
@@ -74,7 +74,7 @@ With the above notations, the iteration equation is thus:
           \label{something}
     \end{eqnarray*}
 
-The iteration matrix for block Cimmino method is :math:`H = I - Q`,
+The iteration matrix for the block Cimmino method is :math:`H = I - Q`,
 which corresponds to a sum of projectors :math:`H = \omega
 \sum_{i=1}^p{\mathcal{P}_{\mathcal{R}(A_i^T)}}`. It is thus symmetric
 and positive definite and so we can solve
@@ -97,7 +97,7 @@ At each step of the conjugate gradient algorithm we must solve for the
         A_i u_i ~=~ r_i, ~~~~  (r_i = {b_i - A_i x^{(k)}}),~~~ i = 1, .... p.
     \end{equation}
 
-In our implementation we choose to solve these equations using the augmented system approach
+In our implementation we choose to solve these equations using the augmented system 
 
 .. math::
    :nowrap:
@@ -108,25 +108,26 @@ In our implementation we choose to solve these equations using the augmented sys
         &=&  \left ( \begin{array}{l} 0 \\ r_i \end{array} \right )
     \end{eqnarray*}
 
-that we perform, at each iteration, using a direct method, giving
-:math:`u_i = A_i^+ r_i` the projection needed for each partition
+that we solve using a direct method, at each iteration to get
+:math:`u_i = A_i^+ r_i`, the projection needed for each partition
 :math:`A_i`.  We use the multifrontal parallel solver :math:`MUMPS` to
-do this.
+do direct solutions.
 
 Running our solver in the regular mode will go through the following steps:
 
 - Partition the system into strips of rows (:math:`A_i` and :math:`b_i` for :math:`i = 1, \dots p`)
 - Create the augmented systems
-- Analyze and factorize the augmented systems using the direct solver :math:`MUMPS`
+- Analyse and factorize the augmented systems using the direct solver :math:`MUMPS`
 - Run a block conjugate gradient with an implicit iteration matrix
-  :math:`H`, which resumes into independent augmented systems direct
+  :math:`H`, which requires :math:`p` independent augmented system direct
   solves at each iteration.
 
 
 The augmented block Cimmino
 ---------------------------
 
-To understand the algorithm, suppose that we have a matrix :math:`A` with three partitions, described as follows:
+To understand the augmented block Cimmino algorithm, suppose that we
+have a matrix :math:`A` with three partitions, described as follows:
 
 .. math::
    :nowrap:
@@ -140,17 +141,22 @@ To understand the algorithm, suppose that we have a matrix :math:`A` with three 
             &&& A_{3,2} & A_{3,3} &  A_{3,1}
         \end{array}
         \right].
-    \end{equation}
+    \end{equation},
 
-Where :math:`A_{i,j}` is the sub-part of :math:`A_i`, the :math:`i`-th partition, that is interconnected algebraically to the partition :math:`A_j`, and vice versa.
+where :math:`A_{i,j}` is the sub-part of :math:`A_i`, the :math:`i`-th
+partition, that is interconnected algebraically to the partition
+:math:`A_j`, and vice versa.
 
 The goal of the augmented block Cimmino algorithm is to make these
 three partitions mutually orthogonal to each other, meaning that the
-inner product of each couple of partitions is zero. We consider two
+inner product of each pair of partitions is zero. We consider two
 different ways to augment the matrix to obtain these zero matrix inner
 products.
 
-  * The first way to augment the matrix to make all the partitions mutually orthogonal to each other is obtained by putting the product :math:`C_{ij} = A_{ij}A_{ji}^T` on the right of the partition :math:`A_i` and adding :math:`-I` on the right of :math:`A_j` viz.
+- The first way to augment the matrix to make all the partitions
+  mutually orthogonal to each other is obtained by putting the product
+  :math:`C_{ij} = A_{ij}A_{ji}^T` on the right of the partition
+  :math:`A_i` and adding :math:`-I` on the right of :math:`A_j` viz.
 
 .. _cij_i_aug:
 
@@ -161,16 +167,17 @@ products.
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
-        A_{1,1} & A_{1,2} &         &          & A_{1,3} &         & C_{1,2}  & C_{1,3} &        \\
+        A_{1,1} & A_{1,2} &         &          &         & A_{1,3} & C_{1,2}  & C_{1,3} &        \\
                 & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -I       &         & C_{2,3}\\
                 &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -I      & -I
     \end{array}\right].
     \end{equation}
 
     
-  * The second way is to repeat the submatrices :math:`A_{ij}` and
-    :math:`A_{ji}`, reversing the signs of one of them to obtain the
-    augmented matrix :math:`\bar{A}` as in the following
+
+- The second way is to repeat the submatrices :math:`A_{ij}` and
+:math:`A_{ji}`, reversing the signs of one of them to obtain the
+augmented matrix :math:`\bar{A}` as in the following
 
 .. _aij_aji_aug:
 
@@ -181,15 +188,26 @@ products.
     \bar{A} =
     \left[
     \begin{array}{cccccc|ccc}
-        A_{1,1} & A_{1,2} &         &          & A_{1,3} &         & A_{1,2}  & A_{1,3} &        \\
+        A_{1,1} & A_{1,2} &         &          &         & A_{1,3} & A_{1,2}  & A_{1,3} &        \\
                 & A_{2,1} & A_{2,2} & A_{2,3}  &         &         & -A_{2,1} &         & A_{2,3}\\
                 &         &         & A_{3,2}  & A_{3,3} & A_{3,1} &          & -A_{3,1}& -A_{3,2}
     \end{array}\right].
     \end{equation}
 
-  This way :math:`\bar{A}_i\bar{A}_j^T` is zero for any pair :math:`i/j`, hence the new matrix has mutually orthogonal partitions.
+Both ways make :math:`\bar{A}_i\bar{A}_j^T` zero for any pair :math:`i/j`, and so the new matrix has mutually orthogonal partitions.
 
-Notice that we augment the matrix upper-down and shift the
-augmentation at each step. This is done such that we do not create any new
-interconnections between the new partitions. A simple check shows that
-:math:`\bar{A}_i \bar{A}_j^T` is zero for any pair :math:`i/j`.
+Notice that we augment the matrix from top to bottom and use new
+columns for the augmentation at each step. This is done so that we do
+not create any new interconnections between the resulting partitions.
+
+Running our solver in the augmented block Cimmino mode will go through the following steps:
+
+- Partition the system into strips of rows (:math:`A_i` and :math:`b_i` for :math:`i = 1, \dots p`)
+- Augment the different partitions according to the selected algorithm
+- Create the augmented systems
+- Analyse and factorize the augmented systems using the direct solver :math:`MUMPS`
+- Build an auxiliary matrix :math:`S` in parallel and use it to solve
+  a reduced linear system. The result is then used to obtain the
+  solution for the original linear system :math:`Ax = b`.
+
+For the last step, please check the presentation http://zenadi.com/thesis_def.pdf (slides 34 to 55) for more details.
