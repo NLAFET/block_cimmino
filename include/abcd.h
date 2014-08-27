@@ -165,39 +165,39 @@ public:
     /*!  The gateway function that launches all other options
      *
      * Run an operation identified by the value of job_id, it can be
-     * either of:
+     * either:
      * - -1, initializes the internal matrix used by the
      *      solver. Prior to this call, the user must provide:
-     *    * The information about the matrix #m, #n, #nz,
+     *    * The information about the matrix. #m, #n, #nz,
      *      #sym, #irn, #jcn and #val have to be initialized before the
      *      call.
      *    * After the call, the arrays #irn, #jcn and #val
-     *      are no longer used by the solver.
+     *      are no longer used by the solver and can be freely deallocated.
      * - 1, performs the preprocessing. During this call, the solver
-     *    scales the matrix, partition it, and if required by the user
+     *    scales the matrix, partitions it and, if requested by the user,
      *    performs the augmentation of the matrix. Prior to this call, the
      *    user must provide:
      *  
-     *    * The number of partitions to create (see Controls#nbparts)
+     *    * The number of partitions to create (see ``nbparts`` )
      *       or ask the solver to guess the appropriate number of
-     *       partitions (see Controls#part_guess)
-     *    * The type of scaling to perform (see Controls#scaling)
-     *    * The type of augmentation to perform (see Controls#aug_type)
+     *       partitions (see ``part_guess``)
+     *    * The type of scaling to perform (see ``scaling``)
+     *    * The type of augmentation to perform (see ``aug_type``)
      * - 2, creates the augmented systems, analyses them, creates
      *     the mapping between the different mpi-processes and
      *     factorizes the augmented systems.
      * - 3, performs the solution step, the right-hand sides and
      *     their number are required prior to this call.
      *     * The right-hand sides have to be given through the array
-     *        ``rhs[]`` and their number in ``nrhs``.
+     *        ``rhs[]`` and their number in #nrhs.
      *     * The block-size to be used during the block-CG
      *        acceleration. Its value is used only during the regular
      *        block Cimmino solve, and by default its value is 1.
      *     * The solution is centralized (on the master) in the array
      *        ``sol[]``.
-     * - 4, regroups the call to the phases 1 and 2. 
-     * - 5, regroups the call to the phases 2 and 3. 
-     * - 6, regroups the call to the phases 1, 2 and 3.
+     * - 4, combines the call to the phases 1 and 2. 
+     * - 5, combines the call to the phases 2 and 3. 
+     * - 6, combines the call to the phases 1, 2 and 3.
      *
      * \param job_id Identifies the operation to be run by the solver
      */

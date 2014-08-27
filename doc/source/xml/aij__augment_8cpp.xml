@@ -4,183 +4,183 @@
     <compoundname>aij_augment.cpp</compoundname>
     <includes refid="abcd_8h" local="yes">abcd.h</includes>
     <incdepgraph>
-      <node id="665">
+      <node id="709">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="674">
+      <node id="718">
         <label>functional</label>
       </node>
-      <node id="652">
+      <node id="696">
         <label>iomanip</label>
       </node>
-      <node id="667">
+      <node id="711">
         <label>boost/lexical_cast.hpp</label>
       </node>
-      <node id="668">
+      <node id="712">
         <label>easylogging++.h</label>
       </node>
-      <node id="660">
+      <node id="704">
         <label>mumps.h</label>
         <link refid="mumps_8h"/>
-        <childnode refid="661" relation="include">
+        <childnode refid="705" relation="include">
         </childnode>
       </node>
-      <node id="658">
+      <node id="702">
         <label>stdlib.h</label>
       </node>
-      <node id="666">
+      <node id="710">
         <label>boost/lambda/bind.hpp</label>
       </node>
-      <node id="680">
+      <node id="724">
         <label>mvm.h</label>
       </node>
-      <node id="673">
+      <node id="717">
         <label>cwchar</label>
       </node>
-      <node id="649">
+      <node id="693">
         <label>abcd.h</label>
         <link refid="abcd_8h"/>
-        <childnode refid="650" relation="include">
+        <childnode refid="694" relation="include">
         </childnode>
-        <childnode refid="651" relation="include">
+        <childnode refid="695" relation="include">
         </childnode>
-        <childnode refid="652" relation="include">
+        <childnode refid="696" relation="include">
         </childnode>
-        <childnode refid="653" relation="include">
+        <childnode refid="697" relation="include">
         </childnode>
-        <childnode refid="654" relation="include">
+        <childnode refid="698" relation="include">
         </childnode>
-        <childnode refid="655" relation="include">
+        <childnode refid="699" relation="include">
         </childnode>
-        <childnode refid="656" relation="include">
+        <childnode refid="700" relation="include">
         </childnode>
-        <childnode refid="657" relation="include">
+        <childnode refid="701" relation="include">
         </childnode>
-        <childnode refid="658" relation="include">
+        <childnode refid="702" relation="include">
         </childnode>
-        <childnode refid="659" relation="include">
+        <childnode refid="703" relation="include">
         </childnode>
-        <childnode refid="660" relation="include">
+        <childnode refid="704" relation="include">
         </childnode>
-        <childnode refid="661" relation="include">
+        <childnode refid="705" relation="include">
         </childnode>
-        <childnode refid="662" relation="include">
+        <childnode refid="706" relation="include">
         </childnode>
-        <childnode refid="663" relation="include">
+        <childnode refid="707" relation="include">
         </childnode>
-        <childnode refid="664" relation="include">
+        <childnode refid="708" relation="include">
         </childnode>
-        <childnode refid="665" relation="include">
+        <childnode refid="709" relation="include">
         </childnode>
-        <childnode refid="666" relation="include">
+        <childnode refid="710" relation="include">
         </childnode>
-        <childnode refid="667" relation="include">
+        <childnode refid="711" relation="include">
         </childnode>
-        <childnode refid="668" relation="include">
+        <childnode refid="712" relation="include">
         </childnode>
-        <childnode refid="669" relation="include">
+        <childnode refid="713" relation="include">
         </childnode>
-        <childnode refid="670" relation="include">
+        <childnode refid="714" relation="include">
         </childnode>
-        <childnode refid="671" relation="include">
+        <childnode refid="715" relation="include">
         </childnode>
-        <childnode refid="672" relation="include">
+        <childnode refid="716" relation="include">
         </childnode>
-        <childnode refid="673" relation="include">
+        <childnode refid="717" relation="include">
         </childnode>
-        <childnode refid="674" relation="include">
+        <childnode refid="718" relation="include">
         </childnode>
-        <childnode refid="675" relation="include">
+        <childnode refid="719" relation="include">
         </childnode>
-        <childnode refid="676" relation="include">
+        <childnode refid="720" relation="include">
         </childnode>
-        <childnode refid="677" relation="include">
+        <childnode refid="721" relation="include">
         </childnode>
-        <childnode refid="678" relation="include">
+        <childnode refid="722" relation="include">
         </childnode>
-        <childnode refid="679" relation="include">
+        <childnode refid="723" relation="include">
         </childnode>
-        <childnode refid="680" relation="include">
+        <childnode refid="724" relation="include">
         </childnode>
-        <childnode refid="681" relation="include">
+        <childnode refid="725" relation="include">
         </childnode>
-        <childnode refid="682" relation="include">
+        <childnode refid="726" relation="include">
         </childnode>
       </node>
-      <node id="653">
+      <node id="697">
         <label>numeric</label>
       </node>
-      <node id="657">
+      <node id="701">
         <label>string</label>
       </node>
-      <node id="659">
+      <node id="703">
         <label>map</label>
       </node>
-      <node id="678">
+      <node id="722">
         <label>comprow_double.h</label>
       </node>
-      <node id="675">
+      <node id="719">
         <label>fstream</label>
       </node>
-      <node id="663">
+      <node id="707">
         <label>boost/accumulators/statistics/mean.hpp</label>
       </node>
-      <node id="664">
+      <node id="708">
         <label>boost/progress.hpp</label>
       </node>
-      <node id="682">
+      <node id="726">
         <label>defaults.h</label>
         <link refid="defaults_8h"/>
       </node>
-      <node id="655">
+      <node id="699">
         <label>cstdio</label>
       </node>
-      <node id="669">
+      <node id="713">
         <label>ctime</label>
       </node>
-      <node id="661">
+      <node id="705">
         <label>dmumps_c.h</label>
       </node>
-      <node id="654">
+      <node id="698">
         <label>vector</label>
       </node>
-      <node id="662">
+      <node id="706">
         <label>boost/mpi.hpp</label>
       </node>
-      <node id="676">
+      <node id="720">
         <label>sstream</label>
       </node>
-      <node id="679">
+      <node id="723">
         <label>coord_double.h</label>
       </node>
-      <node id="648">
+      <node id="692">
         <label>/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp</label>
         <link refid="aij_augment.cpp"/>
-        <childnode refid="649" relation="include">
+        <childnode refid="693" relation="include">
         </childnode>
       </node>
-      <node id="671">
+      <node id="715">
         <label>cstdlib</label>
       </node>
-      <node id="672">
+      <node id="716">
         <label>cctype</label>
       </node>
-      <node id="651">
+      <node id="695">
         <label>iostream</label>
       </node>
-      <node id="650">
+      <node id="694">
         <label>mpi.h</label>
       </node>
-      <node id="677">
+      <node id="721">
         <label>compcol_double.h</label>
       </node>
-      <node id="656">
+      <node id="700">
         <label>algorithm</label>
       </node>
-      <node id="670">
+      <node id="714">
         <label>cstring</label>
       </node>
-      <node id="681">
+      <node id="725">
         <label>splib_utils.h</label>
         <link refid="splib__utils_8h"/>
       </node>
@@ -346,17 +346,19 @@
 <codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref><sp/>=<sp/>nbcols;</highlight></codeline>
 <codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>C<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
 <codeline lineno="156"><highlight class="normal"></highlight></codeline>
-<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_analysis]<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"></highlight></codeline>
-<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Augment<sp/>the<sp/>matrices</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>M.size();<sp/>k++){</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(stCols[k].size()<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>now<sp/>augment<sp/>each<sp/>partition!</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stC[k]<sp/>=<sp/>stCols[k][0];</highlight></codeline>
-<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1aa0dbb183d773929881d02c2c1641614c" kindref="member">concat_columns</ref>(M[k],<sp/>C[k],<sp/>stCols[k]);</highlight></codeline>
-<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1a423d8745f6289f20b18e9143b1cb00fa" kindref="member">resize_columns</ref>(M[k],<sp/>nbcols);</highlight></codeline>
-<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_analysis]<sp/>!=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Augment<sp/>the<sp/>matrices</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>M.size();<sp/>k++){</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(stCols[k].size()<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>now<sp/>augment<sp/>each<sp/>partition!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stC[k]<sp/>=<sp/>stCols[k][0];</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1aa0dbb183d773929881d02c2c1641614c" kindref="member">concat_columns</ref>(M[k],<sp/>C[k],<sp/>stCols[k]);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M[k]<sp/>=<sp/><ref refid="splib__utils_8cpp_1a423d8745f6289f20b18e9143b1cb00fa" kindref="member">resize_columns</ref>(M[k],<sp/>nbcols);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp"/>
   </compounddef>

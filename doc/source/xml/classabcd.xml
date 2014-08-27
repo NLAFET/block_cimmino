@@ -292,9 +292,9 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="269" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="269" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" prot="private" static="no" mutable="no">
-        <type>double</type>
-        <definition>double abcd::nrmB</definition>
+      <memberdef kind="variable" id="classabcd_1a4237fc9f2a8e163f5dde13b49a433016" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; abcd::nrmB</definition>
         <argsstring></argsstring>
         <name>nrmB</name>
         <briefdescription>
@@ -591,7 +591,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="392" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="392" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="391" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="391" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a6494ba4a220da82e02622f38b25068db" prot="private" static="no" mutable="no">
         <type>Coord_Mat_double</type>
@@ -604,7 +604,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="393" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="393" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="392" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="392" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ab1ae1de1a6d9e3864c07fe746ddc6fcd" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -617,7 +617,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="394" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="394" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="393" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="393" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a28e5018dcc397bfef8ab9de001cc4506" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -630,7 +630,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="395" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="395" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="394" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="394" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1aba3ee1235942f0b5121ecb2b4d74a196" prot="private" static="no" mutable="no">
         <type>std::vector&lt; double &gt;</type>
@@ -643,7 +643,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="396" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="396" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="395" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="395" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ad09c0619834f760be6bf9aaeaf6922ca" prot="private" static="no" mutable="no">
         <type>std::map&lt; int, CompRow_Mat_double &gt;</type>
@@ -656,7 +656,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="399" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="399" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="398" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="398" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1aacf370341ae94ee4a0b8c6445a25fc88" prot="private" static="no" mutable="no">
         <type>std::vector&lt; CompRow_Mat_double &gt;</type>
@@ -669,7 +669,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="400" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="400" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="399" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="399" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ab45f87e05f46304b5140db068dfb37a3" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
@@ -682,7 +682,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="401" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="401" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="400" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="400" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a112a717bc087d569225694bada18c45f" prot="private" static="no" mutable="no">
         <type>MV_ColMat_double</type>
@@ -695,7 +695,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="403" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="403" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="402" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="402" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a4a0f44796d9dadf39f0b9655ada8df67" prot="private" static="no" mutable="no">
         <type>MV_ColMat_double</type>
@@ -708,7 +708,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="404" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="404" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="403" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="403" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a3c69c57b283e3d97a9eb0176efcc2f70" prot="private" static="no" mutable="no">
         <type>MV_ColMat_double</type>
@@ -721,7 +721,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="405" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="405" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="404" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="404" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ac65507961f8180935b292542e452a4f4" prot="private" static="no" mutable="no">
         <type>CompRow_Mat_double</type>
@@ -734,7 +734,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="407" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="407" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="406" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="406" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a546571c42ff50c26f55fbfd4d66cf0ee" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -747,7 +747,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="408" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="408" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="407" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="407" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a1907cd9c727f334284fbcaffdd88b8b9" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -760,7 +760,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="410" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="410" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="409" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="409" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a1ceaa3c6a556f8e818d213029d0fe8b9" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -773,7 +773,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="411" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="411" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a61ec8805a290f1fc73e413332e3ac96d" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -786,7 +786,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="411" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="411" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a8256e8277b5d2200dba679d8dd71554a" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -799,7 +799,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="411" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="411" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a8f8c3fe9e674f9f1e27973891ac968e1" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -812,7 +812,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="413" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="413" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a2257a5ef4b7426570fe986d8f5344efb" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -825,7 +825,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="413" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="413" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ad0a81d878205a7333c9a674224f74b58" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -838,7 +838,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="413" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="413" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="412" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="412" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ad788028f06240ea4038c0c74eb0e7087" prot="private" static="no" mutable="no">
         <type>MV_ColMat_double</type>
@@ -851,7 +851,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="415" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="415" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="414" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="414" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a6cdf5d4fe4ccb909ae7f247b1a6c2467" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -864,7 +864,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="416" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="416" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="415" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="415" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a9d25f8c5a12912bf579d4b856d23ef4e" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -877,7 +877,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="418" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="418" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="417" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="417" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a394b46f507335cb80943626234cc0789" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -890,7 +890,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="419" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="419" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="418" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="418" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1aa393171b258ca15e05c4be342bec81d9" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
@@ -903,7 +903,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="422" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="422" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="421" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="421" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a2db6084cb434e4751b2df4369a985ea7" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
@@ -916,7 +916,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="423" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="423" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="422" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="422" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a35c3b252abcc4dd7931e4b034e8de062" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::vector&lt; int &gt; &gt;</type>
@@ -929,7 +929,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="425" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="425" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="424" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="424" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1ac687cd652fbf6c35035792eb8fd29b70" prot="private" static="no" mutable="no">
         <type>int **</type>
@@ -942,7 +942,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="426" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="426" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="425" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="425" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a563905855b1ab8c8a3bf20d5785a3901" prot="private" static="no" mutable="no">
         <type>std::map&lt; int, int &gt;</type>
@@ -955,7 +955,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="427" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="427" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="426" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="426" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -968,7 +968,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="429" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="429" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="428" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="428" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a1707bed55d487b558424d13d8afafda3" prot="private" static="no" mutable="no">
         <type>std::map&lt; int, int &gt;</type>
@@ -981,7 +981,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="430" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="430" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="429" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="429" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1add4558f59ffb02eb4aa85648f324036b" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;::iterator</type>
@@ -994,7 +994,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="431" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="431" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="430" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="430" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a29978bbf0d8de4a0c40daea6dc6376c4" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -1007,7 +1007,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="432" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="432" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="431" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="431" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a526c2c2ba72f32aea9a49c785d1cb8b2" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
@@ -1020,7 +1020,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="434" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="434" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="433" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="433" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1adbcae55b17045d4202388dad7a913c00" prot="private" static="no" mutable="no">
         <type>std::vector&lt; std::map&lt; int, int &gt; &gt;</type>
@@ -1033,7 +1033,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="435" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="435" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="434" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="434" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a98bd0bc0703a2a0ff27223df81df6097" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -1046,7 +1046,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="436" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="436" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="435" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="435" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a1f9a7481b36c728f518a1391c83a37b7" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -1059,7 +1059,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="437" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="437" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="436" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="436" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a9eb7ac628f0bf6d4132ea384f46810d4" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -1072,7 +1072,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="438" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="438" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="437" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="437" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a4a2f088da09ed8daae94b7d3639e0418" prot="private" static="no" mutable="no">
         <type>MV_ColMat_double</type>
@@ -1085,7 +1085,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="439" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="439" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="438" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="438" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a958fb5e353f34d2ab91d95df9a82f920" prot="private" static="no" mutable="no">
         <type>std::map&lt; int, std::vector&lt; int &gt; &gt;</type>
@@ -1098,7 +1098,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="445" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="445" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="444" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="444" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a7197aee3bef7fc1fbbfcb62dafc28d1c" prot="private" static="no" mutable="no">
         <type>std::map&lt; int, std::vector&lt; int &gt; &gt;</type>
@@ -1111,7 +1111,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="446" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="446" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="445" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="445" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1aaa986f7d93302b717d39c4d5c4662edb" prot="private" static="no" mutable="no">
         <type>std::vector&lt; int &gt;</type>
@@ -1124,7 +1124,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="448" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="448" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="447" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="447" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a75310e12e346916c33ba9bcb683f4fd6" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -1137,7 +1137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="451" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="451" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="450" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="450" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a6f65e6915fd4a0ca11ba78b13c9e5562" prot="private" static="no" mutable="no">
         <type>mpi::communicator</type>
@@ -1150,7 +1150,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="455" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="455" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="454" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="454" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classabcd_1a272df4807f77f34dc90146a76fc1a230" prot="private" static="no" mutable="no">
         <type>mpi::communicator</type>
@@ -1163,7 +1163,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="457" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="457" bodyend="-1"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="456" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="456" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -1179,14 +1179,14 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The gateway function that launches all other options</para><para>Run an operation identified by the value of job_id, it can be either of:<itemizedlist>
+<para>The gateway function that launches all other options</para><para>Run an operation identified by the value of job_id, it can be either:<itemizedlist>
 <listitem><para>-1, initializes the internal matrix used by the solver. Prior to this call, the user must provide:<itemizedlist>
-<listitem><para>The information about the matrix <ref refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kindref="member">m</ref>, <ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>, <ref refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kindref="member">nz</ref>, <ref refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kindref="member">sym</ref>, <ref refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kindref="member">irn</ref>, <ref refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kindref="member">jcn</ref> and <ref refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kindref="member">val</ref> have to be initialized before the call.</para></listitem><listitem><para>After the call, the arrays <ref refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kindref="member">irn</ref>, <ref refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kindref="member">jcn</ref> and <ref refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kindref="member">val</ref> are no longer used by the solver.</para></listitem></itemizedlist>
-</para></listitem><listitem><para>1, performs the preprocessing. During this call, the solver scales the matrix, partition it, and if required by the user performs the augmentation of the matrix. Prior to this call, the user must provide:<itemizedlist>
-<listitem><para>The number of partitions to create (see <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>) or ask the solver to guess the appropriate number of partitions (see <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" kindref="member">Controls::part_guess</ref>)</para></listitem><listitem><para>The type of scaling to perform (see <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" kindref="member">Controls::scaling</ref>)</para></listitem><listitem><para>The type of augmentation to perform (see <ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>)</para></listitem></itemizedlist>
+<listitem><para>The information about the matrix. <ref refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kindref="member">m</ref>, <ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>, <ref refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kindref="member">nz</ref>, <ref refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kindref="member">sym</ref>, <ref refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kindref="member">irn</ref>, <ref refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kindref="member">jcn</ref> and <ref refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kindref="member">val</ref> have to be initialized before the call.</para></listitem><listitem><para>After the call, the arrays <ref refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kindref="member">irn</ref>, <ref refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kindref="member">jcn</ref> and <ref refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kindref="member">val</ref> are no longer used by the solver and can be freely deallocated.</para></listitem></itemizedlist>
+</para></listitem><listitem><para>1, performs the preprocessing. During this call, the solver scales the matrix, partitions it and, if requested by the user, performs the augmentation of the matrix. Prior to this call, the user must provide:<itemizedlist>
+<listitem><para>The number of partitions to create (see <computeroutput>nbparts</computeroutput> ) or ask the solver to guess the appropriate number of partitions (see <computeroutput>part_guess</computeroutput>)</para></listitem><listitem><para>The type of scaling to perform (see <computeroutput>scaling</computeroutput>)</para></listitem><listitem><para>The type of augmentation to perform (see <computeroutput>aug_type</computeroutput>)</para></listitem></itemizedlist>
 </para></listitem><listitem><para>2, creates the augmented systems, analyses them, creates the mapping between the different mpi-processes and factorizes the augmented systems.</para></listitem><listitem><para>3, performs the solution step, the right-hand sides and their number are required prior to this call.<itemizedlist>
-<listitem><para>The right-hand sides have to be given through the array <computeroutput>rhs[]</computeroutput> and their number in <computeroutput>nrhs</computeroutput>.</para></listitem><listitem><para>The block-size to be used during the block-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.</para></listitem><listitem><para>The solution is centralized (on the master) in the array <computeroutput>sol[]</computeroutput>.</para></listitem></itemizedlist>
-</para></listitem><listitem><para>4, regroups the call to the phases 1 and 2.</para></listitem><listitem><para>5, regroups the call to the phases 2 and 3.</para></listitem><listitem><para>6, regroups the call to the phases 1, 2 and 3.</para></listitem></itemizedlist>
+<listitem><para>The right-hand sides have to be given through the array <computeroutput>rhs[]</computeroutput> and their number in <ref refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" kindref="member">nrhs</ref>.</para></listitem><listitem><para>The block-size to be used during the block-CG acceleration. Its value is used only during the regular block Cimmino solve, and by default its value is 1.</para></listitem><listitem><para>The solution is centralized (on the master) in the array <computeroutput>sol[]</computeroutput>.</para></listitem></itemizedlist>
+</para></listitem><listitem><para>4, combines the call to the phases 1 and 2.</para></listitem><listitem><para>5, combines the call to the phases 2 and 3.</para></listitem><listitem><para>6, combines the call to the phases 1, 2 and 3.</para></listitem></itemizedlist>
 </para><para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>job_id</parametername>
@@ -1311,7 +1311,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="263" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="275" bodyend="295"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="263" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="302" bodyend="322"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1ace57c6c8a42889a00be354aedd31de1d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -1348,7 +1348,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="264" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="357" bodyend="441"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="264" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="386" bodyend="468"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1af89e88ee8b11f36c47fd09df323d187d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1381,7 +1381,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="265" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="253" bodyend="273"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="265" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="280" bodyend="300"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a57ffae86b1a9461163c887e5163a11ac" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1418,7 +1418,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="266" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="300" bodyend="355"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="266" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="327" bodyend="384"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a92ee33baaed6bff47deff16943966123" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1529,7 +1529,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="296" column="1" bodyfile="/home/mzenadi/projects/abcd/src/structure.cpp" bodystart="299" bodyend="379"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="296" column="1" bodyfile="/home/mzenadi/projects/abcd/src/structure.cpp" bodystart="299" bodyend="382"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1af62d114097b0e9039c05392c1ce17cb5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1563,7 +1563,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="307" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/cij_augment.cpp" bodystart="35" bodyend="215"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="307" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/cij_augment.cpp" bodystart="35" bodyend="217"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1adf0919f439b050435990bccef88dd74b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1580,7 +1580,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="308" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp" bodystart="35" bodyend="167"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="308" column="1" bodyfile="/home/mzenadi/projects/abcd/src/preprocess/aij_augment.cpp" bodystart="35" bodyend="169"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a36948f6756943f0e42a6c7bf604d4493" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1619,7 +1619,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="313" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="201" bodyend="292"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="313" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="203" bodyend="294"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a5e8b561d468ffe0a4d35ffa2311aec0d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1632,7 +1632,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="315" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="36" bodyend="199"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="315" column="1" bodyfile="/home/mzenadi/projects/abcd/src/communication.cpp" bodystart="36" bodyend="201"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1aced2ed71fc42d766f4117b9d7fef38b9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1649,7 +1649,7 @@
         </detaileddescription>
         <inbodydescription>
 <para>the final solution (distributed) w = ^+ b f = ^+ b </para>        </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="317" column="1" bodyfile="/home/mzenadi/projects/abcd/src/solve.cpp" bodystart="37" bodyend="209"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="317" column="1" bodyfile="/home/mzenadi/projects/abcd/src/solve.cpp" bodystart="37" bodyend="215"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1aa3d8082dc1f8bb53fecb6796983bc41f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>MV_ColMat_double</type>
@@ -1720,7 +1720,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="324" column="1" bodyfile="/home/mzenadi/projects/abcd/src/sutils/buildS.cpp" bodystart="68" bodyend="209"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="324" column="1" bodyfile="/home/mzenadi/projects/abcd/src/sutils/buildS.cpp" bodystart="68" bodyend="210"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a4388e77eec6eeaaa3d08eba72749b4f6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Coord_Mat_double</type>
@@ -1762,7 +1762,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="333" column="1" bodyfile="/home/mzenadi/projects/abcd/src/cimmino.cpp" bodystart="36" bodyend="90"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="333" column="1" bodyfile="/home/mzenadi/projects/abcd/src/cimmino.cpp" bodystart="36" bodyend="91"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a6a7deaa0a53ae154640398462c5ea49b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -1813,7 +1813,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="336" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="43" bodyend="239"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="336" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="43" bodyend="251"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1ae2707391ee22a24e3a704e12b89e87aa" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref></type>
@@ -1901,7 +1901,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="344" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="241" bodyend="251"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="344" column="1" bodyfile="/home/mzenadi/projects/abcd/src/bcg.cpp" bodystart="253" bodyend="278"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a4a38fc2cf3a288e6cbfbf9cebe961599" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -2052,7 +2052,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="366" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/sumproject.cpp" bodystart="36" bodyend="215"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="366" column="1" bodyfile="/home/mzenadi/projects/abcd/src/mumps/sumproject.cpp" bodystart="36" bodyend="221"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1aa6b92bcd620bc56a7bbe9847a5c8707b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>MV_ColMat_double</type>
@@ -2181,10 +2181,10 @@
         </inbodydescription>
         <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="385" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="109" bodyend="136"/>
       </memberdef>
-      <memberdef kind="function" id="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classabcd_1abeeb25b940c83b95899e556dbc9c73ce" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void abcd::get_nrmres</definition>
-        <argsstring>(MV_ColMat_double &amp;x, MV_ColMat_double &amp;b, double &amp;nrmR, double &amp;nrmX, double &amp;nrmXfmX)</argsstring>
+        <argsstring>(MV_ColMat_double &amp;x, MV_ColMat_double &amp;b, VECTOR_double &amp;nrmR, VECTOR_double &amp;nrmX)</argsstring>
         <name>get_nrmres</name>
         <param>
           <type>MV_ColMat_double &amp;</type>
@@ -2195,16 +2195,12 @@
           <declname>b</declname>
         </param>
         <param>
-          <type>double &amp;</type>
+          <type>VECTOR_double &amp;</type>
           <declname>nrmR</declname>
         </param>
         <param>
-          <type>double &amp;</type>
+          <type>VECTOR_double &amp;</type>
           <declname>nrmX</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>nrmXfmX</declname>
         </param>
         <briefdescription>
         </briefdescription>
@@ -2212,7 +2208,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="386" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="144" bodyend="206"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="386" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="144" bodyend="203"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a482623996a6268d4b29cad1db5382122" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -2225,7 +2221,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="397" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="397" bodyend="397"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="396" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="396" bodyend="396"/>
       </memberdef>
       <memberdef kind="function" id="classabcd_1a33e3410c567ea50aa84a31c745b296ca" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -2270,14 +2266,14 @@
         </detaileddescription>
         <inbodydescription>
 <para>Move this away </para>        </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="459" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="233" bodyend="282"/>
+        <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="458" column="1" bodyfile="/home/mzenadi/projects/abcd/src/utils.cpp" bodystart="230" bodyend="280"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="128" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="127" bodyend="463"/>
+    <location file="/home/mzenadi/projects/abcd/include/abcd.h" line="128" column="1" bodyfile="/home/mzenadi/projects/abcd/include/abcd.h" bodystart="127" bodyend="462"/>
     <listofallmembers>
       <member refid="classabcd_1ac65507961f8180935b292542e452a4f4" prot="private" virt="non-virtual"><scope>abcd</scope><name>A</name></member>
       <member refid="classabcd_1a5e503b1e89268fbfad4399194895b683" prot="public" virt="non-virtual"><scope>abcd</scope><name>abcd</name></member>
@@ -2320,7 +2316,7 @@
       <member refid="classabcd_1aa3fa6f6904809f40068a124fbd4d392e" prot="public" virt="non-virtual"><scope>abcd</scope><name>factorizeAugmentedSystems</name></member>
       <member refid="classabcd_1a0ad19a4110240dfa7f241567e205e731" prot="private" virt="non-virtual"><scope>abcd</scope><name>factorizeAugmentedSystems</name></member>
       <member refid="classabcd_1ac687cd652fbf6c35035792eb8fd29b70" prot="private" virt="non-virtual"><scope>abcd</scope><name>fast_local_column_index</name></member>
-      <member refid="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" prot="private" virt="non-virtual"><scope>abcd</scope><name>get_nrmres</name></member>
+      <member refid="classabcd_1abeeb25b940c83b95899e556dbc9c73ce" prot="private" virt="non-virtual"><scope>abcd</scope><name>get_nrmres</name></member>
       <member refid="classabcd_1a563905855b1ab8c8a3bf20d5785a3901" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local</name></member>
       <member refid="classabcd_1a1707bed55d487b558424d13d8afafda3" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_c</name></member>
       <member refid="classabcd_1a814f75ea17fba7e7a0505b8b30cec573" prot="private" virt="non-virtual"><scope>abcd</scope><name>glob_to_local_ind</name></member>
@@ -2364,7 +2360,7 @@
       <member refid="classabcd_1aa1a229ff3c4713418623c6416bd13f6b" prot="private" virt="non-virtual"><scope>abcd</scope><name>normres</name></member>
       <member refid="classabcd_1a461f8ba011adbe3ad98d5db2564fe4f3" prot="public" virt="non-virtual"><scope>abcd</scope><name>nrhs</name></member>
       <member refid="classabcd_1af5397b434eab1f94cbbe4e104e93723b" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmA</name></member>
-      <member refid="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmB</name></member>
+      <member refid="classabcd_1a4237fc9f2a8e163f5dde13b49a433016" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmB</name></member>
       <member refid="classabcd_1afd573b0c136c11086126ab0869cfb912" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmMtx</name></member>
       <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" prot="private" virt="non-virtual"><scope>abcd</scope><name>nrmXf</name></member>
       <member refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" prot="public" virt="non-virtual"><scope>abcd</scope><name>nz</name></member>

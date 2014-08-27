@@ -6,187 +6,187 @@
     <includes local="no">iostream</includes>
     <includes local="no">fstream</includes>
     <incdepgraph>
-      <node id="959">
+      <node id="1003">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="968">
+      <node id="1012">
         <label>functional</label>
       </node>
-      <node id="946">
+      <node id="990">
         <label>iomanip</label>
       </node>
-      <node id="961">
+      <node id="1005">
         <label>boost/lexical_cast.hpp</label>
       </node>
-      <node id="962">
+      <node id="1006">
         <label>easylogging++.h</label>
       </node>
-      <node id="954">
+      <node id="998">
         <label>mumps.h</label>
         <link refid="mumps_8h"/>
-        <childnode refid="955" relation="include">
+        <childnode refid="999" relation="include">
         </childnode>
       </node>
-      <node id="952">
+      <node id="996">
         <label>stdlib.h</label>
       </node>
-      <node id="960">
+      <node id="1004">
         <label>boost/lambda/bind.hpp</label>
       </node>
-      <node id="974">
+      <node id="1018">
         <label>mvm.h</label>
       </node>
-      <node id="967">
+      <node id="1011">
         <label>cwchar</label>
       </node>
-      <node id="943">
+      <node id="987">
         <label>abcd.h</label>
         <link refid="abcd_8h"/>
-        <childnode refid="944" relation="include">
+        <childnode refid="988" relation="include">
         </childnode>
-        <childnode refid="945" relation="include">
+        <childnode refid="989" relation="include">
         </childnode>
-        <childnode refid="946" relation="include">
+        <childnode refid="990" relation="include">
         </childnode>
-        <childnode refid="947" relation="include">
+        <childnode refid="991" relation="include">
         </childnode>
-        <childnode refid="948" relation="include">
+        <childnode refid="992" relation="include">
         </childnode>
-        <childnode refid="949" relation="include">
+        <childnode refid="993" relation="include">
         </childnode>
-        <childnode refid="950" relation="include">
+        <childnode refid="994" relation="include">
         </childnode>
-        <childnode refid="951" relation="include">
+        <childnode refid="995" relation="include">
         </childnode>
-        <childnode refid="952" relation="include">
+        <childnode refid="996" relation="include">
         </childnode>
-        <childnode refid="953" relation="include">
+        <childnode refid="997" relation="include">
         </childnode>
-        <childnode refid="954" relation="include">
+        <childnode refid="998" relation="include">
         </childnode>
-        <childnode refid="955" relation="include">
+        <childnode refid="999" relation="include">
         </childnode>
-        <childnode refid="956" relation="include">
+        <childnode refid="1000" relation="include">
         </childnode>
-        <childnode refid="957" relation="include">
+        <childnode refid="1001" relation="include">
         </childnode>
-        <childnode refid="958" relation="include">
+        <childnode refid="1002" relation="include">
         </childnode>
-        <childnode refid="959" relation="include">
+        <childnode refid="1003" relation="include">
         </childnode>
-        <childnode refid="960" relation="include">
+        <childnode refid="1004" relation="include">
         </childnode>
-        <childnode refid="961" relation="include">
+        <childnode refid="1005" relation="include">
         </childnode>
-        <childnode refid="962" relation="include">
+        <childnode refid="1006" relation="include">
         </childnode>
-        <childnode refid="963" relation="include">
+        <childnode refid="1007" relation="include">
         </childnode>
-        <childnode refid="964" relation="include">
+        <childnode refid="1008" relation="include">
         </childnode>
-        <childnode refid="965" relation="include">
+        <childnode refid="1009" relation="include">
         </childnode>
-        <childnode refid="966" relation="include">
+        <childnode refid="1010" relation="include">
         </childnode>
-        <childnode refid="967" relation="include">
+        <childnode refid="1011" relation="include">
         </childnode>
-        <childnode refid="968" relation="include">
+        <childnode refid="1012" relation="include">
         </childnode>
-        <childnode refid="969" relation="include">
+        <childnode refid="1013" relation="include">
         </childnode>
-        <childnode refid="970" relation="include">
+        <childnode refid="1014" relation="include">
         </childnode>
-        <childnode refid="971" relation="include">
+        <childnode refid="1015" relation="include">
         </childnode>
-        <childnode refid="972" relation="include">
+        <childnode refid="1016" relation="include">
         </childnode>
-        <childnode refid="973" relation="include">
+        <childnode refid="1017" relation="include">
         </childnode>
-        <childnode refid="974" relation="include">
+        <childnode refid="1018" relation="include">
         </childnode>
-        <childnode refid="975" relation="include">
+        <childnode refid="1019" relation="include">
         </childnode>
-        <childnode refid="976" relation="include">
+        <childnode refid="1020" relation="include">
         </childnode>
       </node>
-      <node id="947">
+      <node id="991">
         <label>numeric</label>
       </node>
-      <node id="951">
+      <node id="995">
         <label>string</label>
       </node>
-      <node id="942">
+      <node id="986">
         <label>/home/mzenadi/projects/abcd/src/sutils/buildS.cpp</label>
         <link refid="buildS.cpp"/>
-        <childnode refid="943" relation="include">
+        <childnode refid="987" relation="include">
         </childnode>
-        <childnode refid="945" relation="include">
+        <childnode refid="989" relation="include">
         </childnode>
-        <childnode refid="969" relation="include">
+        <childnode refid="1013" relation="include">
         </childnode>
       </node>
-      <node id="953">
+      <node id="997">
         <label>map</label>
       </node>
-      <node id="972">
+      <node id="1016">
         <label>comprow_double.h</label>
       </node>
-      <node id="969">
+      <node id="1013">
         <label>fstream</label>
       </node>
-      <node id="957">
+      <node id="1001">
         <label>boost/accumulators/statistics/mean.hpp</label>
       </node>
-      <node id="958">
+      <node id="1002">
         <label>boost/progress.hpp</label>
       </node>
-      <node id="976">
+      <node id="1020">
         <label>defaults.h</label>
         <link refid="defaults_8h"/>
       </node>
-      <node id="949">
+      <node id="993">
         <label>cstdio</label>
       </node>
-      <node id="963">
+      <node id="1007">
         <label>ctime</label>
       </node>
-      <node id="955">
+      <node id="999">
         <label>dmumps_c.h</label>
       </node>
-      <node id="948">
+      <node id="992">
         <label>vector</label>
       </node>
-      <node id="956">
+      <node id="1000">
         <label>boost/mpi.hpp</label>
       </node>
-      <node id="970">
+      <node id="1014">
         <label>sstream</label>
       </node>
-      <node id="973">
+      <node id="1017">
         <label>coord_double.h</label>
       </node>
-      <node id="965">
+      <node id="1009">
         <label>cstdlib</label>
       </node>
-      <node id="966">
+      <node id="1010">
         <label>cctype</label>
       </node>
-      <node id="945">
+      <node id="989">
         <label>iostream</label>
       </node>
-      <node id="944">
+      <node id="988">
         <label>mpi.h</label>
       </node>
-      <node id="971">
+      <node id="1015">
         <label>compcol_double.h</label>
       </node>
-      <node id="950">
+      <node id="994">
         <label>algorithm</label>
       </node>
-      <node id="964">
+      <node id="1008">
         <label>cstring</label>
       </node>
-      <node id="975">
+      <node id="1019">
         <label>splib_utils.h</label>
         <link refid="splib__utils_8h"/>
       </node>
@@ -293,118 +293,119 @@
 <codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Avg<sp/>number<sp/>of<sp/>cols<sp/>is<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>total/<ref refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kindref="member">parallel_cg</ref>;</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="97"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NO_MUMPS_ES</highlight></codeline>
-<codeline lineno="99"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[235<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::exploit_sparcity];</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[261<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::exploit_sparcity];</highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[495<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::exploit_sparcity];</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[497<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::exploit_sparcity];</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
-<codeline lineno="104"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
-<codeline lineno="106"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>we<sp/>need<sp/>to<sp/>fully<sp/>augment<sp/>the<sp/>matrix,<sp/>or<sp/>at<sp/>least<sp/>to<sp/>build<sp/>part<sp/>of<sp/>it</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>this<sp/>is<sp/>needed<sp/>only<sp/>in<sp/>ABCD<sp/>direct<sp/>and<sp/>iterative</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0<sp/>||<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>==<sp/>2){</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
-<codeline lineno="110"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;::iterator<sp/>pos<sp/>=<sp/>my_cols.begin();</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;::iterator<sp/>end_pos;</highlight></codeline>
-<codeline lineno="113"><highlight class="normal"></highlight></codeline>
-<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
-<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"></highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>share<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kindref="member">Controls::aug_blocking</ref>];</highlight></codeline>
-<codeline lineno="119"><highlight class="normal"></highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(pos<sp/>!=<sp/>my_cols.end()){</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(pos<sp/>+<sp/>share<sp/>&lt;<sp/>my_cols.end())<sp/>end_pos<sp/>=<sp/>pos<sp/>+<sp/>share;</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>end_pos<sp/>=<sp/>my_cols.end();</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>perc<sp/>=<sp/>end_pos<sp/>-<sp/>my_cols.begin();</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perc<sp/>/=<sp/>my_cols.size();</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perc<sp/>*=<sp/>100;</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NO_MUMPS_ES</highlight></codeline>
+<codeline lineno="101"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[235<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kindref="member">Controls::exploit_sparcity</ref>];</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[261<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kindref="member">Controls::exploit_sparcity</ref>];</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[495<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kindref="member">Controls::exploit_sparcity</ref>];</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>mumps.keep[497<sp/>-<sp/>1]<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kindref="member">Controls::exploit_sparcity</ref>];</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//no<sp/>mumps<sp/>exploits<sp/>parsity</highlight></codeline>
+<codeline lineno="106"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>we<sp/>need<sp/>to<sp/>fully<sp/>augment<sp/>the<sp/>matrix,<sp/>or<sp/>at<sp/>least<sp/>to<sp/>build<sp/>part<sp/>of<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>this<sp/>is<sp/>needed<sp/>only<sp/>in<sp/>ABCD<sp/>direct<sp/>and<sp/>iterative</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="classabcd_1afc2897e4faf4d2f2466251488123af8d" kindref="member">dcntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0<sp/>||<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[Controls::aug_iterative]<sp/>==<sp/>2){</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//wip</highlight></codeline>
+<codeline lineno="111"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;::iterator<sp/>pos<sp/>=<sp/>my_cols.begin();</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;::iterator<sp/>end_pos;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.reserve(my_cols.size()<sp/>*<sp/>my_cols.size());</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>share<sp/>=<sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kindref="member">Controls::aug_blocking</ref>];</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(pos<sp/>!=<sp/>my_cols.end()){</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(pos<sp/>+<sp/>share<sp/>&lt;<sp/>my_cols.end())<sp/>end_pos<sp/>=<sp/>pos<sp/>+<sp/>share;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>end_pos<sp/>=<sp/>my_cols.end();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>perc<sp/>=<sp/>end_pos<sp/>-<sp/>my_cols.begin();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perc<sp/>/=<sp/>my_cols.size();</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>perc<sp/>*=<sp/>100;</highlight></codeline>
 <codeline lineno="128"><highlight class="normal"></highlight></codeline>
-<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>cur_cols;</highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::copy(pos,<sp/>end_pos,<sp/>std::back_inserter(cur_cols));</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>cur_cols;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::copy(pos,<sp/>end_pos,<sp/>std::back_inserter(cur_cols));</highlight></codeline>
 <codeline lineno="133"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//int<sp/>mumps_share<sp/>=<sp/>share<sp/>&gt;<sp/>32<sp/>?<sp/>share<sp/>:<sp/>16;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mumps_share<sp/>=<sp/>share;</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.icntl[27<sp/>-<sp/>1]<sp/>=<sp/>mumps_share;</highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight></codeline>
-<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
-<codeline lineno="139"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>debug</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>dense_build<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(dense_build){</highlight></codeline>
-<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>sp<sp/>=<sp/>spSimpleProject(cur_cols);</highlight></codeline>
-<codeline lineno="143"><highlight class="normal"></highlight></codeline>
-<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*sptr<sp/>=<sp/>sp.ptr();</highlight></codeline>
-<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slda<sp/>=<sp/>sp.lda();</highlight></codeline>
-<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>srows<sp/>=<sp/>sp.dim(0);</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"></highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>cur_cols.size();<sp/>j++){</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>cur_cols[j];</highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>c;<sp/>i<sp/>&lt;<sp/>srows;<sp/>i++){</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(sptr[i<sp/>+<sp/>j<sp/>*<sp/>slda]<sp/>!=<sp/>0){</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(i<sp/>+<sp/>1);</highlight></codeline>
-<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(c<sp/>+<sp/>1);</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(sptr[i<sp/>+<sp/>j<sp/>*<sp/>slda]);</highlight></codeline>
-<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>spSimpleProject(cur_cols,<sp/>vr,<sp/>vc,<sp/>vv);</highlight></codeline>
-<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight></codeline>
-<codeline lineno="162"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>spSimpleProject(cur_cols,<sp/>vr,<sp/>vc,<sp/>vv);</highlight></codeline>
-<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP</highlight></codeline>
-<codeline lineno="164"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos<sp/>=<sp/>end_pos;</highlight></codeline>
-<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//int<sp/>mumps_share<sp/>=<sp/>share<sp/>&gt;<sp/>32<sp/>?<sp/>share<sp/>:<sp/>16;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mumps_share<sp/>=<sp/>share;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mumps.icntl[27<sp/>-<sp/>1]<sp/>=<sp/>mumps_share;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
+<codeline lineno="140"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>debug</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>dense_build<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(dense_build){</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>sp<sp/>=<sp/>spSimpleProject(cur_cols);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*sptr<sp/>=<sp/>sp.ptr();</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slda<sp/>=<sp/>sp.lda();</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>srows<sp/>=<sp/>sp.dim(0);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>cur_cols.size();<sp/>j++){</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>cur_cols[j];</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>c;<sp/>i<sp/>&lt;<sp/>srows;<sp/>i++){</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(sptr[i<sp/>+<sp/>j<sp/>*<sp/>slda]<sp/>!=<sp/>0){</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(i<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(c<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(sptr[i<sp/>+<sp/>j<sp/>*<sp/>slda]);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>spSimpleProject(cur_cols,<sp/>vr,<sp/>vc,<sp/>vv);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight></codeline>
+<codeline lineno="163"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>spSimpleProject(cur_cols,<sp/>vr,<sp/>vc,<sp/>vv);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP</highlight></codeline>
+<codeline lineno="165"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos<sp/>=<sp/>end_pos;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="167"><highlight class="normal"></highlight></codeline>
-<codeline lineno="168"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
-<codeline lineno="169"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>build<sp/>a<sp/>smaller<sp/>S<sp/>from<sp/>a<sp/>filtered<sp/>C,<sp/>this<sp/>requires<sp/>an<sp/>iterative</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>process.<sp/>We<sp/>repetedly<sp/>compute<sp/>m.n.s.<sp/>using<sp/>bcg()<sp/></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"></highlight></codeline>
-<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>size_c;<sp/>i++){</highlight></codeline>
-<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)<sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Column<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>out<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
-<codeline lineno="175"><highlight class="normal"></highlight></codeline>
-<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">Controls::block_size</ref>]<sp/>=<sp/>1;</highlight></codeline>
-<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk<sp/>=<sp/>MV_ColMat_double(<ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>,<sp/>1,<sp/>0);</highlight></codeline>
-<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>b(<ref refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kindref="member">m</ref>,<sp/>1,<sp/>0);<sp/></highlight></codeline>
-<codeline lineno="179"><highlight class="normal"></highlight></codeline>
-<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;int,int&gt;::iterator<sp/>iti<sp/>=<sp/>glob_to_local.find(n_o<sp/>+<sp/>i);</highlight></codeline>
-<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(iti!=glob_to_local.end()){</highlight></codeline>
-<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk(glob_to_local[n_o<sp/>+<sp/>i],<sp/>0)<sp/>=<sp/>1;</highlight></codeline>
-<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="184"><highlight class="normal"></highlight></codeline>
-<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bcg(b);</highlight></codeline>
-<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="188"><highlight class="normal"></highlight></codeline>
-<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(std::map&lt;int,int&gt;::iterator<sp/>it<sp/>=<sp/>glob_to_local.begin();<sp/>it<sp/>!=<sp/>glob_to_local.end();<sp/>++it){</highlight></codeline>
-<codeline lineno="190"><highlight class="normal"></highlight></codeline>
-<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(it-&gt;first<sp/>&gt;=<sp/>n_o<sp/>&amp;&amp;<sp/>comm_map[it-&gt;second]<sp/>==<sp/>1){</highlight></codeline>
-<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(i);</highlight></codeline>
-<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(it-&gt;first<sp/>-<sp/>n_o);</highlight></codeline>
-<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(Xk(it-&gt;second,0));</highlight></codeline>
-<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="199"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP</highlight></codeline>
-<codeline lineno="200"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(vv.size()<sp/>==<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(0);</highlight></codeline>
-<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(0);</highlight></codeline>
-<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(0.0);</highlight></codeline>
-<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="206"><highlight class="normal"></highlight></codeline>
-<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="208"><highlight class="normal"></highlight></codeline>
-<codeline lineno="209"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::buildS<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
+<codeline lineno="170"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>build<sp/>a<sp/>smaller<sp/>S<sp/>from<sp/>a<sp/>filtered<sp/>C,<sp/>this<sp/>requires<sp/>an<sp/>iterative</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>process.<sp/>We<sp/>repetedly<sp/>compute<sp/>m.n.s.<sp/>using<sp/>bcg()<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>size_c;<sp/>i++){</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(inter_comm.rank()<sp/>==<sp/>0)<sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Column<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>i<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>out<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>size_c;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" kindref="member">Controls::block_size</ref>]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk<sp/>=<sp/>MV_ColMat_double(<ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref>,<sp/>1,<sp/>0);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MV_ColMat_double<sp/>b(<ref refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kindref="member">m</ref>,<sp/>1,<sp/>0);<sp/></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;int,int&gt;::iterator<sp/>iti<sp/>=<sp/>glob_to_local.find(n_o<sp/>+<sp/>i);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(iti!=glob_to_local.end()){</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Xk(glob_to_local[n_o<sp/>+<sp/>i],<sp/>0)<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bcg(b);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(std::map&lt;int,int&gt;::iterator<sp/>it<sp/>=<sp/>glob_to_local.begin();<sp/>it<sp/>!=<sp/>glob_to_local.end();<sp/>++it){</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(it-&gt;first<sp/>&gt;=<sp/>n_o<sp/>&amp;&amp;<sp/>comm_map[it-&gt;second]<sp/>==<sp/>1){</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(i);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(it-&gt;first<sp/>-<sp/>n_o);</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(Xk(it-&gt;second,0));</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP</highlight></codeline>
+<codeline lineno="201"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(vv.size()<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vc.push_back(0);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vr.push_back(0);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.push_back(0.0);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>use_xk<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::buildS<sp/><sp/>-----<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/src/sutils/buildS.cpp"/>
   </compounddef>

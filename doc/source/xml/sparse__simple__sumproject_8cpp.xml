@@ -6,187 +6,187 @@
     <includes refid="mumps_8h" local="no">mumps.h</includes>
     <includes local="no">algorithm</includes>
     <incdepgraph>
-      <node id="593">
+      <node id="637">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="602">
+      <node id="646">
         <label>functional</label>
       </node>
-      <node id="580">
+      <node id="624">
         <label>iomanip</label>
       </node>
-      <node id="595">
+      <node id="639">
         <label>boost/lexical_cast.hpp</label>
       </node>
-      <node id="596">
+      <node id="640">
         <label>easylogging++.h</label>
       </node>
-      <node id="588">
+      <node id="632">
         <label>mumps.h</label>
         <link refid="mumps_8h"/>
-        <childnode refid="589" relation="include">
+        <childnode refid="633" relation="include">
         </childnode>
       </node>
-      <node id="586">
+      <node id="630">
         <label>stdlib.h</label>
       </node>
-      <node id="594">
+      <node id="638">
         <label>boost/lambda/bind.hpp</label>
       </node>
-      <node id="608">
+      <node id="652">
         <label>mvm.h</label>
       </node>
-      <node id="601">
+      <node id="645">
         <label>cwchar</label>
       </node>
-      <node id="577">
+      <node id="621">
         <label>abcd.h</label>
         <link refid="abcd_8h"/>
-        <childnode refid="578" relation="include">
+        <childnode refid="622" relation="include">
         </childnode>
-        <childnode refid="579" relation="include">
+        <childnode refid="623" relation="include">
         </childnode>
-        <childnode refid="580" relation="include">
+        <childnode refid="624" relation="include">
         </childnode>
-        <childnode refid="581" relation="include">
+        <childnode refid="625" relation="include">
         </childnode>
-        <childnode refid="582" relation="include">
+        <childnode refid="626" relation="include">
         </childnode>
-        <childnode refid="583" relation="include">
+        <childnode refid="627" relation="include">
         </childnode>
-        <childnode refid="584" relation="include">
+        <childnode refid="628" relation="include">
         </childnode>
-        <childnode refid="585" relation="include">
+        <childnode refid="629" relation="include">
         </childnode>
-        <childnode refid="586" relation="include">
+        <childnode refid="630" relation="include">
         </childnode>
-        <childnode refid="587" relation="include">
+        <childnode refid="631" relation="include">
         </childnode>
-        <childnode refid="588" relation="include">
+        <childnode refid="632" relation="include">
         </childnode>
-        <childnode refid="589" relation="include">
+        <childnode refid="633" relation="include">
         </childnode>
-        <childnode refid="590" relation="include">
+        <childnode refid="634" relation="include">
         </childnode>
-        <childnode refid="591" relation="include">
+        <childnode refid="635" relation="include">
         </childnode>
-        <childnode refid="592" relation="include">
+        <childnode refid="636" relation="include">
         </childnode>
-        <childnode refid="593" relation="include">
+        <childnode refid="637" relation="include">
         </childnode>
-        <childnode refid="594" relation="include">
+        <childnode refid="638" relation="include">
         </childnode>
-        <childnode refid="595" relation="include">
+        <childnode refid="639" relation="include">
         </childnode>
-        <childnode refid="596" relation="include">
+        <childnode refid="640" relation="include">
         </childnode>
-        <childnode refid="597" relation="include">
+        <childnode refid="641" relation="include">
         </childnode>
-        <childnode refid="598" relation="include">
+        <childnode refid="642" relation="include">
         </childnode>
-        <childnode refid="599" relation="include">
+        <childnode refid="643" relation="include">
         </childnode>
-        <childnode refid="600" relation="include">
+        <childnode refid="644" relation="include">
         </childnode>
-        <childnode refid="601" relation="include">
+        <childnode refid="645" relation="include">
         </childnode>
-        <childnode refid="602" relation="include">
+        <childnode refid="646" relation="include">
         </childnode>
-        <childnode refid="603" relation="include">
+        <childnode refid="647" relation="include">
         </childnode>
-        <childnode refid="604" relation="include">
+        <childnode refid="648" relation="include">
         </childnode>
-        <childnode refid="605" relation="include">
+        <childnode refid="649" relation="include">
         </childnode>
-        <childnode refid="606" relation="include">
+        <childnode refid="650" relation="include">
         </childnode>
-        <childnode refid="607" relation="include">
+        <childnode refid="651" relation="include">
         </childnode>
-        <childnode refid="608" relation="include">
+        <childnode refid="652" relation="include">
         </childnode>
-        <childnode refid="609" relation="include">
+        <childnode refid="653" relation="include">
         </childnode>
-        <childnode refid="610" relation="include">
+        <childnode refid="654" relation="include">
         </childnode>
       </node>
-      <node id="581">
+      <node id="625">
         <label>numeric</label>
       </node>
-      <node id="585">
+      <node id="629">
         <label>string</label>
       </node>
-      <node id="587">
+      <node id="631">
         <label>map</label>
       </node>
-      <node id="606">
+      <node id="650">
         <label>comprow_double.h</label>
       </node>
-      <node id="603">
+      <node id="647">
         <label>fstream</label>
       </node>
-      <node id="591">
+      <node id="635">
         <label>boost/accumulators/statistics/mean.hpp</label>
       </node>
-      <node id="592">
+      <node id="636">
         <label>boost/progress.hpp</label>
       </node>
-      <node id="610">
+      <node id="654">
         <label>defaults.h</label>
         <link refid="defaults_8h"/>
       </node>
-      <node id="583">
+      <node id="627">
         <label>cstdio</label>
       </node>
-      <node id="597">
+      <node id="641">
         <label>ctime</label>
       </node>
-      <node id="589">
+      <node id="633">
         <label>dmumps_c.h</label>
       </node>
-      <node id="582">
+      <node id="626">
         <label>vector</label>
       </node>
-      <node id="590">
+      <node id="634">
         <label>boost/mpi.hpp</label>
       </node>
-      <node id="604">
+      <node id="648">
         <label>sstream</label>
       </node>
-      <node id="607">
+      <node id="651">
         <label>coord_double.h</label>
       </node>
-      <node id="599">
+      <node id="643">
         <label>cstdlib</label>
       </node>
-      <node id="600">
+      <node id="644">
         <label>cctype</label>
       </node>
-      <node id="579">
+      <node id="623">
         <label>iostream</label>
       </node>
-      <node id="578">
+      <node id="622">
         <label>mpi.h</label>
       </node>
-      <node id="605">
+      <node id="649">
         <label>compcol_double.h</label>
       </node>
-      <node id="576">
+      <node id="620">
         <label>/home/mzenadi/projects/abcd/src/mumps/sparse_simple_sumproject.cpp</label>
         <link refid="sparse_simple_sumproject.cpp"/>
-        <childnode refid="577" relation="include">
+        <childnode refid="621" relation="include">
         </childnode>
-        <childnode refid="588" relation="include">
+        <childnode refid="632" relation="include">
         </childnode>
-        <childnode refid="584" relation="include">
+        <childnode refid="628" relation="include">
         </childnode>
       </node>
-      <node id="584">
+      <node id="628">
         <label>algorithm</label>
       </node>
-      <node id="598">
+      <node id="642">
         <label>cstring</label>
       </node>
-      <node id="609">
+      <node id="653">
         <label>splib_utils.h</label>
         <link refid="splib__utils_8h"/>
       </node>
@@ -374,7 +374,7 @@
 <codeline lineno="176"><highlight class="normal"></highlight></codeline>
 <codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*sol_ptr;</highlight></codeline>
 <codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sol_lda,<sp/>ci,<sp/>col,<sp/>x_pos<sp/>=<sp/>0,<sp/>start_c;</highlight></codeline>
-<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>val;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref>;</highlight></codeline>
 <codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(intra_comm.size()<sp/>&gt;<sp/>1){</highlight></codeline>
 <codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>part<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sol_lda<sp/>=<sp/>mumps.lsol_loc;</highlight></codeline>

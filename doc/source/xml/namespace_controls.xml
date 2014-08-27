@@ -23,7 +23,7 @@
 <para>Partitioning strategy. </para>          </briefdescription>
           <detaileddescription>
 <para>Defines the partitioning strategy, it can have the values:<itemizedlist>
-<listitem><para>1, Manual partitioning, the nbparts partitions can be provided into the STL vector <ref refid="classabcd_1a8280c080e69ab33e646c33e6555b0d96" kindref="member">abcd::nbrows</ref>. Example: <verbatim>embed:rst:leading-asterisk
+<listitem><para>1, Manual partitioning, the nbparts partitions can be provided in the STL vector nbrows. Example: <verbatim>embed:rst:leading-asterisk
      *     .. code-block:: cpp
      *
      *         // use manual partitioning
@@ -37,7 +37,7 @@
      *         obj.nrows[1] = 20;
      *         //...
      *
-     *     For C, the #nrows vector is an ``int`` array:
+     *     For C, the ``nrows`` vector is an ``int`` array:
      *
      *     .. code-block:: cpp
      *
@@ -63,7 +63,7 @@
      *
      *         // use patoh partitioning
      *         obj.icntl[part_type] = 3;
-     *         // say that we want an imbalance of 0.3 between the partitions
+     *         // say that we want an imbalance factor up to 30% between the partitions
      *         obj.dcntl[part_imbalance] = 0.3;
      *
      * </verbatim> </para></listitem></itemizedlist>
@@ -75,7 +75,7 @@
 <para>Guess the number of partitions. </para>          </briefdescription>
           <detaileddescription>
 <para>Asks the solver to guess the appropriate number of partitions and overrides the defined <emphasis>nbparts</emphasis>.</para><para><itemizedlist>
-<listitem><para>0 (<emphasis>default</emphasis>), The user has to provide the number of partitions by setting <ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">abcd::icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">nbparts</ref>]</para></listitem><listitem><para>1, Guess the number of partitions </para></listitem></itemizedlist>
+<listitem><para>0 (<emphasis>default</emphasis>), The user has to provide the number of partitions by setting icntl[nbparts]</para></listitem><listitem><para>1, Guess the number of partitions by trying to create a small number of partitions while keeping them small enough to be handled easily by the direct solver </para></listitem></itemizedlist>
 </para>          </detaileddescription>
         </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eaccea5769b3f8da6ef81b4dc19e60f5a7" prot="public">
@@ -92,21 +92,21 @@
           <briefdescription>
 <para>The max number of iterations. </para>          </briefdescription>
           <detaileddescription>
-<para>Defines the maximum number of iterations in block-CG acceleration, default is <computeroutput>1000</computeroutput> </para>          </detaileddescription>
+<para>Defines the maximum number of iterations in block-CG acceleration, default is <computeroutput>1000</computeroutput> iterations. </para>          </detaileddescription>
         </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eafc8270cb8a6807e57f6b9c4c8748784a" prot="public">
           <name>block_size</name>
           <briefdescription>
 <para>Block-CG block-size. </para>          </briefdescription>
           <detaileddescription>
-<para>Defines the block-size to be used by the block-CG acceleration, default is <computeroutput>1</computeroutput> for classical CG acceleration. When using a higher value than 1, the stabilized Block-CG is used. </para>          </detaileddescription>
+<para>Defines the block-size to be used by the block-CG acceleration, default is <computeroutput>1</computeroutput> for classical CG acceleration. When using a higher value than 1, stabilized Block-CG is used. </para>          </detaileddescription>
         </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" prot="public">
           <name>verbose_level</name>
           <briefdescription>
 <para>The verbose level. </para>          </briefdescription>
           <detaileddescription>
-<para>Defines how verbose the solver has to be. </para>          </detaileddescription>
+<para>Defines the verbosity of the solver </para>          </detaileddescription>
         </enumvalue>
         <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" prot="public">
           <name>aug_type</name>
@@ -122,7 +122,14 @@
           <briefdescription>
 <para>The blocking factor in ABCD. </para>          </briefdescription>
           <detaileddescription>
-<para>Defines the blocking factor used by the solver during the solution phase, its default value is 128. This allows to take advantage of BLAS3 Kernels. The optimal value is hardware and problem size related. The user has also to find a compromise between memory versus computing time. </para>          </detaileddescription>
+<para>Defines the blocking factor used by the solver during the solution phase, its default value is 128. This allows the solver to take advantage of BLAS3 Kernels. The optimal value is hardware and problem size related. The user has also to find a compromise between memory and computing time. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" prot="public">
+          <name>exploit_sparcity</name>
+          <briefdescription>
+<para>Exploit the sparcity in <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref>. </para>          </briefdescription>
+          <detaileddescription>
+<para>By default is set to 1, if you are using an old version of <ref refid="struct_m_u_m_p_s" kindref="compound">MUMPS</ref> </para>          </detaileddescription>
         </enumvalue>
         <briefdescription>
 <para>To be used with the <ref refid="classabcd_1a4e25bee21981dc6f6541126221d6c197" kindref="member">abcd::icntl</ref> vector. </para>        </briefdescription>
@@ -130,7 +137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="40" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="40" bodyend="221"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="40" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="40" bodyend="227"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" prot="public" static="no">
         <name>dcontrols</name>
@@ -154,7 +161,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="222" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="222" bodyend="230"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="228" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="228" bodyend="236"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" prot="public" static="no">
         <name>info</name>
@@ -178,7 +185,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="231" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="231" bodyend="234"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="237" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="237" bodyend="240"/>
       </memberdef>
       <memberdef kind="enum" id="namespace_controls_1a18be51e659933b4054bc1427e05b24c5" prot="public" static="no">
         <name>dinfo</name>
@@ -216,7 +223,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="236" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="236" bodyend="241"/>
+        <location file="/home/mzenadi/projects/abcd/include/defaults.h" line="242" column="1" bodyfile="/home/mzenadi/projects/abcd/include/defaults.h" bodystart="242" bodyend="247"/>
       </memberdef>
       </sectiondef>
     <briefdescription>

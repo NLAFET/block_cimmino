@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="c__interface_8cpp" kind="file">
+    <compoundname>c_interface.cpp</compoundname>
+    <includes refid="abcd_8h" local="yes">abcd.h</includes>
+    <includes refid="abcd__c_8h" local="yes">abcd_c.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">algorithm</includes>
+    <includes local="no">iostream</includes>
+    <incdepgraph>
+      <node id="265">
+        <label>boost/lambda/lambda.hpp</label>
+      </node>
+      <node id="274">
+        <label>functional</label>
+      </node>
+      <node id="252">
+        <label>iomanip</label>
+      </node>
+      <node id="267">
+        <label>boost/lexical_cast.hpp</label>
+      </node>
+      <node id="268">
+        <label>easylogging++.h</label>
+      </node>
+      <node id="260">
+        <label>mumps.h</label>
+        <link refid="mumps_8h"/>
+        <childnode refid="261" relation="include">
+        </childnode>
+      </node>
+      <node id="258">
+        <label>stdlib.h</label>
+      </node>
+      <node id="266">
+        <label>boost/lambda/bind.hpp</label>
+      </node>
+      <node id="280">
+        <label>mvm.h</label>
+      </node>
+      <node id="273">
+        <label>cwchar</label>
+      </node>
+      <node id="249">
+        <label>abcd.h</label>
+        <link refid="abcd_8h"/>
+        <childnode refid="250" relation="include">
+        </childnode>
+        <childnode refid="251" relation="include">
+        </childnode>
+        <childnode refid="252" relation="include">
+        </childnode>
+        <childnode refid="253" relation="include">
+        </childnode>
+        <childnode refid="254" relation="include">
+        </childnode>
+        <childnode refid="255" relation="include">
+        </childnode>
+        <childnode refid="256" relation="include">
+        </childnode>
+        <childnode refid="257" relation="include">
+        </childnode>
+        <childnode refid="258" relation="include">
+        </childnode>
+        <childnode refid="259" relation="include">
+        </childnode>
+        <childnode refid="260" relation="include">
+        </childnode>
+        <childnode refid="261" relation="include">
+        </childnode>
+        <childnode refid="262" relation="include">
+        </childnode>
+        <childnode refid="263" relation="include">
+        </childnode>
+        <childnode refid="264" relation="include">
+        </childnode>
+        <childnode refid="265" relation="include">
+        </childnode>
+        <childnode refid="266" relation="include">
+        </childnode>
+        <childnode refid="267" relation="include">
+        </childnode>
+        <childnode refid="268" relation="include">
+        </childnode>
+        <childnode refid="269" relation="include">
+        </childnode>
+        <childnode refid="270" relation="include">
+        </childnode>
+        <childnode refid="271" relation="include">
+        </childnode>
+        <childnode refid="272" relation="include">
+        </childnode>
+        <childnode refid="273" relation="include">
+        </childnode>
+        <childnode refid="274" relation="include">
+        </childnode>
+        <childnode refid="275" relation="include">
+        </childnode>
+        <childnode refid="276" relation="include">
+        </childnode>
+        <childnode refid="277" relation="include">
+        </childnode>
+        <childnode refid="278" relation="include">
+        </childnode>
+        <childnode refid="279" relation="include">
+        </childnode>
+        <childnode refid="280" relation="include">
+        </childnode>
+        <childnode refid="281" relation="include">
+        </childnode>
+        <childnode refid="282" relation="include">
+        </childnode>
+      </node>
+      <node id="253">
+        <label>numeric</label>
+      </node>
+      <node id="257">
+        <label>string</label>
+      </node>
+      <node id="259">
+        <label>map</label>
+      </node>
+      <node id="278">
+        <label>comprow_double.h</label>
+      </node>
+      <node id="275">
+        <label>fstream</label>
+      </node>
+      <node id="263">
+        <label>boost/accumulators/statistics/mean.hpp</label>
+      </node>
+      <node id="264">
+        <label>boost/progress.hpp</label>
+      </node>
+      <node id="282">
+        <label>defaults.h</label>
+        <link refid="defaults_8h"/>
+      </node>
+      <node id="255">
+        <label>cstdio</label>
+      </node>
+      <node id="269">
+        <label>ctime</label>
+      </node>
+      <node id="261">
+        <label>dmumps_c.h</label>
+      </node>
+      <node id="254">
+        <label>vector</label>
+      </node>
+      <node id="262">
+        <label>boost/mpi.hpp</label>
+      </node>
+      <node id="276">
+        <label>sstream</label>
+      </node>
+      <node id="279">
+        <label>coord_double.h</label>
+      </node>
+      <node id="248">
+        <label>/home/mzenadi/projects/abcd/src/c_interface.cpp</label>
+        <link refid="c_interface.cpp"/>
+        <childnode refid="249" relation="include">
+        </childnode>
+        <childnode refid="283" relation="include">
+        </childnode>
+        <childnode refid="257" relation="include">
+        </childnode>
+        <childnode refid="256" relation="include">
+        </childnode>
+        <childnode refid="251" relation="include">
+        </childnode>
+      </node>
+      <node id="271">
+        <label>cstdlib</label>
+      </node>
+      <node id="272">
+        <label>cctype</label>
+      </node>
+      <node id="251">
+        <label>iostream</label>
+      </node>
+      <node id="283">
+        <label>abcd_c.h</label>
+        <link refid="abcd__c_8h"/>
+      </node>
+      <node id="250">
+        <label>mpi.h</label>
+      </node>
+      <node id="277">
+        <label>compcol_double.h</label>
+      </node>
+      <node id="256">
+        <label>algorithm</label>
+      </node>
+      <node id="270">
+        <label>cstring</label>
+      </node>
+      <node id="281">
+        <label>splib_utils.h</label>
+        <link refid="splib__utils_8h"/>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="c__interface_8cpp_1a3e7636db19bf1e0079613d4ff8ab3280" prot="public" static="no" mutable="no">
+        <type><ref refid="classabcd" kindref="compound">abcd</ref> *</type>
+        <definition>abcd* obj</definition>
+        <argsstring></argsstring>
+        <name>obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/src/c_interface.cpp" line="6" column="1" bodyfile="/home/mzenadi/projects/abcd/src/c_interface.cpp" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="c__interface_8cpp_1a18056f2eb4fd12375a3b1734ef10ae1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>struct <ref refid="structabcd__solver" kindref="compound">abcd_solver</ref> *</type>
+        <definition>struct abcd_solver* new_solver</definition>
+        <argsstring>()</argsstring>
+        <name>new_solver</name>
+        <briefdescription>
+<para>description breve </para>        </briefdescription>
+        <detaileddescription>
+<para>detailleeeee <simplesect kind="return"><para>a new solver </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/src/c_interface.cpp" line="15" column="1" bodyfile="/home/mzenadi/projects/abcd/src/c_interface.cpp" bodystart="15" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="c__interface_8cpp_1acd98d2728758c2cbbe7c2e4d5d25ca02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void call_solver</definition>
+        <argsstring>(struct abcd_solver *solver, int job_id)</argsstring>
+        <name>call_solver</name>
+        <param>
+          <type>struct <ref refid="structabcd__solver" kindref="compound">abcd_solver</ref> *</type>
+          <declname>solver</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>job_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/src/c_interface.cpp" line="23" column="1" bodyfile="/home/mzenadi/projects/abcd/src/c_interface.cpp" bodystart="23" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="c__interface_8cpp_1a77fdde9c845857e7fb758db3bc77dc4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void free_solver</definition>
+        <argsstring>(struct abcd_solver *solver)</argsstring>
+        <name>free_solver</name>
+        <param>
+          <type>struct <ref refid="structabcd__solver" kindref="compound">abcd_solver</ref> *</type>
+          <declname>solver</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mzenadi/projects/abcd/src/c_interface.cpp" line="48" column="1" bodyfile="/home/mzenadi/projects/abcd/src/c_interface.cpp" bodystart="48" bodyend="53"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="abcd_8h" kindref="compound">abcd.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="abcd__c_8h" kindref="compound">abcd_c.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><ref refid="classabcd" kindref="compound">abcd</ref><sp/>*<ref refid="c__interface_8cpp_1a3e7636db19bf1e0079613d4ff8ab3280" kindref="member">obj</ref>;</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">std;</highlight></codeline>
+<codeline lineno="15"><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structabcd__solver" kindref="compound">abcd_solver</ref>*<sp/><ref refid="c__interface_8cpp_1a18056f2eb4fd12375a3b1734ef10ae1a" kindref="member">new_solver</ref>()</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structabcd__solver" kindref="compound">abcd_solver</ref><sp/>*solver<sp/>=<sp/>(</highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structabcd__solver" kindref="compound">abcd_solver</ref>*)<sp/>malloc(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(*solver));</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>obj<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classabcd" kindref="compound">abcd</ref>();</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//solver<sp/>-&gt;<sp/>icntl<sp/>=<sp/>&amp;obj<sp/>-&gt;<sp/>icntl[0];</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>solver;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="c__interface_8cpp_1acd98d2728758c2cbbe7c2e4d5d25ca02" kindref="member">call_solver</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structabcd__solver" kindref="compound">abcd_solver</ref>*<sp/>solver,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>job_id)<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>C<sp/>-&gt;<sp/>CPP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a91ae5db6180d752acf83de9d07dc0d58" kindref="member">m</ref><sp/><sp/><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kindref="member">m</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a430f5548e5969cc1f703563b92733b09" kindref="member">n</ref><sp/><sp/><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1ab2a0f051bb12bff5612302dc5dba50a9" kindref="member">n</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a0e652023493e13d320dd80a6b58c92ef" kindref="member">nz</ref><sp/><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a21d084898cb002a8814a7be3cf849da8" kindref="member">sym</ref><sp/>=<sp/>(solver-&gt;<ref refid="structabcd__solver_1ada86cbaa4d97c3c0e1f0390ec0428c22" kindref="member">sym</ref><sp/>!=<sp/>0);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a8f6403dd5d221f50c4484221b1ffae4a" kindref="member">irn</ref><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1a4c9cf292ee649f04701cda7d24b14c1c" kindref="member">irn</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a56ab8a26759da48beacb9914edc97c39" kindref="member">jcn</ref><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1a3b285afd9a899665997252da816b8192" kindref="member">jcn</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a47f742608fbdf5f394a68097500dc7dd" kindref="member">val</ref><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1a6d0201d9f397728a0cb9f0504570e958" kindref="member">rhs</ref><sp/>=<sp/>solver-&gt;<ref refid="structabcd__solver_1ab04668241fa30db3e45f817e9245286d" kindref="member">rhs</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>obj-&gt;<ref refid="classabcd_1ace2325edd418de592d36d4ba3d2ee983" kindref="member">write_problem</ref><sp/>=<sp/>string(solver-&gt;<ref refid="structabcd__solver_1a949c2c3ac8ef59f9e0dabf803d7490e0" kindref="member">write_problem</ref>);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>obj<sp/>-&gt;<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>.size();<sp/>i++){</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>obj<sp/>-&gt;<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[i]<sp/>=<sp/>solver<sp/>-&gt;<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[i];</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>call<sp/>the<sp/>solver</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>obj<sp/>-&gt;<sp/>operator()(job_id);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>CPP<sp/>-&gt;<sp/>C</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//solver<sp/>-&gt;<sp/>write_problem<sp/>=<sp/>(char<sp/>*)(obj<sp/>-&gt;<sp/>write_problem).c_str();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="c__interface_8cpp_1a77fdde9c845857e7fb758db3bc77dc4f" kindref="member">free_solver</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structabcd__solver" kindref="compound">abcd_solver</ref><sp/>*solver)</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/><ref refid="c__interface_8cpp_1a3e7636db19bf1e0079613d4ff8ab3280" kindref="member">obj</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>free(solver);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/mzenadi/projects/abcd/src/c_interface.cpp"/>
+  </compounddef>
+</doxygen>

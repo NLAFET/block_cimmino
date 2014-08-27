@@ -200,17 +200,6 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="2">
-        <label>MUMPS</label>
-        <link refid="struct_m_u_m_p_s"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
-      </node>
-      <node id="3">
-        <label>DMUMPS_STRUC_C</label>
-      </node>
-    </inheritancegraph>
-    <collaborationgraph>
       <node id="4">
         <label>MUMPS</label>
         <link refid="struct_m_u_m_p_s"/>
@@ -218,6 +207,17 @@
         </childnode>
       </node>
       <node id="5">
+        <label>DMUMPS_STRUC_C</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>MUMPS</label>
+        <link refid="struct_m_u_m_p_s"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
         <label>DMUMPS_STRUC_C</label>
       </node>
     </collaborationgraph>

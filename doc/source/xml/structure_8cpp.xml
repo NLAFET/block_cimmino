@@ -10,212 +10,212 @@
     <includes refid="vect__utils_8h" local="no">vect_utils.h</includes>
     <includes local="no">boost/lambda/lambda.hpp</includes>
     <incdepgraph>
-      <node id="920">
+      <node id="964">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="929">
+      <node id="973">
         <label>functional</label>
       </node>
-      <node id="907">
+      <node id="951">
         <label>iomanip</label>
       </node>
-      <node id="940">
+      <node id="984">
         <label>vect_utils.h</label>
         <link refid="vect__utils_8h"/>
-        <childnode refid="909" relation="include">
+        <childnode refid="953" relation="include">
         </childnode>
-        <childnode refid="914" relation="include">
+        <childnode refid="958" relation="include">
         </childnode>
       </node>
-      <node id="922">
+      <node id="966">
         <label>boost/lexical_cast.hpp</label>
       </node>
-      <node id="923">
+      <node id="967">
         <label>easylogging++.h</label>
       </node>
-      <node id="915">
+      <node id="959">
         <label>mumps.h</label>
         <link refid="mumps_8h"/>
-        <childnode refid="916" relation="include">
+        <childnode refid="960" relation="include">
         </childnode>
       </node>
-      <node id="903">
+      <node id="947">
         <label>/home/mzenadi/projects/abcd/src/structure.cpp</label>
         <link refid="structure.cpp"/>
-        <childnode refid="904" relation="include">
+        <childnode refid="948" relation="include">
         </childnode>
-        <childnode refid="938" relation="include">
+        <childnode refid="982" relation="include">
         </childnode>
-        <childnode refid="906" relation="include">
+        <childnode refid="950" relation="include">
         </childnode>
-        <childnode refid="930" relation="include">
+        <childnode refid="974" relation="include">
         </childnode>
-        <childnode refid="939" relation="include">
+        <childnode refid="983" relation="include">
         </childnode>
-        <childnode refid="940" relation="include">
+        <childnode refid="984" relation="include">
         </childnode>
-        <childnode refid="920" relation="include">
+        <childnode refid="964" relation="include">
         </childnode>
       </node>
-      <node id="913">
+      <node id="957">
         <label>stdlib.h</label>
       </node>
-      <node id="921">
+      <node id="965">
         <label>boost/lambda/bind.hpp</label>
       </node>
-      <node id="935">
+      <node id="979">
         <label>mvm.h</label>
       </node>
-      <node id="928">
+      <node id="972">
         <label>cwchar</label>
       </node>
-      <node id="904">
+      <node id="948">
         <label>abcd.h</label>
         <link refid="abcd_8h"/>
-        <childnode refid="905" relation="include">
+        <childnode refid="949" relation="include">
         </childnode>
-        <childnode refid="906" relation="include">
+        <childnode refid="950" relation="include">
         </childnode>
-        <childnode refid="907" relation="include">
+        <childnode refid="951" relation="include">
         </childnode>
-        <childnode refid="908" relation="include">
+        <childnode refid="952" relation="include">
         </childnode>
-        <childnode refid="909" relation="include">
+        <childnode refid="953" relation="include">
         </childnode>
-        <childnode refid="910" relation="include">
+        <childnode refid="954" relation="include">
         </childnode>
-        <childnode refid="911" relation="include">
+        <childnode refid="955" relation="include">
         </childnode>
-        <childnode refid="912" relation="include">
+        <childnode refid="956" relation="include">
         </childnode>
-        <childnode refid="913" relation="include">
+        <childnode refid="957" relation="include">
         </childnode>
-        <childnode refid="914" relation="include">
+        <childnode refid="958" relation="include">
         </childnode>
-        <childnode refid="915" relation="include">
+        <childnode refid="959" relation="include">
         </childnode>
-        <childnode refid="916" relation="include">
+        <childnode refid="960" relation="include">
         </childnode>
-        <childnode refid="917" relation="include">
+        <childnode refid="961" relation="include">
         </childnode>
-        <childnode refid="918" relation="include">
+        <childnode refid="962" relation="include">
         </childnode>
-        <childnode refid="919" relation="include">
+        <childnode refid="963" relation="include">
         </childnode>
-        <childnode refid="920" relation="include">
+        <childnode refid="964" relation="include">
         </childnode>
-        <childnode refid="921" relation="include">
+        <childnode refid="965" relation="include">
         </childnode>
-        <childnode refid="922" relation="include">
+        <childnode refid="966" relation="include">
         </childnode>
-        <childnode refid="923" relation="include">
+        <childnode refid="967" relation="include">
         </childnode>
-        <childnode refid="924" relation="include">
+        <childnode refid="968" relation="include">
         </childnode>
-        <childnode refid="925" relation="include">
+        <childnode refid="969" relation="include">
         </childnode>
-        <childnode refid="926" relation="include">
+        <childnode refid="970" relation="include">
         </childnode>
-        <childnode refid="927" relation="include">
+        <childnode refid="971" relation="include">
         </childnode>
-        <childnode refid="928" relation="include">
+        <childnode refid="972" relation="include">
         </childnode>
-        <childnode refid="929" relation="include">
+        <childnode refid="973" relation="include">
         </childnode>
-        <childnode refid="930" relation="include">
+        <childnode refid="974" relation="include">
         </childnode>
-        <childnode refid="931" relation="include">
+        <childnode refid="975" relation="include">
         </childnode>
-        <childnode refid="932" relation="include">
+        <childnode refid="976" relation="include">
         </childnode>
-        <childnode refid="933" relation="include">
+        <childnode refid="977" relation="include">
         </childnode>
-        <childnode refid="934" relation="include">
+        <childnode refid="978" relation="include">
         </childnode>
-        <childnode refid="935" relation="include">
+        <childnode refid="979" relation="include">
         </childnode>
-        <childnode refid="936" relation="include">
+        <childnode refid="980" relation="include">
         </childnode>
-        <childnode refid="937" relation="include">
+        <childnode refid="981" relation="include">
         </childnode>
       </node>
-      <node id="908">
+      <node id="952">
         <label>numeric</label>
       </node>
-      <node id="912">
+      <node id="956">
         <label>string</label>
       </node>
-      <node id="914">
+      <node id="958">
         <label>map</label>
       </node>
-      <node id="933">
+      <node id="977">
         <label>comprow_double.h</label>
       </node>
-      <node id="930">
+      <node id="974">
         <label>fstream</label>
       </node>
-      <node id="938">
+      <node id="982">
         <label>mat_utils.h</label>
         <link refid="mat__utils_8h"/>
-        <childnode refid="909" relation="include">
+        <childnode refid="953" relation="include">
         </childnode>
       </node>
-      <node id="918">
+      <node id="962">
         <label>boost/accumulators/statistics/mean.hpp</label>
       </node>
-      <node id="919">
+      <node id="963">
         <label>boost/progress.hpp</label>
       </node>
-      <node id="937">
+      <node id="981">
         <label>defaults.h</label>
         <link refid="defaults_8h"/>
       </node>
-      <node id="910">
+      <node id="954">
         <label>cstdio</label>
       </node>
-      <node id="924">
+      <node id="968">
         <label>ctime</label>
       </node>
-      <node id="916">
+      <node id="960">
         <label>dmumps_c.h</label>
       </node>
-      <node id="909">
+      <node id="953">
         <label>vector</label>
       </node>
-      <node id="917">
+      <node id="961">
         <label>boost/mpi.hpp</label>
       </node>
-      <node id="931">
+      <node id="975">
         <label>sstream</label>
       </node>
-      <node id="934">
+      <node id="978">
         <label>coord_double.h</label>
       </node>
-      <node id="926">
+      <node id="970">
         <label>cstdlib</label>
       </node>
-      <node id="927">
+      <node id="971">
         <label>cctype</label>
       </node>
-      <node id="906">
+      <node id="950">
         <label>iostream</label>
       </node>
-      <node id="939">
+      <node id="983">
         <label>patoh.h</label>
       </node>
-      <node id="905">
+      <node id="949">
         <label>mpi.h</label>
       </node>
-      <node id="932">
+      <node id="976">
         <label>compcol_double.h</label>
       </node>
-      <node id="911">
+      <node id="955">
         <label>algorithm</label>
       </node>
-      <node id="925">
+      <node id="969">
         <label>cstring</label>
       </node>
-      <node id="936">
+      <node id="980">
         <label>splib_utils.h</label>
         <link refid="splib__utils_8h"/>
       </node>
@@ -272,23 +272,23 @@
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>handled_rows<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>ceil_per_part,<sp/>floor_per_part;</highlight></codeline>
 <codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>row_sum<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>guessPartitionsNumber<sp/>=<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" kindref="member">Controls::part_guess</ref>];</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>guessPartitionsNumber<sp/>=<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea2bfbb64d38dc2104fd14e46ce269c5f3" kindref="member">Controls::part_guess</ref>];</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(guessPartitionsNumber<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" kindref="member">Controls::part_type</ref>]<sp/>&gt;<sp/>1){</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(guessPartitionsNumber<sp/>==<sp/>1<sp/>&amp;&amp;<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" kindref="member">Controls::part_type</ref>]<sp/>&gt;<sp/>1){</highlight></codeline>
 <codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(m_o<sp/>==<sp/>1)<sp/>{</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(m_o<sp/>&lt;=<sp/>8)<sp/>{</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>2;</highlight></codeline>
 <codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(m_o<sp/>&lt;=<sp/>1000)<sp/>{</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>4;</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(m_o<sp/>&lt;=<sp/>50000)<sp/>{</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>8;</highlight></codeline>
 <codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(m_o<sp/>&lt;=<sp/>100000)<sp/>{</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>ceil((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)m_o<sp/>/<sp/>10000);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>ceil((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)m_o<sp/>/<sp/>10000);</highlight></codeline>
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>ceil((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)m_o<sp/>/<sp/>20000);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>ceil((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)m_o<sp/>/<sp/>20000);</highlight></codeline>
 <codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Estimated<sp/>number<sp/>of<sp/>partitions:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Estimated<sp/>number<sp/>of<sp/>partitions:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>];</highlight></codeline>
 <codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parallel_cg<sp/>=<sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>&lt;<sp/>comm.size()<sp/>?<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>:<sp/>comm.size();</highlight></codeline>
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"></highlight></codeline>
@@ -307,13 +307,13 @@
 <codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>parallel_cg;</highlight></codeline>
 <codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>&gt;<sp/>m)<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>&gt;<sp/><ref refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kindref="member">m</ref>)<sp/>{</highlight></codeline>
 <codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LERROR<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;ERROR:<sp/>Number<sp/>of<sp/>partitions<sp/>is<sp/>larger<sp/>than<sp/>the<sp/>number<sp/>of<sp/>rows&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LWARNING<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;WARNING:<sp/>Decreasing<sp/>the<sp/>number<sp/>of<sp/>partitions<sp/>from<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>down<sp/>to<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>m;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>down<sp/>to<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kindref="member">m</ref>;</highlight></codeline>
 <codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/>m;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>=<sp/><ref refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kindref="member">m</ref>;</highlight></codeline>
 <codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="91"><highlight class="normal"></highlight></codeline>
 <codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea9a63049a2fc1a2c72a68db48bb67ee24" kindref="member">Controls::nbparts</ref>]<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea8f0f8de2338c75908af3fed253d20082" kindref="member">Controls::part_type</ref>]<sp/>==<sp/>3)<sp/>{</highlight></codeline>
@@ -391,7 +391,7 @@
 <codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_c<sp/>=<sp/>m_o;</highlight></codeline>
 <codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_n<sp/>=<sp/>n_o;</highlight></codeline>
 <codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nconst<sp/>=<sp/>1;</highlight></codeline>
-<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_imba<sp/><sp/><sp/>=<sp/>dcntl[<ref refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" kindref="member">Controls::part_imbalance</ref>];</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_imba<sp/><sp/><sp/>=<sp/><ref refid="structabcd__solver_1ab3e0f3e7edc90721ccc8b378a19aa0cf" kindref="member">dcntl</ref>[<ref refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" kindref="member">Controls::part_imbalance</ref>];</highlight></codeline>
 <codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_ne<sp/><sp/><sp/><sp/><sp/>=<sp/>nz_o;</highlight></codeline>
 <codeline lineno="169"><highlight class="normal"></highlight></codeline>
 <codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xpins<sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">[_n<sp/>+<sp/>1];</highlight></codeline>
@@ -447,7 +447,7 @@
 <codeline lineno="220"><highlight class="normal"></highlight></codeline>
 <codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ir<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">[m_o<sp/>+<sp/>1];</highlight></codeline>
 <codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jc<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">[nz_o];</highlight></codeline>
-<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*val<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">[nz_o];</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">[nz_o];</highlight></codeline>
 <codeline lineno="224"><highlight class="normal"></highlight></codeline>
 <codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sr<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>m_o;<sp/>i++){</highlight></codeline>
@@ -479,7 +479,7 @@
 <codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>ir;</highlight></codeline>
 <codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>jc;</highlight></codeline>
-<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>val;</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/><ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref>;</highlight></codeline>
 <codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>partvec;</highlight></codeline>
 <codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>partweights;</highlight></codeline>
 <codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/>cwghts;</highlight></codeline>
@@ -495,8 +495,8 @@
 <codeline lineno="268"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="270"><highlight class="normal"></highlight></codeline>
-<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(write_problem.length()<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
-<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Writing<sp/>the<sp/>problem<sp/>to<sp/>the<sp/>file:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>write_problem;</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="structabcd__solver_1a949c2c3ac8ef59f9e0dabf803d7490e0" kindref="member">write_problem</ref>.length()<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a9ead6528f310cb6b4d6e179d68036ebe" kindref="member">LINFO</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Writing<sp/>the<sp/>problem<sp/>to<sp/>the<sp/>file:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="structabcd__solver_1a949c2c3ac8ef59f9e0dabf803d7490e0" kindref="member">write_problem</ref>;</highlight></codeline>
 <codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ir<sp/>=<sp/>A.rowptr_ptr();</highlight></codeline>
 <codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jc<sp/>=<sp/>A.colind_ptr();</highlight></codeline>
 <codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*val<sp/>=<sp/>A.val_ptr();</highlight></codeline>
@@ -559,7 +559,7 @@
 <codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>size_c<sp/>=<sp/>1;</highlight></codeline>
 <codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(size_c<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>f<sp/>&lt;<sp/>0.9){</highlight></codeline>
-<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dcntl[Controls::aug_filter]<sp/>=<sp/>f;</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structabcd__solver_1ab3e0f3e7edc90721ccc8b378a19aa0cf" kindref="member">dcntl</ref>[Controls::aug_filter]<sp/>=<sp/>f;</highlight></codeline>
 <codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="abcd_8h_1a97bfef446f67b04c653a8158b8ffbb8f" kindref="member">LDEBUG</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;filter<sp/>value:\t&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>fixed<sp/>&lt;&lt;<sp/>setprecision(5)<sp/>&lt;&lt;<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>gives<sp/>:<sp/>&quot;</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>abcd::augmentMatrix(loc_parts);</highlight></codeline>
 <codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>f+=0.025;</highlight></codeline>
@@ -600,32 +600,35 @@
 <codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>only<sp/>the<sp/>size<sp/>of<sp/>C</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[Controls::aug_analysis]<sp/>==<sp/>1)<sp/>exit(0);</highlight></codeline>
-<codeline lineno="378"><highlight class="normal"></highlight></codeline>
-<codeline lineno="379"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="380"><highlight class="normal"></highlight></codeline>
-<codeline lineno="381"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::augmentMatrix<sp/>(<sp/>std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;M)</highlight></codeline>
-<codeline lineno="382"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/>stC<sp/>=<sp/>std::vector&lt;int&gt;(M.size(),<sp/>-1);</highlight></codeline>
-<codeline lineno="384"><highlight class="normal"></highlight></codeline>
-<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0){</highlight></codeline>
-<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>augmentation<sp/></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>1){</highlight></codeline>
-<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>C_ij/-I<sp/>augmentation</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cijAugmentMatrix(M);</highlight></codeline>
-<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>2){</highlight></codeline>
-<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>A_ij/-A_ji<sp/>augmentation</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aijAugmentMatrix(M);</highlight></codeline>
-<codeline lineno="394"><highlight class="normal"></highlight></codeline>
-<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-8;</highlight></codeline>
-<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
-<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Unkown<sp/>augmentation<sp/>scheme.&quot;</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="400"><highlight class="normal"></highlight></codeline>
-<codeline lineno="401"><highlight class="normal">}</highlight><highlight class="comment">//<sp/>[&gt;<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::augmentMatrix<sp/><sp/>-----<sp/>&lt;]</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIP</highlight></codeline>
+<codeline lineno="378"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>print<sp/>only<sp/>the<sp/>size<sp/>of<sp/>C</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[Controls::aug_analysis]<sp/>==<sp/>1)<sp/>exit(0);</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>WIP</highlight></codeline>
+<codeline lineno="381"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"></highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>abcd::augmentMatrix<sp/>(<sp/>std::vector&lt;CompCol_Mat_double&gt;<sp/>&amp;M)</highlight></codeline>
+<codeline lineno="385"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/>stC<sp/>=<sp/>std::vector&lt;int&gt;(M.size(),<sp/>-1);</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>0){</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>augmentation<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>1){</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>C_ij/-I<sp/>augmentation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cijAugmentMatrix(M);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(icntl[<ref refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kindref="member">Controls::aug_type</ref>]<sp/>==<sp/>2){</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>A_ij/-A_ji<sp/>augmentation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>aijAugmentMatrix(M);</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"></highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>]<sp/>=<sp/>-8;</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mpi::broadcast(comm,<sp/><ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>[<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6fa06efa7da66a55bf16b73fd4026fddab1" kindref="member">Controls::status</ref>],<sp/>0);</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;Unkown<sp/>augmentation<sp/>scheme.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="404"><highlight class="normal">}</highlight><highlight class="comment">//<sp/>[&gt;<sp/>-----<sp/><sp/>end<sp/>of<sp/>function<sp/>abcd::augmentMatrix<sp/><sp/>-----<sp/>&lt;]</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/mzenadi/projects/abcd/src/structure.cpp"/>
   </compounddef>

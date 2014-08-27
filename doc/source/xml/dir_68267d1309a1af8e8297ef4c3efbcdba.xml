@@ -8,6 +8,7 @@
     <innerdir refid="dir_313caf1132e152dd9b58bea13a4052ca">/home/mzenadi/projects/abcd/src/utils</innerdir>
     <innerfile refid="abcd_8cpp">abcd.cpp</innerfile>
     <innerfile refid="bcg_8cpp">bcg.cpp</innerfile>
+    <innerfile refid="c__interface_8cpp">c_interface.cpp</innerfile>
     <innerfile refid="cimmino_8cpp">cimmino.cpp</innerfile>
     <innerfile refid="comms_8cpp">comms.cpp</innerfile>
     <innerfile refid="communication_8cpp">communication.cpp</innerfile>

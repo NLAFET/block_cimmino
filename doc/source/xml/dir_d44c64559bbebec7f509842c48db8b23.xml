@@ -3,6 +3,7 @@
   <compounddef id="dir_d44c64559bbebec7f509842c48db8b23" kind="dir">
     <compoundname>/home/mzenadi/projects/abcd/include</compoundname>
     <innerfile refid="abcd_8h">abcd.h</innerfile>
+    <innerfile refid="abcd__c_8h">abcd_c.h</innerfile>
     <innerfile refid="defaults_8h">defaults.h</innerfile>
     <innerfile refid="mat__utils_8h">mat_utils.h</innerfile>
     <innerfile refid="mc77_8h">mc77.h</innerfile>

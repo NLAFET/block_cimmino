@@ -23,7 +23,7 @@
     <member refid="classabcd_1aff51f4d592fcbaa9dc8777f2beaf13cf" kind="variable"><name>comm</name></member>
     <member refid="classabcd_1a9cff86b497cfbb74f2342ca5fe665dc4" kind="variable"><name>parallel_cg</name></member>
     <member refid="classabcd_1af5397b434eab1f94cbbe4e104e93723b" kind="variable"><name>nrmA</name></member>
-    <member refid="classabcd_1a26f9aecaefce0b1c40de1a6e7377c04f" kind="variable"><name>nrmB</name></member>
+    <member refid="classabcd_1a4237fc9f2a8e163f5dde13b49a433016" kind="variable"><name>nrmB</name></member>
     <member refid="classabcd_1a7a3e3c62649487798cb2fb7ee11b1800" kind="variable"><name>nrmXf</name></member>
     <member refid="classabcd_1afd573b0c136c11086126ab0869cfb912" kind="variable"><name>nrmMtx</name></member>
     <member refid="classabcd_1ac7dad2825c69db177a9e616a386c3131" kind="variable"><name>last_called_job</name></member>
@@ -143,9 +143,22 @@
     <member refid="classabcd_1a3c3cecf6b55954862c809ba9877f4921" kind="function"><name>partitionWeights</name></member>
     <member refid="classabcd_1a8e09fee6d6eedbe7ca69817cf030bcec" kind="function"><name>partitioning</name></member>
     <member refid="classabcd_1a262aae8ba8a72bb202f5f56c88e4457e" kind="function"><name>ddot</name></member>
-    <member refid="classabcd_1a7964bac1d991aaa215d3dd3ad053e876" kind="function"><name>get_nrmres</name></member>
+    <member refid="classabcd_1abeeb25b940c83b95899e556dbc9c73ce" kind="function"><name>get_nrmres</name></member>
     <member refid="classabcd_1a482623996a6268d4b29cad1db5382122" kind="function"><name>S_nnz</name></member>
     <member refid="classabcd_1a33e3410c567ea50aa84a31c745b296ca" kind="function"><name>centralizeVector</name></member>
+  </compound>
+  <compound refid="structabcd__solver" kind="struct"><name>abcd_solver</name>
+    <member refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kind="variable"><name>m</name></member>
+    <member refid="structabcd__solver_1ab2a0f051bb12bff5612302dc5dba50a9" kind="variable"><name>n</name></member>
+    <member refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kind="variable"><name>nz</name></member>
+    <member refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kind="variable"><name>icntl</name></member>
+    <member refid="structabcd__solver_1ab3e0f3e7edc90721ccc8b378a19aa0cf" kind="variable"><name>dcntl</name></member>
+    <member refid="structabcd__solver_1ada86cbaa4d97c3c0e1f0390ec0428c22" kind="variable"><name>sym</name></member>
+    <member refid="structabcd__solver_1a949c2c3ac8ef59f9e0dabf803d7490e0" kind="variable"><name>write_problem</name></member>
+    <member refid="structabcd__solver_1a4c9cf292ee649f04701cda7d24b14c1c" kind="variable"><name>irn</name></member>
+    <member refid="structabcd__solver_1a3b285afd9a899665997252da816b8192" kind="variable"><name>jcn</name></member>
+    <member refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kind="variable"><name>val</name></member>
+    <member refid="structabcd__solver_1ab04668241fa30db3e45f817e9245286d" kind="variable"><name>rhs</name></member>
   </compound>
   <compound refid="struct_m_u_m_p_s" kind="struct"><name>MUMPS</name>
     <member refid="struct_m_u_m_p_s_1a49801eac3d28bdfa57816089067231e0" kind="variable"><name>initialized</name></member>
@@ -177,6 +190,7 @@
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea7908c08ee866af16afb44ceafc34c654" kind="enumvalue"><name>verbose_level</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea306cb5cda1f0c844d33652130450fe4d" kind="enumvalue"><name>aug_type</name></member>
     <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6eab6733d8cc24c05926f0059fb637f153b" kind="enumvalue"><name>aug_blocking</name></member>
+    <member refid="namespace_controls_1a41634ad81c9287acd66e5a0ebb45dd6ea86503af9c122e64769d05cd942e5a4fe" kind="enumvalue"><name>exploit_sparcity</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1" kind="enum"><name>dcontrols</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1abd79f61fc266a04fcf7f0cfd452304a7" kind="enumvalue"><name>part_imbalance</name></member>
     <member refid="namespace_controls_1a95ac7709aefbd2460905cedd1e57b9d1a51375bf2322e85175b3e867e104941ec" kind="enumvalue"><name>threshold</name></member>
@@ -217,6 +231,10 @@
     <member refid="abcd_8h_1aefc7b027322fca1a06c8ee40d6a88373" kind="function"><name>logger_set_filename</name></member>
     <member refid="abcd_8h_1ac832dfdd5ec260af2ae5908e45d5775d" kind="function"><name>or_bin</name></member>
     <member refid="abcd_8h_1a8e6eb297d5836a8959f84c0f953a1b41" kind="function"><name>sort_indexes</name></member>
+  </compound>
+  <compound refid="abcd__c_8h" kind="file"><name>abcd_c.h</name>
+    <member refid="abcd__c_8h_1a18056f2eb4fd12375a3b1734ef10ae1a" kind="function"><name>new_solver</name></member>
+    <member refid="abcd__c_8h_1acd98d2728758c2cbbe7c2e4d5d25ca02" kind="function"><name>call_solver</name></member>
   </compound>
   <compound refid="defaults_8h" kind="file"><name>defaults.h</name>
   </compound>
@@ -333,6 +351,12 @@
   <compound refid="abcd_8cpp" kind="file"><name>abcd.cpp</name>
   </compound>
   <compound refid="bcg_8cpp" kind="file"><name>bcg.cpp</name>
+  </compound>
+  <compound refid="c__interface_8cpp" kind="file"><name>c_interface.cpp</name>
+    <member refid="c__interface_8cpp_1a3e7636db19bf1e0079613d4ff8ab3280" kind="variable"><name>obj</name></member>
+    <member refid="c__interface_8cpp_1a18056f2eb4fd12375a3b1734ef10ae1a" kind="function"><name>new_solver</name></member>
+    <member refid="c__interface_8cpp_1acd98d2728758c2cbbe7c2e4d5d25ca02" kind="function"><name>call_solver</name></member>
+    <member refid="c__interface_8cpp_1a77fdde9c845857e7fb758db3bc77dc4f" kind="function"><name>free_solver</name></member>
   </compound>
   <compound refid="cimmino_8cpp" kind="file"><name>cimmino.cpp</name>
   </compound>

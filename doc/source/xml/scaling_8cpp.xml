@@ -4,183 +4,183 @@
     <compoundname>scaling.cpp</compoundname>
     <includes refid="abcd_8h" local="no">abcd.h</includes>
     <incdepgraph>
-      <node id="775">
+      <node id="819">
         <label>boost/lambda/lambda.hpp</label>
       </node>
-      <node id="784">
+      <node id="828">
         <label>functional</label>
       </node>
-      <node id="762">
+      <node id="806">
         <label>iomanip</label>
       </node>
-      <node id="777">
+      <node id="821">
         <label>boost/lexical_cast.hpp</label>
       </node>
-      <node id="778">
+      <node id="822">
         <label>easylogging++.h</label>
       </node>
-      <node id="770">
+      <node id="814">
         <label>mumps.h</label>
         <link refid="mumps_8h"/>
-        <childnode refid="771" relation="include">
+        <childnode refid="815" relation="include">
         </childnode>
       </node>
-      <node id="768">
+      <node id="812">
         <label>stdlib.h</label>
       </node>
-      <node id="776">
+      <node id="820">
         <label>boost/lambda/bind.hpp</label>
       </node>
-      <node id="790">
+      <node id="834">
         <label>mvm.h</label>
       </node>
-      <node id="783">
+      <node id="827">
         <label>cwchar</label>
       </node>
-      <node id="759">
+      <node id="803">
         <label>abcd.h</label>
         <link refid="abcd_8h"/>
-        <childnode refid="760" relation="include">
+        <childnode refid="804" relation="include">
         </childnode>
-        <childnode refid="761" relation="include">
+        <childnode refid="805" relation="include">
         </childnode>
-        <childnode refid="762" relation="include">
+        <childnode refid="806" relation="include">
         </childnode>
-        <childnode refid="763" relation="include">
+        <childnode refid="807" relation="include">
         </childnode>
-        <childnode refid="764" relation="include">
+        <childnode refid="808" relation="include">
         </childnode>
-        <childnode refid="765" relation="include">
+        <childnode refid="809" relation="include">
         </childnode>
-        <childnode refid="766" relation="include">
+        <childnode refid="810" relation="include">
         </childnode>
-        <childnode refid="767" relation="include">
+        <childnode refid="811" relation="include">
         </childnode>
-        <childnode refid="768" relation="include">
+        <childnode refid="812" relation="include">
         </childnode>
-        <childnode refid="769" relation="include">
+        <childnode refid="813" relation="include">
         </childnode>
-        <childnode refid="770" relation="include">
+        <childnode refid="814" relation="include">
         </childnode>
-        <childnode refid="771" relation="include">
+        <childnode refid="815" relation="include">
         </childnode>
-        <childnode refid="772" relation="include">
+        <childnode refid="816" relation="include">
         </childnode>
-        <childnode refid="773" relation="include">
+        <childnode refid="817" relation="include">
         </childnode>
-        <childnode refid="774" relation="include">
+        <childnode refid="818" relation="include">
         </childnode>
-        <childnode refid="775" relation="include">
+        <childnode refid="819" relation="include">
         </childnode>
-        <childnode refid="776" relation="include">
+        <childnode refid="820" relation="include">
         </childnode>
-        <childnode refid="777" relation="include">
+        <childnode refid="821" relation="include">
         </childnode>
-        <childnode refid="778" relation="include">
+        <childnode refid="822" relation="include">
         </childnode>
-        <childnode refid="779" relation="include">
+        <childnode refid="823" relation="include">
         </childnode>
-        <childnode refid="780" relation="include">
+        <childnode refid="824" relation="include">
         </childnode>
-        <childnode refid="781" relation="include">
+        <childnode refid="825" relation="include">
         </childnode>
-        <childnode refid="782" relation="include">
+        <childnode refid="826" relation="include">
         </childnode>
-        <childnode refid="783" relation="include">
+        <childnode refid="827" relation="include">
         </childnode>
-        <childnode refid="784" relation="include">
+        <childnode refid="828" relation="include">
         </childnode>
-        <childnode refid="785" relation="include">
+        <childnode refid="829" relation="include">
         </childnode>
-        <childnode refid="786" relation="include">
+        <childnode refid="830" relation="include">
         </childnode>
-        <childnode refid="787" relation="include">
+        <childnode refid="831" relation="include">
         </childnode>
-        <childnode refid="788" relation="include">
+        <childnode refid="832" relation="include">
         </childnode>
-        <childnode refid="789" relation="include">
+        <childnode refid="833" relation="include">
         </childnode>
-        <childnode refid="790" relation="include">
+        <childnode refid="834" relation="include">
         </childnode>
-        <childnode refid="791" relation="include">
+        <childnode refid="835" relation="include">
         </childnode>
-        <childnode refid="792" relation="include">
+        <childnode refid="836" relation="include">
         </childnode>
       </node>
-      <node id="758">
+      <node id="802">
         <label>/home/mzenadi/projects/abcd/src/preprocess/scaling.cpp</label>
         <link refid="scaling.cpp"/>
-        <childnode refid="759" relation="include">
+        <childnode refid="803" relation="include">
         </childnode>
       </node>
-      <node id="763">
+      <node id="807">
         <label>numeric</label>
       </node>
-      <node id="767">
+      <node id="811">
         <label>string</label>
       </node>
-      <node id="769">
+      <node id="813">
         <label>map</label>
       </node>
-      <node id="788">
+      <node id="832">
         <label>comprow_double.h</label>
       </node>
-      <node id="785">
+      <node id="829">
         <label>fstream</label>
       </node>
-      <node id="773">
+      <node id="817">
         <label>boost/accumulators/statistics/mean.hpp</label>
       </node>
-      <node id="774">
+      <node id="818">
         <label>boost/progress.hpp</label>
       </node>
-      <node id="792">
+      <node id="836">
         <label>defaults.h</label>
         <link refid="defaults_8h"/>
       </node>
-      <node id="765">
+      <node id="809">
         <label>cstdio</label>
       </node>
-      <node id="779">
+      <node id="823">
         <label>ctime</label>
       </node>
-      <node id="771">
+      <node id="815">
         <label>dmumps_c.h</label>
       </node>
-      <node id="764">
+      <node id="808">
         <label>vector</label>
       </node>
-      <node id="772">
+      <node id="816">
         <label>boost/mpi.hpp</label>
       </node>
-      <node id="786">
+      <node id="830">
         <label>sstream</label>
       </node>
-      <node id="789">
+      <node id="833">
         <label>coord_double.h</label>
       </node>
-      <node id="781">
+      <node id="825">
         <label>cstdlib</label>
       </node>
-      <node id="782">
+      <node id="826">
         <label>cctype</label>
       </node>
-      <node id="761">
+      <node id="805">
         <label>iostream</label>
       </node>
-      <node id="760">
+      <node id="804">
         <label>mpi.h</label>
       </node>
-      <node id="787">
+      <node id="831">
         <label>compcol_double.h</label>
       </node>
-      <node id="766">
+      <node id="810">
         <label>algorithm</label>
       </node>
-      <node id="780">
+      <node id="824">
         <label>cstring</label>
       </node>
-      <node id="791">
+      <node id="835">
         <label>splib_utils.h</label>
         <link refid="splib__utils_8h"/>
       </node>
@@ -321,8 +321,8 @@
 <codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="scaling_8cpp_1a844fc1858b5281bb1a386c1f2b2ecec1" kindref="member">mc77id_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*);</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="scaling_8cpp_1a8989e493beee3e4aa409ce008c4cf589" kindref="member">mc77ad_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*job,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*m,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*nnz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jcst,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*irn,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*a,</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*iw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*liw,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*dw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ldw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*icntl,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*cntl,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="scaling_8cpp_1a8989e493beee3e4aa409ce008c4cf589" kindref="member">mc77ad_</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*job,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1ac0ea37bc9e6cd26d521b7d3ab26f876e" kindref="member">m</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1ab2a0f051bb12bff5612302dc5dba50a9" kindref="member">n</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*nnz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*jcst,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1a4c9cf292ee649f04701cda7d24b14c1c" kindref="member">irn</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*a,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*iw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*liw,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*dw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ldw,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1afe6a88d4e4b165c6f51df186f11d8231" kindref="member">icntl</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*cntl,</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*<ref refid="namespace_controls_1ae5a2b08c9959a0ebc934f8511b6ddb6f" kindref="member">info</ref>,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*rinfo);</highlight></codeline>
 <codeline lineno="41"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="42"><highlight class="normal"></highlight></codeline>

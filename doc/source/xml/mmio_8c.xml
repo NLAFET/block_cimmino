@@ -8,34 +8,34 @@
     <includes local="no">ctype.h</includes>
     <includes refid="mmio_8h" local="yes">mmio.h</includes>
     <incdepgraph>
-      <node id="394">
+      <node id="438">
         <label>mmio.h</label>
         <link refid="mmio_8h"/>
       </node>
-      <node id="392">
+      <node id="436">
         <label>stdlib.h</label>
       </node>
-      <node id="389">
+      <node id="433">
         <label>/home/mzenadi/projects/abcd/src/mmio.c</label>
         <link refid="mmio.c"/>
-        <childnode refid="390" relation="include">
+        <childnode refid="434" relation="include">
         </childnode>
-        <childnode refid="391" relation="include">
+        <childnode refid="435" relation="include">
         </childnode>
-        <childnode refid="392" relation="include">
+        <childnode refid="436" relation="include">
         </childnode>
-        <childnode refid="393" relation="include">
+        <childnode refid="437" relation="include">
         </childnode>
-        <childnode refid="394" relation="include">
+        <childnode refid="438" relation="include">
         </childnode>
       </node>
-      <node id="391">
+      <node id="435">
         <label>string.h</label>
       </node>
-      <node id="393">
+      <node id="437">
         <label>ctype.h</label>
       </node>
-      <node id="390">
+      <node id="434">
         <label>stdio.h</label>
       </node>
     </incdepgraph>
@@ -488,9 +488,9 @@
 <codeline lineno="19"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>FILE<sp/>*f;</highlight></codeline>
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="mmio_8h_1a27c4a0610b9f2ecb5edb6430e79ae9ee" kindref="member">MM_typecode</ref><sp/>matcode;</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>M,<sp/>N,<sp/>nz;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>M,<sp/>N,<sp/><ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;</highlight></codeline>
 <codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*val;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*<ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref>;</highlight></codeline>
 <codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*I,<sp/>*J;</highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((f<sp/>=<sp/>fopen(fname,<sp/></highlight><highlight class="stringliteral">&quot;r&quot;</highlight><highlight class="normal">))<sp/>==<sp/>NULL)</highlight></codeline>
@@ -525,7 +525,7 @@
 <codeline lineno="56"><highlight class="normal"></highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>*M_<sp/>=<sp/>M;</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>*N_<sp/>=<sp/>N;</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>*nz_<sp/>=<sp/>nz;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>*nz_<sp/>=<sp/><ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>reseve<sp/>memory<sp/>for<sp/>matrices<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="62"><highlight class="normal"></highlight></codeline>
@@ -533,7 +533,7 @@
 <codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>J<sp/>=<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*)<sp/>malloc(nz<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">));</highlight></codeline>
 <codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>=<sp/>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>*)<sp/>malloc(nz<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">));</highlight></codeline>
 <codeline lineno="66"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>*val_<sp/>=<sp/>val;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>*val_<sp/>=<sp/><ref refid="structabcd__solver_1a36a0815ee4d5b60dd807ac579b978b03" kindref="member">val</ref>;</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>*I_<sp/>=<sp/>I;</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>*J_<sp/>=<sp/>J;</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"></highlight></codeline>
@@ -541,7 +541,7 @@
 <codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>specifier<sp/>as<sp/>in<sp/>&quot;%lg&quot;,<sp/>&quot;%lf&quot;,<sp/>&quot;%le&quot;,<sp/>otherwise<sp/>errors<sp/>will<sp/>occur<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/>(ANSI<sp/>C<sp/>X3.159-1989,<sp/>Sec.<sp/>4.9.6.2,<sp/>p.<sp/>136<sp/>lines<sp/>13-15)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fscanf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d<sp/>%lg\n&quot;</highlight><highlight class="normal">,<sp/>&amp;I[i],<sp/>&amp;J[i],<sp/>&amp;val[i]);</highlight></codeline>
 <codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>I[i]--;<sp/><sp/></highlight><highlight class="comment">/*<sp/>adjust<sp/>from<sp/>1-based<sp/>to<sp/>0-based<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
@@ -730,13 +730,13 @@
 <codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
 <codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1a099de03c35a8b30cf035c46b5349e48b" kindref="member">mm_is_complex</ref>(matcode))</highlight></codeline>
 <codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fscanf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d<sp/>%lg<sp/>%lg&quot;</highlight><highlight class="normal">,<sp/>&amp;I[i],<sp/>&amp;J[i],<sp/>&amp;val[2*i],<sp/>&amp;val[2*i+1])</highlight></codeline>
 <codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>!=<sp/>4)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="mmio_8h_1a35f109af00ebbbd4d008f8fcbc8ed9c1" kindref="member">MM_PREMATURE_EOF</ref>;</highlight></codeline>
 <codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1a6afdb9ff27a7a940a7e6538c961d2b72" kindref="member">mm_is_real</ref>(matcode))</highlight></codeline>
 <codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fscanf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d<sp/>%lg\n&quot;</highlight><highlight class="normal">,<sp/>&amp;I[i],<sp/>&amp;J[i],<sp/>&amp;val[i])</highlight></codeline>
 <codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>!=<sp/>3)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="mmio_8h_1a35f109af00ebbbd4d008f8fcbc8ed9c1" kindref="member">MM_PREMATURE_EOF</ref>;</highlight></codeline>
@@ -746,7 +746,7 @@
 <codeline lineno="277"><highlight class="normal"></highlight></codeline>
 <codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1aa105a83b200825c5c9c8e5d44b905187" kindref="member">mm_is_pattern</ref>(matcode))</highlight></codeline>
 <codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fscanf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d&quot;</highlight><highlight class="normal">,<sp/>&amp;I[i],<sp/>&amp;J[i])</highlight></codeline>
 <codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>!=<sp/>2)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="mmio_8h_1a35f109af00ebbbd4d008f8fcbc8ed9c1" kindref="member">MM_PREMATURE_EOF</ref>;</highlight></codeline>
 <codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -877,13 +877,13 @@
 <codeline lineno="408"><highlight class="normal"></highlight></codeline>
 <codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>print<sp/>values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1aa105a83b200825c5c9c8e5d44b905187" kindref="member">mm_is_pattern</ref>(matcode))</highlight></codeline>
-<codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>I[i],<sp/>J[i]);</highlight></codeline>
 <codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1a6afdb9ff27a7a940a7e6538c961d2b72" kindref="member">mm_is_real</ref>(matcode))</highlight></codeline>
-<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d<sp/>%20.16g\n&quot;</highlight><highlight class="normal">,<sp/>I[i],<sp/>J[i],<sp/>val[i]);</highlight></codeline>
 <codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="mmio_8h_1a099de03c35a8b30cf035c46b5349e48b" kindref="member">mm_is_complex</ref>(matcode))</highlight></codeline>
-<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;nz;<sp/>i++)</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="structabcd__solver_1a1f0ad7c33066effdd1709477dcd3cbd2" kindref="member">nz</ref>;<sp/>i++)</highlight></codeline>
 <codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fprintf(f,<sp/></highlight><highlight class="stringliteral">&quot;%d<sp/>%d<sp/>%20.16g<sp/>%20.16g\n&quot;</highlight><highlight class="normal">,<sp/>I[i],<sp/>J[i],<sp/>val[2*i],</highlight></codeline>
 <codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>val[2*i+1]);</highlight></codeline>
 <codeline lineno="420"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>

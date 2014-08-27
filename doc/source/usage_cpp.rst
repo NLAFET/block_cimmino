@@ -135,7 +135,7 @@ dependencies <job_flow>` figure.
 The Controls
 ------------
 
-Define the general behavior of the solver. They are split into two
+Define the general behaviour of the solver. They are split into two
 arrays, `icntl` and `dcntl`. `icntl` is an *integer* array and defines
 the options that control the specific parts of the solver, such as the
 scaling, the type of algorithm to run and so on. `dcntl` is a *double
@@ -145,14 +145,14 @@ and the stopping criteria of the solver.
 
 To access each of the control options we can either use the indices
 ``0, 1, ..`` or, preferably, use the *enums* defined in the header
-``defaults.h`` (for ``C++``, in the case of ``C`` they are already
-defined in ``abcd_c.h``). To access them, the user can use the
+``defaults.h`` for ``C++``.  To access them, the user can use the
 namespace ``Controls``, eg. ``Controls::scaling`` has a value of ``5``
 and is used with ``icntl`` to handle the scaling of the linear system.
 In the following we omit the ``Controls::`` part for simplicity.
 Moreover, due to the similarities between the ``C++`` code and the
 ``C`` one, we provide only the ``C++`` snippets unless there is a
-major difference.
+major difference.  In the case of ``C`` these *enums* are defined in
+``abcd_c.h`` and no prefix is required.
 
 The integer control array
 #########################

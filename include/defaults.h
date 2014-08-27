@@ -56,7 +56,7 @@ namespace Controls{
          *
          * Defines the partitioning strategy, it can have the values:
          * - 1, Manual partitioning, the nbparts partitions can be
-         *   provided into the STL vector abcd::nbrows. Example:
+         *   provided in the STL vector nbrows. Example:
          * \rststar
          *     .. code-block:: cpp
          *
@@ -71,7 +71,7 @@ namespace Controls{
          *         obj.nrows[1] = 20;
          *         //...
          *
-         *     For C, the #nrows vector is an ``int`` array:
+         *     For C, the ``nrows`` vector is an ``int`` array:
          *
          *     .. code-block:: cpp
          *
@@ -107,7 +107,7 @@ namespace Controls{
          *
          *         // use patoh partitioning
          *         obj.icntl[part_type] = 3;
-         *         // say that we want an imbalance of 0.3 between the partitions
+         *         // say that we want an imbalance factor up to 30% between the partitions
          *         obj.dcntl[part_imbalance] = 0.3;
          *
          * \endrststar
@@ -120,8 +120,10 @@ namespace Controls{
          * partitions and overrides the defined *nbparts*.
          *
          * - 0 (*default*), The user has to provide the number of
-         * partitions by setting abcd::icntl[#nbparts]
-         * - 1, Guess the number of partitions
+         * partitions by setting icntl[nbparts]
+         * - 1, Guess the number of partitions by trying to create a
+         *   small number of partitions while keeping them small
+         *   enough to be handled easily by the direct solver
          */
         part_guess         ,
 
@@ -139,7 +141,7 @@ namespace Controls{
         /*! \brief The max number of iterations
          *
          * Defines the maximum number of iterations in block-CG
-         * acceleration, default is ``1000``
+         * acceleration, default is ``1000`` iterations.
          */
         itmax              ,
 
@@ -147,14 +149,14 @@ namespace Controls{
          *
          * Defines the block-size to be used by the block-CG
          * acceleration, default is ``1`` for classical CG
-         * acceleration. When using a higher value than 1, the
+         * acceleration. When using a higher value than 1, 
          * stabilized Block-CG is used.
          */
         block_size         ,
 
         /*! \brief The verbose level
          *
-         * Defines how verbose the solver has to be. 
+         * Defines the verbosity of the solver
          */
         verbose_level      , 
         
@@ -180,12 +182,20 @@ namespace Controls{
          *
          *
          * Defines the blocking factor used by the solver during the
-         * solution phase, its default value is 128. This allows to
-         * take advantage of BLAS3 Kernels.  The optimal value is
-         * hardware and problem size related. The user has also to
-         * find a compromise between memory versus computing time.
+         * solution phase, its default value is 128. This allows the
+         * solver to take advantage of BLAS3 Kernels.  The optimal
+         * value is hardware and problem size related. The user has
+         * also to find a compromise between memory and computing
+         * time.
          */
         aug_blocking        ,
+
+        /*! \brief Exploit the sparcity in MUMPS
+         *
+         * By default is set to 1, if you are using an old version of MUMPS
+         *
+         */
+        exploit_sparcity    ,
 
 #ifdef WIP
         /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
@@ -208,10 +218,6 @@ namespace Controls{
          * **Note**: This does not build \f$S\f$, but only augment the matrix.
          */
         aug_analysis        ,
-
-        /*! \brief Exploit the sparcity in MUMPS
-         */
-        exploit_sparcity    ,
 
         aug_iterative   , ///< \exp Enable or disable iterative solving of Sz=f
 
