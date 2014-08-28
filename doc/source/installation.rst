@@ -38,7 +38,7 @@ The installation can be done by typing the following commands in your terminal
 
     # download the latest stable version
     # it will create a directory named abcd
-    git clone git@gitlab.enseeiht.fr/abcd/abcd.git
+    git clone https://bitbucket.org/zenadi/abcd.git
 
     # we need to download PaToH
     cd /tmp
