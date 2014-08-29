@@ -40,21 +40,10 @@ The installation can be done by typing the following commands in your terminal
     # it will create a directory named abcd
     git clone https://bitbucket.org/apo_irit/abcd.git
 
-    # we need to download PaToH
-    cd /tmp
-
-    # download the appropriate version of patoh
-    # replace the `xyz` by the build version as described in
+    # download the appropriate version of patoh from
     # http://bmi.osu.edu/~umit/software.html
-    wget http://bmi.osu.edu/~umit/PaToH/xyz.tar.gz
-    # extract patoh
-    tar xvzf patoh-xyz.tar.gz
-    # copy the files to the abcd solver directories lib and include
-    cp build/xyz/libpatoh.a /path/to/abcd/lib/
-    cp build/xyz/patoh.h /path/to/abcd/include/
-
-    # return to /path/to/abcd/
-    cd -
+    # copy libpatoh.a to the lib/ directory
+    # copy patoh.h to the include/ directory
 
 Now that everything is ready, we can compile the solver. To do so, we
 need a configuration file from the ``cmake.in`` directory, suppose we
@@ -81,6 +70,7 @@ to customize the configuration.
 
 Edit the file ``abcdCmake.in`` so that it reflects your configuration (path to libraries, file names, path to MPI, etc).
 
+
 Building the library
 --------------------
           
@@ -101,16 +91,33 @@ The build process is done using ``cmake``:
    # the files will be in the Release/lib directory
    ls Release/lib # gives libabcd.a
 
-   # an executable is also created that can be used
-   # to try ABCD without having to write code
-   mpirun -np 16 ./Release/abcd_run
-
 
 If cmake does not finish correctly, here are some possible reasons:
 
 * ``mpic++`` is either not installed or there is an issue with ``mpi`` libraries, check also that you gave the right path in your ``abcdCmake.in`` file.
 * ``Boost`` is either not installed, or the version is too old. Check that ``Boost::MPI`` is installed.
 * The path to some libraries is not well defined in ``abcdCmake.in``.
+
+Running ABCD
+------------
+
+You can run the solver without having to write a code (as we do in the next section). After building the library, a binary is created called ``abcd_run``, it uses a configuration file that you will find in the directory ``test/src/config_file.info`` that you need to copy to your build directory.
+
+.. code-block:: bash
+
+   cd build
+   cp ../test/src/config_file.info .
+   
+   # to try ABCD without having to write code
+   # abcd_run will look for config_file.info in the current directory
+   mpirun -np 16 ./Release/abcd_run
+
+You can also give the executable the path to your configuration file:
+
+.. code-block:: bash
+   mpirun -np 16 ./Release/abcd_run /path/to/configuration
+
+The configuration file details all possible options and how to use them. 
   
 
 Building the example
