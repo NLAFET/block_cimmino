@@ -38,7 +38,7 @@ The installation can be done by typing the following commands in your terminal
 
     # download the latest stable version
     # it will create a directory named abcd
-    git clone https://bitbucket.org/zenadi/abcd.git
+    git clone https://bitbucket.org/apo_irit/abcd.git
 
     # we need to download PaToH
     cd /tmp
@@ -130,3 +130,8 @@ Once the library built, you can compile the given example:
 
    # if everything went correctly, try 
    mpirun -np 16 ./example
+
+
+Issue tracker
+-------------
+
