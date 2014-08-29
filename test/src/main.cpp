@@ -105,6 +105,7 @@ int main(int argc, char* argv[])
 
         //read the rhs here!
         boost::optional<string> rhs_file = pt.get_optional<string>("system.rhs_file");
+        boost::optional<string> sol_file = pt.get_optional<string>("system.sol_file");
         
         if(rhs_file){
             FILE *rhs_f = fopen(rhs_file->c_str(), "r");
@@ -124,16 +125,17 @@ int main(int argc, char* argv[])
             cout << "Reading "<< m_v << " values for each of the " << nb_v << " rhs" << endl;
 
             double cv;
+            int ret;
             for(int i = 0; i < m_v*nb_v; i++){
-                fscanf(rhs_f, "%lf", &cv);
+                ret = fscanf(rhs_f, "%lf", &cv);
                 obj.rhs[i] = cv;
             }
             //
             fclose(rhs_f);
         }
 
-        int testMumps =(int) pt.get<bool>("testMumps", false);
-        double minMumps = pt.get<double>("minMumps", 10);
+        int testMumps =(int) pt.get<bool>("test_mumps", false);
+        double minMumps = pt.get<double>("min_mumps", 0);
         double *mumps_rhs;
         int mumps_n = obj.n;
         MUMPS mu;
@@ -166,7 +168,7 @@ int main(int argc, char* argv[])
             mu.setIcntl(7, 5);
             mu.setIcntl(8, -2);
             mu.setIcntl(12, 2);
-            mu.setIcntl(14, 200);
+            mu.setIcntl(14, 90);
 
             mu.n = obj.n;
             mu.nz = obj.nz;
@@ -229,9 +231,9 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
-        obj.icntl[Controls::part_type] = pt.get<int>("partitioning.type", 2);
-        obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.guess", 0);
-        obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.imba", 0.5);
+        obj.icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
+        obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);
+        obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.part_imbalance", 0.5);
 
         if(obj.icntl[Controls::part_type] == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
@@ -271,23 +273,26 @@ int main(int argc, char* argv[])
 
         obj.write_problem   = pt.get<string>("write_problem", "");
 
-        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("esparse", 1);
+#ifdef WIP
+        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("exploit_sparcity", 1);
+#endif //WIP
+
         obj.icntl[Controls::scaling]    = pt.get<int>("scaling", 2);
 
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
 
         if(augmentation){
-            obj.icntl[Controls::aug_type]   = pt.get<int>("augmentation.type", 2);
-            obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
-            obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.multirhs", 256);
+            obj.icntl[Controls::aug_type]   = pt.get<int>("augmentation.aug_type", 2);
+            obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.aug_blocking", 256);
 #ifdef WIP
+            obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
             obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
             obj.icntl[Controls::aug_project]   = pt.get<int>("augmentation.project_only", 0);
             obj.icntl[Controls::aug_dense]   = pt.get<int>("augmentation.denserhs", 0);
             obj.icntl[Controls::aug_iterative]   = pt.get<int>("augmentation.iterative", 0);
             obj.dcntl[Controls::aug_precond]   = pt.get<double>("augmentation.precond", 0.0);
-#endif //WIP
             obj.write_s     = pt.get<string>("augmentation.write_s", "");
+#endif //WIP
         }
 
         obj.parallel_cg = pt.get<int>("dist_scheme", obj.icntl[Controls::nbparts] < world.size() ? obj.icntl[Controls::nbparts] : world.size());
@@ -296,7 +301,7 @@ int main(int argc, char* argv[])
         try {
             
 
-            obj.icntl[Controls::verbose_level] =  pt.get<int>("all_verbose", 0);
+            obj.icntl[Controls::verbose_level] =  pt.get<int>("verbose_level", 0);
             obj.log_output = pt.get<string>("log_filename", "");
 
             obj(-1);
@@ -317,6 +322,15 @@ int main(int argc, char* argv[])
             obj(3);
 
             clog << "Total time: " << MPI_Wtime() - t << endl;
+
+            ofstream f; 
+            f.open(sol_file->c_str());
+            cout << obj.n << endl;
+            for(int i = 0; i < obj.n; i++) {
+                f << obj.sol[i] << "\n";
+            }
+            f.close();
+
         } catch(std::runtime_error e) {
             cout << world.rank() << " Error code : " << e.what() << endl;
             mpi::broadcast(world, error, 0);

@@ -57,8 +57,6 @@ void abcd::distributeData()
                 dims.push_back(parts[j].dim(0));
                 dims.push_back(parts[j].dim(1));
 		
-                cout << i << '\t' << j << '\t' << parts[j].dim(0) << endl;
-
 		// send the nnz
                 inter_comm.send(i, 1, parts[j].NumNonzeros());
 		// send the dimensions

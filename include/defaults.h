@@ -190,14 +190,11 @@ namespace Controls{
          */
         aug_blocking        ,
 
+#ifdef WIP
         /*! \brief Exploit the sparcity in MUMPS
-         *
-         * By default is set to 1, if you are using an old version of MUMPS
-         *
          */
         exploit_sparcity    ,
 
-#ifdef WIP
         /*! \brief Force Gram-Schmidt with reorthogonalization in Block-CG
          *
          * Makes the Block-CG use the Modifed Gram-Schmidt with

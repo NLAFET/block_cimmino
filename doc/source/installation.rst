@@ -79,6 +79,8 @@ You can use the
 Advisor <https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor>`_
 to customize the configuration.
 
+Edit the file ``abcdCmake.in`` so that it reflects your configuration (path to libraries, file names, path to MPI, etc).
+
 Building the library
 --------------------
           
