@@ -113,6 +113,11 @@ void abcd::partitionMatrix()
         for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
             strow[k] = row_sum;
             row_sum += nbrows[k];
+            if (nbrows[k] == 0) {
+                info[Controls::status] = -6;
+                mpi::broadcast(comm, info[Controls::status], 0);
+                throw std::runtime_error("FATAL ERROR: You requested an empty partition.");
+            }
         }
         break;
 

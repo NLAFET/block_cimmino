@@ -60,26 +60,26 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
         while (weight_index > (int)weights.size()){
             weight_index = 0;
             pts.clear();
-            int current_partiton = 0;
+            int current_partition = 0;
             int current_weight = 0;
 
             // Share everything sequentially
-            while((current_partiton < nb_parts) && (weight_index < (int)weights.size())) {
-                if((weights[weight_index] > avg * (fix - 0.1))
-                    && (pts[current_partiton].size() != 0)){
-                    current_partiton++;
+            while((current_partition < nb_parts) && (weight_index < (int)weights.size())) {
+                if((weights[weight_index] > avg * (fix - 0.25))
+                    && (pts[current_partition].size() != 0)){
+                    current_partition++;
                     current_weight = 0;
                 } else {
                     current_weight += weights[weight_index];
-                    pts[current_partiton].push_back(weight_index);
+                    pts[current_partition].push_back(weight_index);
                     weight_index++;
                     if(current_weight > avg * fix){
-                        current_partiton++;
+                        current_partition++;
                         current_weight = 0;
                     }
                 }
             }
-            fix -= 0.1;
+            fix -= 0.25;
         }
 
         // if there are some weights left, go greedy

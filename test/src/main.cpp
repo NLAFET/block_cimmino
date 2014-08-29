@@ -160,9 +160,9 @@ int main(int argc, char* argv[])
 
             dmumps_c(&mu);
 
-            mu.setIcntl(1, 6);
-            mu.setIcntl(2, 6);
-            mu.setIcntl(3, 6);
+            mu.setIcntl(1, 0);
+            mu.setIcntl(2, 0);
+            mu.setIcntl(3, 0);
 
             mu.setIcntl(6, 5);
             mu.setIcntl(7, 5);
@@ -325,7 +325,6 @@ int main(int argc, char* argv[])
 
             ofstream f; 
             f.open(sol_file->c_str());
-            cout << obj.n << endl;
             for(int i = 0; i < obj.n; i++) {
                 f << obj.sol[i] << "\n";
             }
