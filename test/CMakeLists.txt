@@ -42,7 +42,7 @@ include_directories(../include ${Boost_INCLUDE_DIRS})
 
 add_executable(
   cpp_example
-  src/example.cpp
+  ${ABCD_PROJECT_DIR}/example/example.cpp
   )
 
 
@@ -53,24 +53,23 @@ target_link_libraries(
   ${LIBS}
   )
 
+add_executable(
+  abcd_run
+  src/main.cpp
+)
+
+
+#Configuration de l'édition de liens
+target_link_libraries(
+  abcd_run
+  abcd 
+  ${LIBS}
+)
+
 
 ################################
 # Testing
 ################################
-if(TESTER MATCHES ON)
-  add_executable(
-    test_abcd
-    src/main.cpp
-    )
-
-
-  #Configuration de l'édition de liens
-  target_link_libraries(
-    test_abcd
-    abcd 
-    ${LIBS}
-    )
-endif()
 if(TEST MATCHES ON)
 
   add_executable(
@@ -99,6 +98,15 @@ if(TEST MATCHES ON)
     )
 
   # Locate GTest
+
+  set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
+  set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
+  set(GTEST_INCLUDE_DIR $ENV{HOME}/.local/include/)
+
+  set(GMOCK_LIBRARY $ENV{HOME}/.local/lib/libgmock.a)
+  set(GMOCK_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgmock_main.a)
+  set(GMOCK_INCLUDE_DIR $ENV{HOME}/.local/include/)
+
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)
   include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
