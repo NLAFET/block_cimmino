@@ -99,6 +99,10 @@ The build process is done using ``cmake``:
    # the files will be in the Release/lib directory
    ls Release/lib # gives libabcd.a
 
+   # an executable is also created that can be used
+   # to try ABCD without having to write code
+   mpirun -np 16 ./Release/abcd_run
+
 
 If cmake does not finish correctly, here are some possible reasons:
 
@@ -134,4 +138,11 @@ Once the library built, you can compile the given example:
 
 Issue tracker
 -------------
+If you find any bug, didn't understand a step in the documentation, or if you
+have a feature request, submit your issue on our
+`Issue Tracker <https://bitbucket.org/apo_irit/abcd/issues>`_
+by giving:
 
+- reproducible steps
+- a source code, or a snippet where you call the solver
+- a matrix file if possible.
