@@ -72,31 +72,6 @@ target_link_libraries(
 ################################
 if(TEST MATCHES ON)
 
-  add_executable(
-          test_abcd_c_interface
-          src/c_exemple.c
-          src/c_interface.cc
-  )
-
-
-  #Configuration de l'édition de liens
-  target_link_libraries(
-    test_abcd_c_interface
-    abcd 
-    ${LIBS}
-    )
-
-  add_executable(
-    basic_test
-    src/basic.cpp
-    )
-
-  target_link_libraries(
-    basic_test
-    abcd 
-    ${LIBS}
-    )
-
   # Locate GTest
 
   set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)

@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
         // scaling 
         obj.icntl[Controls::scaling] = 2;
 
-        init_2d_lap(obj, 2);
+        init_2d_lap(obj, 200);
 
         // set the rhs
         obj.rhs = new double[obj.m * obj.nrhs];

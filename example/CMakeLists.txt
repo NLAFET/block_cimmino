@@ -6,6 +6,7 @@ include(../abcdCmake.in)
 project(example)
 
 set(CMAKE_CXX_FLAGS "-fopenmp")
+set(CMAKE_C_FLAGS "-fopenmp")
 
 find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
@@ -34,7 +35,7 @@ link_directories(
   ${ABCD}/lib
   ${ABCD}/lib/sparselib/lib/
   ${ABCD}/lib/mumps/lib/
-  ${ABCD}/build/Release/lib
+  ${ABCD}/build/${BUILD_TYPE}/lib
   ${Boost_LIBRARY_DIRS}
   ${MUMPS_LIBRARY_DIR}
   ${BLAS_LAPACK_SCALAPACK_DIRS}
@@ -64,4 +65,18 @@ target_link_libraries(
   example
   abcd 
   ${LIBS}
+  )
+
+add_executable(
+  example_c
+  example.c
+  )
+
+###Configuration de l'édition de liens
+target_link_libraries(
+  example_c
+  abcd 
+  ${LIBS}
+  stdc++
+  m
   )
