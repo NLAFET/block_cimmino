@@ -54,7 +54,8 @@ file(
     src/*.c
 )
 
-add_library(abcd ${source_files})
+add_library(abcd STATIC ${source_files})
+add_library(abcd_shared SHARED ${source_files})
 
 add_subdirectory(test)
 

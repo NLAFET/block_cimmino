@@ -38,27 +38,23 @@
  *  Description:  Augments the matrix and build the C part in [A C]
  * =====================================================================================
  */
-    void
-abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
+void abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
 {
-    /*
-     * Which augmentation to use:
-     */
+    stC = std::vector<int>(M.size(), -1);
+
     if(icntl[Controls::aug_type] == 0){
-        //[> No augmentation <]
+        // No augmentation 
         return;
     } else if (icntl[Controls::aug_type] == 1){
-        /*
-         * C_ij/-I augmentation
-         */
+        // C_ij/-I augmentation
         cijAugmentMatrix(M);
     } else if (icntl[Controls::aug_type] == 2){
-        /*
-         * A_ij/-A_ji augmentation
-         */
+        // A_ij/-A_ji augmentation
         aijAugmentMatrix(M);
 
     } else {
+        info[Controls::status] = -8;
+        mpi::broadcast(comm, info[Controls::status], 0);
         throw std::runtime_error("Unkown augmentation scheme.");
     }
 
