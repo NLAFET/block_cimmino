@@ -21,6 +21,8 @@ else()
   message("PythonLibs didn't work")
 endif()
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/numpy")
+
 # the library
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
 
@@ -63,6 +65,7 @@ include_directories(
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
   ${MPI_INC_DIR}
+  ${CMAKE_SOURCE_DIR}/numpy/
   )
 
 
@@ -73,5 +76,6 @@ set_target_properties(abcdpy PROPERTIES PREFIX "")
 
 target_link_libraries(abcdpy
   abcd_shared
+  boost_numpy
   ${LIBS}
   )
