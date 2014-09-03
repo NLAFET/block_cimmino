@@ -11,17 +11,22 @@ the control parameters are initialized to their default value, see
 :ref:`the controls description <section_controls>` for the list of the
 control parameters and their default value.
 
-For C++:
+For C++, the class is defined in the header file `abcd.h`
 
 .. code-block:: cpp
 
+    #include "abcd.h"
+    //...
     abcd obj; // instantiating the class
 
-For C, the solver is a structure called ``struct abcd``:
+For C, the solver is a type `abcd_c` that is based on a structure
+called ``struct abcd`` and is defined in the header file `abcd_c.h`:
 
 .. code-block:: c
 
-    structure abcd_solver *obj = new_solver(); // create a new solver
+    #include "abcd_c.h"
+    //...
+    abcd_c *obj = new_solver(); // create a new solver
 
 Input matrix and right-hand side
 --------------------------------
@@ -64,7 +69,7 @@ In C:
 .. code-block:: cpp
 
     // Create an object for each mpi-process
-    structure abcd_solver *obj = new_solver();
+    abcd_c *obj = new_solver();
 
     obj->n = 7;
     obj->m = 7;
@@ -96,7 +101,7 @@ For C, the solver is a structure called ``struct abcd``:
 
 .. code-block:: c
 
-    structure abcd_solver *obj = new_solver(); // create a new solver
+    abcd_c *obj = new_solver(); // create a new solver
     call_solver(obj, job_id);
 
 ``job_id`` defines which operation the solver has to run. It can have

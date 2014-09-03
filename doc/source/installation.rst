@@ -128,9 +128,11 @@ Once the library is built, you can compile the given examples (either C++ or C):
 
 .. code-block:: bash
 
-   # the example.cpp file is in the example directory
-   cd example
+   # the C++ example called `example.cpp` and the
+   # C example called `example.c` are in the examples directory
+   cd examples
 
+   # create a directory where to build your examples
    mkdir build_example
    cd build_example
 
@@ -142,8 +144,11 @@ Once the library is built, you can compile the given examples (either C++ or C):
    cmake .. -DABCD=/absolute/path/to/abcd/
    make
 
-   # if everything went correctly, try 
+   # if everything went correctly, try to run the C++ example
    mpirun -np 16 ./example
+
+   # or if you want to run the C example:
+   mpirun -np 16 ./example_c
 
 
 Issue tracker
