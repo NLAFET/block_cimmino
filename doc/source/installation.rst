@@ -108,22 +108,23 @@ You can run the solver without having to write a code (as we do in the next sect
    cd build
    cp ../test/src/config_file.info .
    
-   # to try ABCD without having to write code
-   # abcd_run will look for config_file.info in the current directory
+   # to try ABCD on a provided small test matrix, without having to write any code,
+   # abcd_run looks by default for the file config_file.info in the current directory
    mpirun -np 16 ./Release/abcd_run
 
 You can also give the executable the path to your configuration file:
 
 .. code-block:: bash
-   mpirun -np 16 ./Release/abcd_run /path/to/configuration
 
-The configuration file details all possible options and how to use them. 
+   mpirun -np 16 ./Release/abcd_run /path/to/configuration_file
+
+The configuration file incorporates comments with details about all possible options and how to use them. 
   
 
-Building the example
---------------------
+Building an example (to call ABCD from C++ or C)
+-------------------------------------------------
 
-Once the library built, you can compile the given example:
+Once the library is built, you can compile the given examples (either C++ or C):
 
 .. code-block:: bash
 
