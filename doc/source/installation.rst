@@ -88,8 +88,8 @@ The build process is done using ``cmake``:
    # if everything went correctly you can run make
    make
 
-   # the files will be in the Release/lib directory
-   ls Release/lib # gives libabcd.a
+   # the files will be in directory lib/
+   ls lib # gives libabcd.a
 
 
 If cmake does not finish correctly, here are some possible reasons:
@@ -106,17 +106,17 @@ You can run the solver without having to write a code (as we do in the next sect
 .. code-block:: bash
 
    cd build
-   cp ../test/src/config_file.info .
+   cp ../config_file.info .
    
    # to try ABCD on a provided small test matrix, without having to write any code,
    # abcd_run looks by default for the file config_file.info in the current directory
-   mpirun -np 16 ./Release/abcd_run
+   mpirun -np 16 ./abcd_run
 
 You can also give the executable the path to your configuration file:
 
 .. code-block:: bash
 
-   mpirun -np 16 ./Release/abcd_run /path/to/configuration_file
+   mpirun -np 16 ./abcd_run /path/to/configuration_file
 
 The configuration file incorporates comments with details about all possible options and how to use them. 
   

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(BUILD_TYPE "Debug")
+set(BUILD_TYPE "Release")
 
 include(../abcdCmake.in)
-project(example)
+project(example CXX C Fortran)
 
 set(CMAKE_CXX_FLAGS "-fopenmp")
 set(CMAKE_C_FLAGS "-fopenmp")
@@ -35,7 +35,7 @@ link_directories(
   ${ABCD}/lib
   ${ABCD}/lib/sparselib/lib/
   ${ABCD}/lib/mumps/lib/
-  ${ABCD}/build/${BUILD_TYPE}/lib
+  ${ABCD}/build/lib
   ${Boost_LIBRARY_DIRS}
   ${MUMPS_LIBRARY_DIR}
   ${BLAS_LAPACK_SCALAPACK_DIRS}

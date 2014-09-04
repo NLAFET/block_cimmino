@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(BUILD_TYPE "Debug")
+set(BUILD_TYPE "Release")
 
 include(../abcdCmake.in)
 project(abcdpy)
 
 set(CMAKE_CXX_FLAGS "-fopenmp")
 set(CMAKE_C_FLAGS "-fopenmp")
+
+#convert ${ABCD} to absolute
+get_filename_component(ABCD_DIR "${ABCD}" ABSOLUTE)
 
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
@@ -45,10 +48,10 @@ set(LIBS ${LIBS}
   )
 
 link_directories(
-  ${ABCD}/lib
-  ${ABCD}/lib/sparselib/lib/
-  ${ABCD}/lib/mumps/lib/
-  ${ABCD}/build/${BUILD_TYPE}/lib
+  ${ABCD_DIR}/lib
+  ${ABCD_DIR}/lib/sparselib/lib/
+  ${ABCD_DIR}/lib/mumps/lib/
+  ${ABCD_DIR}/build/lib
   ${Boost_LIBRARY_DIRS}
   ${MUMPS_LIBRARY_DIR}
   ${BLAS_LAPACK_SCALAPACK_DIRS}
@@ -56,11 +59,13 @@ link_directories(
   ${LIB_DIRS}
   )
 
+message(${ABCD_DIR})
+
 include_directories(
-  ${ABCD}/include
-  ${ABCD}/lib/sparselib/include
-  ${ABCD}/lib/sparselib/mv/include
-  ${ABCD}/lib/mumps/include
+  ${ABCD_DIR}/include
+  ${ABCD_DIR}/lib/sparselib/include
+  ${ABCD_DIR}/lib/sparselib/mv/include
+  ${ABCD_DIR}/lib/mumps/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
@@ -68,6 +73,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/numpy/
   )
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_library(abcdpy SHARED
   python_interface.cpp
@@ -75,7 +81,7 @@ add_library(abcdpy SHARED
 set_target_properties(abcdpy PROPERTIES PREFIX "")
 
 target_link_libraries(abcdpy
-  abcd_shared
+  abcd
   boost_numpy
   ${LIBS}
   )

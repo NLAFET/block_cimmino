@@ -17,7 +17,7 @@ find_package (Boost COMPONENTS mpi serialization REQUIRED)
 
 # the library
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}/lib)
+set(LIBRARY_OUTPUT_PATH lib)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
@@ -54,8 +54,7 @@ file(
     src/*.c
 )
 
-add_library(abcd STATIC ${source_files})
-add_library(abcd_shared SHARED ${source_files})
+add_library(abcd SHARED ${source_files})
 
 add_subdirectory(test)
 

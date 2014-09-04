@@ -6,7 +6,7 @@ if(DEBUG MATCHES ON)
   add_definitions(-DDEBUG)
 endif()
 
-set(EXECUTABLE_OUTPUT_PATH ../${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ../)
 
 if(NOT PATOH MATCHES OFF)
   set(LIBS ${LIBS} patoh)
@@ -23,6 +23,7 @@ set(LIBS ${LIBS}
   sparse
   spblas
   mv
+  gfortran
   )
 
 link_directories(
@@ -38,20 +39,6 @@ link_directories(
   )
 
 include_directories(../include ${Boost_INCLUDE_DIRS})
-
-
-add_executable(
-  cpp_example
-  ${ABCD_PROJECT_DIR}/example/example.cpp
-  )
-
-
-###Configuration de l'édition de liens
-target_link_libraries(
-  cpp_example
-  abcd 
-  ${LIBS}
-  )
 
 add_executable(
   abcd_run
