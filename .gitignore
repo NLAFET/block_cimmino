@@ -10,6 +10,11 @@ example/*
 !example/example.c
 !example/CMakeLists.txt
 *.kdev4
+python/*
+!python/example.py
+!python/CMakeLists.txt
+!python/numpy
+!python/python_interface.cpp
 
 
 # Compiled Object files
