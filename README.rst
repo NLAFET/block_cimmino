@@ -1,8 +1,6 @@
-# The Augmented Block Cimmino Distributed Solver #
-
-============
-Installation
-============
+==============================================
+The Augmented Block Cimmino Distributed Solver
+==============================================
 
 **Note:** Check http://abcd.enseeiht.fr for more details.
 
