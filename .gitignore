@@ -15,6 +15,7 @@ python/*
 !python/CMakeLists.txt
 !python/numpy
 !python/python_interface.cpp
+Makefile
 
 
 # Compiled Object files
