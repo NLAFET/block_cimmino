@@ -16,7 +16,7 @@ python/*
 !python/numpy
 !python/python_interface.cpp
 Makefile
-lib/patoh.a
+lib/libpatoh.a
 include/patoh.h
 
 
