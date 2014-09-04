@@ -16,6 +16,8 @@ python/*
 !python/numpy
 !python/python_interface.cpp
 Makefile
+lib/patoh.a
+include/patoh.h
 
 
 # Compiled Object files
