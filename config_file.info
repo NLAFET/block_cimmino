@@ -1,0 +1,95 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Sample configuration file              ;;
+;;                                        ;;
+;; See the documentation for more details ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;
+;; MUMPS PART ;;
+;;;;;;;;;;;;;;;;
+
+; Solve the linear system with MUMPS before solving with ABCD
+; and compare both results. Use only with square matrices!
+; Note: the configuration used is generic and is in no way representative of MUMPS performance
+; 0 > do not run mumps
+; 1 > run mumps
+test_mumps      0
+
+; Stop abcd_run if mumps run time is smaller than the value `val` in seconds
+; 0 > do not stop abcd_run
+; val > stop mumps 
+min_mumps       0
+
+
+;;;;;;;;;;;;;;;
+;; ABCD PART ;;
+;;;;;;;;;;;;;;;
+
+; verbosity: 0, 1, or 2
+verbose_level   0
+
+; scaling: 0, 1, or 2
+scaling         2
+
+system
+{
+    ; only matrix-market format is supported
+    matrix_file "../example/e05r0500.mtx"
+    rhs_file    "../example/e05r0500_rhs.mtx"
+
+    ; the output
+    sol_file    "solution"
+
+    ; maximum number of iterations
+    itmax       200
+
+    ; the block-size used by the conjugate gradient
+    ; must be >= 1
+    block_size  4
+}
+
+partitioning
+{
+    ; partitioning type
+    ; 1 > manual
+    ; 2 > automatic
+    ; 3 > patoh
+    part_type    2
+
+    ; number of partitions
+    nbparts      5
+
+    ; guess the number of partitions
+    ; 0 > do not guess
+    ; 1 > guess the number of partitions
+    part_guess   0
+
+
+    ;; If you set the partitioning type to 1 (manual)
+    ;; you will have to give the number of rows per partition
+    ;; in addition to the number of partitions as follows
+    ;;
+    ;;  nbrows
+    ;;  {
+    ;;      200        ; number of rows of the first partition
+    ;;      220        ; number of rows of the second partition
+    ;;      230        ; number of rows of the third partition
+    ;;      200        
+    ;;      200        
+    ;;      and so on...
+    ;;  }
+
+}
+
+
+augmentation
+{
+    ; augmentation type
+    ; 0 > no augmentation (regular block cimmino)
+    ; 1 > C_ij/-I augmentation
+    ; 2 > A_ij/-A_ji augmentation
+    aug_type     0
+
+    ; the blocking factor when creating the auxiliary system
+    aug_blocking 256
+}
