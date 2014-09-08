@@ -162,7 +162,7 @@ int abcd::initializeMatrix()
         }
         nz = t_nz;
         Coord_Mat_double t_A;
-        t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn);
+        t_A = Coord_Mat_double(m, n, t_nz, t_val, t_irn, t_jcn, MV_Matrix_::ref);
         t = MPI_Wtime();
         A = CompRow_Mat_double(t_A);
 

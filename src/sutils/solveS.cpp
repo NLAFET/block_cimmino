@@ -177,6 +177,7 @@ abcd::solveS ( MV_ColMat_double &f )
          *-----------------------------------------------------------------------------*/
     } else {
         // tell the workers that we are going to solve with S, no building necessary!
+        //todo: this should only happen if MUMPS didn't factorize the matrix!
         int job = 4;
         mpi::broadcast(intra_comm, job, 0);
     }
