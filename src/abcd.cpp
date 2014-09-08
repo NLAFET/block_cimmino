@@ -69,7 +69,7 @@ abcd::abcd()
     icntl[Controls::part_type] = 2;
     dcntl[Controls::part_imbalance] = 1.5;
     icntl[Controls::part_guess] = 1;
-    icntl[Controls::scaling] = 2;
+    icntl[Controls::scaling] = 1;
     icntl[Controls::itmax] = 1000;
     icntl[Controls::block_size] = 1;
     dcntl[Controls::threshold] = 1e-12;
@@ -214,16 +214,18 @@ int abcd::preprocessMatrix()
         parallel_cg = icntl[Controls::nbparts] < comm.size() ? icntl[Controls::nbparts] : comm.size();
     }
     
-    abcd::partitionMatrix();
-
-    LINFO << "> Time to partition the matrix: "
-          << MPI_Wtime() - t << "s.";
-    
     t = MPI_Wtime();
     
     abcd::scaling();
 
     LINFO << "> Time to scale the matrix: "
+          << MPI_Wtime() - t << "s.";
+
+    t = MPI_Wtime();
+    
+    abcd::partitionMatrix();
+
+    LINFO << "> Time to partition the matrix: "
           << MPI_Wtime() - t << "s.";
 
     abcd::analyseFrame();

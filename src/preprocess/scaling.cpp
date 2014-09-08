@@ -38,6 +38,17 @@ extern "C"
     void mc77ad_(int *job, int *m, int *n, int *nnz, int *jcst, int *irn, double *a,
                  int *iw, int *liw, double *dw, int *ldw, int *icntl, double *cntl,
                  int *info, double *rinfo);
+
+    void dmumps_simscaleabs_(
+            int *irn_loc, int *jcn_loc, double *a_loc,
+            int *nz_loc, int *m, int *n, int *numprocs,
+            int *myid, int *comm, int *rpartvec, int *cpartvec,
+            int *rsndrcvsz, int *csndrcvsz, int *reg,
+            int *iwrk, int *iwrksz,
+            int *intsz, int *resz, int *op,
+            double *rowsca, double *colsca, double *wrkrc, int *iszwrkrc,
+            int *sym, int *nb1, int *nb2, int *nb3, double *eps,
+            double *onenormerr, double *infnormerr);
 }
 
 void abcd::scaling()
@@ -48,135 +59,109 @@ void abcd::scaling()
         abcd::icntl[Controls::scaling] = 0;
     }
 
-    if(icntl[Controls::scaling] < 0) {
-      dcol_.assign(n, double(1));
-      drow_.assign(m, double(1));
-    }
+    dcol_.assign(n, double(1));
+    drow_.assign(m, double(1));
 
-    if(icntl[Controls::scaling] >= 0) {
-        LINFO << "Row-Scaling with Infinity";
+    if(icntl[Controls::scaling] > 0) {
+        LINFO << "Scaling the matrix";
 
-        double rsum;
-        dcol_.assign(n, double(1));
-        drow_.resize(m);
-
-#pragma omp parallel for private(rsum)
-        for(int r = 0; r < m; ++r) {
-            rsum = 0;
-            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
-                rsum += pow(A(r, A.col_ind(c)), 2);
-            }
-            drow_[r] = 1/sqrt(rsum);
-        }
-
-        abcd::diagScaleMatrix(drow_, dcol_);
-    }
-
-    if(icntl[Controls::scaling] >= 1) {
-        LINFO << "Scaling with Infinity";
         abcd::scaleMatrix(0);
-    }
 
-
-    if(icntl[Controls::scaling] == 2) {
-        LINFO << "Scaling with Norm 1";
-        abcd::scaleMatrix(1);
-
-        LINFO << "Scaling with Norm 2";
-        abcd::scaleMatrix(2);
+        diagScaleMatrix(drow_, dcol_);
     }
 }
 
 void abcd::scaleMatrix(int norm)
 {
-    int ldw, liw, job;
-    int *iw;
-    double *dw;
-    int mc77_icntl[10], mc77_info[10];
-    double mc77_dcntl[10], mc77_rinfo[10];
+    int lwk, liwk, issym;
+    int offset, rno, cno, numprocs = 1, myid = 0, job;
+    std::vector<int> iwk;
+    std::vector<double> dwk;
+
+    int maxmn, intsz, resz;
+    int reg[12];
+    int *rpartvec, *cpartvec, *rsndrcvsz, *csndrcvsz;
 
     int *a_rp = A.rowptr_ptr();
+    std::vector<int> rp(nz);
+    for (int i = 0; i < m; ++i) {
+        for (int j = a_rp[i]; j < a_rp[i+1]; ++j) {
+            rp[j] = i;
+        }
+    }
+
     int *a_cp = A.colind_ptr();
     double *a_vp = A.val_ptr();
 
-    mc77id_(mc77_icntl, mc77_dcntl);
+    maxmn = n > m ? n : m;
 
-    if(mc77_icntl[4] == 0)
-        ldw = nz;
-    else
-        ldw = 0;
+    liwk = 4 * maxmn;
 
-    if(mc77_icntl[5] == 0) {
-        liw = n * 2;
-        ldw = ldw + 4 * n;
-    } else {
-        liw = n;
-        ldw = ldw + 2 * n;
+    iwk.assign(liwk, 0);
+    rpartvec = new int[m];
+    cpartvec = new int[n];
+
+    // hard coded 2*numprocs, we run it in sequential
+    rsndrcvsz = new int[2];
+    csndrcvsz = new int[2];
+
+    int co = MPI_Comm_c2f((MPI_Comm) comm);
+
+    // NB1, NB2, NB3: algo runs successively
+    // NB1 iters of inf-norm 
+    // NB2 iters of 1-norm   
+    // NB3 iters of inf-norm 
+    int nb1 = 10, nb2 = 20, nb3 = 20, iszwrkrc = 0;
+    double eps = 1.d-8;
+    issym = 0;
+    lwk = 0;
+    double err, errinf;
+
+    std::vector<double> dc(n, 0);
+    std::vector<double> dr(m, 0);
+
+    // estimate memory 
+    job = 1;
+    dmumps_simscaleabs_(
+        &rp[0], a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
+        rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
+        &iwk[0], &liwk,
+        &intsz, &resz, &job,
+        &dr[0], &dc[0], &dwk[0], &lwk,
+        &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
+
+    if (liwk < intsz) {
+        liwk = intsz;
+        iwk.assign(liwk, 0);
     }
+    lwk = resz;
+    dwk.assign(lwk, 0);
 
-    liw = liw * 2;
-    ldw = ldw * 2;
+    // compute drow and dcol
+    job = 2;
+    dmumps_simscaleabs_(
+        a_rp, a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
+        rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
+        &iwk[0], &liwk,
+        &intsz, &resz, &job,
+        &dr[0], &dc[0], &dwk[0], &lwk,
+        &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
 
-    iw = new int[liw];
-    dw = new double[ldw];
-
-    // Increment indices to call fortran code
-    for(int k = 0; k < n + 1 ; k++) {
-        a_rp[k]++;
-    }
-    for(int k = 0; k < nz ; k++) {
-        a_cp[k]++;
-    }
-
-    if(norm < 0){
-        delete[] iw;
-        delete[] dw;
-        throw std::runtime_error("Problem when computing the scaling, got a negative norm.");
-    }
-
-    mc77_icntl[6] = 10;
-
-    job = norm;
-    mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,
-            iw, &liw, dw, &ldw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
-
-
-    if(mc77_info[0] < 0) throw - 100 + mc77_info[0];
-
-    if(norm == 0)
-        LINFO2 << "Distance from 1 (norm inf) : " << mc77_rinfo[0];
-    else
-        LINFO2 << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
-
-    // put them back to 0-based for C/C++
-    #pragma omp parallel for
-    for(int k = 0; k < n + 1 ; ++k) {
-        a_rp[k]--;
-    }
-    #pragma omp parallel for
-    for(int k = 0; k < nz ; ++k) {
-        a_cp[k]--;
-    }
-
-    std::vector<double> dc(n, double(1));
-    std::vector<double> dr(m, double(1));
-    
     // Scale the matrix
-    #pragma omp parallel for
     for(int k = 0; k < n; k++) {
-        dc[k] = double(1) / dw[k];
-        dcol_[k] *= double(1) / dw[k];
+        dcol_[k] = 1/dc[k];
     }
 
-    #pragma omp parallel for
     for(int k = 0; k < m; k++) {
-        dr[k] = double(1) / dw[k + n];
-        drow_[k] *= double(1) / dw[k + n];
+        drow_[k] = 1/dr[k];
     }
+    cout << err << '\t' << errinf <<endl;
 
-    delete[] iw;
-    delete[] dw;
-    diagScaleMatrix(dr, dc);
+    delete[] rpartvec;
+    delete[] cpartvec;
+    delete[] rsndrcvsz;
+    delete[] csndrcvsz;
+    
 }
 
 
