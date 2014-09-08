@@ -53,7 +53,7 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
             pts[i].push_back(i);
     } else {
         int avg = accumulate(weights.begin(), weights.end(), 0);
-        avg = floor((double)avg / nb_parts);
+        avg = floor(0.9 * (double)avg / nb_parts);
 
         float fix = 1.0;
         int weight_index = weights.size() + 1;
@@ -64,7 +64,9 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
             int current_weight = 0;
 
             // Share everything sequentially
-            while((current_partition < nb_parts) && (weight_index < (int)weights.size())) {
+            while( (current_partition < nb_parts) &&
+                   (weight_index < (int)weights.size())) {
+
                 if((weights[weight_index] > avg * (fix - 0.25))
                     && (pts[current_partition].size() != 0)){
                     current_partition++;
