@@ -9,13 +9,13 @@ matrix :math:`m \times n`, :math:`x` an :math:`n`-vector and :math:`b`
 an :math:`m`-vector.  `ABCD Solver` uses two methods to solve the
 linear system:
 
-- *Regular Block Cimmino*: A block-projection technique that iterates
-   to solve the linear system. During the iterations it solves a set
-   of small problems (augmented systems built using partitions of the
-   original system).
+- *Regular Block Cimmino*: A block-projection technique that iterates 
+to approximate the solution of the linear system. During the iterations it solves a set
+of small problems (augmented systems built using partitions of the
+original system).
 - *Augmented Block Cimmino*: A pseudo-direct solver that augments the
-   original system and constructs the solution directly independent
-   solves using the augmented subsystems.
+original system, based on the given partitions, and constructs the solution directly from independent
+solves using the augmented subsystems.
 
 The regular block Cimmino
 -------------------------
@@ -140,8 +140,8 @@ have a matrix :math:`A` with three partitions, described as follows:
             & A_{2,1} & A_{2,2} & A_{2,3} & \\
             &&& A_{3,2} & A_{3,3} &  A_{3,1}
         \end{array}
-        \right].
-    \end{equation},
+        \right],
+    \end{equation}
 
 where :math:`A_{i,j}` is the sub-part of :math:`A_i`, the :math:`i`-th
 partition, that is interconnected algebraically to the partition
