@@ -131,7 +131,7 @@ namespace Controls{
          *
          * Defines the type of scaling to be used.
          * - 0, no scaling
-         * - 1, scale the matrix
+         * - 1, scale the input matrix (embeded internal scaling strategy)
         */
         scaling            ,
 
