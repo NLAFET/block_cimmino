@@ -131,10 +131,7 @@ namespace Controls{
          *
          * Defines the type of scaling to be used.
          * - 0, no scaling
-         * - 1, infinity norm ``MC77`` based scaling
-         * - 2 (*default*), combination of one norm and two norm
-         *   ``MC77`` based scaling
-         * - 3, infinity norm row-scaling
+         * - 1, scale the matrix
         */
         scaling            ,
 

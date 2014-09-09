@@ -72,6 +72,8 @@ struct abcd_solver
   int *irn;
   int *jcn;
   double *val;
+  int start_index;
+    
 
   int nrhs;
     

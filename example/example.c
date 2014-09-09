@@ -54,6 +54,7 @@ void init_2d_lap(abcd_c *obj, int mesh_size) {
     obj->n = obj->m; // number of columns
     obj->nz = 3*obj->m - 2*mesh_size; // number of nnz in the lower-triangular part
     obj->sym = 1;
+    obj->start_index = 1;
 
     // allocate the arrays
     obj->irn = (int*) malloc(sizeof(int)*(obj->nz));

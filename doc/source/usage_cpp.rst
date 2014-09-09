@@ -35,16 +35,12 @@ The current version of the ABCD Solver accepts only real, centralized, linear sy
 
 .. doxygenclass:: abcd
     :project: abcd                  
-    :members: m, n, nz, sym, irn, jcn, val, rhs, nrhs
+    :members: m, n, nz, sym, irn, jcn, start_index, val, rhs, nrhs
 
 
-If any of the row or column indices starts with **0** the arrays
-are assumed to be zero based (`C` arrays indexation), otherwise, if
-they start with **1** the arrays are supposed to be one based (`Fortran`
-arrays indexation). If however, none starts with **0** or **1** then there
-is either an empty row or an empty column and the solver raises an exception.
-
-**Note** The solver does not check for empty rows or empty columns for the moment, and assumes that the given row indices are sorted.
+By default the values of the matrix are zero based, meaning that ``0``
+corresponds to the first row in ``irn`` and same thing goes for
+``jcn``. If you want to give 1-based arrays (a la Fortran), you have to set ``start_index`` to **1**. 
 
 To initialize the linear system in C++:
 
@@ -60,7 +56,7 @@ To initialize the linear system in C++:
         // allocate the arrays
         obj.irn = new int[obj.nz]
         // put the data in the arrays
-        obj.irn[0] = 1;
+        obj.irn[0] = 0;
         //..
     }
 
@@ -82,7 +78,7 @@ In C:
         // allocate the arrays
         obj->irn = (int*) malloc(sizeof(int)*(obj->nz));
         // put the data in the arrays
-        obj->irn[0] = 1;
+        obj->irn[0] = 0;
         //..
     }
 

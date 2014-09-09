@@ -150,6 +150,9 @@ public:
     /*! The column indices of size #nz */
     int *jcn;
 
+    /*! Defines wether it's Fortran-Style (1) or C-Style (0, default) */
+    int start_index;
+
     /*! The entries of the matrix of size #nz */
     double *val;
 
@@ -412,7 +415,6 @@ private:
     int n_o, m_o, nz_o;
 
     MV_ColMat_double Xk;
-    int start_index; /// To define wether it's Fortran-Style (1) or C-Style (0)
 
     int nbparts; /// The number of partitions
     int nb_local_parts;

@@ -132,11 +132,8 @@ int abcd::initializeMatrix()
     }
 
     double t = MPI_Wtime();
-    int st_point = 1;
-    // chose 0-based or 1-based
-    if ( irn[0] == 0 || jcn[0] == 0 ) st_point = 0;
 
-    LINFO << "Using " << st_point << "-based arrays";
+    LINFO << "Using " << start_index << "-based arrays";
 
     /// @TODO CHeck that the matrix is not structurally singular
     if(sym) {
@@ -146,8 +143,8 @@ int abcd::initializeMatrix()
         double  *t_val = new double[2*nz];
         int     t_nz = 0;
         for(int k = 0; k < nz; ++k) {
-            irn[k] -= st_point;
-            jcn[k] -= st_point;
+            irn[k] -= start_index;
+            jcn[k] -= start_index;
 
             t_irn[t_nz] = irn[k];
             t_jcn[t_nz] = jcn[k];
@@ -173,8 +170,8 @@ int abcd::initializeMatrix()
     } else {
         t = MPI_Wtime();
         for(int i=0; i<nz; ++i){
-            irn[i] -= st_point;
-            jcn[i] -= st_point;
+            irn[i] -= start_index;
+            jcn[i] -= start_index;
 
         }
         Coord_Mat_double t_A;

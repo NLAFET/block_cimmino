@@ -72,6 +72,7 @@ void init_2d_lap(abcd &obj, int mesh_size)
     obj.n = obj.m; // number of columns
     obj.nz = 3*obj.m - 2*mesh_size; // number of nnz in the lower-triangular part
     obj.sym = true;
+    obj.start_index = 1;
 
     // allocate the arrays
     obj.irn = new int[obj.nz];

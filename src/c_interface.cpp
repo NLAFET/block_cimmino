@@ -28,6 +28,7 @@ struct abcd_solver* new_solver()
     solver->val = obj->val;
     solver->rhs = obj->rhs;
     solver->nrhs = obj->nrhs;
+    solver->start_index = obj->start_index;
 
     return solver;
 }
@@ -43,6 +44,8 @@ void call_solver(struct abcd_solver* solver, int job_id)
     obj->val = solver->val;
     obj->rhs = solver->rhs;
     obj->nrhs = solver->nrhs;
+    obj->start_index = solver->start_index;
+    
     // obj->write_problem = string(solver->write_problem);
 
     for(size_t i = 0; i < obj -> icntl.size(); i++){
