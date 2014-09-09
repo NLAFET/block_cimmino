@@ -324,12 +324,15 @@ int main(int argc, char* argv[])
 
             clog << "Total time: " << MPI_Wtime() - t << endl;
 
-            ofstream f; 
-            f.open(sol_file->c_str());
-            for(int i = 0; i < obj.n; i++) {
-                f << obj.sol[i] << "\n";
+            if (sol_file) {
+                ofstream f; 
+                f.open(sol_file->c_str());
+                for(int i = 0; i < obj.n; i++) {
+                    f << obj.sol[i] << "\n";
+                }
+                f.close();
             }
-            f.close();
+            
 
         } catch(std::runtime_error e) {
             cout << world.rank() << " Error code : " << e.what() << endl;
