@@ -18,6 +18,7 @@ python/*
 Makefile
 lib/libpatoh.a
 include/patoh.h
+doc/source/xml
 
 
 # Compiled Object files
