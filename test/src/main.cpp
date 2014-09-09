@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
         obj.irn = new int[obj.nz];
         obj.jcn = new int[obj.nz];
         obj.val = new double[obj.nz];
+        obj.start_index = 1;
 
         mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mat_code);
 
