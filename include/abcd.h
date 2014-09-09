@@ -202,7 +202,6 @@ public:
      * - 5, combines the call to the phases 2 and 3. 
      * - 6, combines the call to the phases 1, 2 and 3.
      *
-     * \param job_id Identifies the operation to be run by the solver
      */
     int operator() (int job_id);
     
