@@ -4,6 +4,28 @@ The Augmented Block Cimmino Distributed Solver
 
 **Note:** Check http://abcd.enseeiht.fr for more details.
 
+Tested plateforms
+-----------------
+
+Working
+=======
+
+* Linux x86_64 with GNU 4.7 and 4.8  compilers,``MKL``, ``ACML``, reference blas and lapack.
+
+Not Working
+===========
+
+* Fujitsu FX with Fujitsu compilers:
+  - ``PaToH`` is not compatible (users have to request a compatible version from the authors)
+  - Our Logging library is not compatible with Fujitsu compilers, should work with GNU compilers.
+* Microsoft Windows:
+  - ``MUMPS`` does not support Windows (there is an unofficial guide to compile it under Windows, but we do not provide any pre-compiled library for it)
+  - ``PaToH`` is not compatible (users have to request a compatible version from the authors)
+
+Not Tested
+==========
+* Mac OSX was not tested but should be fully compatible.    
+
 Obtaining the source code
 -------------------------
 
