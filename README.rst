@@ -22,6 +22,8 @@ Not Working
   - ``MUMPS`` does not support Windows (there is an unofficial guide to compile it under Windows, but we do not provide any pre-compiled library for it)
   - ``PaToH`` is not compatible (users have to request a compatible version from the authors)
 
+You can disable ``PaToH`` by running cmake with the option ``-DPATOH=OFF``. 
+
 Not Tested
 ==========
 * Mac OSX was not tested but should be fully compatible.    
