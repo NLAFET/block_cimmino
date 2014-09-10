@@ -34,9 +34,12 @@
 #include "mat_utils.h"
 #include <iostream>
 #include <fstream>
-#include <patoh.h>
 #include <vect_utils.h>
 #include <boost/lambda/lambda.hpp>
+
+#ifdef PATOH
+#include <patoh.h>
+#endif //PATOH
 
 using namespace boost::lambda;
 
