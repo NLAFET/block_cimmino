@@ -9,6 +9,7 @@ example/*
 !example/example.cpp
 !example/example.c
 !example/CMakeLists.txt
+!example/e05*
 *.kdev4
 python/*
 !python/example.py
