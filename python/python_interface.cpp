@@ -1,7 +1,7 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/numeric.hpp>
 #include <boost/python/extract.hpp>
+#include <boost/python/tuple.hpp>
 #include "boost/numpy.hpp"
 
 #include "abcd.h"
@@ -51,6 +51,42 @@ bn::ndarray get_sol(abcd &obj)
                          bp::object());
 }
 
+struct SubOne 
+{
+  typedef int argument_type;
+  typedef int result_type;
+
+  int operator()(int r) const { return r - 1;}
+};
+
+bp::object so = bp::class_<SubOne, boost::shared_ptr<SubOne> >("SubOne")
+    .def("__call__", bn::unary_ufunc<SubOne>::make());
+
+bp::tuple get_STuple(abcd &obj)
+{
+    bn::ndarray rows = bn::from_data(&obj.S_rows[0],
+                                     bn::dtype::get_builtin<int>(),
+                                     bp::make_tuple(obj.S_rows.size(), 1),
+                                     bp::make_tuple(sizeof(int), obj.S_rows.size()),
+                                     bp::object());
+
+    bn::ndarray cols = bn::from_data(&obj.S_cols[0],
+                                     bn::dtype::get_builtin<int>(),
+                                     bp::make_tuple(obj.S_cols.size(), 1),
+                                     bp::make_tuple(sizeof(int), obj.S_cols.size()),
+                                     bp::object());
+
+    bn::ndarray vals = bn::from_data(&obj.S_vals[0],
+                                     bn::dtype::get_builtin<double>(),
+                                     bp::make_tuple(obj.S_vals.size(), 1),
+                                     bp::make_tuple(sizeof(double), obj.S_vals.size()),
+                                     bp::object());
+
+    bp::object inst = so();
+    bp::object rows_a = inst.attr("__call__")(rows) ;
+    bp::object cols_a = inst.attr("__call__")(cols) ;
+    return bp::make_tuple(vals, bp::make_tuple(rows, cols));
+}
 
 BOOST_PYTHON_MODULE(abcdpy)
 {
@@ -70,7 +106,12 @@ BOOST_PYTHON_MODULE(abcdpy)
         .def_readwrite("icntl", &abcd::icntl) 
         .def_readwrite("dcntl", &abcd::dcntl) 
         .def_readwrite("info", &abcd::info) 
-        .def_readwrite("dinfo", &abcd::dinfo);
+        .def_readwrite("dinfo", &abcd::dinfo)
+        .def("get_s", get_STuple)
+        .def_readonly("s_shape", &abcd::size_c)
+        .def_readonly("s_rows", &abcd::S_rows)
+        .def_readonly("s_cols", &abcd::S_cols)
+        .def_readonly("s_vals", &abcd::S_vals);
 
     bp::enum_<Controls::icontrols>("icontrols")
         .value("nbparts", Controls::nbparts)

@@ -34,11 +34,6 @@
 
 extern "C"
 {
-    void mc77id_(int *, double *);
-    void mc77ad_(int *job, int *m, int *n, int *nnz, int *jcst, int *irn, double *a,
-                 int *iw, int *liw, double *dw, int *ldw, int *icntl, double *cntl,
-                 int *info, double *rinfo);
-
     void dmumps_simscaleabs_(
             int *irn_loc, int *jcn_loc, double *a_loc,
             int *nz_loc, int *m, int *n, int *numprocs,

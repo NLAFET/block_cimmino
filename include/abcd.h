@@ -260,6 +260,12 @@ public:
     abcd();
     ~abcd();
 
+    // 1-based vectors representing local S matrix in coordinate format
+    std::vector<int> S_rows;
+    std::vector<int> S_cols;
+    std::vector<double> S_vals;
+    // shape of S is the size of C augmentation part
+    int size_c;
 
 private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
@@ -304,7 +310,6 @@ private:
     int instance_type;
     
     // Build the augmented version of the matrix (ABCD)
-    int size_c;
     void augmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
     void cijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
     void aijAugmentMatrix(std::vector<CompCol_Mat_double > &loc_parts);
@@ -392,9 +397,6 @@ private:
 
     MUMPS mumps_S;
     Coord_Mat_double S;
-    std::vector<int> S_rows;
-    std::vector<int> S_cols;
-    std::vector<double> S_vals;
     inline int S_nnz() { return S_vals.size(); }
 
     std::map<int, CompRow_Mat_double> parts;

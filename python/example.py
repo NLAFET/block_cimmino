@@ -17,6 +17,12 @@ t = time()
 solver.set_matrix(A.shape[0], A.shape[1], A.nnz, A.row, A.col, A.data)
 solver.set_rhs(b, b.shape[1])
 
+# augment the matrix using A_ij/-A_ji style
+solver.icntl[abcdpy.icontrols.aug_type] = 2
+
+#be a little bit verbose
+solver.icntl[abcdpy.icontrols.verbose_level] = 1
+
 solver.run(-1)
 solver.run(6)
 
@@ -25,3 +31,8 @@ print "Took {0:.3f} seconds to solve".format(time() - t)
 
 # get the solution vector
 solution = solver.get_sol()
+
+# plot S in the case of augmentation
+if solver.icntl[abcdpy.icontrols.aug_type] != 0:
+    sr = solver.get_s()
+    import ipdb; ipdb.set_trace()
