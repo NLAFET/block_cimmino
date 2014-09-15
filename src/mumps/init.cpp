@@ -77,5 +77,4 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
     mu.setIcntl(8, -2);
     mu.setIcntl(12, 2);
     mu.setIcntl(14, 90);
-    if(inter_comm.rank() == 0) strcpy(mu.write_problem,"/tmp/test.mm");
 }
