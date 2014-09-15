@@ -13,3 +13,6 @@ The Augmented Block Cimmino Distributed Solver
    algorithm
    installation
    usage_cpp
+   
+   
+The code is available for download on `our repository <https://bitbucket.org/apo_irit/abcd>`_ 
