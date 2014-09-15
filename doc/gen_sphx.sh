@@ -30,7 +30,7 @@ if [ "$1" == "update" ]
         rsync -raz --progress --delete \
           build/latex/ABCDSolver.pdf \
           build/html/* \
-          mzenadi@abcd.enseeiht.fr:/var/www/abcd/
+          abcd.enseeiht.fr:/var/www/abcd/
 fi
 
 # while inotifywait -e modify ./source; do
