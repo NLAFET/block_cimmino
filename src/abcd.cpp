@@ -81,19 +81,6 @@ abcd::abcd()
     mpi::communicator world;
     comm = world;
 
-
-    // Prepare for Logging!
-    if (comm.rank() == 0 && log_output == "") {
-        time_t t = time(0);
-        struct tm * now = localtime(&t);
-
-        char timeString[15];  // space for "HH_MM_SS_dd_mm\0"
-
-        strftime(timeString, sizeof(timeString), "%H_%M_%S_%d_%m", now);
-
-        std::string tt(timeString);
-        log_output = "/tmp/log_abcd_" + tt + ".log";
-    }
     configure_logger(log_output);
 }
 
