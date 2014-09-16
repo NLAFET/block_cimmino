@@ -67,7 +67,7 @@ The installation can be done by typing the following commands in your terminal
 
     # download the latest stable version
     # it will create a directory named abcd
-    git clone https://bitbucket.org/apo_irit/abcd.git
+git clone https://bitbucket.org/apo_irit/abcd.git
 
     # download the appropriate version of patoh from
     # http://bmi.osu.edu/~umit/software.html
@@ -82,7 +82,7 @@ are going to use the ``ACML`` library that provides ``BLAS`` and
 .. code-block:: bash
 
     # get the appropriate configuration file
-    cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
+cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
 
 
 To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
@@ -90,7 +90,7 @@ To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
 .. code-block:: bash
 
     # get the appropriate configuration file
-    cp cmake.in/abcdCmake.in.MKL ./abcdCmake.in
+cp cmake.in/abcdCmake.in.MKL ./abcdCmake.in
 
 You can use the
 `Intel® Math Kernel Library Link Line
@@ -108,17 +108,17 @@ The build process is done using ``cmake``:
 .. code-block:: bash
 
    # create a building directory
-   mkdir build
+mkdir build
 
    # run cmake
-   cd build
-   cmake ..
+cd build
+cmake ..
 
    # if everything went correctly you can run make
-   make
+make
 
    # the files will be in directory lib/
-   ls lib # gives libabcd.a
+ls lib # gives libabcd.a
 
 
 If cmake does not finish correctly, here are some possible reasons:
@@ -139,7 +139,7 @@ You can run the solver without having to write a code (as we do in the next sect
    
    # to try ABCD on a provided small test matrix, without having to write any code,
    # abcd_run looks by default for the file config_file.info in the current directory
-   mpirun -np 16 ./abcd_run
+mpirun -np 16 ./abcd_run
 
 You can also give the executable the path to your configuration file:
 
@@ -159,25 +159,25 @@ Once the library is built, you can compile the given examples (either C++ or C):
 
    # the C++ example called `example.cpp` and the
    # C example called `example.c` are in the examples directory
-   cd examples
+cd examples
 
    # create a directory where to build your examples
-   mkdir build_example
-   cd build_example
+mkdir build_example
+cd build_example
 
    # tell cmake where the abcd solver is located
    # the current version supposes that the library was built within
    # the directory ``build`` in a release mode
    # if you get an error while running cmake, check that you gave the
    # absolute path to the abcd solver directory
-   cmake .. -DABCD=/absolute/path/to/abcd/
-   make
+cmake .. -DABCD=/absolute/path/to/abcd/
+make
 
    # if everything went correctly, try to run the C++ example
-   mpirun -np 16 ./example
+mpirun -np 16 ./example
 
    # or if you want to run the C example:
-   mpirun -np 16 ./example_c
+mpirun -np 16 ./example_c
 
 
 Issue tracker
