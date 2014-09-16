@@ -67,6 +67,7 @@ The installation can be done by typing the following commands in your terminal
 
     # download the latest stable version
     # it will create a directory named abcd
+
     git clone https://bitbucket.org/apo_irit/abcd.git
 
     # download the appropriate version of patoh from
@@ -82,6 +83,7 @@ are going to use the ``ACML`` library that provides ``BLAS`` and
 .. code-block:: bash
 
     # get the appropriate configuration file
+
     cp cmake.in/abcdCmake.in.ACML ./abcdCmake.in
 
 
@@ -90,6 +92,7 @@ To use ``MKL`` instead, copy the file ``abcdCmake.in.MKL``:
 .. code-block:: bash
 
     # get the appropriate configuration file
+
     cp cmake.in/abcdCmake.in.MKL ./abcdCmake.in
 
 You can use the
