@@ -108,16 +108,20 @@ The build process is done using ``cmake``:
 .. code-block:: bash
 
    # create a building directory
+
    mkdir build
 
    # run cmake
+
    cd build
    cmake ..
 
    # if everything went correctly you can run make
+
    make
 
    # the files will be in directory lib/
+
    ls lib # gives libabcd.a
 
 
@@ -139,6 +143,7 @@ You can run the solver without having to write a code (as we do in the next sect
    
    # to try ABCD on a provided small test matrix, without having to write any code,
    # abcd_run looks by default for the file config_file.info in the current directory
+
    mpirun -np 16 ./abcd_run
 
 You can also give the executable the path to your configuration file:
@@ -159,9 +164,11 @@ Once the library is built, you can compile the given examples (either C++ or C):
 
    # the C++ example called `example.cpp` and the
    # C example called `example.c` are in the examples directory
+
    cd examples
 
    # create a directory where to build your examples
+
    mkdir build_example
    cd build_example
 
@@ -170,13 +177,16 @@ Once the library is built, you can compile the given examples (either C++ or C):
    # the directory ``build`` in a release mode
    # if you get an error while running cmake, check that you gave the
    # absolute path to the abcd solver directory
+
    cmake .. -DABCD=/absolute/path/to/abcd/
    make
 
    # if everything went correctly, try to run the C++ example
+
    mpirun -np 16 ./example
 
    # or if you want to run the C example:
+
    mpirun -np 16 ./example_c
 
 
