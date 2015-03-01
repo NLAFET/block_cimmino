@@ -69,7 +69,7 @@ void abcd::scaling()
 void abcd::scaleMatrix(int norm)
 {
     int lwk, liwk, issym;
-    int offset, rno, cno, numprocs = 1, myid = 0, job;
+    int numprocs = 1, myid = 0, job;
     std::vector<int> iwk;
     std::vector<double> dwk;
 
@@ -106,14 +106,14 @@ void abcd::scaleMatrix(int norm)
     // NB1 iters of inf-norm 
     // NB2 iters of 1-norm   
     // NB3 iters of inf-norm 
-    int nb1 = 10, nb2 = 20, nb3 = 20, iszwrkrc = 0;
-    double eps = 1.d-8;
+    int nb1 = 5, nb2 = 10, nb3 = 5;
+    double eps = 1.e-8;
     issym = 0;
     lwk = 0;
     double err, errinf;
 
-    std::vector<double> dc(n, 0);
-    std::vector<double> dr(m, 0);
+    std::vector<double> dc(n, 1);
+    std::vector<double> dr(m, 1);
 
     // estimate memory 
     job = 1;
@@ -129,28 +129,27 @@ void abcd::scaleMatrix(int norm)
         liwk = intsz;
         iwk.assign(liwk, 0);
     }
+
     lwk = resz;
     dwk.assign(lwk, 0);
 
     // compute drow and dcol
     job = 2;
     dmumps_simscaleabs_(
-        a_rp, a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
+        &rp[0], a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
         rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
         &iwk[0], &liwk,
         &intsz, &resz, &job,
         &dr[0], &dc[0], &dwk[0], &lwk,
         &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
 
-    // Scale the matrix
     for(int k = 0; k < n; k++) {
-        dcol_[k] = 1/dc[k];
+        dcol_[k] = dc[k];
     }
 
     for(int k = 0; k < m; k++) {
-        drow_[k] = 1/dr[k];
+        drow_[k] = dr[k];
     }
-    cout << err << '\t' << errinf <<endl;
 
     delete[] rpartvec;
     delete[] cpartvec;
