@@ -267,6 +267,10 @@ public:
     // shape of S is the size of C augmentation part
     int size_c;
 
+    // the residual info
+    std::vector<double> rhoVector;
+    std::vector<double> scaledResidualVector;
+
 private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
@@ -349,7 +353,6 @@ private:
     std::vector<int> selected_S_columns;
     std::vector<int> skipped_S_columns;
     double compute_rho(MV_ColMat_double &X, MV_ColMat_double &U);
-    std::vector<double> normres;
 
     // MUMPS
     int m_n;

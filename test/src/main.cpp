@@ -107,6 +107,8 @@ int main(int argc, char* argv[])
         //read the rhs here!
         boost::optional<string> rhs_file = pt.get_optional<string>("system.rhs_file");
         boost::optional<string> sol_file = pt.get_optional<string>("system.sol_file");
+        boost::optional<string> conv_backward_file = pt.get_optional<string>("system.backward_err_file");
+        boost::optional<string> conv_scaled_file = pt.get_optional<string>("system.scaled_residual_file");
         
         if(rhs_file){
             FILE *rhs_f = fopen(rhs_file->c_str(), "r");
@@ -332,7 +334,26 @@ int main(int argc, char* argv[])
                 }
                 f.close();
             }
-            
+
+            if (conv_backward_file) {
+                ofstream f;
+                f.open(conv_backward_file->c_str());
+                f << "Iteration\t BackwardErr\n";
+                for(size_t i = 0; i < obj.rhoVector.size() ; i++) {
+                    f << i << "\t" << obj.rhoVector[i] << "\n";
+                }
+                f.close();
+            }
+
+            if (conv_scaled_file) {
+                ofstream f;
+                f.open(conv_scaled_file->c_str());
+                f << "Iteration\t Scaled Residual\n";
+                for(size_t i = 0; i < obj.scaledResidualVector.size() ; i++) {
+                    f << i << "\t" << obj.scaledResidualVector[i] << "\n";
+                }
+                f.close();
+            }
 
         } catch(std::runtime_error e) {
             cout << world.rank() << " Error code : " << e.what() << endl;

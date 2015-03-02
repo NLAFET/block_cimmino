@@ -140,7 +140,8 @@ void abcd::bcg(MV_ColMat_double &b)
 
     int it = 0;
     double rho = 1;
-    std::vector<double> grho(inter_comm.size());
+    rhoVector = std::vector<double>();
+    scaledResidualVector = std::vector<double>();
 
     double ti = MPI_Wtime();
 
@@ -184,7 +185,8 @@ void abcd::bcg(MV_ColMat_double &b)
         double t2 = MPI_Wtime();
         rho = abcd::compute_rho(Xk, u);
         t2 = MPI_Wtime() - t2;
-        normres.push_back(rho);
+        rhoVector.push_back(rho);
+        scaledResidualVector.push_back(dinfo[Controls::scaled_residual]);
 
         if((rho < thresh) || (it >= itmax)) break;
 
