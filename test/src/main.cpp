@@ -329,7 +329,7 @@ int main(int argc, char* argv[])
             if (sol_file) {
                 ofstream f; 
                 f.open(sol_file->c_str());
-                for(int i = 0; i < obj.n; i++) {
+                for(int i = 0; i < obj.n_o; i++) {
                     f << obj.sol[i] << "\n";
                 }
                 f.close();

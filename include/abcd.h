@@ -271,6 +271,8 @@ public:
     std::vector<double> rhoVector;
     std::vector<double> scaledResidualVector;
 
+    int n_o, m_o, nz_o;
+
 private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
@@ -416,7 +418,6 @@ private:
     bool runSolveS;
 
     int n_l, m_l, nz_l;
-    int n_o, m_o, nz_o;
 
     MV_ColMat_double Xk;
 

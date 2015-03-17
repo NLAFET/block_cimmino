@@ -262,7 +262,7 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
         }
         
         for(int j = 0; j < dest_ncols; ++j)
-            for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < n_o; ++i){
+            for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < dest_lda; ++i){
                 vdest(globalIndex[i], j) = source(i, j) * dcol_[globalIndex[i]];
             }
 
