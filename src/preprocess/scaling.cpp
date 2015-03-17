@@ -62,6 +62,9 @@ void abcd::scaling()
 
         abcd::scaleMatrix(0);
 
+        // disable col scale temp.
+        dcol_.assign(n, double(1));
+
         diagScaleMatrix(drow_, dcol_);
     }
 }

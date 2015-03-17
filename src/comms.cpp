@@ -120,20 +120,17 @@ void abcd::distributeRhs()
             if(row_perm.size() != 0){
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[row_perm[i] + j*m_l];
+                        B(i, j) = rhs[row_perm[i] + j*m_l] * drow_[row_perm[i]];
                     }
                 }
 
             } else {
                 for(int j = 0; j < nrhs; j++){
                     for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[i + j*m_l];
+                        B(i, j) = rhs[i + j*m_l] * drow_[i];
                     }
                 }
             }
-
-            diagScaleRhs(B);
-
         }
 
         int good_rhs = 0;
