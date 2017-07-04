@@ -50,7 +50,7 @@ set(LIBS ${LIBS}
 link_directories(
   ${ABCD_DIR}/lib
   ${ABCD_DIR}/lib/sparselib/lib/
-  ${ABCD_DIR}/lib/mumps/lib/
+#  ${ABCD_DIR}/lib/mumps/lib/
   ${ABCD_DIR}/build/lib
   ${Boost_LIBRARY_DIRS}
   ${MUMPS_LIBRARY_DIR}
@@ -65,7 +65,7 @@ include_directories(
   ${ABCD_DIR}/include
   ${ABCD_DIR}/lib/sparselib/include
   ${ABCD_DIR}/lib/sparselib/mv/include
-  ${ABCD_DIR}/lib/mumps/include
+#  ${ABCD_DIR}/lib/mumps/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}

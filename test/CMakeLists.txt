@@ -30,7 +30,7 @@ link_directories(
   ${ABCD_PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
   ${ABCD_PROJECT_DIR}/lib
   ${ABCD_PROJECT_DIR}/lib/sparselib/lib/
-  ${ABCD_PROJECT_DIR}/lib/mumps/lib/
+#  ${ABCD_PROJECT_DIR}/lib/mumps/lib/
   ${Boost_LIBRARY_DIRS}
   ${MUMPS_LIBRARY_DIR}
   ${BLAS_LAPACK_SCALAPACK_DIRS}

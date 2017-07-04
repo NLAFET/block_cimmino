@@ -21,6 +21,10 @@ set(LIBRARY_OUTPUT_PATH lib)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
+SET( CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -m64 -z muldefs -std=c++11")
+SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -m64 -z muldefs -std=c++11")
+SET( CMAKE_Fortran_FLAGS  "${CMAKE_Fortran_FLAGS} -m64 -z muldefs -std=c++11")
+
 #add_definitions(-DCOMPLEX="std::complex<double>")
 
 if(NOT PATOH MATCHES OFF)
@@ -39,11 +43,12 @@ include_directories(
   ${ABCD_PROJECT_DIR}/include
   ${ABCD_PROJECT_DIR}/lib/sparselib/include
   ${ABCD_PROJECT_DIR}/lib/sparselib/mv/include
-  ${ABCD_PROJECT_DIR}/lib/mumps/include
+#  ${ABCD_PROJECT_DIR}/lib/mumps/include
   ${Boost_INCLUDE_DIRS}
   ${BOOST_ROOT}
   ${MUMPS_INCLUDE_DIR}
   ${MPI_INC_DIR}
+  ${INC_DIRS}
   )
 
 file(

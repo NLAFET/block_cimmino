@@ -33,6 +33,7 @@
 #include <abcd.h>
 #include "blas.h"
 #include "mat_utils.h"
+#include "paircomparison.h"
 
 using namespace std;
 using namespace boost::lambda;
@@ -217,14 +218,23 @@ std::vector<int> sort_indexes(const int *v, const int nb_el) {
     vp.reserve(nb_el);
 
     for(int i = 0; i < nb_el; i++)
-        vp.push_back( std::make_pair<int,int>(v[i], i) );
+        vp.push_back( std::make_pair(v[i], i) );
 
 
     // sort indexes based on comparing values in v
-    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
-
+//    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+//    std::vector<int> idx(vp.size());
+//    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    
+    // sort indexes based on comparing values in v
+    std::sort(vp.begin(), vp.end(),
+        pair_comparison<std::pair<int, int>,
+        position_in_pair::first,
+        comparison_direction::inferior>);
     std::vector<int> idx(vp.size());
-    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    for(int i=0; i<vp.size(); ++i){
+      idx[i]=vp[i].second;
+    }
     return idx;
 }
 

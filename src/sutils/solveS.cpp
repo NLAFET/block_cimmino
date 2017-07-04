@@ -51,8 +51,7 @@ abcd::solveS ( MV_ColMat_double &f )
         LINFO << "> Building S = Y (I - P) Y^T       |";
         LINFO << "*----------------------------------*";
     }
-
-
+    
     // if not created yet, do it!
     if( !mumps_S.initialized ){
         t = MPI_Wtime();
@@ -117,6 +116,11 @@ abcd::solveS ( MV_ColMat_double &f )
         mumps_S.setIcntl(7, 5);
         mumps_S.setIcntl(14, 70);
         mumps_S.setIcntl(40, 1);
+        
+//        mumps_S.setIcntl(1, 6);
+//        mumps_S.setIcntl(2, 0);
+//        mumps_S.setIcntl(3, 6);
+//        mumps_S.setIcntl(4, 2);
 
         if(inter_comm.size() == 1){ 
             mumps_S.nz= S_nnz();

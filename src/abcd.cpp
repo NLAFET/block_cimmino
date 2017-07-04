@@ -250,8 +250,14 @@ int abcd::factorizeAugmentedSystems()
     
     abcd::initializeDirectSolver();
     
-    if(inter_comm.rank() == 0 && instance_type == 0)
+    if(inter_comm.rank() == 0 && instance_type == 0) {
         LINFO << "Launching MUMPS analysis";
+    }
+    
+//    mumps.setIcntl(1, 6);
+//    mumps.setIcntl(2, 0);
+//    mumps.setIcntl(3, 6);
+//    mumps.setIcntl(4, 2);
     
     abcd::analyseAugmentedSystems(mumps);
     

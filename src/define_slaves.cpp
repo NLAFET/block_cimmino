@@ -31,6 +31,7 @@
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 #include <abcd.h>
+#include "paircomparison.h"
 
 void abcd::allocateMumpsSlaves(MUMPS &mu)
 {
@@ -46,10 +47,11 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
             flops_s.push_back(std::pair<long,int>(flops[idx], idx));
             s+=flops[idx];
         }
-
-        std::sort(flops_s.begin(), flops_s.end(),
-                  bind(&std::pair<long, int>::first, _1) >
-                  bind(&std::pair<long, int>::first, _2));
+        
+	std::sort(flops_s.begin(), flops_s.end(),
+		pair_comparison<std::pair<long, int>,
+		position_in_pair::first,
+		comparison_direction::superior>);
 
         std::vector<double> shares;
         int nb_slaves = comm.size() - inter_comm.size();
