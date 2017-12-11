@@ -167,11 +167,43 @@ int abcd::initializeMatrix()
 
         LINFO << "> Local matrix initialized in " << setprecision(2) << MPI_Wtime() - t << "s.";
     }
-    
+
     n_o = n;
     m_o = m;
     nz_o = nz;
-        
+
+	if(rhs == nullptr){
+		LINFO << "-- No RHS specified, the new one will be created --";
+				
+		Xf = MV_ColMat_double(m, nrhs);
+
+		for(int j = 0; j < nrhs; j++){
+			VECTOR_double xf_col(m);
+			for(int i = 0; i < m; i++) {
+				xf_col[i] = (double)(i+1) / m;
+//				xf_col[i] = (double) 1;
+			}
+			Xf.setCol(xf_col, j);
+		}
+		MV_ColMat_double BB = smv(A, Xf);
+
+		// To Do : make it for Multiple RHS
+		rhs = new double[m * nrhs];
+		double *BBref = BB.ptr();
+		for(int i = 0; i < m; i++){
+			 rhs[i] = BBref[i];
+			// cout << "rhs "<< i << " " << rhs[i] << endl;
+		}
+
+		/*LINFO <<  " ------------------ RHS is being written on a file --------" ;
+		ofstream f;
+		f.open("rhs.mtx");
+		f << "%%MatrixMarket matrix coordinate real general\n";
+		f << m << " " << 1 << " " << m << "\n";
+		for(int i = 0; i < m; i++){
+		   f << std::scientific <<std::setprecision(20)  << rhs[i] << "\n";
+		}*/
+	}
     return 0; 
 }
 
@@ -332,7 +364,6 @@ int abcd::solveSystem()
                 LINFO << "Forward error        : " <<
                     scientific << dinfo[Controls::forward_error];
         }
-
     } else {
         if(icntl[Controls::aug_type] != 0 ){
             int temp_bs = icntl[Controls::block_size];

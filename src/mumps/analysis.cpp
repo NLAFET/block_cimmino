@@ -41,6 +41,18 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
 //  mu.setIcntl(2, 0);
 //  mu.setIcntl(3, 6);
 //  mu.setIcntl(4, 2);
+
+
+
+/*if(inter_comm.rank() == 0){
+    mu.setIcntl(1,6);
+    mu.setIcntl(2,0);
+    mu.setIcntl(3,6);
+    mu.setIcntl(4,2);
+}*/
+
+
+
   mu(1);
 
   t = MPI_Wtime() - t;

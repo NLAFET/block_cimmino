@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
         mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mat_code);
 
         cout << "Matrix information : ";
-        cout << "m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
+        cout << matrix_file <<" m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
 
         fclose(f);
 
@@ -238,6 +238,9 @@ int main(int argc, char* argv[])
         obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);
         obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.part_imbalance", 0.5);
 
+	cout << "Number of Parts: " << obj.icntl[Controls::nbparts] << " - Partition method: "<< obj.icntl[Controls::part_type] << endl;
+	cout << "Number of MPI Procs: " << world.size() << endl;
+
         if(obj.icntl[Controls::part_type] == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
 
@@ -287,6 +290,8 @@ int main(int argc, char* argv[])
         if(augmentation){
             obj.icntl[Controls::aug_type]   = pt.get<int>("augmentation.aug_type", 2);
             obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.aug_blocking", 256);
+	    cout << "Augmentation type: "<< obj.icntl[Controls::aug_type] << endl ;
+	    if(obj.icntl[Controls::aug_type] > 0) cout << "aug_blocking " << obj.icntl[Controls::aug_blocking] << endl;
 #ifdef WIP
             obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
             obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
@@ -320,6 +325,8 @@ int main(int argc, char* argv[])
 
             obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
             obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
+
+	    cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
 
             // obj.icntl[Controls::verbose] =  pt.get<int>("solve_verbose", 0);
             obj(3);

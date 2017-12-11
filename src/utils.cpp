@@ -38,6 +38,25 @@
 using namespace std;
 using namespace boost::lambda;
 
+
+template <class ForwardIterator>
+  std::size_t min_element_index ( ForwardIterator first, ForwardIterator last )
+{
+  ForwardIterator lowest = first;
+  std::size_t index = 0;
+  std::size_t i = 0;
+  if (first==last) return index;
+  while (++first!=last) {
+    ++i;
+    if (*first<*lowest) {
+      lowest=first;
+      index = i;
+    }
+  }
+  return index;
+}
+
+
 /// Partition weigts
 void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts)
 {
@@ -52,7 +71,24 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
     if (nb_parts == (int)weights.size()) {
         for(int i = 0; i < nb_parts; i++)
             pts[i].push_back(i);
-    } else {
+    }
+    else
+    {
+	//sort weights and its indexes then distribute to minimum pts
+	std::vector<int>  sorted = sort_indexes(&weights[0],  weights.size());
+        std::sort(weights.begin(), weights.end());
+        std::reverse(sorted.begin(), sorted.end());
+        std::reverse(weights.begin(), weights.end());
+	
+	for(int i = 0; i < weights.size(); i++){
+		int min_index = min_element_index(sets.begin(), sets.end());
+		pts[min_index].push_back(sorted[i]);
+		sets[min_index] +=  weights[min_index];
+	}
+    } 
+
+// old code:
+/*else {
         int avg = accumulate(weights.begin(), weights.end(), 0);
         avg = floor(0.9 * (double)avg / nb_parts);
 
@@ -101,11 +137,11 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
             }
         }
     }
-
+*/
     for(int i = 0; i < nb_parts; i++){
         parts.push_back(pts[i]);
     }
-
+   
 }
 
 ///DDOT

@@ -60,22 +60,47 @@ void abcd::scaling()
         abcd::icntl[Controls::scaling] = 0;
     }
 
-    dcol_.assign(n, double(1));
-    drow_.assign(m, double(1));
+    if(icntl[Controls::scaling] < 0) {
+      dcol_.assign(n, double(1));
+      drow_.assign(m, double(1));
+    }
+
+    if(icntl[Controls::scaling] >= 0) {
+        LINFO << "Row-Scaling with Infinity";
+
+        double rsum;
+        std::vector<double> dr(m, double(1));
+
+        dcol_.assign(n, double(1));
+        drow_.resize(m);
+
+/*	#pragma omp parallel for private(rsum)
+        for(int r = 0; r < m; ++r) {
+            rsum = 0;
+            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                rsum += pow(A(r, A.col_ind(c)), 2);
+            }
+	    dr[r] = 1/sqrt(rsum);
+            drow_[r] *= 1/sqrt(rsum);
+        }
+
+        abcd::diagScaleMatrix(drow_, dcol_); */
+    }
 
     if(icntl[Controls::scaling] > 0) {
         LINFO << "Scaling the matrix";
 
         abcd::scaleMatrix(1);
 
-        diagScaleMatrix(drow_, dcol_);
+//        diagScaleMatrix(drow_, dcol_);
     }
+
 }
 
 void abcd::scaleMatrix(int norm)
 {
     int lw, liw, job;
-    double eps = 1.e-8;
+    double eps = 1.e-16;
 //    double eps = -1;
 
     // CSR arrays for the matrix A
@@ -89,8 +114,8 @@ void abcd::scaleMatrix(int norm)
         }
     
     // Local scaling arrays
-    std::vector<double> dc(n, 1);
-    std::vector<double> dr(m, 1);
+    std::vector<double> dc(n, double(1));
+    std::vector<double> dr(m, double(1));
 
     #ifdef USE_MC77
         LINFO << "Stand Alone MC77 scaling.";
@@ -136,7 +161,8 @@ void abcd::scaleMatrix(int norm)
          }
 
         mc77_icntl[2] = 10;
-        mc77_icntl[6] = 1000;
+        mc77_icntl[6] = 10;
+//        mc77_icntl[6] = 1000;
         mc77_dcntl[0] = eps;
         
         job = norm;
@@ -204,10 +230,11 @@ void abcd::scaleMatrix(int norm)
         int co = MPI_Comm_c2f((MPI_Comm) comm);
 
         // NB1, NB2, NB3: algo runs successively
-        // NB1 iters of inf-norm 
-        // NB2 iters of 1-norm   
-        // NB3 iters of inf-norm 
+        // NB1 iters of inf-norm
+        // NB2 iters of 1-norm
+        // NB3 iters of inf-norm
         int nb1 = 5, nb2 = 20, nb3 = 10;
+//        int nb1 = 0, nb2 = 11, nb3 = 0;
         issym = 0;
         lw = 0;
         double err, errinf;
@@ -218,14 +245,14 @@ void abcd::scaleMatrix(int norm)
         // From version 5.1.1, Mumps needs nz as 64bits integer if we call directly
         // a subroutine. However ugly this solution works with different versions.
         void* nz_tmp;
-        MUMPS mumps;
+//        MUMPS mumps;
         int tmp=nz;
-        int64_t tmp64=static_cast<int64_t>(nz);
-        if (MUMPS_VERSION < std::string("5.1.1")) {
+//        long long tmp64=static_cast<long long>(nz);
+//        if (MUMPS_VERSION < std::string("5.1.1")) {
             nz_tmp=&tmp;
-        } else {
-            nz_tmp=&tmp64;
-        }
+//        } else {
+//            nz_tmp=&tmp64;
+//        }
 
         dmumps_simscaleabs_(
 //        &rp[0], a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
@@ -274,6 +301,8 @@ void abcd::scaleMatrix(int norm)
     for(int k = 0; k < nz ; k++) {
         a_cp[k]--;
     }
+
+    diagScaleMatrix(dr, dc);
 }
 
 

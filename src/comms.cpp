@@ -75,8 +75,14 @@ void abcd::distributeRhs()
         for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
-        
-        if(rhs == nullptr){
+	
+	if(Xf.dim(0) != 0) {
+	    nrmXf = 0;
+	    for(int i = 0; i < A.dim(1); i++) {
+  	        if(abs(Xf(i,0)) > nrmXf) nrmXf = abs(Xf(i,0));
+	    }
+	}
+/*        if(rhs == nullptr){
             rhs = new double[n_l * nrhs];
 
             srand(10); 
@@ -100,6 +106,7 @@ void abcd::distributeRhs()
 
             MV_ColMat_double BB = smv(A, Xf);
 
+	if(Xf.dim(0) != 0) {
             for(int j = 0; j < nrhs; j++){
                 double unscaled; 
                 for(int i = 0; i < A.dim(1); i++) {
@@ -108,6 +115,8 @@ void abcd::distributeRhs()
                     Xf(i, j) = unscaled;
                 }
             }
+	}
+
 
             for(int j = 0; j < nrhs; j++){
                 //VECTOR_double t(rhs+j*m_l, m_l);
@@ -115,7 +124,7 @@ void abcd::distributeRhs()
                 //B.push_back(t);
                 B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
             }
-        } else {
+        } else {*/
             B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
             if(row_perm.size() != 0){
                 for(int j = 0; j < nrhs; j++){
@@ -131,7 +140,7 @@ void abcd::distributeRhs()
                     }
                 }
             }
-        }
+//        }
 
         int good_rhs = 0;
         if (infNorm(B) == 0) {
@@ -147,10 +156,9 @@ void abcd::distributeRhs()
 
         if(icntl[Controls::block_size] > nrhs) {
             double *rdata = new double[n_l * (icntl[Controls::block_size] - nrhs)];
-
             srand(n_l); 
             for(int i=0; i< n_l*(icntl[Controls::block_size]-nrhs); i++){ 
-                rdata[i] = (double)((rand())%10)/99.9 + 1;
+                rdata[i] = (double)((rand())%100+1)/99.9 + 1;
                 //rdata[i] = i+1;
             }
             MV_ColMat_double BR(rdata, n_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);

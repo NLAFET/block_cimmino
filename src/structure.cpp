@@ -128,29 +128,27 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with only icntl[Controls::nbparts] as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
     case 2:
-        ceil_per_part = ceil(float(m_o)/float(icntl[Controls::nbparts]));
-        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
-
-        strow =  std::vector<int>(icntl[Controls::nbparts]);
-        nbrows = std::vector<int>(icntl[Controls::nbparts]);
-
-        // alternate the number of rows, they will not be that equal
-        // but at least we will have simmilar number of row
-        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k+=2) {
-            nbrows[k] = ceil_per_part;
-            handled_rows += ceil_per_part;
-        }
-        for(unsigned k = 1; k < (unsigned) icntl[Controls::nbparts]; k+=2) {
-            nbrows[k] = floor_per_part;
-            handled_rows += floor_per_part;
-        }
-
-        nbrows[icntl[Controls::nbparts] - 1] += m_o - handled_rows;
-
-        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
-        }
+	{
+	        unsigned floor_per_part;
+	        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
+	        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
+	        strow =  std::vector<int>(icntl[Controls::nbparts]);
+	        nbrows = std::vector<int>(icntl[Controls::nbparts]);
+	 
+	        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
+	           int cnt = floor_per_part;
+	           if(remain >0){
+	               remain--;
+	               cnt++;
+	           }
+	           nbrows[k] = cnt;
+	        }
+	 
+	        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
+	            strow[k] = row_sum;
+	            row_sum += nbrows[k];
+	        }
+	}
         break;
         /*-----------------------------------------------------------------------------
          *  PaToH partitioning
@@ -158,16 +156,16 @@ void abcd::partitionMatrix()
     case 3:
 #ifdef PATOH
         PaToH_Parameters args;
-        int _c, _n, _nconst, _imba, _ne, *cwghts, *nwghts, *xpins, *pins, *partvec,
+        int _c, _n, _nconst, _ne, *cwghts, *nwghts, *xpins, *pins, *partvec,
             cut, *partweights, ret;
-        char cutdef[] = "CUT";
+	double _imba;
 
         CompCol_Mat_double t_A = Coord_Mat_double(A);
 
         double t = MPI_Wtime();
         LINFO << "Launching PaToH";
 
-        PaToH_Initialize_Parameters(&args, PATOH_CONPART, PATOH_SUGPARAM_DEFAULT);
+        PaToH_Initialize_Parameters(&args, PATOH_CUTPART, PATOH_SUGPARAM_DEFAULT);
         args._k = icntl[Controls::nbparts];
         _c = m_o;
         _n = n_o;
