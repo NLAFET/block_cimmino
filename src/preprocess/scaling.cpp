@@ -34,15 +34,10 @@
 
 extern "C"
 {
-    void mc77id_(int *, double *);
-    void mc77ad_(int *job, int *m, int *n, int *nnz, int *jcst, int *irn, double *a,
-             int *iw, int *liw, double *dw, int *ldw, int *icntl, double *cntl,
-             int *info, double *rinfo);
+    #ifdef OLD_MUMPS
     void dmumps_simscaleabs_(
             int *irn_loc, int *jcn_loc, double *a_loc,
-//            int *nz_loc, int *m, int *n, int *numprocs,
-//            int64_t *nz_loc, int *m, int *n, int *numprocs,
-            void *nz_loc, int *m, int *n, int *numprocs,
+            int *nz_loc, int *m, int *n, int *numprocs,
             int *myid, int *comm, int *rpartvec, int *cpartvec,
             int *rsndrcvsz, int *csndrcvsz, int *reg,
             int *iwrk, int *iwrksz,
@@ -50,6 +45,18 @@ extern "C"
             double *rowsca, double *colsca, double *wrkrc, int *iszwrkrc,
             int *sym, int *nb1, int *nb2, int *nb3, double *eps,
             double *onenormerr, double *infnormerr);
+    #else
+    void dmumps_simscaleabs_(
+            int *irn_loc, int *jcn_loc, double *a_loc,
+            long long *nz_loc, int *m, int *n, int *numprocs,
+            int *myid, int *comm, int *rpartvec, int *cpartvec,
+            int *rsndrcvsz, int *csndrcvsz, int *reg,
+            int *iwrk, int *iwrksz,
+            int *intsz, int *resz, int *op,
+            double *rowsca, double *colsca, double *wrkrc, int *iszwrkrc,
+            int *sym, int *nb1, int *nb2, int *nb3, double *eps,
+            double *onenormerr, double *infnormerr);
+    #endif
 }
 
 void abcd::scaling()
@@ -60,43 +67,40 @@ void abcd::scaling()
         abcd::icntl[Controls::scaling] = 0;
     }
 
-    if(icntl[Controls::scaling] < 0) {
-      dcol_.assign(n, double(1));
-      drow_.assign(m, double(1));
-    }
-
-    if(icntl[Controls::scaling] >= 0) {
-        LINFO << "Row-Scaling with Infinity";
-
-        double rsum;
-        std::vector<double> dr(m, double(1));
-
-        dcol_.assign(n, double(1));
-        drow_.resize(m);
-
-/*	#pragma omp parallel for private(rsum)
-        for(int r = 0; r < m; ++r) {
-            rsum = 0;
-            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
-                rsum += pow(A(r, A.col_ind(c)), 2);
-            }
-	    dr[r] = 1/sqrt(rsum);
-            drow_[r] *= 1/sqrt(rsum);
-        }
-
-        abcd::diagScaleMatrix(drow_, dcol_); */
-    }
+    dcol_.assign(n, double(1));
+    drow_.assign(m, double(1));
 
     if(icntl[Controls::scaling] > 0) {
         LINFO << "Scaling the matrix";
 
         abcd::scaleMatrix(1);
 
-//        diagScaleMatrix(drow_, dcol_);
+        diagScaleMatrix(drow_, dcol_);
     }
 
+    if(icntl[Controls::scaling] > 1) {
+        LINFO << "2-Norm Row-Scaling";
+
+        double rsum;
+        std::vector<double> dc(n, double(1));
+        std::vector<double> dr(m, double(1));
+	double *Ax = A.val_ptr();
+
+	#pragma omp parallel for private(rsum)
+        for(int r = 0; r < m; ++r) {
+            rsum = 0;
+            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                rsum += pow(Ax[c], 2);
+            }
+	    dr[r] = 1/sqrt(rsum);
+            drow_[r] *= 1/sqrt(rsum);
+        }
+
+        abcd::diagScaleMatrix(dr, dc);
+    }
 }
 
+//TODO ? Remove local dr/dc: only dcol_/drow_ are used
 void abcd::scaleMatrix(int norm)
 {
     int lw, liw, job;
@@ -117,192 +121,99 @@ void abcd::scaleMatrix(int norm)
     std::vector<double> dc(n, double(1));
     std::vector<double> dr(m, double(1));
 
-    #ifdef USE_MC77
-        LINFO << "Stand Alone MC77 scaling.";
-        
-        // Only increment row indices for MC77 as it won't be changed to CSR
-        // and thus used as is by fortran
-        #pragma omp parallel for
-            for(int k = 0; k < n + 1 ; k++) {
-                a_rp[k]++;
-            }
-        
-        int *iw;
-        double *dw;
-        int mc77_icntl[10], mc77_info[10];
-        double mc77_dcntl[10], mc77_rinfo[10];
+    LINFO << "Mumps MC77 scaling.";
+    int issym;
+    int numprocs = 1, myid = 0;
+    std::vector<int> iwk;
+    std::vector<double> dwk;
 
+    int maxmn, intsz, resz;
+    int reg[12];
+    int *rpartvec, *cpartvec, *rsndrcvsz, *csndrcvsz;
 
-        mc77id_(mc77_icntl, mc77_dcntl);
-
-        if(mc77_icntl[4] == 0)
-            lw = nz;
-        else
-            lw = 0;
-
-        if(mc77_icntl[5] == 0) {
-            liw = n * 2;
-            lw = lw + 4 * n;
-        } else {
-            liw = n;
-            lw = lw + 2 * n;
+    // Convert row indices from CSR to coordinate format
+    // We do not need to increment the array as it won't be used used as is
+    std::vector<int> rp(nz);
+    for (int i = 0; i < m; ++i) {
+        for (int j = a_rp[i]; j < a_rp[i+1]; ++j) {
+            rp[j] = i+1;
         }
+    }
 
-        liw = liw * 2;
-        lw = lw * 2;
+    maxmn = n > m ? n : m;
+    liw = 4 * maxmn;
+    iwk.assign(liw, 0);
+    rpartvec = new int[m];
+    cpartvec = new int[n];
 
-        iw = new int[liw];
-        dw = new double[lw];
+    // hard coded 2*numprocs, we run it in sequential
+    rsndrcvsz = new int[2];
+    csndrcvsz = new int[2];
 
-        if(norm < 0){
-            delete[] iw;
-            delete[] dw;
-            throw std::runtime_error("Problem when computing the scaling, got a negative norm.");
-         }
+    int co = MPI_Comm_c2f((MPI_Comm) comm);
 
-        mc77_icntl[2] = 10;
-        mc77_icntl[6] = 10;
-//        mc77_icntl[6] = 1000;
-        mc77_dcntl[0] = eps;
-        
-        job = norm;
-        mc77ad_(&job, &m, &n, &nz, a_rp, a_cp, a_vp,
-                iw, &liw, dw, &lw, mc77_icntl, mc77_dcntl, mc77_info, mc77_rinfo);
-        
-        if(mc77_info[0] < 0) throw - 100 + mc77_info[0];
+    // NB1, NB2, NB3: algo runs successively
+    // NB1 iters of inf-norm
+    // NB2 iters of 1-norm
+    // NB3 iters of inf-norm
+    int nb1 = 5, nb2 = 20, nb3 = 10;
+    issym = 0;
+    lw = 0;
+    double err, errinf;
 
-        if(norm == 0)
-            LINFO2 << "Distance from 1 (norm inf) : " << mc77_rinfo[0];
-        else
-            LINFO2 << "Distance from 1 (norm " << norm << ") : " << mc77_rinfo[0];
 
-        // Set actual scaling arrays (which are the inverse)
-        #pragma omp parallel for
-         for(int k = 0; k < n; k++) {
-            dc[k] = double(1) / dw[k];
-            dcol_[k] *= double(1) / dw[k];
-         }
-        #pragma omp parallel for
-         for(int k = 0; k < m; k++) {
-            dr[k] = double(1) / dw[k + n];
-            drow_[k] *= double(1) / dw[k + n];
-         }
-
-        // Free memory
-        delete[] iw;
-        delete[] dw;
-
-        // Put row indices indices back to 0-based for C/C++
-        #pragma omp parallel for
-        for(int k = 0; k < n + 1 ; k++) {
-            a_rp[k]--;
-        }
+    // 1. estimate memory 
+    job = 1;
+    #ifdef OLD_MUMPS
+        int nz_tmp=nz;
     #else
-        LINFO << "Mumps MC77 scaling.";
-        int issym;
-        int numprocs = 1, myid = 0;
-        std::vector<int> iwk;
-        std::vector<double> dwk;
+        long long nz_tmp=nz;
+    #endif
 
-        int maxmn, intsz, resz;
-        int reg[12];
-        int *rpartvec, *cpartvec, *rsndrcvsz, *csndrcvsz;
+    dmumps_simscaleabs_(
+        &rp[0], a_cp, a_vp, &nz_tmp, &m, &n, &numprocs, &myid, &co,
+        rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
+        &iwk[0], &liw,
+        &intsz, &resz, &job,
+        &dr[0], &dc[0], &dwk[0], &lw,
+        &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
 
-        // Convert row indices from CSR to coordinate format
-        // We do not need to increment the array as it won't be used used as is
-        std::vector<int> rp(nz);
-        for (int i = 0; i < m; ++i) {
-            for (int j = a_rp[i]; j < a_rp[i+1]; ++j) {
-                rp[j] = i+1;
-            }
-        }
-
-        maxmn = n > m ? n : m;
-        liw = 4 * maxmn;
+    if (liw < intsz) {
+        liw = intsz;
         iwk.assign(liw, 0);
-        rpartvec = new int[m];
-        cpartvec = new int[n];
+    }
 
-        // hard coded 2*numprocs, we run it in sequential
-        rsndrcvsz = new int[2];
-        csndrcvsz = new int[2];
+    lw = resz;
+    dwk.assign(lw, 0);
 
-        int co = MPI_Comm_c2f((MPI_Comm) comm);
+    // 2. compute drow and dcol
+    job = 2;
+    dmumps_simscaleabs_(
+        &rp[0], a_cp, a_vp, &nz_tmp, &m, &n, &numprocs, &myid, &co,
+        rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
+        &iwk[0], &liw,
+        &intsz, &resz, &job,
+        &dr[0], &dc[0], &dwk[0], &lw,
+        &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
 
-        // NB1, NB2, NB3: algo runs successively
-        // NB1 iters of inf-norm
-        // NB2 iters of 1-norm
-        // NB3 iters of inf-norm
-        int nb1 = 5, nb2 = 20, nb3 = 10;
-//        int nb1 = 0, nb2 = 11, nb3 = 0;
-        issym = 0;
-        lw = 0;
-        double err, errinf;
+    // Set actual scaling arrays (directly the inverse)
+    for(int k = 0; k < n; k++) {
+        dcol_[k] *= dc[k];
+    }
+    for(int k = 0; k < m; k++) {
+        drow_[k] *= dr[k];
+    }
 
-
-        // 1. estimate memory 
-        job = 1;
-        // From version 5.1.1, Mumps needs nz as 64bits integer if we call directly
-        // a subroutine. However ugly this solution works with different versions.
-        void* nz_tmp;
-//        MUMPS mumps;
-        int tmp=nz;
-//        long long tmp64=static_cast<long long>(nz);
-//        if (MUMPS_VERSION < std::string("5.1.1")) {
-            nz_tmp=&tmp;
-//        } else {
-//            nz_tmp=&tmp64;
-//        }
-
-        dmumps_simscaleabs_(
-//        &rp[0], a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
-            &rp[0], a_cp, a_vp, nz_tmp, &m, &n, &numprocs, &myid, &co,
-            rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
-            &iwk[0], &liw,
-            &intsz, &resz, &job,
-            &dr[0], &dc[0], &dwk[0], &lw,
-            &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
-
-        if (liw < intsz) {
-            liw = intsz;
-            iwk.assign(liw, 0);
-        }
-
-        lw = resz;
-        dwk.assign(lw, 0);
-
-        // 2. compute drow and dcol
-        job = 2;
-        dmumps_simscaleabs_(
-//        &rp[0], a_cp, a_vp, &nz, &m, &n, &numprocs, &myid, &co,
-            &rp[0], a_cp, a_vp, nz_tmp, &m, &n, &numprocs, &myid, &co,
-            rpartvec, cpartvec, rsndrcvsz, csndrcvsz, reg,
-            &iwk[0], &liw,
-            &intsz, &resz, &job,
-            &dr[0], &dc[0], &dwk[0], &lw,
-            &issym, &nb1, &nb2, &nb3, &eps, &err, &errinf);
-
-        // Set actual scaling arrays (directly the inverse)
-        for(int k = 0; k < n; k++) {
-            dcol_[k] = dc[k];
-        }
-        for(int k = 0; k < m; k++) {
-            drow_[k] = dr[k];
-        }
-
-        // Free memory
-        delete[] rpartvec;
-        delete[] cpartvec;
-        delete[] rsndrcvsz;
-        delete[] csndrcvsz;
-    #endif 
-        
+    // Free memory
+    delete[] rpartvec;
+    delete[] cpartvec;
+    delete[] rsndrcvsz;
+    delete[] csndrcvsz;
+ 
     #pragma omp parallel for
     for(int k = 0; k < nz ; k++) {
         a_cp[k]--;
     }
-
-    diagScaleMatrix(dr, dc);
 }
 
 

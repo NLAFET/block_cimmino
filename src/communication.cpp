@@ -110,6 +110,7 @@ void abcd::distributeData()
         } else {
             for(unsigned int i = 0; i < parts.size(); i++){
                 partitions.push_back(parts[i]);
+//	        partitionsSets[0][i]=i;
             }
             parts.clear();
             nb_local_parts = partitions.size();

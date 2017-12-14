@@ -68,9 +68,13 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
         pts[i];
     }
 
-    if (nb_parts == (int)weights.size()) {
+    if (nb_parts == (int)weights.size() ) {
         for(int i = 0; i < nb_parts; i++)
             pts[i].push_back(i);
+    }
+    else if (nb_parts == 1) {
+        for(int i = 0; i < weights.size(); i++)
+            pts[0].push_back(i);
     }
     else
     {
@@ -83,9 +87,9 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
 	for(int i = 0; i < weights.size(); i++){
 		int min_index = min_element_index(sets.begin(), sets.end());
 		pts[min_index].push_back(sorted[i]);
-		sets[min_index] +=  weights[min_index];
+		sets[min_index] +=  weights[i];
 	}
-    } 
+    }
 
 // old code:
 /*else {
@@ -138,10 +142,10 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
         }
     }
 */
+
     for(int i = 0; i < nb_parts; i++){
         parts.push_back(pts[i]);
     }
-   
 }
 
 ///DDOT
