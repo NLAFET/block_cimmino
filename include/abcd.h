@@ -273,6 +273,10 @@ public:
 
     int n_o, m_o, nz_o;
 
+     // for reading partvector
+    int *partvec;
+
+
 private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
     int gqr(MV_ColMat_double &p, MV_ColMat_double &ap, MV_ColMat_double &r, CompCol_Mat_double g, int s, bool use_a);
