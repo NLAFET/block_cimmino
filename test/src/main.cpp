@@ -98,6 +98,22 @@ int main(int argc, char* argv[])
         obj.start_index = 1;
 
         mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mat_code);
+        
+        // Filtering zero-valued elements 
+        int newnnz=0;
+        for(int i=0;i<obj.nz;i++){
+                if(obj.val[i] != 0){
+                        obj.irn[newnnz] = obj.irn[i];
+                        obj.jcn[newnnz] = obj.jcn[i];
+                        obj.val[newnnz] = obj.val[i];
+                        newnnz++;
+                }
+        }
+
+        obj.nz = newnnz;
+        obj.irn = (int *) realloc(obj.irn, obj.nz * sizeof(int));
+        obj.jcn = (int *) realloc(obj.jcn, obj.nz * sizeof(int));
+        obj.val = (double *) realloc(obj.val, obj.nz * sizeof(double));
 
         cout << "Matrix information : ";
         cout << matrix_file <<" m = " << obj.m << "; n = " << obj.n << "; nz = " << obj.nz << endl;
