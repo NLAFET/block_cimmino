@@ -30,10 +30,17 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+// the configured options and settings for ABCD
+#define ABCD_VERSION_MAJOR 1
+#define ABCD_VERSION_MINOR 1
+
 #ifndef ABCD_HXX_
 #define ABCD_HXX_
 
 #include "mpi.h"
+#if defined(_OPENMP)
+   #include <omp.h>
+#endif
 
 #include <iostream>
 #include <iomanip>
@@ -56,8 +63,11 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/serialization/utility.hpp>
 
 #include "easylogging++.h"
+
+#include "comparison_op.h"
 
 /*
  * A small hack to make Sparselib++ work with openmpi
@@ -222,6 +232,8 @@ public:
     std::vector<int> info;
     /*! The real info output array, see Controls::dinfo */
     std::vector<double> dinfo;
+    /*! The real scaling Number of iterations, see Controls::scaling */
+    std::vector<int> man_scaling;
 
     /**************************************************************************
      * Write problem and log
@@ -272,6 +284,10 @@ public:
     std::vector<double> scaledResidualVector;
 
     int n_o, m_o, nz_o;
+
+     // for reading partvector
+    int *partvec;
+
 
 private:
     int gqr(MV_ColMat_double &P, MV_ColMat_double &AP, MV_ColMat_double &R, int s, bool use_a);
@@ -457,6 +473,10 @@ private:
     bool verbose;
     // easyloggingpp::Configurations log_config;
 
+    /// Ranks of the masters in comm
+    std::vector<int> masters_node;
+    std::vector<int> instance_type_vect;
+    std::vector<std::vector<int>> node_map_slaves;
     /// The communicator shared by CG masters
     mpi::communicator inter_comm;
     /// The communicator of local slaves

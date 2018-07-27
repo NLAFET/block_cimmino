@@ -127,11 +127,23 @@ namespace Controls{
          */
         part_guess         ,
 
+        /*! \brief Use METIS to minimize communications in partition distribution
+         *
+         * Defines the type of distribution for the partitions to the masters
+         * - 0, distribute partitions depending on their weight only (#rows)
+         * - 1, distribute the partitions to minimize communications between masters
+         * (coming from the interconnections between partitions). This is the so-called
+         * "multi-criteria" partitioning in Mohamed Zenadi's PhD thesis.
+         */
+        minCommWeight		,
+
         /*! \brief The scaling type
          *
          * Defines the type of scaling to be used.
+         * - -1, manual scaling stocked in the vector man_scaling (#normInf;#norm1;#normInf;#norm2)
          * - 0, no scaling
-         * - 1, scale the input matrix (embeded internal scaling strategy)
+         * - 1, pre-registered number of iterations: 5;20;10;0
+         * - 2, pre-registered number of iterations: 10;20;20;1
         */
         scaling            ,
 
@@ -187,6 +199,38 @@ namespace Controls{
          */
         aug_blocking        ,
 
+        /*! \brief The number of additional slaves
+         *
+         * To enforce the Master-Slave scheme, we can specify additional slaves to add.
+         */
+	slave_tol        ,
+
+        /*! \brief Master distribution scheme
+         *
+         * To decide which Master distribution is used:
+         *    0: Momo's implementation (enforce slave_def)
+         *    1: 1 Master/1 Nodeenforce the Master-Slave scheme, we can specify additional slaves to add.
+         */
+	master_def        ,
+
+        /*! \brief Slave distribution scheme
+         *
+         * To decide which Slave distribution is used:
+         *    0: Momo's definition
+         *    1: fill same node as master then grouped where possible (2 loops)
+         *    2: fill same node as master then grouped where possible (1 loop)
+         * If master_def is 0, slave_def is switched to -1 to use compatible Momo's implementation
+         */
+	slave_def        ,
+
+        /*! \brief The number of overlapping lines between partitions
+         *
+         * To enable overlapping between in Block-Cimmino, we can specify
+	 * the number of lines overlapping between 2 partitions.
+	 * those lines are duplicated and shared by the 2 partitions.
+         */
+	num_overlap        ,
+
 #ifdef WIP
         /*! \brief Exploit the sparcity in MUMPS
          */
@@ -222,6 +266,17 @@ namespace Controls{
     enum dcontrols {
         part_imbalance, ///< The imbalance factor in PaToH case
         threshold     , ///< The stoping threshold
+
+        /*! \brief The scaling factor of the Identity in the augmented systems
+         *
+         * To compute the projections in both Block-Cimmino and ABCD, we solve the
+         * augmented systems:
+         *         [ alpha*I	AiT ]
+         *         [ Ai    	 0  ]
+         * Choosing a small alpha could enforce the pivoting in the direct solver
+         * to prevent numerical instability in the QR/Gramm-Schmidt reorthogonalization.
+         */
+        alpha        ,
 
 #ifdef WIP
         aug_filter    , ///< \deprecated The filtering value

@@ -42,6 +42,7 @@ void abcd::distributeData()
 
         for(int k = 0; k < icntl[Controls::nbparts]; k++) {
             nnz_parts.push_back(parts[k].NumNonzeros());
+            // Criteria for partition distribution
             m_parts.push_back(parts[k].dim(0));
         }
 
@@ -56,14 +57,14 @@ void abcd::distributeData()
                 std::vector<int> dims;
                 dims.push_back(parts[j].dim(0));
                 dims.push_back(parts[j].dim(1));
-		
+
 		// send the nnz
                 inter_comm.send(i, 1, parts[j].NumNonzeros());
 		// send the dimensions
                 inter_comm.send(i, 2, dims);
 		// send the origin number of columns of the matrix
                 inter_comm.send(i, 21, n);
-		
+
 		// send the partitions data
                 inter_comm.send(i, 3, parts[j].colind_ptr(), parts[j].NumNonzeros());
                 inter_comm.send(i, 4, parts[j].rowptr_ptr(), dims[0] + 1);
@@ -110,6 +111,7 @@ void abcd::distributeData()
         } else {
             for(unsigned int i = 0; i < parts.size(); i++){
                 partitions.push_back(parts[i]);
+//	        partitionsSets[0][i]=i;
             }
             parts.clear();
             nb_local_parts = partitions.size();

@@ -57,6 +57,7 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         LERROR << string(32, '-') ;
         LERROR << "> MUMPS Factoriz FAILED on master " << inter_comm.rank();
         LERROR << "MUMPS exited with " << mu.getInfo(1);
+        LERROR << "MUMPS exited with TWO " << mu.getInfo(2);
         
         int job = -700 + mu.getInfo(1);
         mpi::broadcast(intra_comm, job, 0);
@@ -79,17 +80,19 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
     }
 
     double smem;
+    int max_mem;
+    int sflop;
     if(instance_type == 0) {
-        double mem = mu.getInfoG(21);
-
-        if(IRANK == 0) mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
-        else mpi::reduce(inter_comm, mem, std::plus<double>(), 0);
-
+        double mem = mu.getInfoG(22)/intra_comm.size();
+        mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
         if(IRANK == 0) smem = smem/inter_comm.size();
-    }
 
-    if(instance_type == 0) {
-        double flop = mu.getRinfoG(3);
+        int mmem = mu.getInfoG(21);
+	mpi::reduce(inter_comm, mmem, max_mem, mpi::maximum<int>(),0);
+
+        int flop = mu.getRinfoG(3);
+	mpi::reduce(inter_comm, flop, sflop, std::plus<int>(),0);
+
         int prec = cout.precision();
         cout.precision(2);
         LINFO << string(32, '-') ;
@@ -99,8 +102,12 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         LINFO << "| NZ            : " << setw(12) << mumps.nz << " |" ;
         LINFO << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" ;
         LINFO << "| Time          : " << setw(6) << t << " sec |" ;
-        LINFO << "| avg memory    : " << setw(6) << smem << " M| ";
+        LINFO << "| Average memory    : " << setw(6) << mem << " M| ";
         LINFO << string(32, '-') ;;
         cout.precision(prec);
     }
+
+    if(IRANK == 0) LINFO << "Factorization average memory : " << setw(6) << smem << " M";
+    if(IRANK == 0) LINFO << "Factorization maximum memory : " << setw(6) << max_mem << " M";
+    if(IRANK == 0) LINFO << "Factorization total flops : " << setw(6) << sflop << " flops";
 }

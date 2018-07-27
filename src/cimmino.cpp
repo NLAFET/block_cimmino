@@ -38,7 +38,7 @@ void abcd::initializeDirectSolver()
     int *sym_perm;
 
     mpi::broadcast(comm, icntl[Controls::nbparts], 0);
-    
+
     if(comm.size() > parallel_cg) {
         if(instance_type == 0) {
             if(inter_comm.rank() == 0 && instance_type == 0)
@@ -55,29 +55,41 @@ void abcd::initializeDirectSolver()
             if(inter_comm.rank() == 0 && instance_type == 0)
                 LINFO << "Launching Initial MUMPS analysis";
             analyseAugmentedSystems(mumps);
-            
+
             sym_perm = new int[mumps.n];
             std::copy(mumps.sym_perm, mumps.sym_perm + mumps.n, sym_perm);
-
-        }
-
-
-        if(instance_type == 0) {
-            mumps.job = -2;
-            dmumps_c(&mumps);
-
-            mumps.initialized = false;
         }
 
         allocateMumpsSlaves(mumps);
-        initializeMumps(mumps);
 
+	// If the process is in a group with slaves (as master or not)
+	if (my_slaves.size() > 0 || instance_type != 0) {
+		// Then
+		// As a master, we have to reinitialize mumps
+		// As a slave, just initialize
+	        if(instance_type == 0) {
+	            mumps.job = -2;
+	            dmumps_c(&mumps);
+	            mumps.initialized = false;
+	        }
+
+	        initializeMumps(mumps);
+
+	        if(instance_type == 0) {
+		    mumps.perm_in = new int[n_aug];
+		    std::copy(sym_perm, sym_perm + n_aug, mumps.perm_in);
+		    mumps.setIcntl(7, 1);
+		}
+	} else {
+		// Useless participation in the blocking sub-communicator creation in
+		// initializeMumps launched for Masters with slave..
+		mpi::group grp;
+		mpi::communicator(comm, grp);
+	}
     } else {
         allocateMumpsSlaves(mumps);
         initializeMumps(mumps);
-
         createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
-
     }
 
     if(instance_type == 0) {

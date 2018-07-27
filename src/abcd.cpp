@@ -43,7 +43,7 @@ _INITIALIZE_EASYLOGGINGPP
 abcd::abcd()
 {
     last_called_job = -2;
-    
+
     nrhs = 1;
     start_index = 0;
     use_xk = false;
@@ -58,10 +58,13 @@ abcd::abcd()
     jcn = nullptr;
     val = nullptr;
 
-    icntl.assign(20, 0);
+    icntl.assign(30, 0);
     dcntl.assign(20, 0);
     info.assign(10, 0);
     dinfo.assign(5, 0);
+    man_scaling.assign(4, 0);
+    man_scaling[0]=5; man_scaling[1]=20;
+    man_scaling[2]=10; man_scaling[3]=1;
 
     icntl[Controls::aug_blocking] = 256;
 
@@ -69,10 +72,18 @@ abcd::abcd()
     icntl[Controls::part_type] = 2;
     dcntl[Controls::part_imbalance] = 1.5;
     icntl[Controls::part_guess] = 1;
+    icntl[Controls::minCommWeight] = 0;
+    icntl[Controls::master_def] = 0;
+    icntl[Controls::slave_def] = -1;
+    icntl[Controls::num_overlap] = 0;
     icntl[Controls::scaling] = 1;
+
     icntl[Controls::itmax] = 1000;
     icntl[Controls::block_size] = 1;
     dcntl[Controls::threshold] = 1e-12;
+
+    dcntl[Controls::alpha] = 1.0;
+    icntl[Controls::slave_tol] = 0;
 
     icntl[Controls::verbose_level] = 0;
     info[Controls::status] = 0;
@@ -96,9 +107,9 @@ int abcd::initializeMatrix()
 {
     LINFO << "*----------------------------------*";
     LINFO << "> Local matrix initialization";
-    
+
     if(comm.rank() != 0) return 0;
-    
+
     // Check that the matrix data is present
     if(irn == nullptr || jcn == nullptr || val == nullptr) {
         // Hey!! where is my data?
@@ -167,18 +178,49 @@ int abcd::initializeMatrix()
 
         LINFO << "> Local matrix initialized in " << setprecision(2) << MPI_Wtime() - t << "s.";
     }
-    
+
     n_o = n;
     m_o = m;
     nz_o = nz;
-        
-    return 0; 
+
+	if(rhs == nullptr){
+		LINFO << "-- No RHS specified, the new one will be created --";
+
+		Xf = MV_ColMat_double(m, nrhs);
+
+		for(int j = 0; j < nrhs; j++){
+			VECTOR_double xf_col(m);
+			for(int i = 0; i < m; i++) {
+				xf_col[i] = (double)(i+1) / m;
+//				xf_col[i] = (double) 1;
+			}
+			Xf.setCol(xf_col, j);
+		}
+		MV_ColMat_double BB = smv(A, Xf);
+
+		// To Do : make it for Multiple RHS
+		rhs = new double[m * nrhs];
+		double *BBref = BB.ptr();
+		for(int i = 0; i < m; i++){
+			 rhs[i] = BBref[i];
+			// cout << "rhs "<< i << " " << rhs[i] << endl;
+		}
+
+		/*LINFO <<  " ------------------ RHS is being written on a file --------" ;
+		ofstream f;
+		f.open("rhs.mtx");
+		f << "%%MatrixMarket matrix coordinate real general\n";
+		f << m << " " << 1 << " " << m << "\n";
+		for(int i = 0; i < m; i++){
+		   f << std::scientific <<std::setprecision(20)  << rhs[i] << "\n";
+		}*/
+	}
+    return 0;
 }
 
 /// Scales, partitions and analyses the structure of partitions
 int abcd::preprocessMatrix()
 {
-
     LINFO << "*----------------------------------*";
     LINFO << "> Starting Preprocessing            ";
     double t = MPI_Wtime();
@@ -197,16 +239,16 @@ int abcd::preprocessMatrix()
     if (parallel_cg == 0) {
         parallel_cg = icntl[Controls::nbparts] < comm.size() ? icntl[Controls::nbparts] : comm.size();
     }
-    
+
     t = MPI_Wtime();
-    
+
     abcd::scaling();
 
     LINFO << "> Time to scale the matrix: "
           << MPI_Wtime() - t << "s.";
 
     t = MPI_Wtime();
-    
+
     abcd::partitionMatrix();
 
     LINFO << "> Time to partition the matrix: "
@@ -229,7 +271,7 @@ int abcd::factorizeAugmentedSystems()
     abcd::createInterCommunicators();
 
     double t = MPI_Wtime();
-    
+
     if(instance_type == 0) {
         // some data on augmented system
         mpi::broadcast(inter_comm, m_o, 0);
@@ -247,14 +289,18 @@ int abcd::factorizeAugmentedSystems()
         abcd::distributeData();
         abcd::createInterconnections();
     }
-    
+
     abcd::initializeDirectSolver();
-    
-    if(inter_comm.rank() == 0 && instance_type == 0)
-        LINFO << "Launching MUMPS analysis";
-    
-    abcd::analyseAugmentedSystems(mumps);
-    
+
+    // Do the Analysis in all cases except when the process is a Master with no slaves and
+    // there are slaves
+    if (! (instance_type == 0 && comm.size() > parallel_cg && my_slaves.size() == 0)) {
+        if(inter_comm.rank() == 0 && instance_type == 0) {
+            LINFO << "Launching MUMPS analysis";
+        }
+        abcd::analyseAugmentedSystems(mumps);
+    }
+
     if(IRANK == 0){
         LINFO << "Initialization time : " << MPI_Wtime() - t;
     }
@@ -264,7 +310,7 @@ int abcd::factorizeAugmentedSystems()
 
     t = MPI_Wtime();
     abcd::factorizeAugmentedSystems(mumps);
-    
+
     if(IRANK == 0){
         LINFO << "Factorization time : " << MPI_Wtime() - t;
     }
@@ -282,8 +328,8 @@ int abcd::solveSystem()
     if(icntl[Controls::block_size] < 1) {
         info[Controls::status] = -10;
         throw std::runtime_error("Block size should be at least one (1)");
-    } 
-    
+    }
+
     if(instance_type == 0) inter_comm.barrier();
     if(inter_comm.rank() == 0 && instance_type == 0){
         LINFO << "Launching Solve";
@@ -326,7 +372,6 @@ int abcd::solveSystem()
                 LINFO << "Forward error        : " <<
                     scientific << dinfo[Controls::forward_error];
         }
-
     } else {
         if(icntl[Controls::aug_type] != 0 ){
             int temp_bs = icntl[Controls::block_size];
@@ -337,29 +382,29 @@ int abcd::solveSystem()
             abcd::waitForSolve();
         }
     }
-    
+
     return 0;
 }
-    
+
 // The gateway function that launches all other options
 int abcd::operator()(int job_id)
 {
     info[Controls::status] = 0;
 
     LDEBUG3 << "MPI-Process " << comm.rank() << " called job_id = " << job_id;
-    
+
     if ( job_id == 1 && last_called_job != -1 ) {
         info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job_id = -1? ");
-    }                                                           
-                                                                
-    if ( job_id == 2 && job_id <= 3 && last_called_job != 1) {        
-        info[Controls::status] = -2;                            
+    }
+
+    if ( job_id == 2 && job_id <= 3 && last_called_job != 1) {
+        info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job_id = 1? ");
-    }                                                           
-                                                                
+    }
+
     if ( job_id == 3 && last_called_job != 2 && last_called_job != 3 ) {
-        info[Controls::status] = -2;                        
+        info[Controls::status] = -2;
         throw std::runtime_error("Did you forget to call job_id = 2? ");
     }
 
@@ -372,7 +417,7 @@ int abcd::operator()(int job_id)
         info[Controls::status] = -2;
         throw std::runtime_error("You cannot re-run the same job unless you want to re-run job_id = 3 ");
     }
-    
+
     switch(job_id) {
 
     case -1:
@@ -460,3 +505,4 @@ int abcd::operator()(int job_id)
     }
     return 0;
 }
+

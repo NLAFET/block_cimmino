@@ -62,7 +62,7 @@ void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
         for(int i = 0; i < partitions[p].dim(1); ++i) {
             irn_aug[st + i] = i_pos + i;
             jcn_aug[st + i] = j_pos + i;
-            val_aug[st + i] = 1;
+            val_aug[st + i] = dcntl[Controls::alpha];
         }
 
         // we get down by nb_cols

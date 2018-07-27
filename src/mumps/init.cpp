@@ -53,28 +53,31 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
             r.push_back(my_master);
         }
         std::copy(my_slaves.begin(), my_slaves.end(), std::back_inserter(r));
-
         mpi::group grp = comm.group().include(r.begin(), r.end());
+        // Boost blocking creation of sub-communicator
         intra_comm = mpi::communicator(comm, grp);
     }
 
-    mu.sym = 2;
-    mu.par = 1;
-    mu.job = -1;
-    mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
+    // Do not reinitialize mumps for Masters without slave (Analysis just done)
+    if (mu.job != 1) {
+        mu.sym = 2;
+        mu.par = 1;
+        mu.job = -1;
+        mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) intra_comm);
 
-    dmumps_c(&mu);
-    if(mu.getInfo(1) != 0) throw mu.getInfo(1);
+        dmumps_c(&mu);
+        if(mu.getInfo(1) != 0) throw mu.getInfo(1);
 
-    mu.initialized = true;
+        mu.initialized = true;
 
-    mu.setIcntl(1, -1);
-    mu.setIcntl(2, -1);
-    mu.setIcntl(3, -1);
+        mu.setIcntl(1, -1);
+        mu.setIcntl(2, -1);
+        mu.setIcntl(3, -1);
 
-    mu.setIcntl(6, 5);
-    mu.setIcntl(7, 5);
-    mu.setIcntl(8, -2);
-    mu.setIcntl(12, 2);
-    mu.setIcntl(14, 90);
+        mu.setIcntl(6, 5);
+        mu.setIcntl(7, 5);
+        mu.setIcntl(8, -2);
+        mu.setIcntl(12, 2);
+        mu.setIcntl(14, 90);
+    }
 }

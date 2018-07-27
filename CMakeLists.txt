@@ -1,51 +1,75 @@
 cmake_minimum_required(VERSION 2.6)
 
+##Build Type
 set(BUILD_TYPE "Release")
-
 if(DEBUG MATCHES ON)
     set(BUILD_TYPE "Debug")
     set(CMAKE_CXX_FLAGS "-O0 --coverage")
     add_definitions(-DDBG)
+    add_definitions(-DDEBUG)
 endif()
-
-include(abcdCmake.in)
-project(abcd CXX C Fortran)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-
-find_package (Boost COMPONENTS mpi serialization REQUIRED)
-
-# the library
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
-set(LIBRARY_OUTPUT_PATH lib)
+
+##Configuration file
+include(abcdCmake.in)
+
+##Project
+project(abcd CXX C Fortran)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
+# Version number.
+set (ABCD_VERSION_MAJOR 1)
+set (ABCD_VERSION_MINOR 1)
+configure_file (
+    "${PROJECT_SOURCE_DIR}/include/abcd.h.in"
+    "${PROJECT_SOURCE_DIR}/include/abcd.h"
+)
 
-#add_definitions(-DCOMPLEX="std::complex<double>")
+##Environment file
+IF("${BOOST_ROOT}" STREQUAL "")
+    message("BOOST_ROOT not specified. Compilation of Boost libraries mpi/serialization/python with ABCD sources.")
+    set(BOOST_ROOT ${ABCD_PROJECT_DIR}/lib/boost/)
+    set(Boost_INCLUDE_DIRS
+        ${BOOST_ROOT}
+        ${BOOST_ROOT}/boost
+        ${BOOST_ROOT}/libs
+    )
+    # libboost_mpi
+    file(
+        GLOB_RECURSE
+        src_boost
+        lib/boost/libs/mpi/*.cpp
+    )
+    add_library(boost_mpi STATIC ${src_boost})
+    # libboost_serialization
+    file(
+        GLOB_RECURSE
+        src_boost
+        lib/boost/libs/serialization/*.cpp
+    )
+    add_library(boost_serialization STATIC ${src_boost})
+    # libboost_python
+    IF(NOT "${PYTHON_DEF}" STREQUAL "")
+        file(
+            GLOB_RECURSE
+            src_boost
+            lib/boost/libs/python/*.cpp
+        )
+        add_library(boost_python STATIC ${src_boost})
+    ENDIF()
+ELSE()
+    message("BOOST_ROOT specified at ${BOOST_DIR}.")
+    message("Checking Boost installation.")
+    find_package (Boost COMPONENTS mpi serialization REQUIRED)
+    set(Boost_USE_MULTITHREADED ON)
+    set(Boost_NO_SYSTEM_PATHS ON)
+ENDIF()
+IF(NOT ENV_INCLUDED)
+    include(env.in)
+ENDIF()
 
-if(NOT PATOH MATCHES OFF)
-    add_definitions(-DPATOH)
-endif()
-
-if(MUMPS_ES MATCHES OFF)
-    add_definitions(-DNO_MUMPS_ES)
-endif()
-
-if(WIP MATCHES ON)
-  add_definitions(-DWIP)
-endif()
-
-include_directories(
-  ${ABCD_PROJECT_DIR}/include
-  ${ABCD_PROJECT_DIR}/lib/sparselib/include
-  ${ABCD_PROJECT_DIR}/lib/sparselib/mv/include
-  ${ABCD_PROJECT_DIR}/lib/mumps/include
-  ${Boost_INCLUDE_DIRS}
-  ${BOOST_ROOT}
-  ${MUMPS_INCLUDE_DIR}
-  ${MPI_INC_DIR}
-  )
-
+##Libs and Tests
+# libabcd
 file(
     GLOB_RECURSE
     source_files
@@ -53,9 +77,20 @@ file(
     src/*.cpp
     src/*.c
 )
-
-add_library(abcd SHARED ${source_files})
-
+add_library(abcd STATIC ${source_files})
+target_link_libraries(
+    abcd
+    ${LIBS}
+)
+# abcd_run
 add_subdirectory(test)
 
-add_subdirectory(src/utils)
+# Python
+IF(NOT "${PYTHON_DEF}" STREQUAL "")
+    find_package (PythonLibs REQUIRED)
+    if(PYTHONLIBS_FOUND)
+        add_subdirectory(python)
+    else()
+        message("PythonLibs didn't work")
+    endif()
+endif()

@@ -108,13 +108,17 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
     // this is needed only in ABCD direct and iterative
     if(dcntl[Controls::aug_type] == 0 || icntl[Controls::aug_iterative] == 2){
 #endif //wip
-
         std::vector<int>::iterator pos = my_cols.begin();
         std::vector<int>::iterator end_pos;
 
-        vc.reserve(my_cols.size() * my_cols.size());
-        vr.reserve(my_cols.size() * my_cols.size());
-        vv.reserve(my_cols.size() * my_cols.size());
+//        try {
+            vc.reserve(my_cols.size() * my_cols.size());
+            vr.reserve(my_cols.size() * my_cols.size());
+            vv.reserve(my_cols.size() * my_cols.size());
+//        } catch (const std::bad_alloc&) {
+//            LINFO << "Tried to allocate: " << my_cols.size()*my_cols.size() <<
+//                " but encountered std::bad_alloc. Try to compile with -m64.";
+//        }
 
         int share = icntl[Controls::aug_blocking];
 
@@ -126,11 +130,9 @@ void abcd::buildS(std::vector<int> &vr, std::vector<int> &vc, std::vector<double
             perc /= my_cols.size();
             perc *= 100;
 
-
             std::vector<int> cur_cols;
 
             std::copy(pos, end_pos, std::back_inserter(cur_cols));
-
 
             //int mumps_share = share > 32 ? share : 16;
             int mumps_share = share;

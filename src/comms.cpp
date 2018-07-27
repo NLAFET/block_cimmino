@@ -48,7 +48,132 @@ void abcd::createInterCommunicators()
         throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
     }
 
-    instance_type = comm.rank() < parallel_cg ? 0 : 1;
+        // ToDo define masters with a priori knowledge on workload
+        // Sort parts per estimated workload for its master (#rows then maybe #rows*#nz?)
+        // 1part/1node
+        //    if #part > #nodes
+        //        zig-zag in nodes from biggest workload
+        // slaves in same node while possible
+        // for remaining slaves in remaining nodes/slots
+        //    fill empty nodes with slaves grouped (priority to big workload)
+        //    fill empty slots with slaves (priority to big workload)
+
+    // Broadcast choice for Master/Slave distribution
+    mpi::broadcast(comm, icntl[Controls::master_def], 0);
+    mpi::broadcast(comm, icntl[Controls::slave_def], 0);
+
+    // choice 1: zig-zag 1master/node assignation
+    // choice -1: previous implementation
+    int choice=icntl[Controls::master_def];
+    if (choice == 1) {
+        // This choice will place 1 master on each node in descending order or node size
+        // then if masters remain will continue adding them in zig-zag to the nodes
+        mpi::environment env;
+        std::string node = env.processor_name();
+        if (comm.rank() == 2 || comm.rank() == 3) node="NODE1";
+        if (comm.rank() == 4 || comm.rank() == 5) node="NODE2";
+        if (comm.rank() == 6 || comm.rank() == 7) node="NODE3";
+        if (comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10) node="NODE4";
+        int cpu = sched_getcpu();
+
+        // Get communication map information on root MPI
+        std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
+        std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
+        mpi::gather(comm, p, pair_vect, 0);
+        int count=0; // number of nodes
+        int mpi_count=0; // number of nodes
+        if (comm.rank() == 0) {
+            int root_node;
+	    std::map<std::string, int> nodes; // index of nodes
+    //        std::vector<int> mpi_map; // communication map MPI-node
+            std::vector<int> node_count; // number of MPI per node
+            for(int iii=0; iii<pair_vect.size(); ++iii) {
+                // if we meet the node for the first time
+                if (nodes.find(pair_vect[iii].second) == nodes.end()) {
+                    nodes[pair_vect[iii].second] = count;
+                    node_count.push_back(0);
+                    std::vector<int> v;
+                    node_map_slaves.push_back(v);
+                    ++count;
+                }
+                // increase number of MPI in this node
+                ++node_count[nodes[pair_vect[iii].second]];
+                node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
+                // save the node index for this MPI
+    //            mpi_map.push_back(nodes[pair_vect[iii].second]);
+            }
+            root_node=nodes[node];
+	    // now the vector nodes is useless
+
+/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
+            LINFO << "NODE: " << iii;
+            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
+                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
+        }
+        LINFO << "MAP2";*/
+
+	    // Sort nodes per count via tmp_ord to ord_nodes
+            // The node of the root MPI must always be first
+            std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort nodes by #MPI
+            for (int iii=0; iii<node_count.size(); ++iii) {
+                if (iii != root_node) {
+                    std::pair<int, int> p (node_count[iii], iii);
+                    tmp_ord.push_back(p);
+                }
+            }
+            std::sort(tmp_ord.begin(), tmp_ord.end(),
+                pair_comparison<int, int,
+                    position_in_pair::first,
+                    comparison_direction::descending>);
+            std::vector<int> ord_nodes; // node ordered index vs. original index
+            ord_nodes.push_back(root_node);
+            for (int iii=0; iii<tmp_ord.size(); ++iii) {
+                ord_nodes.push_back(tmp_ord[iii].second);
+            }
+
+            // Assign masters from biggest node to smallest then from smallest to biggest etc. (zig-zag)
+            instance_type_vect.assign(comm.size(), 1);
+            if (node_map_slaves.size() > 1) {
+                int current_idx=0;
+                int direction=0;
+                for (int iii=0; iii<parallel_cg; ++iii) {
+                    int current_node=ord_nodes[current_idx];
+                    // check if remaining MPI in node and assign as master
+		    if (node_map_slaves[current_node].size() > 0) {
+                        masters_node.push_back(current_node);
+                        instance_type_vect[node_map_slaves[current_node][0]] = 0;
+                        node_map_slaves[current_node].erase(node_map_slaves[current_node].begin());
+                    } else --iii;
+                    // update direction of node exploration
+                    if (!current_idx) {
+                        if (!direction) direction=1;
+                        else direction=0;
+                    } else if (!((current_idx+1)%node_map_slaves.size())) {
+                        if (!direction) direction=-1;
+                        else direction=0;
+                    }
+                    current_idx+=direction;
+                }
+            } else {
+                for (int iii=0; iii<parallel_cg; ++iii) {
+                    masters_node.push_back(0);
+                    instance_type_vect[node_map_slaves[0][0]] = 0;
+                    node_map_slaves[0].erase(node_map_slaves[0].begin());
+                }
+            }
+        }
+
+/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
+            LINFO << "NODE: " << iii;
+            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
+                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
+        }*/
+
+        mpi::broadcast(comm, instance_type_vect, 0);
+        instance_type = instance_type_vect[comm.rank()];
+   } else {
+        instance_type = comm.rank() < parallel_cg ? 0 : 1;
+   }
 
     inter_comm = comm.split(instance_type == 0);
 
@@ -75,8 +200,14 @@ void abcd::distributeRhs()
         for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
-        
-        if(rhs == nullptr){
+	
+	if(Xf.dim(0) != 0) {
+	    nrmXf = 0;
+	    for(int i = 0; i < A.dim(1); i++) {
+  	        if(abs(Xf(i,0)) > nrmXf) nrmXf = abs(Xf(i,0));
+	    }
+	}
+/*        if(rhs == nullptr){
             rhs = new double[n_l * nrhs];
 
             srand(10); 
@@ -100,6 +231,7 @@ void abcd::distributeRhs()
 
             MV_ColMat_double BB = smv(A, Xf);
 
+	if(Xf.dim(0) != 0) {
             for(int j = 0; j < nrhs; j++){
                 double unscaled; 
                 for(int i = 0; i < A.dim(1); i++) {
@@ -108,6 +240,8 @@ void abcd::distributeRhs()
                     Xf(i, j) = unscaled;
                 }
             }
+	}
+
 
             for(int j = 0; j < nrhs; j++){
                 //VECTOR_double t(rhs+j*m_l, m_l);
@@ -115,7 +249,7 @@ void abcd::distributeRhs()
                 //B.push_back(t);
                 B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
             }
-        } else {
+        } else {*/
             B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
             if(row_perm.size() != 0){
                 for(int j = 0; j < nrhs; j++){
@@ -131,7 +265,7 @@ void abcd::distributeRhs()
                     }
                 }
             }
-        }
+//        }
 
         int good_rhs = 0;
         if (infNorm(B) == 0) {
@@ -147,10 +281,9 @@ void abcd::distributeRhs()
 
         if(icntl[Controls::block_size] > nrhs) {
             double *rdata = new double[n_l * (icntl[Controls::block_size] - nrhs)];
-
             srand(n_l); 
             for(int i=0; i< n_l*(icntl[Controls::block_size]-nrhs); i++){ 
-                rdata[i] = (double)((rand())%10)/99.9 + 1;
+                rdata[i] = (double)((rand())%100+1)/99.9 + 1;
                 //rdata[i] = i+1;
             }
             MV_ColMat_double BR(rdata, n_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);

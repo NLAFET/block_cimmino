@@ -22,16 +22,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     CACHE PATH "Output directory for executables and DLL's.")
 
 # find required python packages
-find_package(PythonInterp REQUIRED)
-find_package(PythonLibsNew REQUIRED)
-find_package(NumPy REQUIRED)
+#find_package(PythonInterp REQUIRED)
+#find_package(PythonLibsNew REQUIRED)
+#find_package(NumPy REQUIRED)
 
 # find boost
-# 
 # set(Boost_USE_STATIC_LIBS ON)
 # set(Boost_USE_MULTITHREADED ON) 
 # set(Boost_USE_STATIC_RUNTIME ON)
-FIND_PACKAGE(Boost COMPONENTS python REQUIRED)
+# FIND_PACKAGE(Boost COMPONENTS python REQUIRED)
 
 message( STATUS "found boost:"
   "\nINCLUDE: ${Boost_INCLUDE_DIRS}"

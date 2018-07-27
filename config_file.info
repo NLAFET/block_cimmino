@@ -26,10 +26,16 @@ min_mumps       0
 ;;;;;;;;;;;;;;;
 
 ; verbosity: 0, 1, or 2
-verbose_level   0
+verbose_level   2
 
-; scaling: 0, 1, or 2
+; scaling
+; -1 > manual
+;    (man_scaling set the number of iterations: #normInf;#norm1;#normInf;#norm2)
+; 0 > no scaling
+; 1 > scaling with iterations 5;20;10;0
+; 2 > scaling with iterations 10;20;20;1
 scaling         2
+;man_scaling         20:50:50:1
 
 system
 {
@@ -41,7 +47,7 @@ system
     sol_file    "solution"
 
     ; maximum number of iterations
-    itmax       200
+    itmax       100
 
     ; the block-size used by the conjugate gradient
     ; must be >= 1
@@ -54,16 +60,19 @@ partitioning
     ; 1 > manual
     ; 2 > automatic
     ; 3 > patoh
-    part_type    2
+    ; 4 > reading from file
+    part_type    3
+
+    ; must specify filename if part_type==4
+    partvector "../example/e05r0500.mtx_part4"
 
     ; number of partitions
-    nbparts      5
+    nbparts      4
 
     ; guess the number of partitions
     ; 0 > do not guess
     ; 1 > guess the number of partitions
     part_guess   0
-
 
     ;; If you set the partitioning type to 1 (manual)
     ;; you will have to give the number of rows per partition
@@ -78,7 +87,6 @@ partitioning
     ;;      200        
     ;;      and so on...
     ;;  }
-
 }
 
 

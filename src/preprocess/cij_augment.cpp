@@ -46,7 +46,7 @@ void abcd::cijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
     stC = std::vector<int>(M.size(), -1);
 
     if (icntl[Controls::scaling] == 0)
-      LINFO << "Using C_ij based augmentation gives better results with scaling";
+      LWARNING << "Using C_ij based augmentation without scaling could induce numerical instability";
 
 
     for( size_t i = 0; i < M.size() - 1; i++ ){

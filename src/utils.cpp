@@ -33,12 +33,16 @@
 #include <abcd.h>
 #include "blas.h"
 #include "mat_utils.h"
+#ifndef NO_METIS
+    #include <metis.h>
+#endif
 
 using namespace std;
 using namespace boost::lambda;
 
+
 /// Partition weigts
-void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<int> weights, int nb_parts)
+void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std::vector<int> weights, int nb_parts)
 {
     std::vector<int> sets(nb_parts);
     std::map<int, std::vector<int> > pts;
@@ -48,63 +52,143 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &parts, std::vector<i
         pts[i];
     }
 
-    if (nb_parts == (int)weights.size()) {
+    if (nb_parts == (int)weights.size() ) {
         for(int i = 0; i < nb_parts; i++)
             pts[i].push_back(i);
-    } else {
-        int avg = accumulate(weights.begin(), weights.end(), 0);
-        avg = floor(0.9 * (double)avg / nb_parts);
+    } else if (nb_parts == 1) {
+        for(int i = 0; i < weights.size(); i++)
+            pts[0].push_back(i);
+    }
+#ifndef NO_METIS
+    // minCommWeight: try to diminish comm with METIS or not in config file
+    else if (icntl[Controls::minCommWeight] == 0) {
+#else
+    else {
+#endif
+	//sort weights and its indexes then distribute to minimum pts
+	std::vector<int>  sorted = sort_indexes(&weights[0],  weights.size());
+        std::sort(weights.begin(), weights.end());
+        std::reverse(sorted.begin(), sorted.end());
+        std::reverse(weights.begin(), weights.end());
 
-        float fix = 1.0;
-        int weight_index = weights.size() + 1;
-        while (weight_index > (int)weights.size()){
-            weight_index = 0;
-            pts.clear();
-            int current_partition = 0;
-            int current_weight = 0;
+	for(int i = 0; i < weights.size(); i++){
+		int min_index = min_element_index(sets.begin(), sets.end());
+		pts[min_index].push_back(sorted[i]);
+		sets[min_index] +=  weights[i];
+	}
+    }
+#ifndef NO_METIS
+else {
+        int numparts = weights.size(); //icntl[Controls::nbparts];
+        int Wnzmax= numparts*10;
+        idx_t Wanz =0;
+        // W is an adjacency matrix between partitions
+        idx_t *WCp,*WCj;    // Arrays for pointer (p) to columns (j)
+        WCp = (idx_t*) calloc(numparts+1,sizeof(idx_t));
+        WCj = (idx_t*) calloc(Wnzmax,sizeof(idx_t));
+        idx_t *WCx = (idx_t*) calloc(Wnzmax,sizeof(idx_t)); // Array of values
+        idx_t *vtxWght = (idx_t*) calloc(numparts,sizeof(idx_t)); // weights from ABCD (#rows in part)
 
-            // Share everything sequentially
-            while( (current_partition < nb_parts) &&
-                   (weight_index < (int)weights.size())) {
+        double timew2=MPI_Wtime();
+        idx_t *xb = (idx_t*)calloc(numparts,sizeof(idx_t));
+        double *xx = (double*)calloc(numparts,sizeof(double));
+        int ind =0;
 
-                if((weights[weight_index] > avg * (fix - 0.25))
-                    && (pts[current_partition].size() != 0)){
-                    current_partition++;
-                    current_weight = 0;
-                } else {
-                    current_weight += weights[weight_index];
-                    pts[current_partition].push_back(weight_index);
-                    weight_index++;
-                    if(current_weight > avg * fix){
-                        current_partition++;
-                        current_weight = 0;
+        // Find actual columns of the partition
+        int ** arrpart = new int*[numparts];
+        for(int i=0;i<numparts;i++){
+            arrpart[i] = (int*) calloc(A.dim(0), sizeof(int));
+            for(int j=0; j<column_index[i].size() ; j++){
+                arrpart[i][column_index[i][j]]=1;
+            }
+        }
+
+        for(int i= 0; i< numparts ; i++){
+            vtxWght[i] = weights[i];
+
+            // If array for interaction too small, try to allocate more
+            if( (Wanz + numparts) > Wnzmax){
+                Wnzmax += numparts*10;
+                WCj = (idx_t*)realloc(WCj, sizeof(idx_t)*Wnzmax);
+                WCx = (idx_t*)realloc(WCx, sizeof(idx_t)*Wnzmax);
+                LINFO << "Array size increased to "<< Wnzmax;
+                if(WCj == NULL){cout << "out of Memory" << Wnzmax << " "<< Wanz <<endl;exit(0);}
+            }
+            // Find interactions
+            WCp[i] = Wanz;
+            for(int j=0; j< A.dim(0); j++){
+                // if part has column, check interactions
+                if( arrpart[i][j] ){
+                    for(int m=0; m<numparts; m++){
+                        if(m == i) continue;
+                        // found interaction
+                        if( arrpart[m][j] ){
+                            // first interaction
+                            if(xb[m] != i+1 ){
+                                // Add in CSR format
+                               xb[m] = i+1; // place of interaction (pointer to col)
+                                  WCj[Wanz++] = (idx_t) m;
+                                  xx[m] = 1; // # interactions
+                            }
+                             else{
+                                    xx[m]++;
+                            }
+                        }
                     }
                 }
             }
-            fix -= 0.25;
-        }
-
-        // if there are some weights left, go greedy
-        if (weight_index < (int)weights.size()) {
-            int cur = weight_index;
-            int ls = 0;
-            while(cur != (int)weights.size()){
-                int sm = ls;
-                for(int i = 0; i < nb_parts; i++){
-                    if(sets[i] < sets[sm]) sm = i;
-                }
-                sets[sm] = sets[sm] + weights[cur];
-                pts[sm].push_back(cur);
-                cur++;
-                ls = sm;
+            // Update number of interactions
+            for (int pp = WCp[i]; pp < Wanz; pp++){
+                WCx[pp] = (idx_t)xx[WCj[pp]];
             }
         }
+        WCp[numparts] = Wanz;   // Number of non-zeros for last element in CSR
+
+        // Now you have the SPARSE adjacency matrix
+
+        // Free memory
+        for(int i=0;i<numparts;i++)  free(arrpart[i]);
+        free(arrpart);
+
+        LINFO << "Preprocessing time for Min. communication partitions distribution " << MPI_Wtime() - timew2;
+
+        idx_t options[METIS_NOPTIONS];
+        METIS_SetDefaultOptions(options);
+//        options[METIS_OPTION_SEED]    = 1;
+//        options[METIS_OPTION_NITER]   = 10;
+//        options[METIS_OPTION_NCUTS]   = 1;
+        options[METIS_OPTION_UFACTOR] = 10*icntl[Controls::minCommWeight]; // imbalance ratio (100=10%)
+//        options[METIS_OPTION_DBGLVL]  = 127;
+
+        idx_t numberofparts = nb_parts;
+        idx_t nVertices = numparts;
+        idx_t nWeights = 1;
+        idx_t *adjncy, *part;
+        idx_t objval;   // #cuts
+        part = new idx_t[nVertices+1]; // groups of part from METIS
+        double t2 = MPI_Wtime();
+        int ret;
+
+        LINFO << "Launching METIS for Min. communication, aim: " << numberofparts << ", nVertices " << nVertices << ", nEdges " << Wanz ;
+        /* METIS: Multilevel algorithm
+            - K-way: partition at the coarsest level (but possible empty partitions)
+            - Recursive: divide in 2 at coarsest then divides at each level recursively (may be better in some cases)
+        */
+        ret = METIS_PartGraphKway(&nVertices, &nWeights, WCp, WCj,  vtxWght , NULL, WCx, &numberofparts, NULL,NULL, options, &objval, part);
+        //ret = METIS_PartGraphRecursive(&nVertices, &nWeights, WCp, WCj,  NULL, NULL, WCx, &numberofparts, NULL,NULL, options, &objval, part); // same but different heuristic
+
+        LINFO << "Done with METIS, time " << setprecision(6) << MPI_Wtime()-t2 << ", #cuts " << objval << " return " << ret;
+
+        for(int z =0; z < nVertices; z++) {
+            pts[part[z]].push_back(z);  // groups of parts in ABCD
+        }
+
     }
+#endif
 
     for(int i = 0; i < nb_parts; i++){
-        parts.push_back(pts[i]);
+        partitionsSets.push_back(pts[i]);
     }
-
 }
 
 ///DDOT
@@ -217,14 +301,23 @@ std::vector<int> sort_indexes(const int *v, const int nb_el) {
     vp.reserve(nb_el);
 
     for(int i = 0; i < nb_el; i++)
-        vp.push_back( std::make_pair<int,int>(v[i], i) );
+        vp.push_back( std::make_pair(v[i], i) );
 
 
     // sort indexes based on comparing values in v
-    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+//    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
+//    std::vector<int> idx(vp.size());
+//    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
 
+    // sort indexes based on comparing values in v
+    std::sort(vp.begin(), vp.end(),
+        pair_comparison<int, int,
+        position_in_pair::first,
+        comparison_direction::ascending>);
     std::vector<int> idx(vp.size());
-    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
+    for(int i=0; i<vp.size(); ++i){
+      idx[i]=vp[i].second;
+    }
     return idx;
 }
 
@@ -238,7 +331,7 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
     }
 
     MV_ColMat_double source(src, src_lda, src_ncols, MV_Matrix_::ref);
-    
+
     if(IRANK == 0) {
         double t = MPI_Wtime();
 
@@ -260,7 +353,7 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
                     vdest(ci, j) = xo[k][i + j * lo[k]] * scale[ci];
                 }
         }
-        
+
         for(int j = 0; j < dest_ncols; ++j)
             for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < dest_lda; ++i){
                 vdest(globalIndex[i], j) = source(i, j) * dcol_[globalIndex[i]];

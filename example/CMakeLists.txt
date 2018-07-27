@@ -1,81 +1,55 @@
 cmake_minimum_required(VERSION 2.6)
 
+##Build Type
 set(BUILD_TYPE "Release")
-
-include(../abcdCmake.in)
-project(example CXX C Fortran)
-
-set(CMAKE_CXX_FLAGS "-fopenmp")
-set(CMAKE_C_FLAGS "-fopenmp")
-
-find_package (Boost COMPONENTS mpi serialization REQUIRED)
-
-# the library
 set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
 
-if(NOT PATOH MATCHES OFF)
-  set(LIBS ${LIBS} patoh)
-endif()
+##Configuration file
+include(../abcdCmake.in)
 
-set(LIBS ${LIBS}
-  dmumps
-  mumps_common
+##Project
+project(example CXX C Fortran)
+set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
 
-  ${Boost_LIBRARIES}
-  ${BLAS_LAPACK_SCALAPACK_LIBS}
-  ${MPI_LIBRARIES}
+IF ("${ABCD}" STREQUAL "")
+    message(FATAL_ERROR "You need to provide the path to abcd root as: 'cmake .. -DABCD=/path/to/abcd'")
+ENDIF()
+IF("${ABCD_PROJECT_DIR}" STREQUAL "")
+    set(ABCD_PROJECT_DIR ${ABCD})
+ENDIF()
+set(LIB_DIRS
+    ${ABCD_PROJECT_DIR}/build/lib
+    ${LIB_DIRS}
+)
 
-  sparse
-  spblas
-  mv
-  gfortran
-  )
+##Environment file
+#IF(NOT ENV_INCLUDED)
+    include(../env.in)
+#ENDIF()
 
-link_directories(
-  ${ABCD}/lib
-  ${ABCD}/lib/sparselib/lib/
-  ${ABCD}/lib/mumps/lib/
-  ${ABCD}/build/lib
-  ${Boost_LIBRARY_DIRS}
-  ${MUMPS_LIBRARY_DIR}
-  ${BLAS_LAPACK_SCALAPACK_DIRS}
-  ${MPI_LIB_DIR}
-  ${LIB_DIRS}
-  )
-
-include_directories(
-  ${ABCD}/include
-  ${ABCD}/lib/sparselib/include
-  ${ABCD}/lib/sparselib/mv/include
-  ${ABCD}/lib/mumps/include
-  ${Boost_INCLUDE_DIRS}
-  ${BOOST_ROOT}
-  ${MUMPS_INCLUDE_DIR}
-  ${MPI_INC_DIR}
-  )
-
-
+##Executable example for C++
+# Compiled main
 add_executable(
   example
   example.cpp
   )
-
-###Configuration de l'édition de liens
+# Configuration de l'édition de liens
 target_link_libraries(
   example
-  abcd 
+  abcd
   ${LIBS}
   )
 
+##Executable example for C
+# Compiled main
 add_executable(
   example_c
   example.c
   )
-
-###Configuration de l'édition de liens
+# Configuration de l'édition de liens
 target_link_libraries(
   example_c
-  abcd 
+  abcd
   ${LIBS}
   stdc++
   m

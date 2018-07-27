@@ -1,66 +1,37 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(Test_abcd)
+##Configuration file
+include(../abcdCmake.in)
 
-if(DEBUG MATCHES ON)
-  add_definitions(-DDEBUG)
-endif()
+##Project
+project(Test_abcd CXX)
 
+##Environment file
+IF(NOT ENV_INCLUDED)
+    include(../env.in)
+ENDIF()
+
+# Executable
 set(EXECUTABLE_OUTPUT_PATH ../)
 
-if(NOT PATOH MATCHES OFF)
-  set(LIBS ${LIBS} patoh)
-endif()
-
-set(LIBS ${LIBS}
-  dmumps
-  mumps_common
-
-  ${Boost_LIBRARIES}
-  ${BLAS_LAPACK_SCALAPACK_LIBS}
-  ${MPI_LIBRARIES}
-
-  sparse
-  spblas
-  mv
-  gfortran
-  )
-
-link_directories(
-  ${ABCD_PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
-  ${ABCD_PROJECT_DIR}/lib
-  ${ABCD_PROJECT_DIR}/lib/sparselib/lib/
-  ${ABCD_PROJECT_DIR}/lib/mumps/lib/
-  ${Boost_LIBRARY_DIRS}
-  ${MUMPS_LIBRARY_DIR}
-  ${BLAS_LAPACK_SCALAPACK_DIRS}
-  ${MPI_LIB_DIR}
-  ${LIB_DIRS}
-  )
-
-include_directories(../include ${Boost_INCLUDE_DIRS})
-
+##Executable example for C++
+# Compiled main
 add_executable(
   abcd_run
   src/main.cpp
 )
-
-
-#Configuration de l'édition de liens
+#Configuration de l'Ã©dition de liens
 target_link_libraries(
-  abcd_run
-  abcd 
-  ${LIBS}
+    abcd_run
+    abcd
+    ${LIBS}
 )
-
 
 ################################
 # Testing
 ################################
 if(TEST MATCHES ON)
-
-  # Locate GTest
-
+  # Locate GTest/GMock
   set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
   set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
   set(GTEST_INCLUDE_DIR $ENV{HOME}/.local/include/)
@@ -78,7 +49,7 @@ if(TEST MATCHES ON)
   target_link_libraries(runTests
     ${GTEST_BOTH_LIBRARIES}
     ${GMOCK_BOTH_LIBRARIES}
-    abcd 
+			#    abcd
     ${LIBS}
     )
 
@@ -87,9 +58,8 @@ if(TEST MATCHES ON)
   target_link_libraries(runParallelTests
     ${GTEST_BOTH_LIBRARIES}
     ${GMOCK_BOTH_LIBRARIES}
-    abcd 
+			#    abcd
     ${LIBS}
     )
   enable_testing()
-
 endif()

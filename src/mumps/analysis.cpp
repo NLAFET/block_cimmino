@@ -37,6 +37,7 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
 {
 
   double t = MPI_Wtime();
+
   mu(1);
 
   t = MPI_Wtime() - t;
