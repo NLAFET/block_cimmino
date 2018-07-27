@@ -1,3 +1,4 @@
+
 // Copyright Institut National Polytechnique de Toulouse (2014) 
 // Contributor(s) :
 // M. Zenadi <mzenadi@enseeiht.fr>
@@ -98,8 +99,30 @@ void abcd::scaling()
             abcd::diagScaleMatrix(dr, dc);
         }
     }
+
+    if(icntl[Controls::scaling] > 1) {
+        LINFO << "2-Norm Row-Scaling";
+
+        double rsum;
+        std::vector<double> dc(n, double(1));
+        std::vector<double> dr(m, double(1));
+	double *Ax = A.val_ptr();
+
+	#pragma omp parallel for private(rsum)
+        for(int r = 0; r < m; ++r) {
+            rsum = 0;
+            for (int c=A.row_ptr(r); c<A.row_ptr(r+1); c++){
+                rsum += pow(Ax[c], 2);
+            }
+	    dr[r] = 1/sqrt(rsum);
+            drow_[r] *= 1/sqrt(rsum);
+        }
+
+        abcd::diagScaleMatrix(dr, dc);
+    }
 }
 
+//TODO ? Remove local dr/dc: only dcol_/drow_ are used
 void abcd::scaleMatrix(int norm)
 {
     int lw, liw, job;
@@ -115,7 +138,6 @@ void abcd::scaleMatrix(int norm)
         for(int k = 0; k < nz ; k++) {
             a_cp[k]++;
         }
-
     // Local scaling arrays
     std::vector<double> dc(n, double(1));
     std::vector<double> dr(m, double(1));

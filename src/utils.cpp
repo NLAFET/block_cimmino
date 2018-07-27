@@ -40,7 +40,6 @@
 using namespace std;
 using namespace boost::lambda;
 
-
 /// Partition weigts
 void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std::vector<int> weights, int nb_parts)
 {
@@ -70,7 +69,6 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
         std::sort(weights.begin(), weights.end());
         std::reverse(sorted.begin(), sorted.end());
         std::reverse(weights.begin(), weights.end());
-
 	for(int i = 0; i < weights.size(); i++){
 		int min_index = min_element_index(sets.begin(), sets.end());
 		pts[min_index].push_back(sorted[i]);

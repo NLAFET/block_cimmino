@@ -185,7 +185,6 @@ int abcd::initializeMatrix()
 
 	if(rhs == nullptr){
 		LINFO << "-- No RHS specified, the new one will be created --";
-
 		Xf = MV_ColMat_double(m, nrhs);
 
 		for(int j = 0; j < nrhs; j++){
@@ -300,7 +299,6 @@ int abcd::factorizeAugmentedSystems()
         }
         abcd::analyseAugmentedSystems(mumps);
     }
-
     if(IRANK == 0){
         LINFO << "Initialization time : " << MPI_Wtime() - t;
     }
