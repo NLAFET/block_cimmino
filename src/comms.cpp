@@ -70,10 +70,15 @@ void abcd::createInterCommunicators()
         // then if masters remain will continue adding them in zig-zag to the nodes
         mpi::environment env;
         std::string node = env.processor_name();
+/*        if (comm.rank() == 0 || comm.rank() == 1) node="NODE0";
         if (comm.rank() == 2 || comm.rank() == 3) node="NODE1";
         if (comm.rank() == 4 || comm.rank() == 5) node="NODE2";
         if (comm.rank() == 6 || comm.rank() == 7) node="NODE3";
         if (comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10) node="NODE4";
+        if (comm.rank() == 11 || comm.rank() == 12 || comm.rank() == 13 || comm.rank() == 14) node="NODE5";
+        if (comm.rank() == 15 || comm.rank() == 16 || comm.rank() == 17 || comm.rank() == 18 || comm.rank() == 19) node="NODE6";
+        if (comm.rank() == 20 || comm.rank() == 21 || comm.rank() == 22 || comm.rank() == 23 || comm.rank() == 24) node="NODE7";
+        if (comm.rank() == 25 || comm.rank() == 26 || comm.rank() == 27 || comm.rank() == 28 || comm.rank() == 29) node="NODE8";*/
         int cpu = sched_getcpu();
 
         // Get communication map information on root MPI

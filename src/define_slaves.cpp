@@ -128,19 +128,15 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
 //                    LINFO << "MASTER: " << master;
                     int node_master=masters_node[master];
                     int iii=0;
-                    int jjj=0;
                     while (slaves_for_me[master] > 0) {
+                        // Go to the next non-empty node if the current one is empty
+                        while(node_map_slaves[iii].size() == 0)
+                           ++iii;
                         int slave=node_map_slaves[iii][0];
                         comm.send(slave, 11, masters_comm_rank[master]);
                         tmp_my_slaves.push_back(slave);
                         node_map_slaves[iii].erase(node_map_slaves[iii].begin());
                         --slaves_for_me[master];
-
-                        ++jjj;
-                        if (jjj==node_map_slaves[iii].size()) {
-                            jjj=0;
-                            ++iii;
-                        }
                     }
                     if (masters_comm_rank[master] == 0) {
                         my_slaves.insert(my_slaves.end(), tmp_my_slaves.begin(), tmp_my_slaves.end());
@@ -163,21 +159,19 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                     int node_master=masters_node[master];
                     int node=node_master;
                     int iii=0;
-                    int jjj=0;
                     while (slaves_for_me[master] > 0) {
-                        if (node_map_slaves[node_master].size() == 0) node=iii;
+                        // If the node of the master and the current node are empty,
+                        // go to the next non-empty one
+                        if (node_map_slaves[node_master].size() == 0) {
+                            while(node_map_slaves[iii].size() == 0)
+                                ++iii;
+                            node=iii;
+                        }
                         int slave=node_map_slaves[node][0];
                         comm.send(slave, 11, masters_comm_rank[master]);
                         tmp_my_slaves.push_back(slave);
                         node_map_slaves[node].erase(node_map_slaves[node].begin());
                         --slaves_for_me[master];
-                        if (node_map_slaves[node].size() == 0) {
-                            ++jjj;
-                            if (jjj==node_map_slaves[node].size()) {
-                                jjj=0;
-                                ++iii;
-                            }
-                        }
                     }
                     if (masters_comm_rank[master] == 0) {
                         my_slaves=tmp_my_slaves;
