@@ -31,7 +31,6 @@
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 #include <abcd.h>
-#include "paircomparison.h"
 
 void abcd::allocateMumpsSlaves(MUMPS &mu)
 {

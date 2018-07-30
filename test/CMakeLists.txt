@@ -30,7 +30,8 @@ target_link_libraries(
 ################################
 # Testing
 ################################
-if(TEST MATCHES ON)
+if(NOT "${GTEST}" STREQUAL "")
+#if(TEST MATCHES ON)
   # Locate GTest/GMock
   set(GTEST_LIBRARY $ENV{HOME}/.local/lib/libgtest.a)
   set(GTEST_MAIN_LIBRARY $ENV{HOME}/.local/lib/libgtest_main.a)
