@@ -34,28 +34,45 @@ IF("${BOOST_ROOT}" STREQUAL "")
         ${BOOST_ROOT}/boost
         ${BOOST_ROOT}/libs
     )
-    # libboost_mpi
-    file(
-        GLOB_RECURSE
-        src_boost
-        lib/boost/libs/mpi/*.cpp
-    )
-    add_library(boost_mpi STATIC ${src_boost})
-    # libboost_serialization
-    file(
-        GLOB_RECURSE
-        src_boost
-        lib/boost/libs/serialization/*.cpp
-    )
-    add_library(boost_serialization STATIC ${src_boost})
-    # libboost_python
-    IF(NOT "${PYTHON_DEF}" STREQUAL "")
+    set(Boost_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
+    # check if libraries where already installed
+    find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS})
+    find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS})
+    find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS})
+    IF("${BOOSTMPI_FOUND}" STREQUAL "BOOSTMPI_FOUND-NOTFOUND")
+        # libboost_mpi
         file(
             GLOB_RECURSE
             src_boost
-            lib/boost/libs/python/*.cpp
+            lib/boost/libs/mpi/*.cpp
         )
-        add_library(boost_python STATIC ${src_boost})
+        add_library(boost_mpi STATIC ${src_boost})
+    ELSE()
+        message("libboost_mpi already installed.")
+    ENDIF()
+    IF("${BOOSTSER_FOUND}" STREQUAL "BOOSTSER_FOUND-NOTFOUND")
+        # libboost_serialization
+        file(
+            GLOB_RECURSE
+            src_boost
+            lib/boost/libs/serialization/*.cpp
+        )
+        add_library(boost_serialization STATIC ${src_boost})
+    ELSE()
+        message("libboost_serialization already installed.")
+    ENDIF()
+    IF(NOT "${PYTHON_DEF}" STREQUAL "")
+        IF("${BOOSTPYT_FOUND}" STREQUAL "BOOSTPYT_FOUND-NOTFOUND")
+            # libboost_python
+            file(
+                GLOB_RECURSE
+                src_boost
+                lib/boost/libs/python/*.cpp
+            )
+            add_library(boost_python STATIC ${src_boost})
+        ELSE()
+            message("libboost_python already installed.")
+        ENDIF()
     ENDIF()
 ELSE()
     message("BOOST_ROOT specified at ${BOOST_DIR}.")
