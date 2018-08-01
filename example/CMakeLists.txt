@@ -7,25 +7,22 @@ set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
 ##Configuration file
 include(../abcdCmake.in)
 
-##Project
-project(example CXX C Fortran)
-set(CMAKE_BUILD_TYPE ${BUILD_TYPE})
-
+IF(NOT "${PROJECT_NAME}" STREQUAL "")
+    message(FATAL_ERROR "example should be compiled alone: 'cd example/; mkdir build; cd build; cmake .. -DABCD=/path/to/abcd; make'")
+ENDIF()
 IF ("${ABCD}" STREQUAL "")
     message(FATAL_ERROR "You need to provide the path to abcd root as: 'cmake .. -DABCD=/path/to/abcd'")
 ENDIF()
-IF("${ABCD_PROJECT_DIR}" STREQUAL "")
-    set(ABCD_PROJECT_DIR ${ABCD})
-ENDIF()
+
+##Project
+project(example CXX C Fortran)
+set(ABCD_PROJECT_DIR ${ABCD})
 set(LIB_DIRS
     ${ABCD_PROJECT_DIR}/build/lib
     ${LIB_DIRS}
 )
 
-##Environment file
-#IF(NOT ENV_INCLUDED)
-    include(../env.in)
-#ENDIF()
+include(../env.in)
 
 ##Executable example for C++
 # Compiled main

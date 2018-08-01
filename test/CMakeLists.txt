@@ -4,11 +4,18 @@ cmake_minimum_required(VERSION 2.6)
 include(../abcdCmake.in)
 
 ##Project
-project(Test_abcd CXX)
+IF("${PROJECT_NAME}" STREQUAL "")
+    project(Test_abcd CXX)
 
-##Environment file
-IF(NOT ENV_INCLUDED)
-    include(../env.in)
+    IF ("${ABCD}" STREQUAL "")
+        message(FATAL_ERROR "You need to provide the path to abcd root as: 'cmake .. -DABCD=/path/to/abcd'")
+    ENDIF()
+    set(ABCD_PROJECT_DIR ${ABCD})
+
+    ##Environment file
+    IF(NOT ENV_INCLUDED)
+        include(../env.in)
+    ENDIF()
 ENDIF()
 
 # Executable
