@@ -175,6 +175,9 @@ public:
     /*!  The solution vector of size #n * #nrhs */
     double *sol;
 
+    bool use_xk;
+    MV_ColMat_double Xk;
+
     /*!  The gateway function that launches all other options
      *
      * Run an operation identified by the value of job_id, it can be
@@ -435,7 +438,6 @@ private:
 
     int n_l, m_l, nz_l;
 
-    MV_ColMat_double Xk;
 
     int nbparts; /// The number of partitions
     int nb_local_parts;
@@ -456,7 +458,6 @@ private:
     std::vector<std::map<int,int> > glob_to_part;
     std::vector<std::map<int,int> > part_to_glob;
     std::vector<int> stC;
-    bool use_xk;
     bool use_xf;
     MV_ColMat_double solution; ///< The solution vector
 

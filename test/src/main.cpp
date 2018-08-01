@@ -123,6 +123,7 @@ int main(int argc, char* argv[])
         //read the rhs here!
         boost::optional<string> rhs_file = pt.get_optional<string>("system.rhs_file");
         boost::optional<string> sol_file = pt.get_optional<string>("system.sol_file");
+        boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
         boost::optional<string> conv_backward_file = pt.get_optional<string>("system.backward_err_file");
         boost::optional<string> conv_scaled_file = pt.get_optional<string>("system.scaled_residual_file");
         
@@ -152,6 +153,35 @@ int main(int argc, char* argv[])
             //
             fclose(rhs_f);
         }
+
+	if(start_file){
+            FILE *strt_f = fopen(start_file->c_str(), "r");
+
+            if(strt_f == NULL){
+                cerr << "Error opening the file '"<< *start_file << "'" << endl;
+                exit(-1);
+            }
+
+            MM_typecode rhs_code;
+            int nb_v, m_v;
+
+            mm_read_banner(strt_f, &rhs_code);
+            mm_read_mtx_array_size(strt_f, &m_v, &nb_v);
+
+	    obj.Xk = MV_ColMat_double(m_v, nb_v, 0);
+            double *xkptr = obj.Xk.ptr();
+
+            cout << "Reading "<< m_v << " values for each of the " << nb_v << " start vector" << endl;
+
+            double cv;
+            int ret;
+            for(int i = 0; i < m_v*nb_v; i++){
+                ret = fscanf(strt_f, "%lf", &cv);
+                xkptr[i] = cv;
+            }
+            fclose(strt_f);
+            obj.use_xk=true;
+         }
 
         int testMumps =(int) pt.get<bool>("test_mumps", false);
         double minMumps = pt.get<double>("min_mumps", 0);

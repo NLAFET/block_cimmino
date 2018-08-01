@@ -79,6 +79,15 @@ void abcd::scaling()
 
         diagScaleMatrix(drow_, dcol_);
 
+	// Scale the starting vector if it exists
+	if(use_xk)
+        {
+             double *v = Xk.ptr();
+             for ( int i = 0; i < Xk.dim(0); i++ ) {
+                 v[i] = v[i] * (1/dcol_[i]);
+             }
+        }
+
         if(man_scaling[3] > 0) {
             double rsum;
             std::vector<double> dc(n, double(1));
