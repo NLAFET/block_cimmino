@@ -17,13 +17,6 @@ include(abcdCmake.in)
 project(abcd CXX C Fortran)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
-# Version number.
-set (ABCD_VERSION_MAJOR 1)
-set (ABCD_VERSION_MINOR 1)
-configure_file (
-    "${PROJECT_SOURCE_DIR}/include/abcd.h.in"
-    "${PROJECT_SOURCE_DIR}/include/abcd.h"
-)
 
 ##Environment file
 IF("${BOOST_ROOT}" STREQUAL "")

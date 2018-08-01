@@ -42,6 +42,7 @@ system
     ; only matrix-market format is supported
     matrix_file "../example/e05r0500.mtx"
     rhs_file    "../example/e05r0500_rhs.mtx"
+    start_file  "../example/e05r0500_x0.mtx"
 
     ; the output
     sol_file    "solution"

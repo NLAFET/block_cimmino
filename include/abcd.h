@@ -32,7 +32,7 @@
 
 // the configured options and settings for ABCD
 #define ABCD_VERSION_MAJOR 1
-#define ABCD_VERSION_MINOR 1
+#define ABCD_VERSION_MINOR 0
 
 #ifndef ABCD_HXX_
 #define ABCD_HXX_
