@@ -49,63 +49,71 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
             flops[max_index] = flops_orig[max_index] / (slaves_for_me[max_index] + 1);
 	}
 
-        // choice 0: slave assigned as encountered
-        // choice 1:
-        //    a) for each master in descending order of flops: put slaves in same node
-        //    b) for each master in descending order of flops: add remaining slaves GROUPED in remaining slots
-        // choice 2: idem with merged loops
-        //    a) for each master in descending order of flops: fill node then add remaining
-        // choice -1: previous implementation (masters first ranks: no longer working)
-        int choice=icntl[Controls::slave_def];
-        //get correspondance between comm and inter_comm ranks for masters
-        std::vector<int> masters_comm_rank;
-        if (choice >= 0) {
-            mpi::gather(inter_comm, comm.rank(), masters_comm_rank, 0);
-        }
         // Sort masters per #slaves via tmp_ord to ord_nodes
         std::vector<int> ord_masters; // masters ordered index vs. original index
-        if (choice > 0) {
-            std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort masters by #slaves
-            for (int iii=0; iii<slaves_for_me.size(); ++iii) {
-                std::pair<int, int> p (iii, slaves_for_me[iii]);
-                tmp_ord.push_back(p);
+        std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort masters by #slaves
+        for (int iii=0; iii<slaves_for_me.size(); ++iii) {
+            std::pair<int, int> p (iii, slaves_for_me[iii]);
+            tmp_ord.push_back(p);
+        }
+        std::sort(tmp_ord.begin(), tmp_ord.end(),
+            pair_comparison<int, int,
+                position_in_pair::second,
+                comparison_direction::descending>);
+        for (int iii=0; iii<tmp_ord.size(); ++iii) {
+            ord_masters.push_back(tmp_ord[iii].first);
+        }
+
+        //get correspondance between comm and inter_comm ranks for masters
+        std::vector<int> masters_comm_rank;
+        std::vector<std::vector<int>> disp_node_map_slaves; // to display info about slaves
+        std::vector<std::vector<int>> disp_node_map_masters; // to display info about masters
+        mpi::gather(inter_comm, comm.rank(), masters_comm_rank, 0);
+        if (!comm.rank()) {
+            for (int i=0; i<node_map_slaves.size(); ++i) {
+                std::vector<int> v;
+                disp_node_map_slaves.push_back(v);
+                disp_node_map_masters.push_back(v);
             }
-            std::sort(tmp_ord.begin(), tmp_ord.end(),
-                pair_comparison<int, int,
-                    position_in_pair::second,
-                    comparison_direction::descending>);
-            for (int iii=0; iii<tmp_ord.size(); ++iii) {
-                ord_masters.push_back(tmp_ord[iii].first);
+            for (int i=0; i<ord_masters.size(); ++i) {
+                int master=ord_masters[i];
+                disp_node_map_masters[masters_node[master]].push_back(masters_comm_rank[master]);
             }
         }
+
+        int choice=icntl[Controls::slave_def];
         // DEFINE SLAVES
+        // choice 0: slave assigned as encountered
         if (choice==0) {
             // distribute slaves to masters according to previous count
             int current_master=0;
             for(int proc=0; proc<instance_type_vect.size(); ++proc) {
                 if (instance_type_vect[proc]) {
                     // let root MPI inform slaves of their master
-                    if(comm.rank() == 0) {
+                    if(!comm.rank()) {
                         // current_master is numbered as in inter_comm but should be sent as in comm
                         // with the previous implementation there was no difference
                         comm.send(proc, 11, masters_comm_rank[current_master]);
                     }
                     // masters recognize their slaves
-                    if(inter_comm.rank() == current_master) {
+                    if(inter_comm.rank() == current_master)
                         my_slaves.push_back(proc);
-                    }
                     // when a master has all its slaves, go to next
                     --slaves_for_me[current_master];
+                    if(!comm.rank())
+                        disp_node_map_slaves[mpi_map[proc]].push_back(masters_comm_rank[current_master]);
                     if (!slaves_for_me[current_master])
                         ++current_master;
                 }
             }
+        // choice 1:
+        //    a) for each master in descending order of flops: put slaves in same node
+        //    b) for each master in descending order of flops: add remaining slaves GROUPED in remaining slots
         } else if (choice==1) { // first choice
             if (comm.rank() == 0) {
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
                     int master=ord_masters[idx];
-//                    LINFO << "MASTER: " << master;
                     int node_master=masters_node[master];
                     int node=node_master;
                     while (slaves_for_me[master] > 0 && node_map_slaves[node_master].size() > 0) {
@@ -114,6 +122,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         tmp_my_slaves.push_back(slave);
                         node_map_slaves[node].erase(node_map_slaves[node].begin());
                         --slaves_for_me[master];
+                        disp_node_map_slaves[node].push_back(masters_comm_rank[master]);
                     }
                     if (masters_comm_rank[master] == 0) {
                         my_slaves=tmp_my_slaves;
@@ -121,11 +130,9 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         inter_comm.send(master, 63, tmp_my_slaves);
                     }
                 }
-//                LINFO << "SECOND STEP";
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
                     int master=ord_masters[idx];
-//                    LINFO << "MASTER: " << master;
                     int node_master=masters_node[master];
                     int iii=0;
                     while (slaves_for_me[master] > 0) {
@@ -137,6 +144,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         tmp_my_slaves.push_back(slave);
                         node_map_slaves[iii].erase(node_map_slaves[iii].begin());
                         --slaves_for_me[master];
+                        disp_node_map_slaves[iii].push_back(masters_comm_rank[master]);
                     }
                     if (masters_comm_rank[master] == 0) {
                         my_slaves.insert(my_slaves.end(), tmp_my_slaves.begin(), tmp_my_slaves.end());
@@ -150,12 +158,13 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                 inter_comm.recv(0, 64, tmp_my_slaves);
                 my_slaves.insert(my_slaves.end(), tmp_my_slaves.begin(), tmp_my_slaves.end());
             }
+        // choice 2: idem with merged loops
+        //    a) for each master in descending order of flops: fill node then add remaining
         } else if (choice==2) { // second choice
             if (comm.rank() == 0) {
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
                     int master=ord_masters[idx];
-//                    LINFO << "MASTER: " << master;
                     int node_master=masters_node[master];
                     int node=node_master;
                     int iii=0;
@@ -172,6 +181,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         tmp_my_slaves.push_back(slave);
                         node_map_slaves[node].erase(node_map_slaves[node].begin());
                         --slaves_for_me[master];
+                        disp_node_map_slaves[node].push_back(masters_comm_rank[master]);
                     }
                     if (masters_comm_rank[master] == 0) {
                         my_slaves=tmp_my_slaves;
@@ -182,6 +192,7 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
             } else {
                 inter_comm.recv(0, 63, my_slaves);
             }
+        // choice -1: previous implementation (masters first ranks: no longer working)
         } else {
             int current_slave = inter_comm.size();
             for(int your_master = 0 ; your_master < inter_comm.size(); your_master++) {
@@ -189,36 +200,50 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                     // let root MPI inform slaves of their master
                     if(inter_comm.rank() == 0)
                         comm.send(current_slave, 11,  your_master);
+                    if(!comm.rank())
+                        disp_node_map_slaves[mpi_map[current_slave]].push_back(masters_comm_rank[your_master]);
 
                     // masters recognize their slaves
-                    if(inter_comm.rank() == your_master) {
+                    if(inter_comm.rank() == your_master)
                         my_slaves.push_back(current_slave);
-                    }
                     current_slave++;
                 }
             }
         }
 
-/*        std::string res = "";
-        res.append("MASTER ");
-        res.append(std::to_string(comm.rank()));
-        res.append(": SLAVES ");
-        for(int jjj=0; jjj<my_slaves.size(); ++jjj) {
-            res.append(std::to_string(my_slaves[jjj]));
-            res.append("; ");
-        }
-        std::cout << res << "\n";*/
         // Now that the slaves know who's their daddy, daddy tells who are their brothers
         for(std::vector<int>::iterator slave = my_slaves.begin(); slave != my_slaves.end(); ++slave) {
             comm.send(*slave, 12, my_slaves);
+        }
+
+        // Display Nodes/Masters/Slaves information
+        if (!comm.rank()) {
+            stringstream res;
+            for(int node=0; node<disp_node_map_masters.size(); ++node) {
+                res << "Node " << node << ": Masters ";
+                for(int master=0; master<disp_node_map_masters[node].size(); ++master) {
+                    res << disp_node_map_masters[node][master];
+                    if(master!=disp_node_map_masters[node].size()-1)
+                        res << ",";
+                }
+                res << " with slaves of masters: ";
+                for(int slave=0; slave<disp_node_map_slaves[node].size(); ++slave) {
+                    res << disp_node_map_slaves[node][slave];
+                    if(slave!=disp_node_map_slaves[node].size()-1)
+                        res << ",";
+                }
+                if(node!=disp_node_map_masters.size()-1)
+                    res << "\n";
+            }
+            LINFO2 << res.str();
         }
     } else {
         comm.recv(0, 11, my_master);
         //Store in my_slaves my brothers in slavery
         comm.recv(my_master, 12, my_slaves);
     }
-
-    LINFO2 << "Process " << inter_comm.rank()
-           << " has " << my_slaves.size()
-           << " workers";
+//    LINFO2 << "Process " << inter_comm.rank()
+    LINFO2 << "Process " << comm.rank()
+        << " has " << my_slaves.size()
+        << " workers";
 }
