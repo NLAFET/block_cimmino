@@ -28,6 +28,9 @@ min_mumps       0
 ; verbosity: 0, 1, or 2
 verbose_level   2
 
+; write the scaled and permuted matrix to a file after preprocessing
+;write_problem   "A_prep.mtx"
+
 ; scaling
 ; -1 > manual
 ;    (man_scaling set the number of iterations: #normInf;#norm1;#normInf;#norm2)
@@ -50,8 +53,11 @@ system
     ; maximum number of iterations
     itmax       100
 
+    ; stopping criteria on the backward error for block CG
+    threshold   1e-12
+
     ; the block-size used by the conjugate gradient
-    ; must be >= 1
+    ; must be >= 1. If start_file provided, will turn to 1
     block_size  4
 
     ; ALPHA factor for the Identity in the augmented subsystems

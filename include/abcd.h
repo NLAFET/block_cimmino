@@ -409,6 +409,8 @@ private:
     void waitForSolve();
     std::vector<int> comm_map;
 
+    std::vector<int> mpi_map;
+
     // SOme utilities
     void partitionWeights(std::vector<std::vector<int> > &parts,
                           std::vector<int> weights, int nb_parts);

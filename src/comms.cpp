@@ -48,7 +48,7 @@ void abcd::createInterCommunicators()
         throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
     }
 
-        // ToDo define masters with a priori knowledge on workload
+        // Define masters with a priori knowledge on workload
         // Sort parts per estimated workload for its master (#rows then maybe #rows*#nz?)
         // 1part/1node
         //    if #part > #nodes
@@ -62,61 +62,43 @@ void abcd::createInterCommunicators()
     mpi::broadcast(comm, icntl[Controls::master_def], 0);
     mpi::broadcast(comm, icntl[Controls::slave_def], 0);
 
-    // choice 1: zig-zag 1master/node assignation
-    // choice -1: previous implementation
+    // Get communication map information on root MPI
+    mpi::environment env;
+    std::string node = env.processor_name();
+    int cpu = sched_getcpu();
+    int root_node;
+    std::vector<int> node_count; // number of MPI per node
+    std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
+    std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
+    mpi::gather(comm, p, pair_vect, 0);
+    if (comm.rank() == 0) {
+        int count=0; // number of nodes
+        std::map<std::string, int> nodes; // index of nodes
+        for(int iii=0; iii<pair_vect.size(); ++iii) {
+            // if we meet the node for the first time
+            if (nodes.find(pair_vect[iii].second) == nodes.end()) {
+                nodes[pair_vect[iii].second] = count;
+                node_count.push_back(0);
+                std::vector<int> v;
+                node_map_slaves.push_back(v);
+                ++count;
+            }
+            // increase number of MPI in this node
+            ++node_count[nodes[pair_vect[iii].second]];
+            node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
+            // save the node index for this MPI
+            mpi_map.push_back(nodes[pair_vect[iii].second]);
+        }
+        root_node=nodes[node];
+        // now the vector nodes is useless
+    }
+
     int choice=icntl[Controls::master_def];
+    // choice 1: zig-zag 1master/node assignation
     if (choice == 1) {
         // This choice will place 1 master on each node in descending order or node size
         // then if masters remain will continue adding them in zig-zag to the nodes
-        mpi::environment env;
-        std::string node = env.processor_name();
-/*        if (comm.rank() == 0 || comm.rank() == 1) node="NODE0";
-        if (comm.rank() == 2 || comm.rank() == 3) node="NODE1";
-        if (comm.rank() == 4 || comm.rank() == 5) node="NODE2";
-        if (comm.rank() == 6 || comm.rank() == 7) node="NODE3";
-        if (comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10) node="NODE4";
-        if (comm.rank() == 11 || comm.rank() == 12 || comm.rank() == 13 || comm.rank() == 14) node="NODE5";
-        if (comm.rank() == 15 || comm.rank() == 16 || comm.rank() == 17 || comm.rank() == 18 || comm.rank() == 19) node="NODE6";
-        if (comm.rank() == 20 || comm.rank() == 21 || comm.rank() == 22 || comm.rank() == 23 || comm.rank() == 24) node="NODE7";
-        if (comm.rank() == 25 || comm.rank() == 26 || comm.rank() == 27 || comm.rank() == 28 || comm.rank() == 29) node="NODE8";*/
-        int cpu = sched_getcpu();
-
-        // Get communication map information on root MPI
-        std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
-        std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
-        mpi::gather(comm, p, pair_vect, 0);
-        int count=0; // number of nodes
-        int mpi_count=0; // number of nodes
         if (comm.rank() == 0) {
-            int root_node;
-	    std::map<std::string, int> nodes; // index of nodes
-    //        std::vector<int> mpi_map; // communication map MPI-node
-            std::vector<int> node_count; // number of MPI per node
-            for(int iii=0; iii<pair_vect.size(); ++iii) {
-                // if we meet the node for the first time
-                if (nodes.find(pair_vect[iii].second) == nodes.end()) {
-                    nodes[pair_vect[iii].second] = count;
-                    node_count.push_back(0);
-                    std::vector<int> v;
-                    node_map_slaves.push_back(v);
-                    ++count;
-                }
-                // increase number of MPI in this node
-                ++node_count[nodes[pair_vect[iii].second]];
-                node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
-                // save the node index for this MPI
-    //            mpi_map.push_back(nodes[pair_vect[iii].second]);
-            }
-            root_node=nodes[node];
-	    // now the vector nodes is useless
-
-/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
-            LINFO << "NODE: " << iii;
-            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
-                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
-        }
-        LINFO << "MAP2";*/
-
 	    // Sort nodes per count via tmp_ord to ord_nodes
             // The node of the root MPI must always be first
             std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort nodes by #MPI
@@ -148,7 +130,7 @@ void abcd::createInterCommunicators()
                         masters_node.push_back(current_node);
                         instance_type_vect[node_map_slaves[current_node][0]] = 0;
                         node_map_slaves[current_node].erase(node_map_slaves[current_node].begin());
-                    } else --iii;
+                    } else --iii; //do not assign, only update the zig-zag direction
                     // update direction of node exploration
                     if (!current_idx) {
                         if (!direction) direction=1;
@@ -168,17 +150,17 @@ void abcd::createInterCommunicators()
             }
         }
 
-/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
-            LINFO << "NODE: " << iii;
-            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
-                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
-        }*/
-
         mpi::broadcast(comm, instance_type_vect, 0);
         instance_type = instance_type_vect[comm.rank()];
-   } else {
+    // choice -1: previous implementation
+    } else {
         instance_type = comm.rank() < parallel_cg ? 0 : 1;
-   }
+        if (comm.rank() == 0) {
+            for(int i=0; i<parallel_cg; ++i) {
+                masters_node.push_back(mpi_map[i]);
+            }
+        }
+    }
 
     inter_comm = comm.split(instance_type == 0);
 

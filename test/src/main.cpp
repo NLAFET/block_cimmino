@@ -64,6 +64,14 @@ int main(int argc, char* argv[])
             exit(-2);
         }
 
+        if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
+        else obj.icntl[Controls::block_size] = atoi(argv[4]);
+
+        obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
+        obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
+
+        cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
+
         /* READING THE MATRIX AND THE RHS */
         string matrix_file;
         try {
@@ -155,6 +163,9 @@ int main(int argc, char* argv[])
         }
 
 	if(start_file){
+            cout << "Starting point for CG specified, Block Size is changed to 1.\n";
+            obj.icntl[Controls::block_size] = 1;
+
             FILE *strt_f = fopen(start_file->c_str(), "r");
 
             if(strt_f == NULL){
@@ -451,14 +462,6 @@ int main(int argc, char* argv[])
             obj(2);
 
             obj.nrhs = 1;
-
-            if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
-            else obj.icntl[Controls::block_size] = atoi(argv[4]);
-
-            obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
-            obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
-
-	    cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
 
             // obj.icntl[Controls::verbose] =  pt.get<int>("solve_verbose", 0);
             obj(3);

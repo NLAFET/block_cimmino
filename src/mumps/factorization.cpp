@@ -80,18 +80,18 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
     }
 
     double smem;
-    int max_mem;
-    int sflop;
+    double max_mem;
+    double sflop;
     if(instance_type == 0) {
         double mem = mu.getInfoG(22)/intra_comm.size();
         mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
         if(IRANK == 0) smem = smem/inter_comm.size();
 
-        int mmem = mu.getInfoG(21);
-	mpi::reduce(inter_comm, mmem, max_mem, mpi::maximum<int>(),0);
+        double mmem = mu.getInfoG(21);
+	mpi::reduce(inter_comm, mmem, max_mem, mpi::maximum<double>(),0);
 
-        int flop = mu.getRinfoG(3);
-	mpi::reduce(inter_comm, flop, sflop, std::plus<int>(),0);
+        double flop = mu.getRinfoG(3);
+	mpi::reduce(inter_comm, flop, sflop, std::plus<double>(),0);
 
         int prec = cout.precision();
         cout.precision(2);
