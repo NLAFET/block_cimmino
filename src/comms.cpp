@@ -256,20 +256,12 @@ void abcd::distributeRhs()
             }
         } else {*/
             B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
-            if(row_perm.size() != 0){
-                for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[row_perm[i] + j*m_l] * drow_[row_perm[i]];
-                    }
-                }
-
-            } else {
-                for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[i + j*m_l] * drow_[i];
-                    }
+            for(int j = 0; j < nrhs; j++){
+                for(int i = 0; i < m_l; i++) {
+                    B(i, j) = rhs[i + j*m_l] * drow_[i];
                 }
             }
+            
 //        }
 
         int good_rhs = 0;
@@ -321,7 +313,14 @@ void abcd::distributeRhs()
             for(int j = 0; j < icntl[Controls::block_size]; j++) {
                 for(size_t i = 0; i < partitionsSets[k].size(); i++){
                     int p = partitionsSets[k][i];
-                    inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
+
+		    // Not tested for blocksize >1
+		    double *tmp = (double*) malloc(sizeof(double)*row_indices[p].size()*icntl[Controls::block_size]);
+		    for(int zz=0;  zz< row_indices[p].size(); zz++ ){
+			tmp[zz] = b_ptr[row_indices[p][zz] + j * m_l ];
+		    }
+                    inter_comm.send(k, 18, tmp, row_indices[p].size());
+                    //inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
                 }
             }
         }
@@ -333,12 +332,19 @@ void abcd::distributeRhs()
             int pos = 0;
             for(size_t i = 0; i < partitionsSets[0].size(); i++){
                 int p = partitionsSets[0][i];
-                for(int j = 0; j < nbrows[p]; j++){
+                for(int j = 0; j < row_indices[p].size() ; j++){
                     for(int k = 0; k < icntl[Controls::block_size]; k++){
-                        B(pos, k) = BB(strow[p] + j, k);
-                    }
-                    pos++;
-                }
+                        B(pos, k) = BB( row_indices[p][j], k);
+		    }
+		    pos++;
+		}
+
+                //for(int j = 0; j < nbrows[p]; j++){
+                 //   for(int k = 0; k < icntl[Controls::block_size]; k++){
+                   //     B(pos, k) = BB(strow[p] + j, k);
+                    //}
+                   // pos++;
+                //}
             }
         }
     } else {

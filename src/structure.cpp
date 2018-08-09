@@ -111,7 +111,9 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with a given nbrows
          *-----------------------------------------------------------------------------*/
     case 1:
-        strow.resize(icntl[Controls::nbparts]);
+	{
+        std::vector<int> strow;
+	strow.resize(icntl[Controls::nbparts]);
 
         for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
             strow[k] = row_sum;
@@ -123,7 +125,7 @@ void abcd::partitionMatrix()
             }
         }
         break;
-
+	}
         /*-----------------------------------------------------------------------------
          *  Uniform partitioning with only icntl[Controls::nbparts] as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
@@ -132,7 +134,6 @@ void abcd::partitionMatrix()
 	        unsigned floor_per_part;
 	        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
 	        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
-	        strow =  std::vector<int>(icntl[Controls::nbparts]);
 	        nbrows = std::vector<int>(icntl[Controls::nbparts]);
 	 
 	        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
@@ -145,8 +146,10 @@ void abcd::partitionMatrix()
 	        }
 	 
 	        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
-	            strow[k] = row_sum;
-	            row_sum += nbrows[k];
+        	    row_indices.push_back(vector<int>());
+		    for(int ii=row_sum; ii<row_sum + nbrows[k];ii++ ){
+			row_indices[k].push_back(ii);
+		    }
 	        }
 	}
         break;
@@ -203,14 +206,16 @@ void abcd::partitionMatrix()
         args.init_imbal     = _imba * 2.0;
         args.seed           = 1;
 
-        //args.initp_alg      = 12;
-
         partvec     = new int[_c];
         partweights = new int[args._k * _nconst];
 
         PaToH_Part(&args, _c, _n, _nconst, 0, cwghts, nwghts,
                    xpins, pins, NULL, partvec, partweights, &cut);
-        for (int i = 0; i < icntl[Controls::nbparts]; i++) {
+
+	for (int i = 0; i < icntl[Controls::nbparts]; i++) {
+	    // row_indices: stores indices of rows for each part
+       	    row_indices.push_back(vector<int>());
+
             if (partweights[i] == 0) {
                 info[Controls::status] = -6;
                 mpi::broadcast(comm, info[Controls::status], 0);
@@ -218,48 +223,17 @@ void abcd::partitionMatrix()
             }
         }
 
-        row_perm = sort_indexes(partvec, _c);
-
-        // Permutation
-        int *iro = A.rowptr_ptr();
-        int *jco = A.colind_ptr();
-        double *valo = A.val_ptr();
-
-        int *ir = new int[m_o + 1];
-        int *jc = new int[nz_o];
-        double *val = new double[nz_o];
-
-        int sr = 0;
-        for(int i = 0; i < m_o; i++){
-            int cur = row_perm[i];
-            ir[i] = sr;
-            for(int j = 0; j < iro[cur+1] - iro[cur]; j++){
-                jc[ir[i] + j] = jco[iro[cur] + j];
-                val[ir[i] + j] = valo[iro[cur] + j];
-            }
-            sr += iro[cur + 1] - iro[cur];
-        }
-        ir[m_o] = nz_o;
-        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t << "s.";
+	for(int zz=0;zz<_c;zz++){
+		row_indices[partvec[zz]].push_back(zz);
+	}
+        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t << " s.";
         t = MPI_Wtime();
 
-        A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
-
-        int * test;
-        
-        nbrows = std::vector<int>(partweights, partweights + icntl[Controls::nbparts]);
-        strow =  std::vector<int>(icntl[Controls::nbparts]);
-
-        for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
-        }
-
-        LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << "s.";
+        LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << " s.";
            
-        delete[] ir;
-        delete[] jc;
-        delete[] val;
+        //delete[] ir;
+        //delete[] jc;
+        //delete[] val;
         delete[] partvec;
         delete[] partweights;
         delete[] cwghts;
@@ -282,12 +256,16 @@ void abcd::partitionMatrix()
          int *partweights = new int[k];
 
          for(int z =0; z < k; z++){
+		row_indices.push_back(vector<int>());
                 partweights[z]=0;
          }
 
          for(int z =0; z < m_o; z++) {
                partweights[partvec[z]]++;
+	       row_indices[partvec[z]].push_back(z);
          }
+
+/*
          row_perm = sort_indexes(partvec, m_o);
 
         // Permutation
@@ -312,34 +290,18 @@ void abcd::partitionMatrix()
         ir[m_o] = nz_o;
 
         A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
-        nbrows = std::vector<int>(partweights, partweights + icntl[Controls::nbparts]);
-        strow =  std::vector<int>(icntl[Controls::nbparts]);
+        //nbrows = std::vector<int>(partweights, partweights + icntl[Controls::nbparts]);
+        //strow =  std::vector<int>(icntl[Controls::nbparts]);
 
         for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
+            //strow[k] = row_sum;
+            //row_sum += nbrows[k];
         }
+	*/
         LINFO << "Done with Manual Partitioning, time : " << MPI_Wtime() - t << "s.";
         break;
         }
 
-    }
-
-    if  (icntl[Controls::num_overlap] > 0){
-        LINFO << "Duplicating " << icntl[Controls::num_overlap] <<
-		" overlapping rows between partitions.";
-        for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            if(k==0){
-                strow[k] = 0;
-                nbrows[k] += icntl[Controls::num_overlap];
-            } else if(k== icntl[Controls::nbparts] -1) {
-                strow[k] -= icntl[Controls::num_overlap];
-                nbrows[k] += icntl[Controls::num_overlap];
-            } else {
-                strow[k] -= icntl[Controls::num_overlap];
-                nbrows[k] += icntl[Controls::num_overlap]*2;
-            }
-        }
     }
 
     if(write_problem.length() != 0) {
@@ -384,7 +346,7 @@ void abcd::analyseFrame()
     LINFO << "Creating partitions";
 
     for (unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; ++k) {
-        CompCol_Mat_double part(CSC_middleRows(A, strow[k], nbrows[k]));
+        CompCol_Mat_double part(CSC_extractByIndices(A, row_indices[k] ));
 
         int *col_ptr = part.colptr_ptr();
         column_index[k] =  getColumnIndex(col_ptr, part.dim(1));

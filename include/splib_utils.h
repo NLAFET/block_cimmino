@@ -4,7 +4,7 @@ double squaredNorm(VECTOR_double &V, VECTOR_int &I);
 double infNorm(VECTOR_double &V);
 double infNorm(MV_ColMat_double &V);
 double infNorm(Coord_Mat_double &M);
-CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows, int nb_cols);
+CompRow_Mat_double CSC_extractByIndices  (CompRow_Mat_double &M, std::vector<int> row_index);
 CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows);
 CompCol_Mat_double sub_matrix (CompCol_Mat_double &M, std::vector<int> &ci);
 VECTOR_double middleCol(CompCol_Mat_double &M, int col_num);

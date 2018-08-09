@@ -79,6 +79,42 @@ double squaredNorm(VECTOR_double &V, VECTOR_int &I){
     return sum;
 }
 
+CompRow_Mat_double CSC_extractByIndices(CompRow_Mat_double &M, vector<int> row_index) 
+{
+    int *mptr = M.rowptr_ptr();
+    int * sub_row_vect = new int[row_index.size()+1];
+    sub_row_vect[0]=0;
+    for(int i = 1; i < row_index.size()+1; i++){
+        sub_row_vect[i] = sub_row_vect[i-1] +  mptr[ row_index[i-1]+1 ] -  mptr[ row_index[i-1] ];	
+	//cout << " subrow vect " << i << " "  << sub_row_vect[i] << " " << row_index[i] << " " << mptr[ row_index[i] ] << " " << mptr[ row_index[i-1]] << endl;
+    }
+    int local_nnz = sub_row_vect[ row_index.size()];
+    
+    int * sub_col_vect =  new int[local_nnz];
+    double * sub_val_vect = new double[local_nnz] ;
+
+    int * colptr = M.colind_ptr();
+    double * valptr = M.val_ptr();
+
+    int cnt =0;
+    for(int i = 0; i < row_index.size(); i++){
+	for(int j= mptr[ row_index[i] ]; j < mptr[ row_index[i]+1 ] ; j++){
+		sub_col_vect[cnt] = colptr[j];
+		sub_val_vect[cnt] =  valptr[j];
+		cnt++;
+	}
+    }
+
+    CompRow_Mat_double nM( row_index.size(), M.dim(1), local_nnz,
+            sub_val_vect,
+            sub_row_vect,
+            sub_col_vect
+            );
+
+    //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
+    return nM;
+}
+
 CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
     int st_index, ed_index;
 

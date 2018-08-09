@@ -253,8 +253,7 @@ public:
     /**************************************************************************
      * Partitioning informations
     **************************************************************************/
-    /*! The starting row index of each partition */
-    std::vector<int> strow;
+    vector< vector<int> > row_indices;
 
     /*! The number of rows per partition */
     std::vector<int> nbrows;
@@ -432,7 +431,6 @@ private:
     MV_ColMat_double RRand;
 
     CompRow_Mat_double A;
-    std::vector<int> row_perm;
 
     bool runSolveS;
 
