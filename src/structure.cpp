@@ -115,14 +115,18 @@ void abcd::partitionMatrix()
         std::vector<int> strow;
 	strow.resize(icntl[Controls::nbparts]);
 
-        for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
+        int row_sum=0;
+        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
+      	    row_indices.push_back(vector<int>());
             if (nbrows[k] == 0) {
                 info[Controls::status] = -6;
                 mpi::broadcast(comm, info[Controls::status], 0);
                 throw std::runtime_error("FATAL ERROR: You requested an empty partition.");
             }
+	    for(int ii=row_sum; ii<row_sum + nbrows[k];ii++ ){
+		row_indices[k].push_back(ii);
+	    }
+            row_sum += nbrows[k];
         }
         break;
 	}
@@ -135,7 +139,6 @@ void abcd::partitionMatrix()
 	        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
 	        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
 	        nbrows = std::vector<int>(icntl[Controls::nbparts]);
-	 
 	        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
 	           int cnt = floor_per_part;
 	           if(remain >0){
@@ -144,12 +147,13 @@ void abcd::partitionMatrix()
 	           }
 	           nbrows[k] = cnt;
 	        }
-	 
+                int row_sum=0;
 	        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
-        	    row_indices.push_back(vector<int>());
+	       	    row_indices.push_back(vector<int>());
 		    for(int ii=row_sum; ii<row_sum + nbrows[k];ii++ ){
 			row_indices[k].push_back(ii);
 		    }
+                    row_sum += nbrows[k];
 	        }
 	}
         break;
@@ -321,14 +325,14 @@ void abcd::partitionMatrix()
       }
       f.close();
 
-      string parts = write_problem + "_parts";
+/*      string parts = write_problem + "_parts";
       f.open(parts.c_str());
 
       for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
         f << nbrows[k] << "\n";
       }
 
-      f.close();
+      f.close();*/
     }
 }
 

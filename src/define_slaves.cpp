@@ -232,10 +232,9 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                     if(slave!=disp_node_map_slaves[node].size()-1)
                         res << ",";
                 }
-                if(node!=disp_node_map_masters.size()-1)
-                    res << "\n";
+                LINFO2 << res.str();
+                res.str("");
             }
-            LINFO2 << res.str();
         }
     } else {
         comm.recv(0, 11, my_master);
