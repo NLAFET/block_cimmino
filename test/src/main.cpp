@@ -204,6 +204,9 @@ int main(int argc, char* argv[])
         //////////////////////////////////////////
         boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
 	if(start_file){
+            cout << "Starting point for CG specified, Block Size is changed to 1.\n";
+            obj.icntl[Controls::block_size] = 1;
+
             FILE *strt_f = fopen(start_file->c_str(), "r");
 
             if(strt_f == NULL){

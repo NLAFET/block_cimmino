@@ -185,11 +185,16 @@ public:
     /*!  The solution vector of size #n * #nrhs */
     double *sol;
 
-    bool use_xk;
+    /*! The starting point for BCG */
     MV_ColMat_double Xk;
 
-    // the residual info
+    /* Specify if a starting point for BCG is used */
+    bool use_xk;
+
+    /* the residual vector */
     std::vector<double> rhoVector;
+
+    /* the scaled residual vector */
     std::vector<double> scaledResidualVector;
 
     /**************************************************************************
@@ -227,8 +232,7 @@ public:
     /**************************************************************************
      * Partitioning informations
     **************************************************************************/
-    /*! The starting row index of each partition */
-    std::vector<int> strow;
+    vector< vector<int> > row_indices;
 
     /*! The number of rows per partition */
     std::vector<int> nbrows;
@@ -375,9 +379,6 @@ private:
     /* local actual compressed partitions matrices (Ai) */
     std::vector<CompRow_Mat_double> partitions;
 //    std::vector<int> parts_id;
-
-    /* row permutation vector */
-    std::vector<int> row_perm;
 
     /* number of partitions local to the master */
     int nb_local_parts;

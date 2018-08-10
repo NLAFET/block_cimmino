@@ -67,41 +67,43 @@ void abcd::createInterCommunicators()
     mpi::broadcast(comm, icntl[Controls::master_def], 0);
     mpi::broadcast(comm, icntl[Controls::slave_def], 0);
 
+    // Get communication map information on root MPI
+    mpi::environment env;
+    std::string node = env.processor_name();
+    int cpu = sched_getcpu();
+    int root_node;
+    std::vector<int> node_count; // number of MPI per node
+    std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
+    std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
+    mpi::gather(comm, p, pair_vect, 0);
+    if (comm.rank() == 0) {
+        int count=0; // number of nodes
+        std::map<std::string, int> nodes; // index of nodes
+        for(int iii=0; iii<pair_vect.size(); ++iii) {
+            // if we meet the node for the first time
+            if (nodes.find(pair_vect[iii].second) == nodes.end()) {
+                nodes[pair_vect[iii].second] = count;
+                node_count.push_back(0);
+                std::vector<int> v;
+                node_map_slaves.push_back(v);
+                ++count;
+            }
+            // increase number of MPI in this node
+            ++node_count[nodes[pair_vect[iii].second]];
+            node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
+            // save the node index for this MPI
+            mpi_map.push_back(nodes[pair_vect[iii].second]);
+        }
+        root_node=nodes[node];
+        // now the vector nodes is useless
+    }
+
     int choice=icntl[Controls::master_def];
     // choice 1: zig-zag 1master/node assignation
     if (choice == 1) {
         // This choice will place 1 master on each node in descending order or node size
         // then if masters remain will continue adding them in zig-zag to the nodes
-        mpi::environment env;
-        std::string node = env.processor_name();
-        int cpu = sched_getcpu();
-
-        std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
-        std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
-        mpi::gather(comm, p, pair_vect, 0);
-        int count=0; // number of nodes
-        int mpi_count=0; // number of nodes
         if (comm.rank() == 0) {
-            int root_node;
-	    std::map<std::string, int> nodes; // index of nodes
-            std::vector<int> node_count; // number of MPI per node
-            // Get communication map information on root MPI
-            for(int iii=0; iii<pair_vect.size(); ++iii) {
-                // if we meet the node for the first time
-                if (nodes.find(pair_vect[iii].second) == nodes.end()) {
-                    nodes[pair_vect[iii].second] = count;
-                    node_count.push_back(0);
-                    std::vector<int> v;
-                    node_map_slaves.push_back(v);
-                    ++count;
-                }
-                // increase number of MPI in this node
-                ++node_count[nodes[pair_vect[iii].second]];
-                node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
-            }
-            root_node=nodes[node];
-	    // now the vector nodes is useless
-
 	    // Sort nodes per count via tmp_ord to ord_nodes
             // The node of the root MPI must always be first
             std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort nodes by #MPI
@@ -159,6 +161,11 @@ void abcd::createInterCommunicators()
     // choice -1: previous implementation
     } else {
         instance_type = comm.rank() < parallel_cg ? 0 : 1;
+        if (comm.rank() == 0) {
+            for(int i=0; i<parallel_cg; ++i) {
+                masters_node.push_back(mpi_map[i]);
+            }
+        }
     }
 
     // Define communicators between masters and between slaves
@@ -200,21 +207,10 @@ void abcd::distributeRhs()
   	        if(abs(Xf(i,0)) > nrmXf) nrmXf = abs(Xf(i,0));
 	    }
 	}
-
-        // Initialize B right the rhs data
         B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
-        // don't forget permutation
-        if(row_perm.size() != 0){
-            for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < m_l; i++) {
-                    B(i, j) = rhs[row_perm[i] + j*m_l] * drow_[row_perm[i]];
-                }
-            }
-        } else {
-            for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < m_l; i++) {
-                    B(i, j) = rhs[i + j*m_l] * drow_[i];
-                }
+        for(int j = 0; j < nrhs; j++){
+            for(int i = 0; i < m_l; i++) {
+                B(i, j) = rhs[i + j*m_l] * drow_[i];
             }
         }
 
@@ -268,7 +264,13 @@ void abcd::distributeRhs()
             for(int j = 0; j < icntl[Controls::block_size]; j++) {
                 for(size_t i = 0; i < partitionsSets[k].size(); i++){
                     int p = partitionsSets[k][i];
-                    inter_comm.send(k, 18, b_ptr + strow[p] + j * m_l, nbrows[p]);
+
+		    // Not tested for blocksize >1
+		    double *tmp = (double*) malloc(sizeof(double)*row_indices[p].size()*icntl[Controls::block_size]);
+		    for(int zz=0;  zz< row_indices[p].size(); zz++ ){
+			tmp[zz] = b_ptr[row_indices[p][zz] + j * m_l ];
+		    }
+                    inter_comm.send(k, 18, tmp, row_indices[p].size());
                 }
             }
         }
@@ -281,12 +283,12 @@ void abcd::distributeRhs()
             int pos = 0;
             for(size_t i = 0; i < partitionsSets[0].size(); i++){
                 int p = partitionsSets[0][i];
-                for(int j = 0; j < nbrows[p]; j++){
+                for(int j = 0; j < row_indices[p].size() ; j++){
                     for(int k = 0; k < icntl[Controls::block_size]; k++){
-                        B(pos, k) = BB(strow[p] + j, k);
-                    }
-                    pos++;
-                }
+                        B(pos, k) = BB( row_indices[p][j], k);
+		    }
+		    pos++;
+		}
             }
         }
     } else {
