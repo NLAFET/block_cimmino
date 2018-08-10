@@ -1,3 +1,10 @@
+/*!
+ * \file c_interface.cpp
+ * \brief Implementation of the interface of ABCD for C
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include "abcd.h"
 #include "abcd_c.h"
 #include <string>
@@ -7,10 +14,13 @@ abcd *obj;
 
 #include <iostream>
 using namespace std;
-/** description breve
+
+/*!
+ *  \brief Interface to constructor of class ABCD
  *
- * detailleeeee
- * @return a new solver
+ *  Interface to call the default constructor of the abcd class which sets
+ *  default values for attributes.
+ *
  */
 struct abcd_solver* new_solver()
 {
@@ -31,8 +41,17 @@ struct abcd_solver* new_solver()
     solver->start_index = obj->start_index;
 
     return solver;
-}
-void call_solver(struct abcd_solver* solver, int job_id) 
+}               /* -----  end of function new_solver  ----- */
+
+/*!
+ *  \brief Interface to the gateway function
+ *
+ *  Interface to the gateway function which launches all other options.
+ *
+ *  \param solver: structure of the ABCD solver
+ *  \param job_id: the parameter choosing which phase of the solver to launch
+ */
+void call_solver(struct abcd_solver* solver, int job_id)
 {
     // C -> CPP
     obj->m   = solver->m;
@@ -45,7 +64,7 @@ void call_solver(struct abcd_solver* solver, int job_id)
     obj->rhs = solver->rhs;
     obj->nrhs = solver->nrhs;
     obj->start_index = solver->start_index;
-    
+
     // obj->write_problem = string(solver->write_problem);
 
     for(size_t i = 0; i < obj -> icntl.size(); i++){
@@ -62,9 +81,14 @@ void call_solver(struct abcd_solver* solver, int job_id)
     solver->n   = obj->n;
     solver->nz  = obj->nz;
     solver->sym = obj->sym ? 1 : 0;
-}
+}               /* -----  end of function call_solver  ----- */
 
-
+/*!
+ *  \brief Interface to the default Destructor of abcd class
+ *
+ *  Interface to the default destructor of the abcd class which deinitiliaze MUMPS.
+ *
+ */
 void free_solver(struct abcd_solver *solver)
 {
     delete obj;
@@ -73,4 +97,4 @@ void free_solver(struct abcd_solver *solver)
     free(solver->dcntl);
     free(solver->write_problem);
     free(solver);
-}
+}               /* -----  end of function free_solver  ----- */

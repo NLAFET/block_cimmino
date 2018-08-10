@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file defaults.h
+ * \brief Header for enumerations of Controls/Info
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #ifndef _DEFAULTS_H_
 #define _DEFAULTS_H_
 ///\xrefitem exp "Experimental" "Experimental List
@@ -158,7 +165,7 @@ namespace Controls{
          *
          * Defines the block-size to be used by the block-CG
          * acceleration, default is ``1`` for classical CG
-         * acceleration. When using a higher value than 1, 
+         * acceleration. When using a higher value than 1,
          * stabilized Block-CG is used.
          */
         block_size         ,
@@ -167,8 +174,14 @@ namespace Controls{
          *
          * Defines the verbosity of the solver
          */
-        verbose_level      , 
-        
+        verbose_level      ,
+
+        /*! \brief MUMPS verbose or not
+         *
+         * Defines if MUMPS is verbose
+         */
+        mumps_verbose      ,
+
         /*! \brief The augmentation type
          *
          * Possible values are:
@@ -257,15 +270,22 @@ namespace Controls{
          */
         aug_analysis        ,
 
-        aug_iterative   , ///< \exp Enable or disable iterative solving of Sz=f
+        /* \exp Enable or disable iterative solving of Sz=f */
+        aug_iterative   ,
 
-        aug_project     , ///< \deprecated Compute the projection only
-        aug_dense       , ///< \deprecated Use dense RHS when doing the computation
+        /* \deprecated Compute the projection only */
+        aug_project     ,
+
+        /* \deprecated Use dense RHS when doing the computation */
+        aug_dense       ,
 #endif //WIP
     };
     enum dcontrols {
-        part_imbalance, ///< The imbalance factor in PaToH case
-        threshold     , ///< The stoping threshold
+        /* The imbalance factor in PaToH case */
+        part_imbalance,
+
+        /* The stoping threshold */
+        threshold     ,
 
         /*! \brief The scaling factor of the Identity in the augmented systems
          *
@@ -279,20 +299,33 @@ namespace Controls{
         alpha        ,
 
 #ifdef WIP
-        aug_filter    , ///< \deprecated The filtering value
-        aug_precond   , ///< \exp The preconditioner criteria of selection
+        /* \deprecated The filtering value */
+        aug_filter    ,
+
+        /* \exp The preconditioner criteria of selection */
+        aug_precond   ,
 #endif //WIP
     };
     enum info {
-        status        , ///< Exit status
-        nb_iter       , ///< Number of iterations after CG
+        /* Exit status */
+        status        ,
+
+        /* Number of iterations after CG */
+        nb_iter       ,
     };
 
     enum dinfo {
-        residual       , ///< The resulting residual
-        forward_error  , ///< The resulting forward error
-        backward       , ///< The resulting residual
-        scaled_residual, ///< The resulting residual
+        /* The resulting residual */
+        residual       ,
+
+        /* The resulting forward error */
+        forward_error  ,
+
+        /* The resulting residual */
+        backward       ,
+
+        /* The resulting scaled residual */
+        scaled_residual,
     };
 
 }

@@ -30,18 +30,35 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file mumps/analysis.cpp
+ * \brief Analysis of MUMPS solver
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 #include <mumps.h>
 
+/*!
+ *  \brief Launch MUMPS analysis and display some info
+ *
+ *  Launch MUMPS analysis and display some info
+ *
+ *  \param mu: MUMPS object
+ *
+ */
 void abcd::analyseAugmentedSystems(MUMPS &mu)
 {
 
   double t = MPI_Wtime();
 
+  // Run MUMPS Analysis
   mu(1);
 
   t = MPI_Wtime() - t;
 
+  // Check if MUMPS succeded
   if(mu.getInfo(1) != 0){
     LERROR << string(32, '-') ;
     LERROR << "| MUMPS ANALYSIS FAILED on MA " << setw(7) << inter_comm.rank() << " |" ;
@@ -56,6 +73,7 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
     throw std::runtime_error("MUMPS exited with an error");
   }
 
+  // Info display
   if(instance_type == 0) {
     double flop = mu.getRinfo(1);
     int prec = cout.precision();
@@ -68,4 +86,4 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
     LINFO << string(32, '-') ;;
     cout.precision(prec);
   }
-}
+}               /* -----  end of function abcd::analyseAugmentedSystems  ----- */

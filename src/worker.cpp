@@ -30,19 +30,34 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file worker.cpp
+ * \brief Implementation of the waiting-to-help state of the slaves
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::waitForSolve
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief wait to help the master with MUMPS
+ *
+ *  In an infinite loop:
+ *  receive an order from the master (job) then wait until the process can help it
+ *  with MUMPS. Orders can be:
+ *   - -1: Go Home G.I.
+ *   - 1: Solve augmented system (simple or not)
+ *   - 2: solve S after initializing with arrays from job 3
+ *   - 3: solve augmented systems with distributed output upon building of S
+ *   - 4: solve S without re-building it
+ *
  */
     void
 abcd::waitForSolve()
 {
     DMUMPS_STRUC_C mu;
 
+    // arrays of rows/columns/values for S
     std::vector<int> vrows, vcols;
     std::vector<double> vvals;
 
@@ -53,8 +68,9 @@ abcd::waitForSolve()
 
     int job = 0;
     do{
+        // receive order
         mpi::broadcast(intra_comm, job, 0);
-        
+
         // if we receive an emergency stop
         if(job < -1){
             info[Controls::status] = job;
@@ -68,21 +84,33 @@ abcd::waitForSolve()
             mumps(3);
         // handle the matrix S
         } else if (job == 2) {
-
+            // initialize MUMPS for S
             mumps_S.sym = 2;
             mumps_S.par = 1;
             mumps_S.comm_fortran = MPI_Comm_c2f((MPI_Comm) comm);
             mumps_S(-1);
 
-            mumps_S.icntl[0] = -1;
-            mumps_S.icntl[1] = -1;
-            mumps_S.icntl[2] = -1;
+            // If MUMPS verbose chosen
+            if (icntl[Controls::mumps_verbose]) {
+                mumps_S.setIcntl(1, 6);
+                mumps_S.setIcntl(2, 0);
+                mumps_S.setIcntl(3, 6);
+                mumps_S.setIcntl(4, 2);
+            // or silent
+            } else {
+                mumps_S.setIcntl(1, -1);
+                mumps_S.setIcntl(2, -1);
+                mumps_S.setIcntl(3, -1);
+                mumps_S.setIcntl(4, -1);
+            }
 
+            // use S from job 3 to initialize matrix in MUMPS
             mumps_S.nz_loc = vrows.size();
             mumps_S.irn_loc = &vrows[0];
             mumps_S.jcn_loc = &vcols[0];
             mumps_S.a_loc = &vvals[0];
 
+            // Launch MUMPS analysis/factorization/solve on S
             mumps_S(1);
             if(mumps_S.info[0] < 0) continue;
             mumps_S(2);
@@ -93,7 +121,6 @@ abcd::waitForSolve()
             int s;
             int start_c;
             // get some necessary arrays and data
-            //
             mpi::broadcast(intra_comm, s, 0);
             std::vector<int> loc_cols, mycols;
             mpi::broadcast(intra_comm, start_c, 0);
@@ -106,6 +133,7 @@ abcd::waitForSolve()
             mpi::broadcast(intra_comm, n_o, 0);
             mpi::broadcast(intra_comm, mycols, 0);
 
+            // initialize local solution
             mumps.lsol_loc = mumps.getInfo(23);
             mumps.sol_loc = new double[mumps.lsol_loc * s];
             mumps.isol_loc = new int[mumps.lsol_loc];
@@ -114,21 +142,22 @@ abcd::waitForSolve()
             if(mumps.info[0] < 0) continue;
 
             int part = 0;
-	    
             int end_c = column_index[part].size();
             int i_loc = 0;
 
+            // compress local solution
             if(target.size() == 0)
                 while (i_loc < mumps.lsol_loc){
                     int isol = mumps.isol_loc[i_loc] - 1;
                     if (isol >= start_c && isol < end_c){
-                        int ci = column_index[part][isol] - n_o; 
+                        int ci = column_index[part][isol] - n_o;
                         target.push_back(i_loc);
                         target_idx.push_back(ci);
                     }
                     i_loc++;
                 }
 
+            // initialize local part of the S matrix (0.5-Ai+Aiel)
             for (int j = 0; j < s; j++) {
                 int col = mycols[j];
                 for (int i = 0; i < (int)target_idx.size(); i++) {
@@ -150,10 +179,6 @@ abcd::waitForSolve()
         } else if (job == 4) {
             mumps_S(3);
         }
-        
     }while(true);
 
 }		/* -----  end of function abcd::waitForSolve()  ----- */
-
-
-

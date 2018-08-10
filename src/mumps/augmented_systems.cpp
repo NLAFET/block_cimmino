@@ -33,31 +33,43 @@
 #include <abcd.h>
 #include <mumps.h>
 
+/*!
+ *  \brief create the augmented systems for the local partitions
+ *
+ *  Create block diagonal matrix with the augmented systems of all local partitions
+ *
+ *  \param n_aug: size of the block diagonal augmented system
+ *  \param nz_aug: number of non-zeros of the block diagonal augmented system
+ *  \param irn_aug: array of rows of the block diagonal augmented system
+ *  \param jcn_aug: array of columns of the block diagonal augmented system
+ *  \param val_aug: array of values of the block diagonal augmented system
+ *
+ */
 void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
         std::vector<int> &irn_aug, std::vector<int> &jcn_aug, std::vector<double> &val_aug)
 {
-    m_n = 0;
-    m_nz = 0;
-
+    // Size of augmented system after gathering partitions
+    m_n = 0; // number of columns in the augmented system
+    m_nz = 0; // number of non-zeros in the augmented system
     for(int j = 0; j < nb_local_parts; j++) {
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
         m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
     }
 
-    // Allocate the data for mu
+    // Allocate the data for the augmented system
     n_aug = m_n;
     nz_aug = m_nz;
     irn_aug.resize(m_nz);
     jcn_aug.resize(m_nz);
     val_aug.resize(m_nz);
 
-    // Use Fortran array => start from 1
+    // Use Fortran array (MUMPS) => start from 1
     int i_pos = 1;
     int j_pos = 1;
     int st = 0;
 
+    // Build the augmented system
     for(int p = 0; p < nb_local_parts; ++p) {
-
         // fill the identity
         for(int i = 0; i < partitions[p].dim(1); ++i) {
             irn_aug[st + i] = i_pos + i;
@@ -70,6 +82,7 @@ void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
         // we added nb_cols elements
         st += partitions[p].dim(1);
 
+        // Add partition in lower triangular part (symmetric augmented systems)
         for(int k = 0; k < partitions[p].dim(0); ++k) {
             for(int j = partitions[p].row_ptr(k); j < partitions[p].row_ptr(k + 1); ++j) {
                 irn_aug[st] = i_pos + k;
@@ -80,8 +93,9 @@ void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
             }
         }
 
+        // shift to build augmented system of next partition
         i_pos += partitions[p].dim(0);
         j_pos += partitions[p].dim(1) + partitions[p].dim(0);
 
     }
-}
+}               /* -----  end of function abcd::createAugmentedSystems  ----- */

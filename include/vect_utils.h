@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file vect_utils.h
+ * \brief Header to the utils function on vectors
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #ifndef VECT_UTILS_HXX_
 #define VECT_UTILS_HXX_
 
@@ -37,9 +44,7 @@
 #include<map>
 
 std::vector<int> getColumnIndex(int *col_ptr, int _size);
-
 std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors);
-
 std::pair<std::vector<int>, std::vector<int> >
     getIntersectionIndices(std::vector<int> &v1, std::vector<int> &v2);
 

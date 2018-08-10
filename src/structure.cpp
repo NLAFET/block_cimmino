@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file structure.cpp
+ * \brief Implementation of the functions computing the partitions
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 #include "mat_utils.h"
 #include <iostream>
@@ -43,13 +50,74 @@
 
 using namespace boost::lambda;
 
+/*!
+ *  \brief Permute the matrix depending on partitioning
+ *
+ *  Permute the matrix to group rows belonging to a same partition after partitioning.
+ *  The partitioning of the new permuted matrix is saved in strows/nbrows.
+ *
+ *  \param partweights_perm: the number of rows in each partition
+ *  \param m_perm: number of elements in the row permutation
+ *
+ */
+void abcd::permutation(int *partweights_perm)
+{
+    // original matrix
+    int *iro = A.rowptr_ptr();
+    int *jco = A.colind_ptr();
+    double *valo = A.val_ptr();
+
+    // permutted vectors
+    int *ir = new int[m_o + 1];
+    int *jc = new int[nz_o];
+    double *val = new double[nz_o];
+
+    // perform permutation
+    int sr = 0;
+    for(int i = 0; i < m_o; i++){
+        int cur = row_perm[i];
+        ir[i] = sr;
+        for(int j = 0; j < iro[cur+1] - iro[cur]; j++){
+            jc[ir[i] + j] = jco[iro[cur] + j];
+            val[ir[i] + j] = valo[iro[cur] + j];
+        }
+        sr += iro[cur + 1] - iro[cur];
+    }
+    ir[m_o] = nz_o;
+    A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
+
+    // update starting rows and number of rows
+    unsigned row_sum = 0;
+    nbrows = std::vector<int>(partweights_perm, partweights_perm + icntl[Controls::nbparts]);
+    strow =  std::vector<int>(icntl[Controls::nbparts]);
+    for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
+        strow[k] = row_sum;
+        row_sum += nbrows[k];
+    }
+
+    // free memory
+    delete[] ir;
+    delete[] jc;
+}    /* ----- end of method abcd::permutation ----- */
+
+/*!
+ *  \brief Compute the matrix partitioning and permutation when needed
+ *
+ *  Compute the partitioning of the matrix using the chosen algorithm (uniform, manual or PaToH).
+ *  Then perform the permutation of the matrix when needed (manual or PaToH). The permuted matrix
+ *  and its partitioning can be written to a file if icntl[Controls::write_problem] is true.
+ *
+ */
 void abcd::partitionMatrix()
 {
     unsigned handled_rows = 0;
     unsigned ceil_per_part, floor_per_part;
-    unsigned row_sum = 0;
-    int guessPartitionsNumber = icntl[Controls::part_guess];
 
+    // If the user wants #parts to be guessed then:
+    // m-#parts is: [1]-1; [2-8]-2; [9-1 000]-4; [1001-50 000]-8;
+    //              then [<100 000]-10 000 per part
+    //              else 20 000 per part
+    int guessPartitionsNumber = icntl[Controls::part_guess];
     if(guessPartitionsNumber == 1 && icntl[Controls::part_type] > 1){
         if (m_o == 1) {
             icntl[Controls::nbparts] = 1;
@@ -68,51 +136,50 @@ void abcd::partitionMatrix()
         parallel_cg =  icntl[Controls::nbparts] < comm.size() ? icntl[Controls::nbparts] : comm.size();
     }
 
-    if (icntl[Controls::nbparts] == 0){
+    /* CHECKS */
+    // check #parts
+    if (icntl[Controls::nbparts] < 0){
         info[Controls::status] = -3;
         mpi::broadcast(comm, info[Controls::status], 0);
-        throw std::runtime_error("FATAL ERROR: Number of partitions is zero");
+        throw std::runtime_error("FATAL ERROR: Number of partitions is negative or zero");
     }
+    // check #masters <= #parts
     if (icntl[Controls::nbparts] < parallel_cg) {
         // the user is not supposed to know about the parallel_cg
         // LERROR << "ERROR: Number of partitions is smaller than the number of parallel_cg";
         LERROR << "Oops! This should not happen";
-        
         LWARNING << "WARNING: Increasing the number of partitions from " << icntl[Controls::nbparts]
                  << " up to " << parallel_cg;
-        
         icntl[Controls::nbparts] = parallel_cg;
     }
+    // check #parts <= m
     if(icntl[Controls::nbparts] > m) {
         LERROR << "ERROR: Number of partitions is larger than the number of rows";
-        
         LWARNING << "WARNING: Decreasing the number of partitions from " << icntl[Controls::nbparts]
                  << " down to " << m;
-        
         icntl[Controls::nbparts] = m;
     }
-
+    // if 1 part then no PaToH
     if (icntl[Controls::nbparts] == 1 && icntl[Controls::part_type] == 3) {
         LWARNING << "WARNING: PaToH is useless with a single partiton request, switching to automatic partitioning";
         icntl[Controls::part_type] = 2;
     }
 
-    if (icntl[Controls::part_type] == 1 && nbrows.size() == 0) {
-        info[Controls::status] = -4;
-        mpi::broadcast(comm, info[Controls::status], 0);
-        throw std::runtime_error("nbrows not initialized for manual partitioning");
-    }
-    
-
-
+    /* Perform specified partitioning */
     switch(icntl[Controls::part_type]){
-        
         /*-----------------------------------------------------------------------------
          *  Uniform partitioning with a given nbrows
          *-----------------------------------------------------------------------------*/
-    case 1:
+    case 1: {
+        // manual partitioning input
+        if (nbrows.size() == 0) {
+            info[Controls::status] = -4;
+            mpi::broadcast(comm, info[Controls::status], 0);
+            throw std::runtime_error("nbrows not initialized for manual partitioning");
+        }
+        // for each input partition (#rows), update the starting row and number of rows
+        unsigned row_sum = 0;
         strow.resize(icntl[Controls::nbparts]);
-
         for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
             strow[k] = row_sum;
             row_sum += nbrows[k];
@@ -127,35 +194,32 @@ void abcd::partitionMatrix()
         /*-----------------------------------------------------------------------------
          *  Uniform partitioning with only icntl[Controls::nbparts] as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
-    case 2:
-	{
-	        unsigned floor_per_part;
-	        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
-	        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
-	        strow =  std::vector<int>(icntl[Controls::nbparts]);
-	        nbrows = std::vector<int>(icntl[Controls::nbparts]);
-	 
-	        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
-	           int cnt = floor_per_part;
-	           if(remain >0){
-	               remain--;
-	               cnt++;
-	           }
-	           nbrows[k] = cnt;
-	        }
-	 
-	        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
-	            strow[k] = row_sum;
-	            row_sum += nbrows[k];
-	        }
-	}
+    } case 2: {
+        unsigned floor_per_part;
+        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
+        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
+        strow =  std::vector<int>(icntl[Controls::nbparts]);
+        nbrows = std::vector<int>(icntl[Controls::nbparts]);
+
+        // each part has m/#parts rows plus one while possible
+        unsigned row_sum = 0;
+        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
+            strow[k] = row_sum;
+            int cnt = floor_per_part;
+            if(remain >0){
+                remain--;
+                cnt++;
+            }
+            nbrows[k] = cnt;
+            row_sum += nbrows[k];
+        }
         break;
         /*-----------------------------------------------------------------------------
          *  PaToH partitioning
          *-----------------------------------------------------------------------------*/
-    case 3:
-	{
+    } case 3: {
 #ifdef PATOH
+	/* Initialize PaToH parameters */
         PaToH_Parameters args;
         int _c, _n, _nconst, _ne, *cwghts, *nwghts, *xpins, *pins, *partvec,
             cut, *partweights, ret;
@@ -168,6 +232,8 @@ void abcd::partitionMatrix()
 
         PaToH_Initialize_Parameters(&args, PATOH_CUTPART, PATOH_SUGPARAM_DEFAULT);
         args._k = icntl[Controls::nbparts];
+
+	/* Allocate PaToH structure */
         _c = m_o;
         _n = n_o;
         _nconst = 1;
@@ -198,11 +264,10 @@ void abcd::partitionMatrix()
             throw std::runtime_error(err.str());
         }
 
-
+	/* Launch PaToH partitioning */
         args.final_imbal    = _imba;
         args.init_imbal     = _imba * 2.0;
         args.seed           = 1;
-
         //args.initp_alg      = 12;
 
         partvec     = new int[_c];
@@ -210,6 +275,8 @@ void abcd::partitionMatrix()
 
         PaToH_Part(&args, _c, _n, _nconst, 0, cwghts, nwghts,
                    xpins, pins, NULL, partvec, partweights, &cut);
+
+        // check no empty partitions
         for (int i = 0; i < icntl[Controls::nbparts]; i++) {
             if (partweights[i] == 0) {
                 info[Controls::status] = -6;
@@ -217,48 +284,14 @@ void abcd::partitionMatrix()
                 throw std::runtime_error("FATAL ERROR: PaToH produced an empty partition, Try to reduce the imbalancing factor");
             }
         }
-
+        /* Permutation of the matrix */
         row_perm = sort_indexes(partvec, _c);
+        permutation(partweights);
 
-        // Permutation
-        int *iro = A.rowptr_ptr();
-        int *jco = A.colind_ptr();
-        double *valo = A.val_ptr();
-
-        int *ir = new int[m_o + 1];
-        int *jc = new int[nz_o];
-        double *val = new double[nz_o];
-
-        int sr = 0;
-        for(int i = 0; i < m_o; i++){
-            int cur = row_perm[i];
-            ir[i] = sr;
-            for(int j = 0; j < iro[cur+1] - iro[cur]; j++){
-                jc[ir[i] + j] = jco[iro[cur] + j];
-                val[ir[i] + j] = valo[iro[cur] + j];
-            }
-            sr += iro[cur + 1] - iro[cur];
-        }
-        ir[m_o] = nz_o;
-        LINFO << "Done with PaToH, time : " << MPI_Wtime() - t << "s.";
+        LINFO << "Done with PaToH Partitioning, time : " << MPI_Wtime() - t << "s.";
         t = MPI_Wtime();
 
-        A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
-
-        int * test;
-        
-        nbrows = std::vector<int>(partweights, partweights + icntl[Controls::nbparts]);
-        strow =  std::vector<int>(icntl[Controls::nbparts]);
-
-        for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
-        }
-
-        LINFO << "Finished Partitioning, time: " << MPI_Wtime() - t << "s.";
-           
-        delete[] ir;
-        delete[] jc;
+        /* Free memory */
         delete[] val;
         delete[] partvec;
         delete[] partweights;
@@ -273,58 +306,35 @@ void abcd::partitionMatrix()
         throw std::runtime_error("Trying to use PaToH while it is not available");
 #endif
         break;
-	}
-   case 4:
-        {
-         double t = MPI_Wtime();
-         //LINFO << "Reading partition vector " << partvector ;
-         int k =  icntl[Controls::nbparts];
-         int *partweights = new int[k];
+        /*-----------------------------------------------------------------------------
+         *  Manual partitioning
+         *-----------------------------------------------------------------------------*/
+    } case 4: {
+        double t = MPI_Wtime();
+        int k =  icntl[Controls::nbparts];
+        int *partweights = new int[k]; // actual number of rows in each partition
 
-         for(int z =0; z < k; z++){
-                partweights[z]=0;
-         }
-
-         for(int z =0; z < m_o; z++) {
-               partweights[partvec[z]]++;
-         }
-         row_perm = sort_indexes(partvec, m_o);
-
-        // Permutation
-        int *iro = A.rowptr_ptr();
-        int *jco = A.colind_ptr();
-        double *valo = A.val_ptr();
-
-        int *ir = new int[m_o + 1];
-        int *jc = new int[nz_o];
-        double *val = new double[nz_o];
-
-        int sr = 0;
-        for(int i = 0; i < m_o; i++){
-            int cur = row_perm[i];
-            ir[i] = sr;
-            for(int j = 0; j < iro[cur+1] - iro[cur]; j++){
-                jc[ir[i] + j] = jco[iro[cur] + j];
-                val[ir[i] + j] = valo[iro[cur] + j];
-            }
-            sr += iro[cur + 1] - iro[cur];
+        for(int z =0; z < k; z++){
+            partweights[z]=0;
         }
-        ir[m_o] = nz_o;
-
-        A = CompRow_Mat_double(m_o, n_o, nz_o, val, ir, jc);
-        nbrows = std::vector<int>(partweights, partweights + icntl[Controls::nbparts]);
-        strow =  std::vector<int>(icntl[Controls::nbparts]);
-
-        for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            strow[k] = row_sum;
-            row_sum += nbrows[k];
+        for(int z =0; z < m_o; z++) {
+            partweights[partvec[z]]++;
         }
+
+        /* Permutation of the matrix */
+        row_perm = sort_indexes(partvec, m_o);
+        permutation(partweights);
+
         LINFO << "Done with Manual Partitioning, time : " << MPI_Wtime() - t << "s.";
         break;
-        }
-
+    } default: {
+        // Wrong job id
+        info[Controls::status] = -1;
+        throw std::runtime_error("Wrong partitioning type.");
+    }
     }
 
+    /* Overlap num_overlap rows at the start and at the end of each partition */
     if  (icntl[Controls::num_overlap] > 0){
         LINFO << "Duplicating " << icntl[Controls::num_overlap] <<
 		" overlapping rows between partitions.";
@@ -342,59 +352,68 @@ void abcd::partitionMatrix()
         }
     }
 
+    /* Write the (permuted) matrix A and the its uniform partitioning (#rows1, ...) to a file */
     if(write_problem.length() != 0) {
-      LINFO << "Writing the problem to the file: " << write_problem;
-      int *ir = A.rowptr_ptr();
-      int *jc = A.colind_ptr();
-      double *val = A.val_ptr();
+        LINFO << "Writing the problem to the file: " << write_problem;
+        int *ir = A.rowptr_ptr();
+        int *jc = A.colind_ptr();
+        double *val = A.val_ptr();
 
-      ofstream f;
-      f.open(write_problem.c_str());
-      f << "%%MatrixMarket matrix coordinate real general\n";
-      f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
-      for(int i = 0; i < m_o; i++){
-        for(int j = ir[i]; j< ir[i + 1]; j++){
-          f << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+        ofstream f;
+        f.open(write_problem.c_str());
+        f << "%%MatrixMarket matrix coordinate real general\n";
+        f << A.dim(0) << " " << A.dim(1) << " " << A.NumNonzeros() << "\n";
+        for(int i = 0; i < m_o; i++){
+            for(int j = ir[i]; j< ir[i + 1]; j++){
+                f << i + 1 << " " << jc[j] + 1 << " " << val[j] << "\n";
+            }
         }
-      }
-      f.close();
+        f.close();
 
-      string parts = write_problem + "_parts";
-      f.open(parts.c_str());
+        string parts = write_problem + "_parts";
+        f.open(parts.c_str());
 
-      for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
-        f << nbrows[k] << "\n";
-      }
+        for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
+            f << nbrows[k] << "\n";
+        }
 
-      f.close();
+        f.close();
     }
-}
+}    /* ----- end of method abcd::partitionMatrix ----- */
 
+/*!
+ *  \brief Analyses/Compress partitions
+ *
+ *  Analyses the structure of each partition, in particular finds the non-empty columns,
+ *  then compresses it and finds the interconnected columns with other partitions.
+ *  In the case of augmentation, augment the partitions and also find the interconnections.
+ *
+ */
 void abcd::analyseFrame()
 {
     LINFO << "Launching frame analysis";
-    std::vector<CompCol_Mat_double > loc_parts;
-    std::vector<int> ci_sizes;
 
     double t  = MPI_Wtime();
 
     column_index.resize(icntl[Controls::nbparts]);
+    std::vector<CompCol_Mat_double > loc_parts;
     loc_parts.resize(icntl[Controls::nbparts]);
 
     LINFO << "Creating partitions";
 
+    // Create the compressed partitions
     for (unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; ++k) {
+        // Create uncompressed partition
         CompCol_Mat_double part(CSC_middleRows(A, strow[k], nbrows[k]));
 
+        // Find non-empty columns
         int *col_ptr = part.colptr_ptr();
         column_index[k] =  getColumnIndex(col_ptr, part.dim(1));
 
-        // if no augmentation, then create the parts
-        if(icntl[Controls::aug_type] == 0)
-        {
+        // Create the part (if augmentation, just a local tmp part)
+        if(icntl[Controls::aug_type] == 0) {
             parts[k] = CompRow_Mat_double(sub_matrix(part, column_index[k]));
-        } else
-        {
+        } else {
             loc_parts[k] = CompCol_Mat_double(part);
         }
     }
@@ -416,32 +435,35 @@ void abcd::analyseFrame()
 #endif //WIP
 
     if (icntl[Controls::aug_type] != 0) {
+        std::vector<int> ci_sizes;
+
         t = MPI_Wtime();
+        // Augment the compressed partitions
         abcd::augmentMatrix(loc_parts);
         LINFO << "Augmentation time: " << MPI_Wtime() - t << "s.";
 
+        // Recompute column_index
         column_index.clear();
         column_index.resize(icntl[Controls::nbparts]);
         ci_sizes.resize(icntl[Controls::nbparts]);
-        
+
         for (unsigned int k = 0;
              k < (unsigned int)icntl[Controls::nbparts]; k++) {
-
+            // Build the column index of the local partition
             CompCol_Mat_double &part = loc_parts[k];
-
-            // Build the column index of part
             column_index[k] = getColumnIndex(
                 part.colptr_ptr(), part.dim(1)
                 );
 
+            // Save the compressed augmented partitions
             std::vector<int> &ci = column_index[k];
-            
             ci_sizes[k] = ci.size();
-
             parts[k] = CompRow_Mat_double(sub_matrix(part, ci));
         }
-        if (icntl[Controls::aug_type] != 0)
-            LINFO << "Time to regenerate partitions:\t" << MPI_Wtime() - t;
+
+        LINFO << "Time to regenerate partitions:\t" << MPI_Wtime() - t;
+
+        // If no actual augmentation, classical CG...
         if (size_c == 0) {
             LWARNING << "WARNING: Size of C is zero, switching to classical cg";
             icntl[Controls::aug_type] = 0;
@@ -452,6 +474,4 @@ void abcd::analyseFrame()
     // print only the size of C
     if(icntl[Controls::aug_analysis] == 1) exit(0);
 #endif // WIP
-
-}
-
+}               /* -----  end of function abcd::analyseFrame  ----- */

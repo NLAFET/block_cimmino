@@ -30,29 +30,45 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file mumps/simple_sumProject.cpp
+ * \brief Implementation of the sum of projections for S^{-1}f using MUMPS
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include<abcd.h>
 #include<mumps.h>
 using namespace  boost::lambda;
 
+/*!
+ *  \brief Compute sum of projections for S^{-1}f using MUMPS
+ *
+ *  Compute sum of projections for S^{-1}f using MUMPS
+ *
+ *  \param mycols: selected columns to compute only on subpart of S
+ *
+ */
 #ifdef WIP
 MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
 {
     bool dense_rhs = (icntl[Controls::aug_dense] == 1);
-    //dense_rhs = true;
 
-    int s = mycols.size();
-    std::vector<int> rr;
-    std::vector<double> rv;
+    int s = mycols.size(); // size of S
+    std::vector<int> rr; // vector of rows of S
+    std::vector<double> rv; // vector of values of S
 
     CompRow_Mat_double *r = new CompRow_Mat_double[nb_local_parts];
     std::vector<std::map<int,int> > loc_cols(nb_local_parts);
 
     int nzr_estim = 0;
 
+    // build r=Ai*Y for all local partitions
     for(int k = 0; k < nb_local_parts; k++) {
 
         CompRow_Mat_double Y;
 
+        // rows,columns,values of Y (all ones) of MUMPS
         VECTOR_int yr(mycols.size(), 0);
         VECTOR_int yc(mycols.size(), 0);
         VECTOR_double yv(mycols.size(), 0);
@@ -70,18 +86,17 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                 loc_cols[k][i] = 1;
             }
         }
-
         Coord_Mat_double Yt(partitions[k].dim(1), s, ct, yv.ptr(), yr.ptr(), yc.ptr());
-
         Y = CompRow_Mat_double(Yt);
 
+        // r(k) = Ai*Y^T
         r[k] = spmm(partitions[k], Y) ;
         nzr_estim += r[k].NumNonzeros();
     }
 
-
+    // If dense rhs, build mumps rhs for all partitions
     if(dense_rhs){
-        // Build the mumps rhs
+        // Initialize the mumps rhs
         mumps.rhs = new double[mumps.n * s];
         for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
         MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
@@ -89,6 +104,7 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
         // dense mumps rhs
         mumps.icntl[20 - 1] = 0;
 
+        // Build the mumps rhs
         int pos = 0;
         for(int k = 0; k < nb_local_parts; k++) {
             for(int r_p = 0; r_p < s; r_p++) {
@@ -103,23 +119,25 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
             }
             pos += partitions[k].dim(1) + partitions[k].dim(0);
         }
+    // Alse, sparse rhs for all partitions
     } else {
         // sparse mumps rhs
         mumps.setIcntl(20, 1);
 
-        // Build the mumps rhs
+        // Initialize the mumps rhs
         mumps.rhs = new double[mumps.n * s];
         for(int i = 0; i < mumps.n * s; i++) mumps.rhs[i] = 0;
         MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
 
         {
+            // allocate arrays of rows,columns,values for mumps rhs
             mumps.irhs_ptr      = new int[s + 1];
             rr.reserve(nzr_estim);
             rv.reserve(nzr_estim);
 
             int cnz = 1;
 
-
+            // Build the mumps rhs
             for(int r_p = 0; r_p < s; r_p++) {
                 mumps.irhs_ptr[r_p] = cnz;
 
@@ -141,27 +159,27 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
                     pos += _dim1 + _dim0;
                 }
             }
+
             mumps.irhs_ptr[s] = cnz;
-
             mumps.nz_rhs        = cnz - 1;
-
             mumps.rhs_sparse    = &rv[0];
             mumps.irhs_sparse   = &rr[0];
         }
 
     }
 
+    // Give order to slaves
     int job = 1;
     mpi::broadcast(intra_comm, job, 0);
 
     mumps.nrhs          = s;
     mumps.lrhs          = mumps.n;
-    mumps.job           = 3;
 
-    dmumps_c(&mumps);
+    // Run solve for MUMPS to get local part of vector
+    mu(3);
 
+    // Build Delta: sum of subparts for all partitions
     MV_ColMat_double Delta;
-
     Delta = MV_ColMat_double(size_c, s, 0);
 
     int dlda = Delta.lda();
@@ -212,5 +230,5 @@ MV_ColMat_double abcd::spSimpleProject(std::vector<int> mycols)
     delete[] r;
 
     return Delta;
-}
+}               /* -----  end of function abcd::simple_sumProject  ----- */
 #endif // WIP

@@ -1,4 +1,3 @@
-
 // Copyright Institut National Polytechnique de Toulouse (2014) 
 // Contributor(s) :
 // M. Zenadi <mzenadi@enseeiht.fr>
@@ -31,8 +30,16 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file scaling.cpp
+ * \brief Implementation of the scaling of the system in ABCD
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 
+// Include scaling function from MUMPS
 extern "C"
 {
     #ifdef OLD_MUMPS
@@ -60,34 +67,37 @@ extern "C"
     #endif
 }
 
+/*!
+ *  \brief Scaling of the matrix
+ *
+ *  Compute the scaling of the matrix using MUMPS scaling plus an optional
+ *  2-norm scaling of the rows. Also scale the starting point and right hand 
+ *  side when needed.
+ *
+ */
 void abcd::scaling()
 {
+    // MC77 not working on rectangular matrices
     if (m != n) {
         LWARNING << "Matrix is not square, disabling the scaling";
         abcd::icntl[Controls::scaling] = 0;
     }
 
-    dcol_.assign(n, double(1));
-    drow_.assign(m, double(1));
-
     if(icntl[Controls::scaling] !=0) {
         LINFO << "Mumps MC77 scaling with: " << man_scaling[0] << ";" <<
-		man_scaling[1] << ";" << man_scaling[2] << ";" << 
+		man_scaling[1] << ";" << man_scaling[2] << ";" <<
 		man_scaling[3] << " iterations (#normInf;#norm1;#normInf;#norm2)";
 
-        abcd::scaleMatrix(1);
+        dcol_.assign(n, double(1));
+        drow_.assign(m, double(1));
 
+        // Compute scaling vectors with MUMPS scaling
+        abcd::scaleMatrix();
+
+        // Apply scaling to the matrix and starting vector
         diagScaleMatrix(drow_, dcol_);
 
-	// Scale the starting vector if it exists
-	if(use_xk)
-        {
-             double *v = Xk.ptr();
-             for ( int i = 0; i < Xk.dim(0); i++ ) {
-                 v[i] = v[i] * (1/dcol_[i]);
-             }
-        }
-
+        // 2-norm scaling of the rows
         if(man_scaling[3] > 0) {
             double rsum;
             std::vector<double> dc(n, double(1));
@@ -103,17 +113,24 @@ void abcd::scaling()
 	        dr[r] = 1/sqrt(rsum);
                 drow_[r] *= 1/sqrt(rsum);
             }
-
             abcd::diagScaleMatrix(dr, dc);
         }
     }
-}
+}    /* ----- end of method abcd::scaling ----- */
 
-void abcd::scaleMatrix(int norm)
+/*!
+ *  \brief Compute scaling with MUMPS scaling
+ *
+ *  Sequential:
+ *  Compute both row and column scaling vectors using MUMPS scaling which is a
+ *  parallel implementation of the MC77 algorithm. After scaling the matrix is
+ *  bistochastic (row/column norm is 1).
+ *
+ */
+void abcd::scaleMatrix()
 {
     int lw, liw, job;
     double eps = 1.e-16;
-//    double eps = -1;
 
     // CSR arrays for the matrix A
     int *a_rp = A.rowptr_ptr();
@@ -167,7 +184,7 @@ void abcd::scaleMatrix(int norm)
     lw = 0;
     double err, errinf;
 
-    // 1. estimate memory 
+    // 1. estimate memory
     job = 1;
     #ifdef OLD_MUMPS
         int nz_tmp=nz;
@@ -214,58 +231,94 @@ void abcd::scaleMatrix(int norm)
     delete[] cpartvec;
     delete[] rsndrcvsz;
     delete[] csndrcvsz;
- 
+
+    // Decrement column indices to get back in C shape
     #pragma omp parallel for
     for(int k = 0; k < nz ; k++) {
         a_cp[k]--;
     }
-}
+}    /* ----- end of method abcd::scaleMatrix ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::diagscal
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Apply scaling to the system
+ *
+ *  Apply the row and column scaling factors to the matrix (DcADr), the right
+ *  hand side (DrB) and the starting vector (Dc^{-1}Xk).
+ *
+ *  \param drow: row scaling factors
+ *  \param dcol: column scaling factors
+ *
  */
-    void
-abcd::diagScaleMatrix (std::vector<double> &drow, std::vector<double> &dcol)
-{
+void abcd::diagScaleMatrix (std::vector<double> &drow, std::vector<double> &dcol) {
     int *rp = A.rowptr_ptr();
     int *ci = A.colind_ptr();
     double *v = A.val_ptr();
-    
+
+    // Scale the matrix
     #pragma omp parallel for
     for ( int i = 0; i < A.dim(0); i++ ) {
         for ( int j = rp[i]; j < rp[i+1]; j++ ) {
-            v[j] = drow[i] * v[j]; 
+            v[j] = drow[i] * v[j];
             v[j] = v[j] * dcol[ci[j]];
         }
     }
-}		/* -----  end of function abcd::diagscal  ----- */
 
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::scalRhs
- *  Description:  
- * =====================================================================================
- */
-    void
-abcd::diagScaleRhs ( VECTOR_double &b)
-{
-    #pragma omp parallel for
-    for ( int i = 0; i < m; i++ ) {
-        b(i) = b(i)*drow_[i];
+    // Scale the starting vector
+    if(use_xk) {
+        diagScaleStart(Xk, dcol);
     }
 
-}		/* -----  end of function abcd::scalRhs  ----- */
-    void
-abcd::diagScaleRhs ( MV_ColMat_double &B)
-{
-    #pragma omp parallel for
-    for ( int i = 0; i < B.dim(0); i++ ) 
-        for ( int j = 0; j < B.dim(1); j++ ) 
-            B(i,j) = B(i,j)*drow_[i];
+    // Scale the RHS
+//    diagScaleRhs(rhs, drow);
+}		/* -----  end of function abcd::diagScaleMatrix  ----- */
 
-}		/* -----  end of function abcd::scalRhs  ----- */
+
+/*!
+ *  \brief Apply scaling to the starting vector
+ *
+ *  Apply the inverse of the column scaling factors to the starting vector (Dc^{-1}Xk).
+ *
+ *  \param X: Starting vector as sparselib matrix
+ *  \param dcol: column scaling factors
+ *
+ */
+void abcd::diagScaleStart (MV_ColMat_double &X, std::vector<double> &dcol) {
+    #pragma omp parallel for
+    for ( int i = 0; i < X.dim(0); i++ ) {
+        for ( int j = 0; j < X.dim(1);j++ ) {
+            X(i,j) = X(i,j) * (1/dcol[i]);
+}}
+}		/* -----  end of function abcd::diagScaleStart  ----- */
+
+/*!
+ *  \brief Apply scaling to the array right hand side
+ *
+ *  Apply the row scaling factors to the right hand side (DrB).
+ *
+ *  \param b: Right hand side as an array
+ *  \param drow: row scaling factors
+ *
+ */
+void abcd::diagScaleRhs (VECTOR_double &b, std::vector<double> &drow) {
+    #pragma omp parallel for
+    for ( int i = 0; i < m; i++ )
+        for ( int j = 0; j < nrhs; j++ )
+            b(j*m+i) = b(j*m+i)*drow[i];
+}		/* -----  end of function abcd::diagScaleRhs  ----- */
+
+/*!
+ *  \brief Apply scaling to the matrix right hand side
+ *
+ *  Apply the row scaling factors to the right hand side (DrB).
+ *
+ *  \param B: Right hand side as sparselib matrix
+ *  \param drow: row scaling factors
+ *
+ */
+void abcd::diagScaleRhs (MV_ColMat_double &B, std::vector<double> &drow) {
+    #pragma omp parallel for
+    for ( int i = 0; i < B.dim(0); i++ )
+        for ( int j = 0; j < B.dim(1); j++ )
+            B(i,j) = B(i,j)*drow[i];
+}		/* -----  end of function abcd::diagScaleRhs  ----- */

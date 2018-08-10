@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file utils.cpp
+ * \brief Implementation of some usefull utils functions
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 #include "blas.h"
 #include "mat_utils.h"
@@ -40,35 +47,56 @@
 using namespace std;
 using namespace boost::lambda;
 
-/// Partition weigts
+/*!
+ *  \brief Distribute partitions to masters
+ *
+ *  Distribution of the partitions to masters:
+ *   - #masters == # partitions: 1partition-1master
+ *   - 1masters: all partitions for him
+ *   - #masters < # partitions:
+ *       - if minCommWeight !=0: METIS partitioning of the adjacency graph between partitions
+ *      in order to both diminish interconnections and communications. minCommWeight is an
+ *      imbalance parameter.
+ *       - else: sort partitions from biggest to smallest and distribute to master with current
+ *      lowest weight.
+ *
+ *  \param partitionsSets: groups of partitions for each master
+ *  \param weights: vector of weights (#rows) for each matrix
+ *  \param nb_parts: number of masters
+ *
+ */
 void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std::vector<int> weights, int nb_parts)
 {
-    std::vector<int> sets(nb_parts);
-    std::map<int, std::vector<int> > pts;
+    std::vector<int> sets(nb_parts); // total weight (#rows) of partitions group on each master
+    std::map<int, std::vector<int> > pts; // groups of partitions on each master
 
     for(int i = 0; i < nb_parts; i++){
         sets[i] = 0;
         pts[i];
     }
 
+    // If #masters=#partitions, 1partition per Master
     if (nb_parts == (int)weights.size() ) {
         for(int i = 0; i < nb_parts; i++)
             pts[i].push_back(i);
+    // If 1master, it gets all partitions
     } else if (nb_parts == 1) {
         for(int i = 0; i < weights.size(); i++)
             pts[0].push_back(i);
     }
+    // If #masters < #partitions
 #ifndef NO_METIS
     // minCommWeight: try to diminish comm with METIS or not in config file
     else if (icntl[Controls::minCommWeight] == 0) {
 #else
     else {
 #endif
-	//sort weights and its indexes then distribute to minimum pts
+	// sort partitions by weights in descending order
 	std::vector<int>  sorted = sort_indexes(&weights[0],  weights.size());
         std::sort(weights.begin(), weights.end());
         std::reverse(sorted.begin(), sorted.end());
         std::reverse(weights.begin(), weights.end());
+        // distribute the next partition to the current minimum weight master
 	for(int i = 0; i < weights.size(); i++){
 		int min_index = min_element_index(sets.begin(), sets.end());
 		pts[min_index].push_back(sorted[i]);
@@ -77,7 +105,8 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
     }
 #ifndef NO_METIS
 else {
-        int numparts = weights.size(); //icntl[Controls::nbparts];
+        /* Allocate memory */
+        int numparts = weights.size();
         int Wnzmax= numparts*10;
         idx_t Wanz =0;
         // W is an adjacency matrix between partitions
@@ -92,6 +121,7 @@ else {
         double *xx = (double*)calloc(numparts,sizeof(double));
         int ind =0;
 
+        /* Build Adjacency matrix between partitions */
         // Find actual columns of the partition
         int ** arrpart = new int*[numparts];
         for(int i=0;i<numparts;i++){
@@ -150,12 +180,16 @@ else {
 
         LINFO << "Preprocessing time for Min. communication partitions distribution " << MPI_Wtime() - timew2;
 
+        /* Build the Graph/adjacency matrix between partitions (interactions/interconnections):
+            vertex weights: #rows
+            edges weights: #interconnections <=> columns k s.t. there exists lines i,j s.t. aik and ajk non-zeros*/
+        // METIS parameters
         idx_t options[METIS_NOPTIONS];
         METIS_SetDefaultOptions(options);
+        options[METIS_OPTION_UFACTOR] = 10*icntl[Controls::minCommWeight]; // imbalance ratio (100=10%)
 //        options[METIS_OPTION_SEED]    = 1;
 //        options[METIS_OPTION_NITER]   = 10;
 //        options[METIS_OPTION_NCUTS]   = 1;
-        options[METIS_OPTION_UFACTOR] = 10*icntl[Controls::minCommWeight]; // imbalance ratio (100=10%)
 //        options[METIS_OPTION_DBGLVL]  = 127;
 
         idx_t numberofparts = nb_parts;
@@ -167,6 +201,7 @@ else {
         double t2 = MPI_Wtime();
         int ret;
 
+        // METIS partitioning (Kway or recursive) of the graph
         LINFO << "Launching METIS for Min. communication, aim: " << numberofparts << ", nVertices " << nVertices << ", nEdges " << Wanz ;
         /* METIS: Multilevel algorithm
             - K-way: partition at the coarsest level (but possible empty partitions)
@@ -187,15 +222,25 @@ else {
     for(int i = 0; i < nb_parts; i++){
         partitionsSets.push_back(pts[i]);
     }
-}
+}               /* -----  end of function partitionWeights  ----- */
 
-///DDOT
+/*!
+ *  \brief Parallel dot product p.ap'
+ *
+ *  Compute the dot product in parallel with interconnected masters thanks to the comm_map
+ *
+ *  \param p: first vector
+ *  \param ap: second vector
+ *
+ */
 double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
 {
+    // check corresponding sizes
     int lm = p.size();
     int rm = ap.size();
     if(lm != rm) throw - 800;
 
+    //initialize local values of the product
     VECTOR_double loc_p(lm, 0);
     VECTOR_double loc_ap(rm, 0);
     double loc_r = 0, r = 0;
@@ -209,25 +254,32 @@ double abcd::ddot(VECTOR_double &p, VECTOR_double &ap)
         }
     }
 
-    // R = P'AP
+    // initialize local value of the product: r=a.ap'
     for(int i = 0; i < lm; i++){
         loc_r += loc_p(i) * loc_ap(i);
     }
 
+    // reduce the value with interconnected processes
     mpi::all_reduce(inter_comm, loc_r, r, std::plus<double>());
 
     return r;
-}
+}               /* -----  end of function abcd::ddot  ----- */
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::get_nrmres
- *  Description:  Computes ||X_k|| and ||X_f - X_k||/||X_f||
- * =====================================================================================
+/*!
+ *  \brief Compute norm of the current iterate x and the residual b-Ax
+ *
+ *  Compute norm of the current iterate x and the residual b-Ax
+ *
+ *  \param x: current iterate
+ *  \param b: right hand side
+ *  \param nrmR: norm of the current residual
+ *  \param nrmX: norm of the current iterate
+ *
  */
 void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
                       VECTOR_double &nrmR, VECTOR_double &nrmX)
 {
+    //initialize local x,r and norms
     int rn = x.dim(1);
     int rm = x.dim(0);
 
@@ -241,6 +293,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
     MV_ColMat_double loc_r(m, rn, 0);
     MV_ColMat_double loc_xfmx(rm, rn, 0);
 
+    // compute local 1-norm of X
     int pos = 0;
     for(int i = 0; i < rm; i++) {
         if(comm_map[i] == 1) {
@@ -252,12 +305,11 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
     }
 
     pos = 0;
-
-
+    /* Compute residual loc_r=b-A*x for A on all local partitions */
     for(int p = 0; p < nb_local_parts; p++) {
         for(int j = 0; j < rn; j++) {
+            // Compress x
             VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
-
             int x_pos = 0;
             for(size_t i = 0; i < local_column_index[p].size(); i++) {
                 int ci = local_column_index[p][i];
@@ -265,6 +317,7 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
 
                 x_pos++;
             }
+            // Compute loc_r=Ai*x
             VECTOR_double vj =  partitions[p] * compressed_x;
             int c = 0;
             for(int i = pos; i < pos + partitions[p].dim(0); i++)
@@ -273,39 +326,50 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
 
         pos += partitions[p].dim(0);
     }
-
+    // loc_r=b-Ai*x
     loc_r  = b - loc_r;
 
+    // Compute Inf-norm of the residual
     for(int j = 0; j < rn; j++){
         VECTOR_double loc_r_j = loc_r(j);
         nrmRV(j) = infNorm(loc_r_j);
     }
 
+    // Reduce norms of X and R among all masters
     mpi::all_reduce(inter_comm, nrmRV.ptr(), rn, nrmR.ptr(), mpi::maximum<double>());
     mpi::all_reduce(inter_comm, nrmXV.ptr(), rn, nrmX.ptr(), std::plus<double>());
+}               /* -----  end of function abcd::get_nrmres  ----- */
 
-}
-
+/*!
+ *  \brief Binary or
+ *
+ *  Binary or: return a if non-zero, else b if non-zero, else return zero
+ *
+ *  \param a: first number
+ *  \param b: second number
+ *
+ */
 double or_bin(double &a, double &b){
     if(a!=0) return a;
     else if(b!=0) return b;
     else return 0;
-}
+}               /* -----  end of function abcd::or_bin  ----- */
 
+/*!
+ *  \brief Sort indexes based on an array and put it in a vector
+ *
+ *  Sort indexes based on an array and put it in a vector
+ *
+ *  \param v: array to sort
+ *  \param nb_el: size of v
+ *
+ */
 std::vector<int> sort_indexes(const int *v, const int nb_el) {
-
-    typedef std::pair<int,int> pair_type;
+    // build vector of pairs value-index
     std::vector< std::pair<int,int> > vp;
     vp.reserve(nb_el);
-
     for(int i = 0; i < nb_el; i++)
         vp.push_back( std::make_pair(v[i], i) );
-
-
-    // sort indexes based on comparing values in v
-//    sort(vp.begin(), vp.end(), bind(&pair_type::first, _1) < bind(&pair_type::first, _2));
-//    std::vector<int> idx(vp.size());
-//    transform(vp.begin(), vp.end(), idx.begin(), bind(&pair_type::second, _1));
 
     // sort indexes based on comparing values in v
     std::sort(vp.begin(), vp.end(),
@@ -317,33 +381,54 @@ std::vector<int> sort_indexes(const int *v, const int nb_el) {
       idx[i]=vp[i].second;
     }
     return idx;
-}
+}               /* -----  end of function abcd::sort_indexes  ----- */
 
-/// Regroups the data from the different sources to a single destination on the master
+/*!
+ *  \brief Regroups the data from the different sources to a single destination on the root
+ *
+ *  Centralize the solution vector on the root and compute the forward error if a
+ *  starting vector is used for BCG (B=A*Xf with Xf the exact solution).
+ *
+ *  \param dest: centralized solution vector
+ *  \param dest_lda: ???
+ *  \param dest_ncols: number of columns in the solution
+ *  \param src: local solution vector
+ *  \param src_lda: ???
+ *  \param src_ncols: number of columns in the local solution
+ *  \param globalIndex: correspondance between global and local indices
+ *  \param scale: scaling vector on columns
+ *
+ */
 void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
                             double *src,  int src_lda,  int src_ncols,
                             std::vector<int> globalIndex, double *scale)
 {
+    // Check size of solution in source and destination
     if (src_ncols != dest_ncols) {
         throw std::runtime_error("Source's number of columns must be the same as the destination's");
     }
 
     MV_ColMat_double source(src, src_lda, src_ncols, MV_Matrix_::ref);
 
+    // Gather local parts of the solution vector on root
     if(IRANK == 0) {
         double t = MPI_Wtime();
 
+        // Centralized solution
+        // solution matrix including the output solution being the pointer dest
         MV_ColMat_double vdest(dest, dest_lda, dest_ncols, MV_Matrix_::ref);
+        std::map<int, std::vector<double> > xo; // values of the compressed local parts
+        std::map<int, std::vector<int> > io; // column indices to uncompress local parts
+        std::map<int, int > lo; // position of the local solution part
 
-        std::map<int, std::vector<double> > xo;
-        std::map<int, std::vector<int> > io;
-        std::map<int, int > lo;
-
+        // Receive local parts of the solution from other masters
         for(int k = 1; k < inter_comm.size(); k++){
             inter_comm.recv(k, 71, xo[k]);
             inter_comm.recv(k, 72, io[k]);
             inter_comm.recv(k, 73, lo[k]);
         }
+
+        // gather solution parts
         for(int k = 1; k < inter_comm.size(); ++k){
             for(int j = 0; j < dest_ncols; ++j)
                 for(size_t i = 0; i < io[k].size() && io[k][i] < n_o; ++i){
@@ -352,17 +437,20 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
                 }
         }
 
+        // add part local to the root
         for(int j = 0; j < dest_ncols; ++j)
             for(size_t i = 0; i < globalIndex.size() && glob_to_local_ind[i] < dest_lda; ++i){
                 vdest(globalIndex[i], j) = source(i, j) * dcol_[globalIndex[i]];
             }
 
+        // Compute forward error
         ///@TODO Move this away
         if(Xf.dim(0) != 0) {
             MV_ColMat_double xf =  Xf - vdest;
             double nrmxf =  infNorm(xf);
             dinfo[Controls::forward_error] =  nrmxf/nrmXf;
         }
+    // Send local part of the solution
     } else {
         std::vector<double> x(src, src + src_lda * src_ncols);
 
@@ -370,4 +458,4 @@ void abcd::centralizeVector(double *dest, int dest_lda, int dest_ncols,
         inter_comm.send(0, 72, glob_to_local_ind);
         inter_comm.send(0, 73, src_lda);
     }
-}
+}               /* -----  end of function abcd::centralizeVector  ----- */

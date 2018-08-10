@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file compress_columns.cpp
+ * \brief Implementation of some functions to compress the columns of a matrix
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include "vect_utils.h"
 #include <climits>
 #include <iostream>
@@ -47,7 +54,7 @@ std::vector<int> getColumnIndex(int *col_ptr, int _size)
         *index2 = col_ptr + 1,
         *index3 = col_ptr + _size + 1,
         j = 0;
-        
+
     while(index2 != index3)
     {
         if(*index1 != *index2)
@@ -59,7 +66,7 @@ std::vector<int> getColumnIndex(int *col_ptr, int _size)
         j++;
     }
     return column_index;
-}
+}               /* -----  end of function getColumnIndex  ----- */
 
 //! \brief Merge sorted vectors and keep the sorting
 //! @param[in] vectors the vectors to be merged
@@ -68,7 +75,7 @@ std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
 {
     if(vectors.size() == 1) return vectors[0];
     std::vector<int> merge;
-    
+
     std::map<int,std::vector<int>::iterator> its;
     std::map<int,std::vector<int>::iterator> eds;
     for(int i = 0; i < vectors.size(); i++)
@@ -127,11 +134,11 @@ std::vector<int> mergeSortedVectors(std::vector<std::vector<int> > &vectors)
         to_delete.clear();
     }
     return merge;
-}
+}               /* -----  end of function mergeSortedVectors  ----- */
 
 //! \brief Returns the corresponding indices to an intersection
-//! @param[in] v1 first vector 
-//! @param[in] v2 second vector 
+//! @param[in] v1 first vector
+//! @param[in] v2 second vector
 //! \return The indices of intersection
 std::pair<std::vector<int>, std::vector<int> >
     getIntersectionIndices(std::vector<int> &v1, std::vector<int> &v2)
@@ -165,4 +172,4 @@ std::pair<std::vector<int>, std::vector<int> >
     std::pair<std::vector<int>, std::vector<int> > intersection(inter1, inter2);
 
     return intersection;
-}
+}               /* -----  end of function getIntersectionIndices  ----- */

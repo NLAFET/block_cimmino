@@ -30,10 +30,25 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file comms.cpp
+ * \brief Implementation of the creation of intercommunicators and distribution of RHS
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 #include <vect_utils.h>
 
-/// Assignes each mpi-process to its category : CG-master or MUMPS-Slave
+/*!
+ *  \brief Assigns each mpi-process to its category : CG-master or MUMPS-Slave
+ *
+ *  Decides which processes are Masters and create communicators between masters
+ *  and between slaves. The masters are decided:
+ *    - choice 1: zig-zag distribution, 1master-1node
+ *    - choice -1: first processes are masters (Momo's implementation)
+ *
+ */
 void abcd::createInterCommunicators()
 {
     mpi::group grp = comm.group();
@@ -48,40 +63,19 @@ void abcd::createInterCommunicators()
         throw std::runtime_error("The number of masters is larger than the number of MPI-processes");
     }
 
-        // ToDo define masters with a priori knowledge on workload
-        // Sort parts per estimated workload for its master (#rows then maybe #rows*#nz?)
-        // 1part/1node
-        //    if #part > #nodes
-        //        zig-zag in nodes from biggest workload
-        // slaves in same node while possible
-        // for remaining slaves in remaining nodes/slots
-        //    fill empty nodes with slaves grouped (priority to big workload)
-        //    fill empty slots with slaves (priority to big workload)
-
     // Broadcast choice for Master/Slave distribution
     mpi::broadcast(comm, icntl[Controls::master_def], 0);
     mpi::broadcast(comm, icntl[Controls::slave_def], 0);
 
-    // choice 1: zig-zag 1master/node assignation
-    // choice -1: previous implementation
     int choice=icntl[Controls::master_def];
+    // choice 1: zig-zag 1master/node assignation
     if (choice == 1) {
         // This choice will place 1 master on each node in descending order or node size
         // then if masters remain will continue adding them in zig-zag to the nodes
         mpi::environment env;
         std::string node = env.processor_name();
-/*        if (comm.rank() == 0 || comm.rank() == 1) node="NODE0";
-        if (comm.rank() == 2 || comm.rank() == 3) node="NODE1";
-        if (comm.rank() == 4 || comm.rank() == 5) node="NODE2";
-        if (comm.rank() == 6 || comm.rank() == 7) node="NODE3";
-        if (comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10) node="NODE4";
-        if (comm.rank() == 11 || comm.rank() == 12 || comm.rank() == 13 || comm.rank() == 14) node="NODE5";
-        if (comm.rank() == 15 || comm.rank() == 16 || comm.rank() == 17 || comm.rank() == 18 || comm.rank() == 19) node="NODE6";
-        if (comm.rank() == 20 || comm.rank() == 21 || comm.rank() == 22 || comm.rank() == 23 || comm.rank() == 24) node="NODE7";
-        if (comm.rank() == 25 || comm.rank() == 26 || comm.rank() == 27 || comm.rank() == 28 || comm.rank() == 29) node="NODE8";*/
         int cpu = sched_getcpu();
 
-        // Get communication map information on root MPI
         std::vector<std::pair<int, std::string>> pair_vect; // vector of pairs
         std::pair<int, std::string> p (comm.rank(), node); // pair mpi-node
         mpi::gather(comm, p, pair_vect, 0);
@@ -90,8 +84,8 @@ void abcd::createInterCommunicators()
         if (comm.rank() == 0) {
             int root_node;
 	    std::map<std::string, int> nodes; // index of nodes
-    //        std::vector<int> mpi_map; // communication map MPI-node
             std::vector<int> node_count; // number of MPI per node
+            // Get communication map information on root MPI
             for(int iii=0; iii<pair_vect.size(); ++iii) {
                 // if we meet the node for the first time
                 if (nodes.find(pair_vect[iii].second) == nodes.end()) {
@@ -104,18 +98,9 @@ void abcd::createInterCommunicators()
                 // increase number of MPI in this node
                 ++node_count[nodes[pair_vect[iii].second]];
                 node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
-                // save the node index for this MPI
-    //            mpi_map.push_back(nodes[pair_vect[iii].second]);
             }
             root_node=nodes[node];
 	    // now the vector nodes is useless
-
-/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
-            LINFO << "NODE: " << iii;
-            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
-                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
-        }
-        LINFO << "MAP2";*/
 
 	    // Sort nodes per count via tmp_ord to ord_nodes
             // The node of the root MPI must always be first
@@ -148,7 +133,7 @@ void abcd::createInterCommunicators()
                         masters_node.push_back(current_node);
                         instance_type_vect[node_map_slaves[current_node][0]] = 0;
                         node_map_slaves[current_node].erase(node_map_slaves[current_node].begin());
-                    } else --iii;
+                    } else --iii; //do not assign, only update the zig-zag direction
                     // update direction of node exploration
                     if (!current_idx) {
                         if (!direction) direction=1;
@@ -159,6 +144,7 @@ void abcd::createInterCommunicators()
                     }
                     current_idx+=direction;
                 }
+            // If only 1 node, all masters in first node
             } else {
                 for (int iii=0; iii<parallel_cg; ++iii) {
                     masters_node.push_back(0);
@@ -168,18 +154,14 @@ void abcd::createInterCommunicators()
             }
         }
 
-/*        for(int iii=0; iii<node_map_slaves.size(); ++iii) {
-            LINFO << "NODE: " << iii;
-            for (int jjj=0; jjj<node_map_slaves[iii].size(); ++jjj)
-                LINFO << "\tMPI: " << node_map_slaves[iii][jjj];
-        }*/
-
         mpi::broadcast(comm, instance_type_vect, 0);
         instance_type = instance_type_vect[comm.rank()];
-   } else {
+    // choice -1: previous implementation
+    } else {
         instance_type = comm.rank() < parallel_cg ? 0 : 1;
-   }
+    }
 
+    // Define communicators between masters and between slaves
     inter_comm = comm.split(instance_type == 0);
 
     if (comm.rank() == 0)
@@ -187,91 +169,56 @@ void abcd::createInterCommunicators()
               << " master processes and "
               << comm.size() - inter_comm.size()
               << " workers";
-}
+}               /* -----  end of function abcd::createInterCommunicators  ----- */
 
+/*!
+ *  \brief Distribute the local RHS to masters
+ *
+ *  Distribute local parts of the RHS corresponding to each partition for each
+ *  of the block_size vectors.
+ *
+ */
 void abcd::distributeRhs()
 {
+    // Broadcast if artificial RHS and Block Size (=max(block Size, mrhs))
     mpi::broadcast(inter_comm, use_xf, 0);
-
     if(icntl[Controls::block_size] < nrhs) icntl[Controls::block_size] = nrhs;
     mpi::broadcast(inter_comm, icntl[Controls::block_size], 0);
 
     if(comm.rank() == 0) {
-
-        int r_pos = 0;
-        // Build my part of the RHS
-        //int r = std::accumulate(partitions.begin(), partitions.end(), 0, sum_rows);
+        /* Build the RHS */
+        // size of RHS = accumulated size of partitions
         int r = 0;
         for(int i = 0; i < nb_local_parts; i++){
             r += partitions[i].dim(0);
         }
-	
+
+        // if artificial RHS used, computed its Inf-norm
 	if(Xf.dim(0) != 0) {
 	    nrmXf = 0;
 	    for(int i = 0; i < A.dim(1); i++) {
   	        if(abs(Xf(i,0)) > nrmXf) nrmXf = abs(Xf(i,0));
 	    }
 	}
-/*        if(rhs == nullptr){
-            rhs = new double[n_l * nrhs];
 
-            srand(10); 
-            B = MV_ColMat_double(m_l, icntl[Controls::block_size]);
-
-            nrmXf = 0;
-            Xf = MV_ColMat_double(A.dim(1), nrhs);
+        // Initialize B right the rhs data
+        B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
+        // don't forget permutation
+        if(row_perm.size() != 0){
             for(int j = 0; j < nrhs; j++){
-                for(int i = 0; i < A.dim(1); i++){
-                    rhs[i + j * n_l] = (double)((rand())%100+1)/99.0;
+                for(int i = 0; i < m_l; i++) {
+                    B(i, j) = rhs[row_perm[i] + j*m_l] * drow_[row_perm[i]];
                 }
             }
-
+        } else {
             for(int j = 0; j < nrhs; j++){
-                VECTOR_double xf_col(A.dim(1));
-                for(int i = 0; i < A.dim(1); i++) {
-                    xf_col[i] = rhs[i + j * A.dim(1)];
-                }
-                Xf.setCol(xf_col, j);
-            }
-
-            MV_ColMat_double BB = smv(A, Xf);
-
-	if(Xf.dim(0) != 0) {
-            for(int j = 0; j < nrhs; j++){
-                double unscaled; 
-                for(int i = 0; i < A.dim(1); i++) {
-                    unscaled = rhs[i + j * A.dim(1)] * dcol_[i];
-                    if(abs(unscaled) > nrmXf) nrmXf = abs(unscaled);
-                    Xf(i, j) = unscaled;
+                for(int i = 0; i < m_l; i++) {
+                    B(i, j) = rhs[i + j*m_l] * drow_[i];
                 }
             }
-	}
+        }
 
-
-            for(int j = 0; j < nrhs; j++){
-                //VECTOR_double t(rhs+j*m_l, m_l);
-                //B.setCol(t, j);
-                //B.push_back(t);
-                B(MV_VecIndex(0, m_l-1), MV_VecIndex(0,nrhs-1)) = BB;
-            }
-        } else {*/
-            B = MV_ColMat_double(m_l, icntl[Controls::block_size], 0);
-            if(row_perm.size() != 0){
-                for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[row_perm[i] + j*m_l] * drow_[row_perm[i]];
-                    }
-                }
-
-            } else {
-                for(int j = 0; j < nrhs; j++){
-                    for(int i = 0; i < m_l; i++) {
-                        B(i, j) = rhs[i + j*m_l] * drow_[i];
-                    }
-                }
-            }
-//        }
-
+        // Check RHS is not zero and broadcast
         int good_rhs = 0;
         if (infNorm(B) == 0) {
             good_rhs = -9;
@@ -281,25 +228,24 @@ void abcd::distributeRhs()
             info[Controls::status] = good_rhs;
             throw std::runtime_error(err_msg.str());
         }
-        
         mpi::broadcast(inter_comm, good_rhs, 0);
 
+        // If the Block Size is bigger than the nrhs, generate additional random vectors with values in [1,2]
         if(icntl[Controls::block_size] > nrhs) {
+            // Create additional RHS block BR
             double *rdata = new double[n_l * (icntl[Controls::block_size] - nrhs)];
-            srand(n_l); 
-            for(int i=0; i< n_l*(icntl[Controls::block_size]-nrhs); i++){ 
+            srand(n_l);
+            for(int i=0; i< n_l*(icntl[Controls::block_size]-nrhs); i++){
                 rdata[i] = (double)((rand())%100+1)/99.9 + 1;
-                //rdata[i] = i+1;
             }
             MV_ColMat_double BR(rdata, n_l, icntl[Controls::block_size] - nrhs, MV_Matrix_::ref);
-            MV_ColMat_double RR = smv(A, BR);
 
-            B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,icntl[Controls::block_size]-1)) = 
+            // Add this part multiplied by A to B (B=[B RR]=[B A*BR])
+            MV_ColMat_double RR = smv(A, BR);
+            B(MV_VecIndex(0,B.dim(0)-1),MV_VecIndex(nrhs,icntl[Controls::block_size]-1)) =
                 RR(MV_VecIndex(0,B.dim(0)-1), MV_VecIndex(0, icntl[Controls::block_size]-nrhs - 1));
             delete[] rdata;
         }
-
-        r_pos += r;
 
         double *b_ptr = B.ptr();
 
@@ -317,6 +263,7 @@ void abcd::distributeRhs()
             inter_comm.send(k, 17, nrhs);
         }
 
+        // For each master, send the corresponding part of the RHS (bi of partitions in each vector)
         for(int k = 1; k < parallel_cg; k++) {
             for(int j = 0; j < icntl[Controls::block_size]; j++) {
                 for(size_t i = 0; i < partitionsSets[k].size(); i++){
@@ -326,6 +273,7 @@ void abcd::distributeRhs()
             }
         }
 
+        // If no artificial RHS, restrict the local RHS to only the local partitions
         if(!use_xf){
             MV_ColMat_double BB(B);
 
@@ -342,6 +290,7 @@ void abcd::distributeRhs()
             }
         }
     } else {
+        // Check if good RHS from root
         int good_rhs;
         mpi::broadcast(inter_comm, good_rhs, 0);
         if (good_rhs != 0) {
@@ -351,36 +300,39 @@ void abcd::distributeRhs()
             throw std::runtime_error(err_msg.str());
         }
 
+        // Receive temp solution
         Xf = MV_ColMat_double(n_o, 1, 0);
         double *xf_ptr = Xf.ptr();
         inter_comm.recv(0, 171, xf_ptr, n_o);
 
+        /* Receive RHS */
+        //Initialize RHS with zeros
         inter_comm.recv(0, 17, nrhs);
-
         int size_rhs = m*icntl[Controls::block_size];
         rhs = new double[size_rhs];
         for(int i = 0; i < m * icntl[Controls::block_size]; i++) rhs[i] = 0;
 
+        // Receive and save local parts of the RHS (for each partition)
         B = MV_ColMat_double(m, icntl[Controls::block_size], 0);
         for(int j = 0; j < icntl[Controls::block_size]; j++) {
             int p = 0;
+            // receive current vector bi for each partition
             for(int k = 0; k < nb_local_parts; k++){
                 inter_comm.recv(0, 18, rhs + p + j * m, partitions[k].dim(0));
                 p+= partitions[k].dim(0);
             }
 
+            // save current RHS vector
             VECTOR_double t(rhs+j*m, m);
             B.setCol(t, j);
         }
 
         delete[] rhs;
     }
-    // and distribute max iterations
+    // Broadcast max iterations/threshold for BCG/threshold for filtering augmentation
     mpi::broadcast(inter_comm, icntl[Controls::itmax], 0);
     mpi::broadcast(inter_comm, dcntl[Controls::threshold], 0);
 #ifdef WIP
     mpi::broadcast(inter_comm, dcntl[Controls::aug_filter], 0);
 #endif //WIP
-
-    // A = CompRow_Mat_double();
-}
+}               /* -----  end of function abcd::distributeRhs  ----- */

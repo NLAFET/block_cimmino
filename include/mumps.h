@@ -1,8 +1,9 @@
-/*
- * mumps.h
- *
- *  Created on: Aug 15, 2012
- *      Author: Mohamed Zenadi
+/*!
+ * \file mumps.h
+ * \brief Implementation of interface to MUMPS solver
+ * \author M. Zenadi
+ * \version 1.0
+ * \date Aug 15, 2012
  */
 
 #ifndef _MUMPS_HXX_
@@ -18,7 +19,7 @@ public:
         this->job = job_id;
         dmumps_c(this);
     }
-    
+
     inline void setIcntl(int i, int v) { this->icntl[ i - 1 ] = v ; }
     inline void setCntl(int i, double v) { this->cntl[ i - 1 ] = v ; }
 

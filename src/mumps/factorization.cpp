@@ -30,35 +30,40 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file mumps/factorization.cpp
+ * \brief Factorization of MUMPS solver
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include<abcd.h>
 #include<mumps.h>
 
+/*!
+ *  \brief Launch MUMPS factorization and display some info
+ *
+ *  Launch MUMPS factorization and display some info
+ *
+ *  \param mu: MUMPS object
+ *
+ */
 void abcd::factorizeAugmentedSystems(MUMPS &mu)
 {
-    mpi::communicator comm;
-    mu.job = 2;
-
     double t = MPI_Wtime();
-    if(inter_comm.rank() == 0 && verbose == true){
-        mu.setIcntl(1, 6);
-        mu.setIcntl(2, 6);
-        mu.setIcntl(3, 6);
-    }
-    dmumps_c(&mu);
+
+    // Run MUMPS factorization
+    mu(2);
+
     t = MPI_Wtime() - t;
 
-    if(inter_comm.rank() == 0){
-        mu.setIcntl(1, -1);
-        mu.setIcntl(2, -1);
-        mu.setIcntl(3, -1);
-    }
-
+    // Check if MUMPS succeded
     if(mu.getInfo(1) != 0){
         LERROR << string(32, '-') ;
         LERROR << "> MUMPS Factoriz FAILED on master " << inter_comm.rank();
         LERROR << "MUMPS exited with " << mu.getInfo(1);
         LERROR << "MUMPS exited with TWO " << mu.getInfo(2);
-        
+
         int job = -700 + mu.getInfo(1);
         mpi::broadcast(intra_comm, job, 0);
 
@@ -75,23 +80,24 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
             LERROR << "MUMPS says that the augmented matrix is singular.";
             LERROR << "That should not happen if your system is full column rank";
         }
-        
+
         throw std::runtime_error("MUMPS exited with an error!");
     }
 
+    // Info display
     double smem;
-    int max_mem;
-    int sflop;
+    double max_mem;
+    double sflop;
     if(instance_type == 0) {
         double mem = mu.getInfoG(22)/intra_comm.size();
         mpi::reduce(inter_comm, mem, smem, std::plus<double>(), 0);
         if(IRANK == 0) smem = smem/inter_comm.size();
 
-        int mmem = mu.getInfoG(21);
-	mpi::reduce(inter_comm, mmem, max_mem, mpi::maximum<int>(),0);
+        double mmem = mu.getInfoG(21);
+	mpi::reduce(inter_comm, mmem, max_mem, mpi::maximum<double>(),0);
 
-        int flop = mu.getRinfoG(3);
-	mpi::reduce(inter_comm, flop, sflop, std::plus<int>(),0);
+        double flop = mu.getRinfoG(3);
+	mpi::reduce(inter_comm, flop, sflop, std::plus<double>(),0);
 
         int prec = cout.precision();
         cout.precision(2);
@@ -110,4 +116,4 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
     if(IRANK == 0) LINFO << "Factorization average memory : " << setw(6) << smem << " M";
     if(IRANK == 0) LINFO << "Factorization maximum memory : " << setw(6) << max_mem << " M";
     if(IRANK == 0) LINFO << "Factorization total flops : " << setw(6) << sflop << " flops";
-}
+}               /* -----  end of function abcd::factorizeAugmentedSystems  ----- */

@@ -220,8 +220,9 @@ Release Notes
 1) Bug fixes:
     a. Patoh imbalance variable is changed to double precision variable.
     b. A new stable uniform partitioning algorithm is implemented.
+    d. A new stable algorithm for manual input partitioning is implemented.
     c. A new stable algorithm for distributing partitions to MPI processors is implemented. (When the number MPI processes is larger than the number of partitions).
-    d. Scaling with MUMPS algorithm is now stable for both new and old versions of MUMPS
+    e. Scaling with MUMPS algorithm is now stable for both new and old versions of MUMPS
 2) Improvements:
     a. Now output gives more details.
     b. A post row scaling method is available for getting 2-norm of rows equal 1.
@@ -229,8 +230,8 @@ Release Notes
 * ABCD-1.1
 1) Input/Output:
     a. New parameters:
-        + config_file.info:
-            - Number of iterations for scaling (manual or predetermined)
+        + Number of iterations for scaling (manual or predetermined)
+        + Starting vector for CG (start_file)
         + config_file.info_advanced
             - alpha on the Identity of augmented subsystems: force pivoting to counter numerical issues
             - master_def/slave_def/num_overlap/slave_tol/min_comm_weight
@@ -240,6 +241,7 @@ Release Notes
         + Improved memory display (match MUMPS MB max/avg display)
     c. Partition file example/e05r0500.mtx.part5
     d. Filtering explicit non-zeros of input matrix
+    e. ABCD version in header
 2) Improvements:
     a. Overlapping partitions:
         + parameter to specify the number of overlapping rows between contiguous partitions (num_overlap)

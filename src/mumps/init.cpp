@@ -30,18 +30,45 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file mumps/init.cpp
+ * \brief Initialization of MUMPS solver
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <mumps.h>
 #include <abcd.h>
 
+/*!
+ *  \brief Initialize MUMPS parameters and structure
+ *
+ *  Initialize MUMPS parameters and structure with the choice for verbosity
+ *  and some features turned on.
+ *
+ *  \param mu: MUMPS object
+ *
+ */
 void abcd::initializeMumps(MUMPS &mu)
 {
     initializeMumps(mu, false);
-}
+}               /* -----  end of function abcd::initializeMumps  ----- */
 
+/*!
+ *  \brief Initialize MUMPS parameters and structure
+ *
+ *  Initialize MUMPS parameters and structure with the choice for verbosity
+ *  and some features turned on.
+ *
+ *  \param mu: MUMPS object
+ *  \param local: first initialization for masters is local
+ *
+ */
 void abcd::initializeMumps(MUMPS &mu, bool local)
 {
-    // The first run of MUMPS is local to CG-masters
+    /* Build the communicator interior to a group master-slave */
     std::vector<int> r;
+    // The first run of MUMPS is local for CG-masters
     if(local) {
         r.push_back(inter_comm.rank());
         mpi::group grp = inter_comm.group().include(r.begin(), r.end());
@@ -58,6 +85,7 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
         intra_comm = mpi::communicator(comm, grp);
     }
 
+    /* Initialize MUMPS parameters and structure */
     // Do not reinitialize mumps for Masters without slave (Analysis just done)
     if (mu.job != 1) {
         mu.sym = 2;
@@ -70,14 +98,25 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
 
         mu.initialized = true;
 
-        mu.setIcntl(1, -1);
-        mu.setIcntl(2, -1);
-        mu.setIcntl(3, -1);
+        // If MUMPS verbose chosen
+        if (icntl[Controls::mumps_verbose]) {
+            mu.setIcntl(1, 6);
+            mu.setIcntl(2, 0);
+            mu.setIcntl(3, 6);
+            mu.setIcntl(4, 2);
+        // or silent
+        } else {
+            mu.setIcntl(1, -1);
+            mu.setIcntl(2, -1);
+            mu.setIcntl(3, -1);
+            mu.setIcntl(4, -1);
+        }
 
+        // MUMPS features
         mu.setIcntl(6, 5);
         mu.setIcntl(7, 5);
         mu.setIcntl(8, -2);
         mu.setIcntl(12, 2);
         mu.setIcntl(14, 90);
     }
-}
+}               /* -----  end of function abcd::initializeMumps  ----- */

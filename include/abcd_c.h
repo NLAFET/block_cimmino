@@ -30,6 +30,13 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file abcd_c.h
+ * \brief Interface of the ABCD solver for the C programming language
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #ifndef _ABCD_C_H_
 #define _ABCD_C_H_
 
@@ -40,7 +47,7 @@ enum controls {
    abcd_scaling            ,
    abcd_itmax              ,
    abcd_block_size         ,
-   abcd_verbose_level      , 
+   abcd_verbose_level      ,
    abcd_aug_type           ,
    abcd_aug_blocking       ,
 
@@ -52,7 +59,7 @@ enum controls {
    abcd_residual           ,
    abcd_forward_error      ,
    abcd_backward           ,
-   abcd_scaled_residual    
+   abcd_scaled_residual
 };
 
 
@@ -66,17 +73,14 @@ struct abcd_solver
   double *dcntl;
   double *dinfo;
   int sym;
-  
   char *write_problem;
 
   int *irn;
   int *jcn;
   double *val;
   int start_index;
-    
 
   int nrhs;
-    
   double *rhs;
   double *sol;
 };

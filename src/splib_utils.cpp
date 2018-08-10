@@ -30,27 +30,29 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
-/*
- * =====================================================================================
- *
- *       Filename:  splib_utils.cpp
- *
- *    Description:  Some additions to SparseLib++
- *
- *        Version:  1.0
- *        Created:  01/23/2013 06:47:59 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *   Organization:  
- *
- * =====================================================================================
+/*!
+ * \file splib_utils.cpp
+ * \brief Some additions to SparseLib++
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ * \date 01/23/2013 06:47:59 PM
+ * Revision:  none
+ * Compiler:  gcc
  */
 
 #include <abcd.h>
 #include "blas.h"
 
+/*!
+ *  \brief Compute infinite norm of a vector
+ *
+ *  Compute infinite norm of a vector
+ *
+ *  \param V: the vector which norm must be computed
+ *
+ *  \return the infinite-norm of the vector
+ *
+ */
 double infNorm(VECTOR_double &V){
     double max = 0;
     for (int i = 0; i < V.size(); i++){
@@ -58,8 +60,18 @@ double infNorm(VECTOR_double &V){
         max = abs(V(i)) > max ? abs(V(i)) : max;
     }
     return max;
-}
+}               /* -----  end of function infNorm  ----- */
 
+/*!
+ *  \brief Compute infinite norm of a matrix
+ *
+ *  Compute infinite norm of a matrix
+ *
+ *  \param V: the matrix which norm must be computed
+ *
+ *  \return the infinite-norm of the matrix
+ *
+ */
 double infNorm(MV_ColMat_double &V){
     double max = 0;
     double *v_ptr = V.ptr();
@@ -67,8 +79,19 @@ double infNorm(MV_ColMat_double &V){
         if(abs(v_ptr[i]) >= max) max = abs(v_ptr[i]);
     }
     return max;
-}
+}               /* -----  end of function infNorm  ----- */
 
+/*!
+ *  \brief Compute square of the 2-norm of a subvector
+ *
+ *  Compute square of the 2-norm of a subvector
+ *
+ *  \param V: the vector which norm of a subpart must be computed
+ *  \param I: indices of the elements of interest of the vector
+ *
+ *  \return the squared 2-norm
+ *
+ */
 double squaredNorm(VECTOR_double &V, VECTOR_int &I){
     double sum = 0;
     double e;
@@ -77,8 +100,20 @@ double squaredNorm(VECTOR_double &V, VECTOR_int &I){
         sum += e*e;
     }
     return sum;
-}
+}               /* -----  end of function squaredNorm  ----- */
 
+/*!
+ *  \brief Extract rows from a CSR row matrix
+ *
+ *  Extract rows from a CSR row matrix
+ *
+ *  \param M: matrix which subpart must be extracted
+ *  \param st_row: starting row of the subpart to extract
+ *  \param nb_rows: number of rows to extract
+ *
+ *  \return the extracted matrix
+ *
+ */
 CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
     int st_index, ed_index;
 
@@ -91,11 +126,11 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
 
     int * m_row_ptr = M.rowptr_ptr() + st_row;
     int * sub_row_vect = new int[nb_rows + 1];
-    
+
     for(int i = 0; i <= nb_rows; i++){
         sub_row_vect[i] = m_row_ptr[i] - starting_point;
     }
-    
+
     int * sub_col_vect = M.colind_ptr() + st_index;
     double * sub_val_vect = M.val_ptr() + st_index;
 
@@ -107,12 +142,36 @@ CompRow_Mat_double CSR_middleRows (CompRow_Mat_double &M, int st_row, int nb_row
 
     //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
     return nM;
-}
+}               /* -----  end of function CSR_middleRows  ----- */
 
+/*!
+ *  \brief Extract rows from a CSC row matrix
+ *
+ *  Extract rows from a CSC row matrix
+ *
+ *  \param M: matrix which subpart must be extracted
+ *  \param st_row: starting row of the subpart to extract
+ *  \param nb_rows: number of rows to extract
+ *
+ *  \return the extracted matrix
+ *
+ */
 CompCol_Mat_double CSC_middleRows (CompRow_Mat_double &M, int st_row, int nb_rows) {
     return CompCol_Mat_double(CSR_middleRows(M, st_row, nb_rows));
-}
+}               /* -----  end of function CSC_middleRows  ----- */
 
+/*!
+ *  \brief Extract a column from a matrix
+ *
+ *  Extract column from a matrix
+ *
+ *  \param M: matrix which subpart must be extracted
+ *  \param col_num: index of the column to extract
+ *  \param ind: index of the rows in the column
+ *
+ *  \return the extracted vector column
+ *
+ */
 VECTOR_double middleCol(CompCol_Mat_double &M, int col_num, VECTOR_int &ind){
     int st_index, ed_index;
 
@@ -139,13 +198,18 @@ VECTOR_double middleCol(CompCol_Mat_double &M, int col_num, VECTOR_int &ind){
     }
 
     return c;
-}
+}               /* -----  end of function middleCol  ----- */
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  sub_matrix
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Extract columns from a matrix
+ *
+ *  Extract columns from a matrix
+ *
+ *  \param M: matrix which subpart must be extracted
+ *  \param ci: indices of the column to extract
+ *
+ *  \return the extracted submatrix
+ *
  */
     CompCol_Mat_double
 sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
@@ -207,14 +271,19 @@ sub_matrix ( CompCol_Mat_double &M, std::vector<int> &ci )
             &v_sm_v[0], &v_sm_r[0], &v_sm_c[0]);
 
     return SM;
-}		/* -----  end of function subMatrix  ----- */
+}		/* -----  end of function sub_matrix  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  spmm
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Compute sparse Matrix-matrix product for row matrices
+ *
+ *  Compute sparse Matrix-matrix product for row matrices
+ *
+ *  \param A: first sparse matrix
+ *  \param B: second sparse matrix
+ *
+ *  \return the product matrix
+ *
  */
     CompRow_Mat_double
 spmm ( CompRow_Mat_double &A, CompRow_Mat_double &BT )
@@ -276,11 +345,15 @@ spmm ( CompRow_Mat_double &A, CompRow_Mat_double &BT )
 }		/* -----  end of function spmm  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  csc_transpose
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Compute the transpose of a CSC column matrix
+ *
+ *  Compute the transpose of a CSC column matrix
+ *
+ *  \param M: matrix to transpose
+ *
+ *  \return the transposed matrix
+ *
  */
     CompCol_Mat_double
 csc_transpose ( CompCol_Mat_double &M )
@@ -289,6 +362,17 @@ csc_transpose ( CompCol_Mat_double &M )
     return CompCol_Mat_double(Mt);
 
 }		/* -----  end of function csc_transpose  ----- */
+
+/*!
+ *  \brief Compute the transpose of a CSC row matrix
+ *
+ *  Compute the transpose of a CSC row matrix
+ *
+ *  \param M: matrix to transpose
+ *
+ *  \return the transposed matrix
+ *
+ */
     CompCol_Mat_double
 csc_transpose ( CompRow_Mat_double &M )
 {
@@ -304,11 +388,15 @@ csc_transpose ( CompRow_Mat_double &M )
     return CompCol_Mat_double(M.dim(1), M.dim(0), M.NumNonzeros(), vv, vr, vc);
 }		/* -----  end of function csr_transpose  ----- */
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  csr_transpose
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Compute the transpose of a CSR column matrix
+ *
+ *  Compute the transpose of a CSR column matrix
+ *
+ *  \param M: matrix to transpose
+ *
+ *  \return the transposed matrix
+ *
  */
     CompRow_Mat_double
 csr_transpose ( CompCol_Mat_double &M )
@@ -325,6 +413,16 @@ csr_transpose ( CompCol_Mat_double &M )
     return CompRow_Mat_double(M.dim(1), M.dim(0), M.NumNonzeros(), vv, vr, vc);
 }		/* -----  end of function csr_transpose  ----- */
 
+/*!
+ *  \brief Compute the transpose of a CSR row matrix
+ *
+ *  Compute the transpose of a CSR row matrix
+ *
+ *  \param M: matrix to transpose
+ *
+ *  \return the transposed matrix
+ *
+ */
     CompRow_Mat_double
 csr_transpose ( CompRow_Mat_double &M )
 {
@@ -332,11 +430,16 @@ csr_transpose ( CompRow_Mat_double &M )
 }		/* -----  end of function csr_transpose  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  resize_columns
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Resize matrix by adding empty columns at the end
+ *
+ *  Resize matrix by adding empty columns at the end
+ *
+ *  \param M: matrix to resize
+ *  \param new_size: new size of the matrix
+ *
+ *  \return the resized matrix
+ *
  */
     CompCol_Mat_double
 resize_columns ( CompCol_Mat_double &M, int new_size )
@@ -353,16 +456,22 @@ resize_columns ( CompCol_Mat_double &M, int new_size )
 }		/* -----  end of function resize_columns  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  concat_columns
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Concatenate a matrix and additional blocks with their number of columns
+ *
+ *  Take the original matrix A and add all blocks from B at the end, filling st_cols columns
+ *
+ *  \param A: original matrix
+ *  \param B: vector of blocks to be added
+ *  \param st_cols: size of the added blocks in columns
+ *
+ *  \return the concatenated matrix
+ *
  */
     CompCol_Mat_double
 concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std::vector<int> st_cols )
 {
-    for(int i = 1; i < st_cols.size(); ++i) 
+    for(int i = 1; i < st_cols.size(); ++i)
         if(st_cols[i]<st_cols[i-1]) throw -970;
 
     int total_columns = A.dim(1), total_nz = A.NumNonzeros();
@@ -387,14 +496,14 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
     int current_nz = A.NumNonzeros();
     for(int i=0; i < B.size(); i++){
 
-        // if we add the column after a blank 
+        // if we add the column after a blank
         if(st_cols[i] > current_column){
             for(int j = current_column; j < st_cols[i]; j++){
                 cc(j) = current_nz;
             }
             current_column = st_cols[i];
         }
-        
+
         for(int j = 0; j < B[i].dim(1); j++){
             cc(j + current_column) = B[i].col_ptr(j) + current_nz;
         }
@@ -411,13 +520,18 @@ concat_columns ( CompCol_Mat_double &A, std::vector<CompCol_Mat_double> &B, std:
 }		/* -----  end of function concat_columns  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  smv
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Compute sparse Matrix-vector product
+ *
+ *  Compute sparse Matrix-vector product
+ *
+ *  \param M: sparse matrix
+ *  \param V: sparse vector
+ *
+ *  \return the product sparse vector
+ *
  */
-    MV_ColMat_double 
+    MV_ColMat_double
 smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
 {
     assert(M.dim(1) == V.dim(0));
@@ -429,14 +543,20 @@ smv ( CompRow_Mat_double &M, MV_ColMat_double &V )
         R.setCol(t, k);
     }
     return R;
-}		/* -----  end of function smdm  ----- */
+}		/* -----  end of function smv  ----- */
 
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  spsmv
- *  Description:  
- * =====================================================================================
+/*!
+ *  \brief Compute subpart of a sparse Matrix-vector product
+ *
+ *  Compute subpart of a sparse Matrix-vector product
+ *
+ *  \param M: sparse matrix
+ *  \param col_ind: column index in the matrix to use for the product
+ *  \param V: sparse vector
+ *
+ *  \return subpart of the product sparse vector
+ *
  */
     MV_ColMat_double
 spsmv ( CompRow_Mat_double &M, std::vector<int> &col_ind, MV_ColMat_double &V )
@@ -456,11 +576,36 @@ spsmv ( CompRow_Mat_double &M, std::vector<int> &col_ind, MV_ColMat_double &V )
     return R;
 }		/* -----  end of function spsmv  ----- */
 
+/*!
+ *  \brief Compute a dense Matrix-matrix product
+ *
+ *  Compute a dense Matrix-matrix product
+ *
+ *  \param L: first matrix
+ *  \param R: second matrix
+ *
+ *  \return the dense product matrix
+ *
+ */
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R)
 {
     return gemmColMat(L, R, false, false);
-}
+}		/* -----  end of function gemmColMat  ----- */
 
+/*!
+ *  \brief Compute a dense Matrix-matrix product
+ *
+ *  Compute a dense Matrix-matrix product, where each matrix can be
+ *  transposed
+ *
+ *  \param L: first matrix
+ *  \param R: second matrix
+ *  \param transL: L transposed or not
+ *  \param transR: R transposed or not
+ *
+ *  \return the dense product matrix
+ *
+ */
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool transL, bool transR)
 {
     assert(L.dim(1) ==  R.dim(0));
@@ -488,12 +633,22 @@ MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool trans
 
     dgemm_(&tL, &tR, &rA, &cB, &cA, &alpha, l_ptr, &rA, r_ptr, &rB, &beta, c_ptr, &rA);
     return C;
-}
+}		/* -----  end of function gemmColMat  ----- */
 
+/*!
+ *  \brief Returns the upper triangular matrix
+ *
+ *  Returns the upper triangular matrix
+ *
+ *  \param M: the complete matrix
+ *
+ *  \return the upper triangular matrix
+ *
+ */
 MV_ColMat_double upperMat(MV_ColMat_double &M){
     MV_ColMat_double R = M;
     for(int i = 0; i < M.dim(0); i++)
         for(int j = 0; j < i; j++)
             R(i,j) = 0;
     return R;
-}
+}		/* -----  end of function upperMat  ----- */

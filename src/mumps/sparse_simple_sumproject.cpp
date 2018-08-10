@@ -30,35 +30,49 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file mumps/sparse_simple_sumProject.cpp
+ * \brief Implementation of the sum of projections for S^{-1}f using MUMPS with sparse RHS
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include<abcd.h>
 #include<mumps.h>
 #include<algorithm>
 using namespace  boost::lambda;
 
+/*!
+ *  \brief Compute sum of projections for S^{-1}f using MUMPS with sparse RHS
+ *
+ *  Compute sum of projections for S^{-1}f using MUMPS with sparse RHS
+ *
+ *  \param mycols: selected columns to compute only on subpart of S
+ *
+ */
 void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
                            std::vector<int> &vcols, std::vector<double> &vvals)
 {
-    int s = mycols.size();
-    std::vector<int> rr;
-    std::vector<double> rv;
-    std::vector<int> target, target_idx;
+    int s = mycols.size(); // size of S
+    std::vector<int> rr; // vector of rows of S
+    std::vector<double> rv; // vector of values of S
 
+    std::vector<int> target, target_idx;
     std::vector<std::map<int,int> > loc_cols(nb_local_parts);
 
     int nzr_estim = 0;
 
-    // The right-hand sides to be used with the direct solver 
+    // The right-hand sides to be used with the direct solver
     std::vector<CompRow_Mat_double> r(nb_local_parts);
 
-    // r_k = A_k Y^T
+    // build r_k = A_k Y^T for all local partitions
     for(int k = 0; k < nb_local_parts; k++) {
-
         CompRow_Mat_double Y;
 
+        // rows,columns,values of Y (all ones) of MUMPS
         std::vector<int> yr(mycols.size());
         std::vector<int> yc(mycols.size());
-        std::vector<double> yv(mycols.size(), 1);
-        
+        std::vector<double> yv(mycols.size(), 1); 
         int c;
 
         int ct = 0;
@@ -79,6 +93,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
 
         Y = CompRow_Mat_double(Yt);
 
+        // r(k) = Ai*Y^T
         r[k] = spmm(partitions[k], Y) ;
         nzr_estim += r[k].NumNonzeros();
     }
@@ -101,14 +116,16 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
         MV_ColMat_double mumps_rhs(mumps.rhs, mumps.n, s, MV_Matrix_::ref);
     }
 
+    // Initialize the mumps rhs
     {
+        // allocate arrays of rows,columns,values for mumps rhs
         mumps.irhs_ptr      = new int[s + 1];
         rr.reserve(nzr_estim);
         rv.reserve(nzr_estim);
 
         int cnz = 1;
 
-
+        // Build the mumps sparse rhs
         for(int r_p = 0; r_p < s; r_p++) {
             mumps.irhs_ptr[r_p] = cnz;
 
@@ -131,22 +148,20 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             }
         }
         mumps.irhs_ptr[s] = cnz;
-
         mumps.nz_rhs        = cnz - 1;
-
         mumps.rhs_sparse    = &rv[0];
         mumps.irhs_sparse   = &rr[0];
     }
 
-    
-
     if (intra_comm.size() > 1) {
+        // Give order to slaves
         int job = 3;
         mpi::broadcast(intra_comm, job, 0);
         mpi::broadcast(intra_comm, s, 0);
 
         // we are sure here that we have only a single partition
         int start_c;
+        // find the begining of the C part, if there is no C, set it to the end of the current part
         if (stC[0] != -1) {
             start_c = glob_to_part[0][stC[0]];
             mpi::broadcast(intra_comm, start_c, 0);
@@ -170,9 +185,9 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     }
 
     mumps.nrhs          = s;
-    mumps.job           = 3;
 
-    dmumps_c(&mumps);
+    // Run solve for MUMPS to get local part of vector
+    mumps(3);
 
     double *sol_ptr;
     int sol_lda, ci, col, x_pos = 0, start_c;
@@ -194,7 +209,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
         if(target.size() == 0){
             for(int i_loc = 0; i_loc < mumps.lsol_loc; i_loc++) {
                 int isol = mumps.isol_loc[i_loc] - 1;
-                int ci = civ[isol] - n_o; 
+                int ci = civ[isol] - n_o;
                 if (isol >= start_c && isol < end_c){
                     target.push_back(i_loc);
                     target_idx.push_back(ci);
@@ -202,6 +217,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             }
         }
 
+        // Gather local part of the solution
         sol_ptr = mumps.sol_loc;
         for (int j = 0; j < s; j++) {
             col = mycols[j];
@@ -210,6 +226,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
                 val = -sol_ptr[target[i] + j * sol_lda];
                 ci = target_idx[i];
 
+                // as we have two partitions, add a half on each to obtain identity
                 if (ci == col) val += (double)0.5;
 
                 if(ci >= col && val != 0){
@@ -236,6 +253,7 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             }
             x_pos += start_c;
 
+            // allocate solution
             vrows.reserve((civ.size() - start_c)*s);
             vcols.reserve((civ.size() - start_c)*s);
             vvals.reserve((civ.size() - start_c)*s);
@@ -244,12 +262,12 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
             for(int j = 0; j < s; j++){
                 col = mycols[j];
                 x_pos = old_x;
-
                 for(size_t i = start_c; i < civ.size(); i++){
                     ci = civ[i] - n_o;
 
                     val =  - sol_ptr[x_pos + j * sol_lda];
 
+                    // as we have two partitions, add a half on each to obtain identity
                     if (ci == col)
                       val += (double)0.5;
 
@@ -259,19 +277,13 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
                         vrows.push_back(ci + 1);
                         vcols.push_back(col + 1);
                     }
-
-
                     x_pos++;
                 }
-
             }
-
             // move to the next partition
             x_pos += partitions[part].dim(0);
         }
     }
-
-
 
     // disable sparse mumps rhs
     mumps.setIcntl(20, 0);
@@ -282,4 +294,4 @@ void abcd::spSimpleProject(std::vector<int> mycols, std::vector<int> &vrows,
     } else {
         delete[] mumps.rhs;
     }
-}
+}               /* -----  end of function abcd::sparse_simple_sumProject  ----- */

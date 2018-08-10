@@ -1,3 +1,10 @@
+/*!
+ * \file splib_utils.h
+ * \brief Header for utils functions added to Sparselib
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 double squaredNorm(CompRow_Mat_double &M);
 double squaredNorm(VECTOR_double &V);
 double squaredNorm(VECTOR_double &V, VECTOR_int &I);

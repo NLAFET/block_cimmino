@@ -1,3 +1,14 @@
+/**
+ * \file main.cpp
+ * \brief Test program to launch ABCD with a configuration file.
+ * \author M. Zenadi
+ * \version 1.0
+ * \date August 7th 2018
+ *
+ * This program launch ABCD with the problem and parameters specified in a
+ * configuration file (first argument or "config_file.info" by default)
+ *
+ */
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -24,30 +35,58 @@ extern "C" {
     int mm_read_mtx_array_size(_IO_FILE*, int*, int*);
 }
 
-
-
-int main(int argc, char* argv[]) 
+/**
+ * \fn int main ()
+ * \brief Main function
+ *
+ * \param 1: configuration file (Optional)
+ * \param 2: matrix file (Optional)
+ * \param 3: number of partitions (Optional)
+ * \param 3: block size for the conjugate gradient (Optional)
+ * \return EXIT_SUCCESS - Arrêt normal du programme.
+ */
+int main(int argc, char* argv[])
 {
+    int error = 0;
+
     mpi::environment env(argc, argv);
     mpi::communicator world;
 
     abcd obj;
-
-    // This should be done only by the master
+////////////////////////////////////////////////////////////////////////////////////////
+//	ROOT'S JOB
+////////////////////////////////////////////////////////////////////////////////////////
     if(world.rank() == 0) {
+        ////////////////////////////////////////////////////////////////////////////////
+        //	DISPLAY MPI-OPENMP INFO
+        ////////////////////////////////////////////////////////////////////////////////
+	// Info MPI
+	cout << "Number of MPI Procs: " << world.size() << endl;
+        // Info OpenMP
+	int tid;
+	int nthreads;
+        #pragma omp parallel private(tid)
+        {
+                nthreads = omp_get_num_threads();
+		tid = omp_get_thread_num();
+		#pragma omp master
+                cout << "Number of OpenMP threads: " << nthreads << endl;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //	REAGING CONFIG_FILE
+        ////////////////////////////////////////////////////////////////////////////////
+	/* test existence */
         string config_file;
         if(argc < 2) {
             config_file = "config_file.info";
-            //clog << "Usage " << argv[0] << " config_file.json" << endl;
-            //exit(-1);
         } else if(argc >= 2){
             config_file = argv[1];
         }
 
-        /* open the config file */
+        /* open and parse the config file */
         ifstream conf_file(config_file.c_str());
         boost::property_tree::ptree pt;
-
         if(conf_file){
             try {
                 read_info(conf_file, pt);
@@ -64,7 +103,21 @@ int main(int argc, char* argv[])
             exit(-2);
         }
 
-        /* READING THE MATRIX AND THE RHS */
+        ////////////////////////////////////////////////////////////////////////////////
+        //	GENERAL
+        ////////////////////////////////////////////////////////////////////////////////
+        obj.write_problem   = pt.get<string>("write_problem", "");
+        obj.icntl[Controls::verbose_level] =  pt.get<int>("verbose_level", 0);
+        obj.icntl[Controls::mumps_verbose] =  pt.get<int>("mumps_verbose", 0);
+        obj.log_output = pt.get<string>("log_filename", "");
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //	REAGING THE MATRIX, RHS AND STARTING POINT
+        ////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////
+        //	open and read the matrix file
+        //////////////////////////////////////////
         string matrix_file;
         try {
             if(argc <= 2) matrix_file = pt.get<string>("system.matrix_file");
@@ -86,20 +139,15 @@ int main(int argc, char* argv[])
         mm_read_banner(f, &mat_code);
         mm_read_mtx_crd_size(f, (int *)&obj.m, (int *)&obj.n, (int *)&obj.nz);
 
-        if(mm_is_symmetric(mat_code))
-            obj.sym = true;
-        else
-            obj.sym = false;
-
-        // allocate the arrays
+        /* allocate the arrays */
         obj.irn = new int[obj.nz];
         obj.jcn = new int[obj.nz];
         obj.val = new double[obj.nz];
         obj.start_index = 1;
 
         mm_read_mtx_crd_data(f, obj.m, obj.n, obj.nz, obj.irn, obj.jcn, obj.val, mat_code);
-        
-        // Filtering zero-valued elements 
+
+        /* Filtering zero-valued elements */
         int newnnz=0;
         for(int i=0;i<obj.nz;i++){
                 if(obj.val[i] != 0){
@@ -110,6 +158,7 @@ int main(int argc, char* argv[])
                 }
         }
 
+        /* reallocate the arrays ? */
         obj.nz = newnnz;
         obj.irn = (int *) realloc(obj.irn, obj.nz * sizeof(int));
         obj.jcn = (int *) realloc(obj.jcn, obj.nz * sizeof(int));
@@ -120,13 +169,10 @@ int main(int argc, char* argv[])
 
         fclose(f);
 
-        //read the rhs here!
+        //////////////////////////////////////////
+        //	RHS_FILE
+        //////////////////////////////////////////
         boost::optional<string> rhs_file = pt.get_optional<string>("system.rhs_file");
-        boost::optional<string> sol_file = pt.get_optional<string>("system.sol_file");
-        boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
-        boost::optional<string> conv_backward_file = pt.get_optional<string>("system.backward_err_file");
-        boost::optional<string> conv_scaled_file = pt.get_optional<string>("system.scaled_residual_file");
-        
         if(rhs_file){
             FILE *rhs_f = fopen(rhs_file->c_str(), "r");
 
@@ -150,10 +196,13 @@ int main(int argc, char* argv[])
                 ret = fscanf(rhs_f, "%lf", &cv);
                 obj.rhs[i] = cv;
             }
-            //
             fclose(rhs_f);
         }
 
+        //////////////////////////////////////////
+        //	START_FILE
+        //////////////////////////////////////////
+        boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
 	if(start_file){
             FILE *strt_f = fopen(start_file->c_str(), "r");
 
@@ -183,6 +232,16 @@ int main(int argc, char* argv[])
             obj.use_xk=true;
          }
 
+        //////////////////////////////////////////
+        //	SOL/BWD_ERR/SCALED_RES
+        //////////////////////////////////////////
+        boost::optional<string> sol_file = pt.get_optional<string>("system.sol_file");
+        boost::optional<string> conv_backward_file = pt.get_optional<string>("system.backward_err_file");
+        boost::optional<string> conv_scaled_file = pt.get_optional<string>("system.scaled_residual_file");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //	TEST SOLVING THE PROBLEM WITH MUMPS DIRECTLY
+        ////////////////////////////////////////////////////////////////////////////////
         int testMumps =(int) pt.get<bool>("test_mumps", false);
         double minMumps = pt.get<double>("min_mumps", 0);
         double *mumps_rhs;
@@ -261,9 +320,9 @@ int main(int argc, char* argv[])
             mpi::broadcast(world, testMumps, 0);
         }
 
-        //
-        /*  DONE READING THE MATRIX AND THE RHS */
-
+        ////////////////////////////////////////////////////////////////////////////////
+        //	PARTITIONING PART
+        ////////////////////////////////////////////////////////////////////////////////
         try{
             ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning");
         } catch (ptree_bad_path e){
@@ -272,48 +331,25 @@ int main(int argc, char* argv[])
             exit(-1);
         }
 
+        //////////////////////////////////////////
+        //	PARTITIONS
+        //////////////////////////////////////////
+        obj.icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
+
+        obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);
+
         if(argc <= 3) obj.icntl[Controls::nbparts] = pt.get<int>("partitioning.nbparts");
         else obj.icntl[Controls::nbparts] = atoi(argv[3]);
-
         if(obj.icntl[Controls::nbparts] < 0 && obj.icntl[Controls::nbparts] <= obj.m) {
             clog << "Error parsing the file, the number of partitions has to be positive and smaller than the number of rows" << endl;
             exit(-1);
         }
-
-        obj.icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
-        obj.icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);
-#ifndef NO_METIS
-        obj.icntl[Controls::minCommWeight] = pt.get<int>("partitioning.min_comm_weight", 0);
-#else
-	obj.icntl[Controls::minCommWeight] = 0;
-#endif
         obj.dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.part_imbalance", 0.5);
 
-	if(obj.icntl[Controls::part_type] ==4){
- 		string partvector = pt.get<string>("partitioning.partvector", "");;
-		obj.partvec   = new int[obj.n];
-		const char *cstr = partvector.c_str();
-         	std::fstream myfile(cstr, std::ios_base::in);
-	        for(int z =0; z < obj.n; z++) {
-               		myfile >> obj.partvec[z];
-         	}
-		myfile.close();		
-	}
-
-	// Info MPI
-	cout << "Number of Parts: " << obj.icntl[Controls::nbparts] << " - Partition method: "<< obj.icntl[Controls::part_type] << endl;
-	cout << "Number of MPI Procs: " << world.size() << endl;
-        // Info OpenMP
-	int tid;
-	int nthreads;
-        #pragma omp parallel private(tid)
-        {
-                nthreads = omp_get_num_threads();
-		tid = omp_get_thread_num();
-		#pragma omp master
-                cout << "Number of OpenMP threads: " << nthreads << endl;
-        }
-
+        //////////////////////////////////////////
+        //	SPECIAL PARTITIONING TYPES
+        //////////////////////////////////////////
+        /* Manual partitioning */
         if(obj.icntl[Controls::part_type] == 1){
             string parts = pt.get<string>("partitioning.partsfile", "");
 
@@ -349,21 +385,71 @@ int main(int argc, char* argv[])
                 exit(-1);
             }
         }
+        /* Partitioning file */
+	if(obj.icntl[Controls::part_type] ==4){
+ 		string partvector = pt.get<string>("partitioning.partvector", "");;
+		obj.partvec   = new int[obj.n];
+		const char *cstr = partvector.c_str();
+         	std::fstream myfile(cstr, std::ios_base::in);
+	        for(int z =0; z < obj.n; z++) {
+               		myfile >> obj.partvec[z];
+         	}
+		myfile.close();		
+	}
 
+	cout << "Number of Parts: " << obj.icntl[Controls::nbparts] << " - Partition method: "<< obj.icntl[Controls::part_type] << endl;
+
+        //////////////////////////////////////////
+        //	FEATURES
+        //////////////////////////////////////////
+        /* Overlaps */
 	obj.icntl[Controls::num_overlap]  = pt.get<int>("partitioning.num_overlap",0);
         if(obj.icntl[Controls::num_overlap] < 0){
             clog << "Error parsing the file, num_overlap must be a positive integer." << endl;
             clog << "Be careful not to input a huge number of overlapping lines, it should not be higher than the smallest partition." << endl;
             exit(-1);
+        } else if (obj.icntl[Controls::num_overlap] > 0)
+            cout << "Number of overlapping rows: " << obj.icntl[Controls::num_overlap] << endl;
+
+        /* Communication balancing distribution of partitions */
+#ifndef NO_METIS
+        obj.icntl[Controls::minCommWeight] = pt.get<int>("partitioning.min_comm_weight", 0);
+#else
+	obj.icntl[Controls::minCommWeight] = 0;
+#endif
+
+        /* Enforce Master-Slave scheme: dist_scheme/slave_tol */
+        obj.parallel_cg = pt.get<int>("dist_scheme", obj.icntl[Controls::nbparts] < world.size() ? obj.icntl[Controls::nbparts] : world.size());
+
+        obj.icntl[Controls::slave_tol]    = pt.get<int>("partitioning.slave_tol", 0);
+        if(obj.icntl[Controls::slave_tol] < 0 || obj.icntl[Controls::slave_tol] > obj.parallel_cg) {
+            clog << "Error parsing the file, slave_tol must be a positive integer inferior strictly to the number of Masters." << endl;
+            clog << "The number of Masters is the minimum between the number of MPI processes and the number of partitions." << endl;
+            exit(-1);
+        }
+        obj.parallel_cg -= obj.icntl[Controls::slave_tol];
+
+        /* Define masters */
+        obj.icntl[Controls::master_def]    = pt.get<int>("partitioning.master_def", 1);
+        if(obj.icntl[Controls::master_def] < 0 || obj.icntl[Controls::master_def] > 1){
+            clog << "Error parsing the file, master_def must be one of 0 and 1." << endl;
+            exit(-1);
         }
 
-        obj.write_problem   = pt.get<string>("write_problem", "");
+        /* Define slaves */
+        obj.icntl[Controls::slave_def]    = pt.get<int>("partitioning.slave_def", 2);
+        if(obj.icntl[Controls::slave_def] < 0 || obj.icntl[Controls::slave_def] > 2){
+            clog << "Error parsing the file, master_def must be one of 0, 1 and 2." << endl;
+            exit(-1);
+        }
+        if (obj.icntl[Controls::master_def] == 0) obj.icntl[Controls::slave_def] = -1;
 
-#ifdef WIP
-        obj.icntl[Controls::exploit_sparcity]    = pt.get<int>("exploit_sparcity", 1);
-#endif //WIP
 
+        ////////////////////////////////////////////////////////////////////////////////
+        //	SCALING
+        ////////////////////////////////////////////////////////////////////////////////
         obj.icntl[Controls::scaling]    = pt.get<int>("scaling", 2);
+        /* manual type */
 	if(obj.icntl[Controls::scaling] == -1){
 		// Parse number of iterations in option line man_scaling
  		string man_scaling = pt.get<string>("man_scaling", "");
@@ -382,6 +468,7 @@ int main(int argc, char* argv[])
                     clog << "Error parsing the file, the number of iterations in scaling must be positive integers." << endl;
                     exit(-1);
                 }
+        /* predetermined type */
 	} else if (obj.icntl[Controls::scaling] == 1) {
 		obj.man_scaling[0] = 5; obj.man_scaling[1] = 20;
 		obj.man_scaling[2] = 10; obj.man_scaling[3] = 0;
@@ -396,6 +483,22 @@ int main(int argc, char* argv[])
                 exit(-1);
 	}
 
+        ////////////////////////////////////////////////////////////////////////////////
+        //	BLOCK CIMMINO
+        ////////////////////////////////////////////////////////////////////////////////
+        if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
+        else obj.icntl[Controls::block_size] = atoi(argv[4]);
+        cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
+
+        obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
+        obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
+
+        /* scaling factor on the identity of the augmented sub-systems */
+        obj.dcntl[Controls::alpha]    = pt.get<double>("system.alpha", 1.0);
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //	AUGMENTATION (ABCD)
+        ////////////////////////////////////////////////////////////////////////////////
         boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
 
         if(augmentation){
@@ -403,47 +506,52 @@ int main(int argc, char* argv[])
             obj.icntl[Controls::aug_blocking]   = pt.get<int>("augmentation.aug_blocking", 256);
 	    cout << "Augmentation type: "<< obj.icntl[Controls::aug_type] << endl ;
 	    if(obj.icntl[Controls::aug_type] > 0) cout << "aug_blocking " << obj.icntl[Controls::aug_blocking] << endl;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //	WORK IN PROGRESS (WIP)
+        ////////////////////////////////////////////////////////////////////////////////
 #ifdef WIP
-            obj.icntl[Controls::aug_analysis]   = pt.get<int>("augmentation.analysis", 0);
-            obj.dcntl[Controls::aug_filter]   = pt.get<double>("augmentation.filtering", 0.0);
+        /* Use Generalized Gram-Schmidt instead of Generalized QR for the stabilization of CG */
+        obj.icntl[Controls::use_gmgs2]  = pt.get<int>("use_gmgs2", 0);
+        /* ???? */
+        obj.icntl[Controls::exploit_sparcity]  = pt.get<int>("exploit_sparcity", 0);
+        if(augmentation){
+            /* Only analysis of the augmentation is needed: program stops after augmentation */
+            obj.icntl[Controls::aug_analysis]  = pt.get<int>("augmentation.analysis", 0);
+            /*
+             * Solve with classic BCG on ABCD system if not zero. Ongoing project with
+             * preconditioning of S
+             */
             obj.icntl[Controls::aug_project]   = pt.get<int>("augmentation.project_only", 0);
-            obj.icntl[Controls::aug_dense]   = pt.get<int>("augmentation.denserhs", 0);
-            obj.icntl[Controls::aug_iterative]   = pt.get<int>("augmentation.iterative", 0);
+            /* deprecated use of dense right hand side when solving for S */
+            obj.icntl[Controls::aug_dense]     = pt.get<int>("augmentation.denserhs", 0);
+            /*
+             * Solve S in an iterative way
+             * 0: S solved with MUMPS
+             * 1: S solved iteratively, no hard filtering of columns in C, only array of selected columns needed
+             * 2: idem but columns hard filtered
+             */
+            obj.icntl[Controls::aug_iterative] = pt.get<int>("augmentation.iterative", 0);
+            /* Threshold for the filtering of the augmentation C */
+            obj.dcntl[Controls::aug_filter]    = pt.get<double>("augmentation.filtering", 0.0);
+            /*
+             * Threshold for the filtering of S which will be solved iteratively (possibly after
+             * preconditioning by a matrix M: ongoing project)
+             */
             obj.dcntl[Controls::aug_precond]   = pt.get<double>("augmentation.precond", 0.0);
-            obj.write_s     = pt.get<string>("augmentation.write_s", "");
+            obj.write_s                        = pt.get<string>("augmentation.write_s", "");
+        }
 #endif //WIP
-        }
 
-        obj.dcntl[Controls::alpha]    = pt.get<double>("system.alpha", 1.0);
 
-        obj.parallel_cg = pt.get<int>("dist_scheme", obj.icntl[Controls::nbparts] < world.size() ? obj.icntl[Controls::nbparts] : world.size());
-
-        obj.icntl[Controls::master_def]    = pt.get<int>("partitioning.master_def", 1);
-        if(obj.icntl[Controls::master_def] < 0 || obj.icntl[Controls::master_def] > 1){
-            clog << "Error parsing the file, master_def must be one of 0 and 1." << endl;
-            exit(-1);
-        }
-        obj.icntl[Controls::slave_def]    = pt.get<int>("partitioning.slave_def", 2);
-        if(obj.icntl[Controls::slave_def] < 0 || obj.icntl[Controls::slave_def] > 2){
-            clog << "Error parsing the file, master_def must be one of 0, 1 and 2." << endl;
-            exit(-1);
-        }
-        if (obj.icntl[Controls::master_def] == 0) obj.icntl[Controls::slave_def] = -1;
-
-        obj.icntl[Controls::slave_tol]    = pt.get<int>("partitioning.slave_tol", 0);
-        if(obj.icntl[Controls::slave_tol] < 0 || obj.icntl[Controls::slave_tol] > obj.parallel_cg) {
-            clog << "Error parsing the file, slave_tol must be a positive integer inferior strictly to the number of Masters." << endl;
-            clog << "The number of Masters is the minimum between the number of MPI processes and the number of partitions." << endl;
-            exit(-1);
-        }
-        obj.parallel_cg -= obj.icntl[Controls::slave_tol];
-
-        bool error = false;
+        ////////////////////////////////////////////////////////////////////////////////
+        //	LAUNCH ABCD SOLVER
+        ////////////////////////////////////////////////////////////////////////////////
         try {
-
-            obj.icntl[Controls::verbose_level] =  pt.get<int>("verbose_level", 0);
-            obj.log_output = pt.get<string>("log_filename", "");
-
+            //////////////////////////////////////
+            //	ABCD
+            //////////////////////////////////////
             obj(-1);
 
             double t = MPI_Wtime();
@@ -452,19 +560,13 @@ int main(int argc, char* argv[])
 
             obj.nrhs = 1;
 
-            if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
-            else obj.icntl[Controls::block_size] = atoi(argv[4]);
-
-            obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
-            obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
-
-	    cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
-
-            // obj.icntl[Controls::verbose] =  pt.get<int>("solve_verbose", 0);
             obj(3);
 
             clog << "Total time: " << MPI_Wtime() - t << endl;
 
+            //////////////////////////////////////
+            //	SOL/BWD/SCALED_RES
+            //////////////////////////////////////
             if (sol_file) {
                 ofstream f; 
                 f.open(sol_file->c_str());
@@ -493,13 +595,16 @@ int main(int argc, char* argv[])
                 }
                 f.close();
             }
-
+	/* In case of error in ABCD */
         } catch(std::runtime_error e) {
             cout << world.rank() << " Error code : " << e.what() << endl;
             mpi::broadcast(world, error, 0);
-            error = true;
+            error = 1;
         }
 
+        //////////////////////////////////////////
+        //	COMPARE WITH MUMPS SOL ?
+        //////////////////////////////////////////
         if(testMumps && !error) {
             double infTop = 0, infBot = 0;
             if(mumps_rhs != NULL){
@@ -523,10 +628,16 @@ int main(int argc, char* argv[])
             }
         }
 
+////////////////////////////////////////////////////////////////////////////////////////
+//	OTHER'S JOB
+////////////////////////////////////////////////////////////////////////////////////////
     } else {
         int testMumps;
         mpi::broadcast(world, testMumps, 0);
         MUMPS mu;
+        ////////////////////////////////////////////////////////////////////////////////
+        //	TEST SOLVING THE PROBLEM WITH MUMPS DIRECTLY
+        ////////////////////////////////////////////////////////////////////////////////
         if(testMumps > 0) {
             mu.comm_fortran = MPI_Comm_c2f((MPI_Comm) world);
             mu.par = 1;
@@ -541,6 +652,9 @@ int main(int argc, char* argv[])
             mu.job = -2;
             dmumps_c(&mu);
         }
+        ////////////////////////////////////////////////////////////////////////////////
+        //	LAUNCH ABCD SOLVER
+        ////////////////////////////////////////////////////////////////////////////////
         try {
             obj(-1);
             obj(1);
@@ -548,10 +662,10 @@ int main(int argc, char* argv[])
             obj(3);
         } catch(std::runtime_error e) {
             cout << world.rank() << " Error code : " << e.what() << endl;
+            error=1;
         }
     }
     world.barrier();
 
-
-    return 0;
+    return error;
 }

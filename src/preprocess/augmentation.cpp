@@ -30,32 +30,48 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file augmentation.cpp
+ * \brief Implementation of the Gateway function to call the actual augmentation
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include "abcd.h"
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  abcd::augmentMatrix
- *  Description:  Augments the matrix and build the C part in [A C]
- * =====================================================================================
+/*!
+ *  \brief Augments the matrix and build the C part in [A C]
+ *
+ *  Augment the matrix M by building the augmentation part C. This method
+ *  calls the chosen specific implementation:
+ *    - aug_type=0 => no augmentation
+ *    - aug_type=1 => Aij augmentation
+ *    - aug_type=2 => Cij augmentation
+ *
+ *  \param M: A vector of the compressed partitions (splib format) to augment
+ *
  */
-void abcd::augmentMatrix ( std::vector<CompCol_Mat_double> &M)
+void abcd::augmentMatrix (std::vector<CompCol_Mat_double> &M)
 {
     stC = std::vector<int>(M.size(), -1);
 
-    if(icntl[Controls::aug_type] == 0){
-        // No augmentation 
-        return;
-    } else if (icntl[Controls::aug_type] == 1){
+std::cout << "AUGMENTATION TYPE: " << icntl[Controls::aug_type] << "\n";
+    switch(icntl[Controls::aug_type]) {
+        // No augmentation
+        case 0: {
+            return;
         // C_ij/-I augmentation
-        cijAugmentMatrix(M);
-    } else if (icntl[Controls::aug_type] == 2){
+        } case 1: {
+            cijAugmentMatrix(M);
+            break;
         // A_ij/-A_ji augmentation
-        aijAugmentMatrix(M);
-
-    } else {
-        info[Controls::status] = -8;
-        mpi::broadcast(comm, info[Controls::status], 0);
-        throw std::runtime_error("Unkown augmentation scheme.");
+        } case 2: {
+            aijAugmentMatrix(M);
+            break;
+        } default: {
+            info[Controls::status] = -8;
+            mpi::broadcast(comm, info[Controls::status], 0);
+            throw std::runtime_error("Unkown augmentation scheme.");
+        }
     }
-
-}// [> -----  end of function abcd::augmentMatrix  ----- <]
+}               /* -----  end of function abcd::augmentMatrix  ----- */

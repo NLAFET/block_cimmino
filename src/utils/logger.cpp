@@ -30,10 +30,25 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file logger.cpp
+ * \brief Implementation of the configuration of the easyloggingpp logger
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include "abcd.h"
 
 using namespace easyloggingpp;
 
+/*!
+ *  \brief Configure logger
+ *
+ *  Configure the logger by setting format of the lines, and parameters
+ *
+ *  \param log_output: log filename
+ *
+ */
 void configure_logger(std::string log_output)
 {
     Configurations abcd_conf;
@@ -55,19 +70,24 @@ void configure_logger(std::string log_output)
 
     Loggers::setDefaultConfigurations(abcd_conf);
     Loggers::reconfigureAllLoggers(abcd_conf);
-}
+}               /* -----  end of function configure_logger  ----- */
 
+/*!
+ *  \brief logger_set_filename
+ *
+ *  Configure the logger to output logs to the file
+ *
+ *  \param log_output: log filename
+ *
+ */
 void logger_set_filename(std::string log_output)
 {
     Configurations c;
-    
     if (log_output != "") {
         c.setAll(ConfigurationType::Filename, log_output);
         c.setAll(ConfigurationType::ToFile, "true");
     } else {
         c.setAll(ConfigurationType::ToFile, "false");
     }
-    
     Loggers::reconfigureAllLoggers(c);
-}
-
+}               /* -----  end of function logger_set_filename  ----- */

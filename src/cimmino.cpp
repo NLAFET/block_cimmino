@@ -30,9 +30,24 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file cimmino.cpp
+ * \brief Construction of the augmented systems and initialization of MUMPS
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include <abcd.h>
 #include <fstream>
 
+/*!
+ *  \brief Construct the augmented systems and initialize the MUMPS solver
+ *
+ *  Construct the augmented systems depending on the partitions (grouped in block diagonal
+ *  matrix), distribute the slaves to masters and place them on nodes, finally initialize
+ *  MUMPS solver.
+ *
+ */
 void abcd::initializeDirectSolver()
 {
     int *sym_perm;
@@ -46,6 +61,7 @@ void abcd::initializeDirectSolver()
             initializeMumps(mumps, true);
             createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
+            // initialize matrix in MUMPS
             mumps.n = n_aug;
             mumps.nz = nz_aug;
             mumps.irn = &irn_aug[0];
@@ -75,6 +91,7 @@ void abcd::initializeDirectSolver()
 
 	        initializeMumps(mumps);
 
+                // Save ordering for masters with slaves
 	        if(instance_type == 0) {
 		    mumps.perm_in = new int[n_aug];
 		    std::copy(sym_perm, sym_perm + n_aug, mumps.perm_in);
@@ -99,4 +116,4 @@ void abcd::initializeDirectSolver()
         mumps.jcn = &jcn_aug[0];
         mumps.a = &val_aug[0];
     }
-}
+}    /* ----- end of method abcd::initializeDirectSolver ----- */

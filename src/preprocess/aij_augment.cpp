@@ -30,21 +30,38 @@
 // The fact that you are presently reading this means that you have had
 // knowledge of the CeCILL-C license and that you accept its terms.
 
+/*!
+ * \file aij_augment.cpp
+ * \brief Implementation of the augmentation with blocks Aij/-Aij
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \version 1.0
+ */
+
 #include "abcd.h"
 
+/*!
+ *  \brief Augments the matrix using Aij/-Aji blocks
+ *
+ *  Augment the matrix M by building the augmentation part C with Aij/-Aji blocks
+ *  on the interconnected columns. If filtering of the augmentation is triggered
+ *  this function also filters columns.
+ *
+ *  \param M: A vector of the compressed partitions (splib format) to augment
+ *
+ */
 void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
 {
 
-    int nbcols = A.dim(1);
-    std::map<int,std::vector<CompCol_Mat_double> > C;
+    int nbcols = A.dim(1); // size of Abar
+    std::map<int,std::vector<CompCol_Mat_double> > C; // Augmentation blocks
+    /* stCols(i) contains the number of augmented columns per other interconnected partition */
     std::map<int,std::vector<int> > stCols;
-#ifdef WIP
-    double filter_c = dcntl[Controls::aug_filter];
-#endif //WIP
     stC.assign(M.size(), -1);
 
+    // For each couple of partitions build the augmentation
     for( size_t i = 0; i < M.size() - 1; i++ ){
         for ( size_t j = i+1; j < M.size(); j++ ) {
+            // find interconnected columns between partitions
             std::vector<int> intersect;
             std::set_intersection(column_index[i].begin(),
                                   column_index[i].end(),
@@ -54,17 +71,16 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
 
             if (intersect.empty()) continue;
 
+            // Build Aij/-Aji submatrices from interconnections
             CompCol_Mat_double A_ij(sub_matrix(M[i], intersect));
             CompCol_Mat_double A_ji(sub_matrix(M[j], intersect));
-
             double *jv = A_ji.val_ptr();
             for (int k = 0; k < A_ji.NumNonzeros(); k++) {
                 jv[k] *= -1.0;
             }
-            
 
 #ifdef WIP
-            if(filter_c != 0 || icntl[Controls::aug_iterative] != 0) {
+            if(dcntl[Controls::aug_filter] != 0 || icntl[Controls::aug_iterative] != 0) {
                 std::vector<int> selected_cols;
                 std::vector<double> frob_ij, mu;
 
@@ -75,30 +91,36 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                 double nu;
 
                 for (int k = 0; k < A_ij.dim(1); ++k){
+                    // Column k of the augmentation
                     VECTOR_int A_ij_k_ind, A_ji_k_ind;
                     VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
                     VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
 
                     double card_current = A_ij_k_ind.size() * A_ji_k_ind.size();
 
+                    // Compute the Froebenius norm of each rank one update corresponding to column k
                     // exploit the sparcity of the vectors!
                     frob_ij.push_back(sqrt( squaredNorm(A_ij_k, A_ij_k_ind) * squaredNorm(A_ji_k, A_ji_k_ind)));
                     frob_sum += frob_ij[k];
 
+                    // Underestimate of the number of entries in AijAji^T
                     card_max = card_max > card_current ? card_max : card_current;
                 }
 
+                // Mean distribution of the rank one contributions
                 nu = (frob_sum / frob_ij.size()) / sqrt(card_max);
 
                 for (int k = 0; k < A_ij.dim(1); ++k){
+                    // Column k of the augmentation
                     VECTOR_int A_ij_k_ind, A_ji_k_ind;
                     VECTOR_double A_ij_k = middleCol(A_ij, k, A_ij_k_ind);
                     VECTOR_double A_ji_k = middleCol(A_ji, k, A_ji_k_ind);
 
+                    // Count the number of influential entries
                     double inf_ij = infNorm(A_ij_k);
                     double inf_ji = infNorm(A_ji_k);
 
-                    double p = 0, q = 0;
+                    double p = 0, q = 0; // card_ij, card_ji
                     for (int l = 0; l < A_ij_k_ind.size(); ++l){
                         if (abs(A_ij_k(A_ij_k_ind(l))) >= nu/inf_ji) p++;
                     }
@@ -106,17 +128,21 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
                         if (abs(A_ji_k(A_ji_k_ind(l))) >= nu/inf_ij) q++;
                     }
 
+                    // In case the cardinality is zero, we just set to #rows in Aij/Aji
                     p = ( p==0 ? A_ij_k_ind.size() : p );
                     q = ( q==0 ? A_ji_k_ind.size() : q );
 
+                    // Define a scaled norm
                     double mu_ij_k = frob_ij[k] / sqrt(p*q);
                     mu.push_back(mu_ij_k);
 
-                    if(mu_ij_k >= filter_c){
+                    // Select columns depending on threshold
+                    if(mu_ij_k >= dcntl[Controls::aug_filter]){
                         selected_cols.push_back(k);
                     }
 
-                    if(icntl[Controls::aug_iterative] != 0){ 
+                    // Select columns of S: keep if value exists superior to threshold ????
+                    if(icntl[Controls::aug_iterative] != 0){
                         if (dcntl[Controls::aug_precond] < 0) {
                             if ((nbcols + k - n_o) % abs((int)dcntl[Controls::aug_precond]) == 0)
                                 selected_S_columns.push_back( nbcols + k - n_o);
@@ -134,6 +160,7 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
 
                 if (selected_cols.empty()) continue;
 
+                // Finally get the filtered Augmentation blocks
                 if( icntl[Controls::aug_iterative] != 2 ) { // don't reduce the A_ij/A_ji, we just need the selected columns!
                     A_ij = sub_matrix(A_ij, selected_cols);
                     A_ji = sub_matrix(A_ji, selected_cols);
@@ -150,13 +177,14 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
         }
     }
 
+    // Size of C
     size_c = nbcols - A.dim(1);
     n = nbcols;
     LINFO << "Size of C : " << size_c;
 
-#ifdef WIP    
+#ifdef WIP
     if(icntl[Controls::aug_analysis] != 0) return;
-#endif // WIP    
+#endif // WIP
 
     // Augment the matrices
     for(size_t k = 0; k < M.size(); k++){
@@ -166,4 +194,4 @@ void abcd::aijAugmentMatrix(std::vector<CompCol_Mat_double> &M)
         M[k] = concat_columns(M[k], C[k], stCols[k]);
         M[k] = resize_columns(M[k], nbcols);
     }
-}
+}               /* -----  end of function abcd::aijAugmentMatrix  ----- */
