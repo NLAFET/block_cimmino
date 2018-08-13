@@ -83,13 +83,13 @@ void abcd::scaling()
         abcd::icntl[Controls::scaling] = 0;
     }
 
+    dcol_.assign(n, double(1));
+    drow_.assign(m, double(1));
+
     if(icntl[Controls::scaling] !=0) {
         LINFO << "Mumps MC77 scaling with: " << man_scaling[0] << ";" <<
 		man_scaling[1] << ";" << man_scaling[2] << ";" <<
 		man_scaling[3] << " iterations (#normInf;#norm1;#normInf;#norm2)";
-
-        dcol_.assign(n, double(1));
-        drow_.assign(m, double(1));
 
         // Compute scaling vectors with MUMPS scaling
         abcd::scaleMatrix();

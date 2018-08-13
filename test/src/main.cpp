@@ -204,9 +204,6 @@ int main(int argc, char* argv[])
         //////////////////////////////////////////
         boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
 	if(start_file){
-            cout << "Starting point for CG specified, Block Size is changed to 1.\n";
-            obj.icntl[Controls::block_size] = 1;
-
             FILE *strt_f = fopen(start_file->c_str(), "r");
 
             if(strt_f == NULL){
@@ -493,9 +490,14 @@ int main(int argc, char* argv[])
         ////////////////////////////////////////////////////////////////////////////////
         //	BLOCK CIMMINO
         ////////////////////////////////////////////////////////////////////////////////
-        if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
-        else obj.icntl[Controls::block_size] = atoi(argv[4]);
-        cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
+        if(start_file){
+            cout << "Starting point for CG specified, Block Size is changed to 1.\n";
+            obj.icntl[Controls::block_size] = 1;
+        } else {
+            if(argc <= 4) obj.icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
+            else obj.icntl[Controls::block_size] = atoi(argv[4]);
+            cout << "Block Size: " << obj.icntl[Controls::block_size] << endl;
+        }
 
         obj.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
         obj.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
