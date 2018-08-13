@@ -397,7 +397,7 @@ int main(int argc, char* argv[])
 	        for(int z =0; z < obj.n; z++) {
                		myfile >> obj.partvec[z];
          	}
-		myfile.close();		
+		myfile.close();
 	}
 
 	cout << "Number of Parts: " << obj.icntl[Controls::nbparts] << " - Partition method: "<< obj.icntl[Controls::part_type] << endl;
@@ -411,6 +411,10 @@ int main(int argc, char* argv[])
             clog << "Error parsing the file, num_overlap must be a positive integer." << endl;
             clog << "Be careful not to input a huge number of overlapping lines, it should not be higher than the smallest partition." << endl;
             exit(-1);
+        } else if(obj.icntl[Controls::num_overlap] > obj.m){
+           clog << "Error parsing the file, num_overlap must be less than the matrix size." << endl;
+           clog << "Be careful not to input a huge number of overlapping lines, it should not be higher than the smallest partition." << endl;
+           exit(-1);
         } else if (obj.icntl[Controls::num_overlap] > 0)
             cout << "Number of overlapping rows: " << obj.icntl[Controls::num_overlap] << endl;
 
@@ -571,7 +575,7 @@ int main(int argc, char* argv[])
             //	SOL/BWD/SCALED_RES
             //////////////////////////////////////
             if (sol_file) {
-                ofstream f; 
+                ofstream f;
                 f.open(sol_file->c_str());
                 for(int i = 0; i < obj.n_o; i++) {
                     f << obj.sol[i] << "\n";
@@ -611,7 +615,7 @@ int main(int argc, char* argv[])
         if(testMumps && !error) {
             double infTop = 0, infBot = 0;
             if(mumps_rhs != NULL){
-                ofstream f; 
+                ofstream f;
                 f.open("/tmp/out_comp");
                 for(int i = 0; i < mumps_n; i++) {
                     f << mumps_rhs[i] << "\t" << obj.sol[i] << "\n";
@@ -623,7 +627,7 @@ int main(int argc, char* argv[])
                     }
                 }
                 f.close();
-                cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = " 
+                cout << "||X_mumps - X_cim||_inf / ||X_mumps||_inf  = "
                     << infTop/infBot << endl;
                 //for(int i =0; i < mu.n; i++){
                     //cout << scientific << mu.rhs[i] << "\t" << obj.sol(i,0) << endl;

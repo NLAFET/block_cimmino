@@ -287,7 +287,6 @@ void abcd::partitionMatrix()
 		   if(k < icntl[Controls::nbparts]-1 ){
 			 if(icntl[Controls::num_overlap] >=  row_indices[k+1].size()){
 			     throw std::runtime_error(" More #rows replication than the successive block");
-
 		          }
       			 else{
 		   	   row_indices[k].push_back( row_indices[k+1][zz]  );
@@ -295,7 +294,7 @@ void abcd::partitionMatrix()
 		   }
 		   else if( k > 0){
 	              if(icntl[Controls::num_overlap] >=  row_indices[k-1].size()){
-		          throw std::runtime_error(" More #rows replication than the previous block");						                         
+		          throw std::runtime_error(" More #rows replication than the previous block");
 		      }
 		      else{
 		         row_indices[k].push_back( row_indices[k-1][zz]  );

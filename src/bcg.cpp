@@ -58,7 +58,7 @@ void abcd::bcg(MV_ColMat_double &b)
     double t1_total, t2_total;
 
     // parameters of BCG
-    const int threshold = dcntl[Controls::threshold];
+    const double threshold = dcntl[Controls::threshold];
     // s is the block size of the current run (may decrease when some vector converges)
     int s = std::max<int>(icntl[Controls::block_size], nrhs);
     const int itmax = icntl[Controls::itmax];
