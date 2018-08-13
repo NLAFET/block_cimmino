@@ -275,26 +275,35 @@ void abcd::partitionMatrix()
         info[Controls::status] = -1;
         throw std::runtime_error("Wrong partitioning type.");
     }
-    }
+  }
 
     /* Overlap num_overlap rows at the start and at the end of each partition */
-/*    if  (icntl[Controls::num_overlap] > 0){
+    if  (icntl[Controls::num_overlap] > 0){
         LINFO << "Duplicating " << icntl[Controls::num_overlap] <<
 		" overlapping rows between partitions.";
         for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-            if(k==0){
-                strow2=row_indices[k].back();
-                for (int i=1; i<icntl[Controls::num_overlap]+1 && strow2+i < m; ++i)
-                    row_indices[k].push_back(strow2+i);
-            } else if(k== icntl[Controls::nbparts] -1) {
-                strow[k] -= icntl[Controls::num_overlap];
-                nbrows[k] += icntl[Controls::num_overlap];
-            } else {
-                strow[k] -= icntl[Controls::num_overlap];
-                nbrows[k] += icntl[Controls::num_overlap]*2;
-            }
-        }
-    }*/
+		for(int zz = 0; zz < icntl[Controls::num_overlap]; zz++)
+		{
+		   if(k < icntl[Controls::nbparts]-1 ){
+			 if(icntl[Controls::num_overlap] >=  row_indices[k+1].size()){
+			     throw std::runtime_error(" More #rows replication than the successive block");
+
+		          }
+      			 else{
+		   	   row_indices[k].push_back( row_indices[k+1][zz]  );
+			 }
+		   }
+		   else if( k > 0){
+	              if(icntl[Controls::num_overlap] >=  row_indices[k-1].size()){
+		          throw std::runtime_error(" More #rows replication than the previous block");						                         
+		      }
+		      else{
+		         row_indices[k].push_back( row_indices[k-1][zz]  );
+		       }
+		   }
+		}
+	}
+    }
 
     /* Write the (permuted) matrix A and the its uniform partitioning (#rows1, ...) to a file */
     if(write_problem.length() != 0) {
