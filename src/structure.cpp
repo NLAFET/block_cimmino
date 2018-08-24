@@ -270,14 +270,29 @@ void abcd::partitionMatrix()
         int k =  icntl[Controls::nbparts];
         int *partweights = new int[k];
 
+        // use partvec to initialize partitions
         for(int z =0; z < k; z++){
 	    row_indices.push_back(vector<int>());
             partweights[z]=0;
         }
-
         for(int z =0; z < m_o; z++) {
+            if(partvec[z] > k-1) {
+                stringstream err;
+                LERROR << "Error : Appears to be too many partitions in manual partitioning file.";
+                throw std::runtime_error(err.str());
+            }
             partweights[partvec[z]]++;
 	    row_indices[partvec[z]].push_back(z);
+        }
+
+        // check no empty partitions
+        for(int i=0; i<k; i++) {
+            if(!partweights[i]) {
+                stringstream err;
+                LERROR << "Error : A partition from manual partitioning was found empty," <<
+                    "check your partitioning file.";
+                throw std::runtime_error(err.str());
+            }
         }
 
         LINFO << "Done with Manual Partitioning, time : " << MPI_Wtime() - t << "s.";
