@@ -60,18 +60,27 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         std::vector<long> flops(inter_comm.size()); // MUMPS estimated flops for each MPI
         mpi::all_gather(inter_comm, (long) mu.getRinfo(1), flops);
         std::vector<int> slaves_for_me(inter_comm.size()); // number of slaves per master
-
-        // each slave is assigned to the master with current max flops
+	int nb_slaves = comm.size() - inter_comm.size(); // total number of slaves
+        // Compute total flops
+        long total_flops=0;
+        for(int i=0;i<flops.size();++i)
+            total_flops+=flops[i];
+        // Give integer part of the share of slaves to each master
+        int slaves_left = nb_slaves;
+        for(int i = 0; i < inter_comm.size() && slaves_left > 0 ; i++) {
+            slaves_for_me[i] = floor(((double)flops[i] / (double) total_flops) * nb_slaves);
+            slaves_left-=slaves_for_me[i];
+        }
+        // each remaining slave is assigned to the master with current max flops
         // each time a slave is assigned, its master's flops becomes the original flops divided by #slaves+1
-	int nb_slaves = comm.size() - inter_comm.size();
-	std::vector<long> flops_orig(flops); // original vector of flops
-	for(int i = 0; i < nb_slaves; i++){
-	    int max_index = max_element_index(flops.begin(), flops.end());
+	std::vector<long> flops_tmp(flops); // original vector of flops
+	for(int i = 0; i < slaves_left; i++){
+	    int max_index = max_element_index(flops_tmp.begin(), flops_tmp.end());
 	    slaves_for_me[max_index]++;
-            flops[max_index] = flops_orig[max_index] / (slaves_for_me[max_index] + 1);
+            flops_tmp[max_index] = flops[max_index] / (slaves_for_me[max_index] + 1);
 	}
 
-        // Sort masters per #slaves via tmp_ord to ord_nodes
+        // Sort masters per #slaves via tmp_ord to ord_masters
         std::vector<int> ord_masters; // masters ordered index vs. original index
         std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort masters by #slaves
         for (int iii=0; iii<slaves_for_me.size(); ++iii) {
@@ -133,16 +142,17 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         //    b) for each master in descending order of flops: add remaining slaves GROUPED in remaining slots
         } else if (choice==1) { // first choice
             if (comm.rank() == 0) {
+                // First fill the node of the master with its slaves
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
                     int master=ord_masters[idx];
                     int node_master=masters_node[master];
                     int node=node_master;
                     while (slaves_for_me[master] > 0 && node_map_slaves[node_master].size() > 0) {
-                        int slave=node_map_slaves[node][0];
+                        int slave=node_map_slaves[node].back();
                         comm.send(slave, 11, masters_comm_rank[master]);
                         tmp_my_slaves.push_back(slave);
-                        node_map_slaves[node].erase(node_map_slaves[node].begin());
+                        node_map_slaves[node].pop_back();
                         --slaves_for_me[master];
                         disp_node_map_slaves[node].push_back(masters_comm_rank[master]);
                     }
@@ -152,22 +162,51 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         inter_comm.send(master, 63, tmp_my_slaves);
                     }
                 }
+
+                // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                std::list<int> ord_nodes;
+                std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort masters by #slaves
+                for (int iii=0; iii<node_map_slaves.size(); ++iii) {
+                    // keep the list only for non-empty nodes
+                    if(node_map_slaves[iii].size() != 0) {
+                        std::pair<int, int> p (iii, node_map_slaves[iii].size());
+                        tmp_ord.push_back(p);
+                    }
+                }
+                std::sort(tmp_ord.begin(), tmp_ord.end(),
+                    pair_comparison<int, int,
+                    position_in_pair::second,
+                    comparison_direction::descending>);
+                for (int iii=0; iii<tmp_ord.size(); ++iii) {
+                    ord_nodes.push_back(tmp_ord[iii].first);
+                }
+
+                // Second group the rest of the slaves in biggest nodes
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
+                    // attribute slaves grouped per node
                     int master=ord_masters[idx];
-                    int node_master=masters_node[master];
-                    int iii=0;
                     while (slaves_for_me[master] > 0) {
-                        // Go to the next non-empty node if the current one is empty
-                        while(node_map_slaves[iii].size() == 0)
-                           ++iii;
-                        int slave=node_map_slaves[iii][0];
+                        // the first node is the largest, take the front slave
+                        int slave=node_map_slaves[ord_nodes.front()].back();
                         comm.send(slave, 11, masters_comm_rank[master]);
                         tmp_my_slaves.push_back(slave);
-                        node_map_slaves[iii].erase(node_map_slaves[iii].begin());
+                        node_map_slaves[ord_nodes.front()].pop_back();
                         --slaves_for_me[master];
-                        disp_node_map_slaves[iii].push_back(masters_comm_rank[master]);
+                        disp_node_map_slaves[ord_nodes.front()].push_back(masters_comm_rank[master]);
+                        // when empty, remove from the list of nodes sorted by size
+                        if (!node_map_slaves[ord_nodes.front()].size())
+                            ord_nodes.pop_front();
                     }
+                    // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                    int pos=0; // position where the nodes is now in list of nodes sorted by size
+                    std::list<int>::iterator it = ord_nodes.begin();
+                    it++;
+                    while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                        it++;
+                    }
+                    ord_nodes.insert(it, ord_nodes.front());
+                    ord_nodes.pop_front();
                     if (masters_comm_rank[master] == 0) {
                         my_slaves.insert(my_slaves.end(), tmp_my_slaves.begin(), tmp_my_slaves.end());
                     } else {
@@ -184,27 +223,54 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
         //    a) for each master in descending order of flops: fill node then add remaining
         } else if (choice==2) { // second choice
             if (comm.rank() == 0) {
+                // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                std::list<int> ord_nodes;
+                std::vector<std::pair<int, int>> tmp_ord; // tmp vector to sort masters by #slaves
+                for (int iii=0; iii<node_map_slaves.size(); ++iii) {
+                    // keep the list only for non-empty nodes
+                    if(node_map_slaves[iii].size() != 0) {
+                        std::pair<int, int> p (iii, node_map_slaves[iii].size());
+                        tmp_ord.push_back(p);
+                    }
+                }
+                std::sort(tmp_ord.begin(), tmp_ord.end(),
+                    pair_comparison<int, int,
+                    position_in_pair::second,
+                    comparison_direction::descending>);
+                for (int iii=0; iii<tmp_ord.size(); ++iii) {
+                    ord_nodes.push_back(tmp_ord[iii].first);
+                }
+                // Place the slaves first in same node then grouped in biggest nodes
                 for(int idx = 0 ; idx < ord_masters.size(); idx++) {
                     std::vector<int> tmp_my_slaves;
                     int master=ord_masters[idx];
                     int node_master=masters_node[master];
-                    int node=node_master;
                     int iii=0;
                     while (slaves_for_me[master] > 0) {
                         // If the node of the master and the current node are empty,
                         // go to the next non-empty one
-                        if (node_map_slaves[node_master].size() == 0) {
-                            while(node_map_slaves[iii].size() == 0)
-                                ++iii;
-                            node=iii;
-                        }
-                        int slave=node_map_slaves[node][0];
+                        int node=!node_map_slaves[node_master].size() ? ord_nodes.front() : node_master;
+                        int slave=node_map_slaves[node].back();
                         comm.send(slave, 11, masters_comm_rank[master]);
                         tmp_my_slaves.push_back(slave);
-                        node_map_slaves[node].erase(node_map_slaves[node].begin());
+                        node_map_slaves[node].pop_back();
                         --slaves_for_me[master];
                         disp_node_map_slaves[node].push_back(masters_comm_rank[master]);
+                        if (!node_map_slaves[node].size()) {
+                            if (node==node_master) ord_nodes.remove(node_master);
+                            else ord_nodes.pop_front();
+                        }
                     }
+                    // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                    int pos=0; // position where the nodes is now in list of nodes sorted by size
+                    std::list<int>::iterator it = ord_nodes.begin();
+                    it++;
+                    while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                        it++;
+                    }
+                    ord_nodes.insert(it, ord_nodes.front());
+                    ord_nodes.pop_front();
+
                     if (masters_comm_rank[master] == 0) {
                         my_slaves=tmp_my_slaves;
                     } else {

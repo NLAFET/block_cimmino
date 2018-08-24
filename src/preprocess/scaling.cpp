@@ -288,7 +288,8 @@ void abcd::diagScaleStart (MV_ColMat_double &X, std::vector<double> &dcol) {
     for ( int i = 0; i < X.dim(0); i++ ) {
         for ( int j = 0; j < X.dim(1);j++ ) {
             X(i,j) = X(i,j) * (1/dcol[i]);
-}}
+        }
+    }
 }		/* -----  end of function abcd::diagScaleStart  ----- */
 
 /*!

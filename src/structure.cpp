@@ -50,6 +50,18 @@
 
 using namespace boost::lambda;
 
+/*!
+ *  \brief Partition the Matrix
+ *
+ *  Guess the number of partitions if needed and partition the matrix using the chosen
+ *  method:
+ *   - 1: uniform partitioning with given nbrows
+ *   - 2: uniform partitioning
+ *   - 3: PaToH partitioning
+ *   - 4: manual partitioning input
+ *  Then compute overlapping and write the scaled and permuted matrix.
+ *
+ */
 void abcd::partitionMatrix()
 {
     unsigned handled_rows = 0;
@@ -60,7 +72,7 @@ void abcd::partitionMatrix()
     //              then [<100 000]-10 000 per part
     //              else 20 000 per part
     int guessPartitionsNumber = icntl[Controls::part_guess];
-    if(guessPartitionsNumber == 1 && icntl[Controls::part_type] > 1){
+    if(guessPartitionsNumber == 1 && icntl[Controls::part_type] > 1 && icntl[Controls::part_type] != 4){
         if (m_o == 1) {
             icntl[Controls::nbparts] = 1;
         } else if (m_o <= 8) {
@@ -131,26 +143,26 @@ void abcd::partitionMatrix()
          *  Uniform partitioning with only icntl[Controls::nbparts] as input (generates nbrows)
          *-----------------------------------------------------------------------------*/
     } case 2: {
-	        unsigned floor_per_part;
-	        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
-	        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
-	        nbrows = std::vector<int>(icntl[Controls::nbparts]);
-	        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
-	           int cnt = floor_per_part;
-	           if(remain >0){
-	               remain--;
-	               cnt++;
-	           }
-	           nbrows[k] = cnt;
-	        }
-                int row_sum=0;
-	        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
-	       	    row_indices.push_back(vector<int>());
-		    for(int ii=row_sum; ii<row_sum + nbrows[k];ii++ ){
-			row_indices[k].push_back(ii);
-		    }
-                    row_sum += nbrows[k];
-	        }
+        unsigned floor_per_part;
+        floor_per_part = floor(float(m_o)/float(icntl[Controls::nbparts]));
+        int remain = m_o - ( floor_per_part * icntl[Controls::nbparts]);
+        nbrows = std::vector<int>(icntl[Controls::nbparts]);
+        for(unsigned k = 0; k < (unsigned) icntl[Controls::nbparts]; k++) {
+           int cnt = floor_per_part;
+           if(remain >0){
+               remain--;
+               cnt++;
+           }
+           nbrows[k] = cnt;
+        }
+        int row_sum=0;
+        for(unsigned k = 0; k < (unsigned)icntl[Controls::nbparts]; k++) {
+       	    row_indices.push_back(vector<int>());
+	    for(int ii=row_sum; ii<row_sum + nbrows[k];ii++ ){
+		row_indices[k].push_back(ii);
+	    }
+            row_sum += nbrows[k];
+        }
         break;
         /*-----------------------------------------------------------------------------
          *  PaToH partitioning
@@ -326,7 +338,7 @@ void abcd::partitionMatrix()
         f.open(parts.c_str());
 
         for(unsigned int k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
-            f << nbrows[k] << "\n";
+            f << row_indices[k].size() << "\n";
         }
 
         f.close();

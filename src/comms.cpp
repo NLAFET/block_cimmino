@@ -70,6 +70,12 @@ void abcd::createInterCommunicators()
     // Get communication map information on root MPI
     mpi::environment env;
     std::string node = env.processor_name();
+    if(comm.rank() == 3 || comm.rank() == 4 || comm.rank() == 5 || comm.rank() == 6)
+        node="NODE1";
+    if(comm.rank() == 7 || comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10)
+        node="NODE2";
+    if(comm.rank() == 11 || comm.rank() == 12)
+        node="NODE3";
     int cpu = sched_getcpu();
     int root_node;
     std::vector<int> node_count; // number of MPI per node
@@ -90,7 +96,8 @@ void abcd::createInterCommunicators()
             }
             // increase number of MPI in this node
             ++node_count[nodes[pair_vect[iii].second]];
-            node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
+            if (pair_vect[iii].first)
+                node_map_slaves[nodes[pair_vect[iii].second]].push_back(iii);
             // save the node index for this MPI
             mpi_map.push_back(nodes[pair_vect[iii].second]);
         }
@@ -126,32 +133,34 @@ void abcd::createInterCommunicators()
             // Assign masters from biggest node to smallest then from smallest to biggest etc. (zig-zag)
             instance_type_vect.assign(comm.size(), 1);
             if (node_map_slaves.size() > 1) {
-                int current_idx=0;
-                int direction=0;
-                for (int iii=0; iii<parallel_cg; ++iii) {
+                int current_idx=1;
+                int direction=1;
+                masters_node.push_back(0);
+                instance_type_vect[0] = 0;
+                for (int iii=1; iii<parallel_cg; ++iii) {
                     int current_node=ord_nodes[current_idx];
                     // check if remaining MPI in node and assign as master
 		    if (node_map_slaves[current_node].size() > 0) {
                         masters_node.push_back(current_node);
-                        instance_type_vect[node_map_slaves[current_node][0]] = 0;
-                        node_map_slaves[current_node].erase(node_map_slaves[current_node].begin());
+                        instance_type_vect[node_map_slaves[current_node].back()] = 0;
+                        node_map_slaves[current_node].pop_back();
                     } else --iii; //do not assign, only update the zig-zag direction
                     // update direction of node exploration
                     if (!current_idx) {
-                        if (!direction) direction=1;
-                        else direction=0;
+                        ++direction;
                     } else if (!((current_idx+1)%node_map_slaves.size())) {
-                        if (!direction) direction=-1;
-                        else direction=0;
+                        --direction;
                     }
                     current_idx+=direction;
                 }
             // If only 1 node, all masters in first node
             } else {
-                for (int iii=0; iii<parallel_cg; ++iii) {
+                masters_node.push_back(0);
+                instance_type_vect[0] = 0;
+                for (int iii=1; iii<parallel_cg; ++iii) {
                     masters_node.push_back(0);
-                    instance_type_vect[node_map_slaves[0][0]] = 0;
-                    node_map_slaves[0].erase(node_map_slaves[0].begin());
+                    instance_type_vect[node_map_slaves[0].back()] = 0;
+                    node_map_slaves[0].pop_back();
                 }
             }
         }

@@ -159,6 +159,7 @@ void abcd::bcg(MV_ColMat_double &b)
     t2_total = MPI_Wtime();
     // compute the initial backward residual
     rho = compute_rho(Xk, u);
+
     t2_total = MPI_Wtime() - t2_total;
     if(comm.rank() == 0) {
         LINFO2 << "ITERATION 0  rho = " << scientific << rho << setprecision(oldprec);
@@ -186,6 +187,7 @@ void abcd::bcg(MV_ColMat_double &b)
         if(gqr(p, qp, betak, s, true) != 0){
             gmgs2(p, qp, betak, s, true);
         }
+
         // beta_kX=ones() => lambda_k = beta_k^-T
         lambdak = e1;
         dtrsm_(&left, &up, &tr, &notr, &s, &nrhs, &alpha, betak_ptr, &s, l_ptr, &s);
@@ -208,7 +210,7 @@ void abcd::bcg(MV_ColMat_double &b)
         // Test convergence
         if((rho < threshold) || (it >= itmax)) break;
 
-        // beta_kX = HPbar => X=HBbeta_k^{-1} and R = Rbar - HPbar * B^-T
+        // beta_kX = HPbar => X=HPbar.beta_k^{-1} and R = Rbar - HPbar * B^-T
         dtrsm_(&right, &up, &tr, &notr, &n, &s, &alpha, betak_ptr, &s, qp_ptr, &n);
         r = r - qp;
 

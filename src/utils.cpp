@@ -77,12 +77,16 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
 
     // If #masters=#partitions, 1partition per Master
     if (nb_parts == (int)weights.size() ) {
-        for(int i = 0; i < nb_parts; i++)
+        for(int i = 0; i < nb_parts; i++) {
             pts[i].push_back(i);
+            sets[i]+=weights[i];
+        }
     // If 1master, it gets all partitions
     } else if (nb_parts == 1) {
-        for(int i = 0; i < weights.size(); i++)
+        for(int i = 0; i < weights.size(); i++) {
             pts[0].push_back(i);
+            sets[0]+=weights[i];
+        }
     }
     // If #masters < #partitions
 #ifndef NO_METIS
@@ -100,7 +104,7 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
 	for(int i = 0; i < weights.size(); i++){
 		int min_index = min_element_index(sets.begin(), sets.end());
 		pts[min_index].push_back(sorted[i]);
-		sets[min_index] +=  weights[i];
+		sets[min_index] +=  weights[sorted[i]];
 	}
     }
 #ifndef NO_METIS
@@ -214,13 +218,30 @@ else {
 
         for(int z =0; z < nVertices; z++) {
             pts[part[z]].push_back(z);  // groups of parts in ABCD
+            sets[part[z]]+=vtxWght[z];
         }
 
     }
 #endif
 
+    // Sort sets per accumulated weight via tmp_ord to ord_parts
+    std::vector<std::pair<int, int>> tmp_ord;
+    for (int iii=0; iii<sets.size(); ++iii) {
+        std::pair<int, int> p (sets[iii], iii);
+        tmp_ord.push_back(p);
+    }
+    std::sort(tmp_ord.begin(), tmp_ord.end(),
+        pair_comparison<int, int,
+        position_in_pair::first,
+        comparison_direction::descending>);
+    std::vector<int> ord_parts;
+    for (int iii=0; iii<tmp_ord.size(); ++iii) {
+        ord_parts.push_back(tmp_ord[iii].second);
+    }
+
+    // Save the sets in ABCD structure
     for(int i = 0; i < nb_parts; i++){
-        partitionsSets.push_back(pts[i]);
+        partitionsSets.push_back(pts[ord_parts[i]]);
     }
 }               /* -----  end of function partitionWeights  ----- */
 

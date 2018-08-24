@@ -461,7 +461,7 @@ int main(int argc, char* argv[])
 		size_t pos = 0;
 		std::string token;
 		int cursor=0;
-		while ((pos = man_scaling.find(delimiter)) != std::string::npos && cursor < 4) {
+		while ((pos = man_scaling.find(delimiter)) != std::string::npos && cursor < 5) {
 		    token = man_scaling.substr(0, pos);
 		    istringstream (token) >> obj.man_scaling[cursor];
 		    man_scaling.erase(0, pos + delimiter.length());

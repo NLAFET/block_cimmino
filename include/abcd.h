@@ -232,6 +232,7 @@ public:
     /**************************************************************************
      * Partitioning informations
     **************************************************************************/
+    /*! row indices of partitions for each partition */
     vector< vector<int> > row_indices;
 
     /*! The number of rows per partition */
