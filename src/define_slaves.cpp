@@ -198,15 +198,17 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                         if (!node_map_slaves[ord_nodes.front()].size())
                             ord_nodes.pop_front();
                     }
-                    // Keep the map of nodes sorted by size to efficiently assign grouped slaves
-                    int pos=0; // position where the nodes is now in list of nodes sorted by size
-                    std::list<int>::iterator it = ord_nodes.begin();
-                    it++;
-                    while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                    if (ord_nodes.size() > 1) {
+                        // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                        int pos=0; // position where the nodes is now in list of nodes sorted by size
+                        std::list<int>::iterator it = ord_nodes.begin();
                         it++;
+                        while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                            it++;
+                        }
+                        ord_nodes.insert(it, ord_nodes.front());
+                        ord_nodes.pop_front();
                     }
-                    ord_nodes.insert(it, ord_nodes.front());
-                    ord_nodes.pop_front();
                     if (masters_comm_rank[master] == 0) {
                         my_slaves.insert(my_slaves.end(), tmp_my_slaves.begin(), tmp_my_slaves.end());
                     } else {
@@ -261,16 +263,17 @@ void abcd::allocateMumpsSlaves(MUMPS &mu)
                             else ord_nodes.pop_front();
                         }
                     }
-                    // Keep the map of nodes sorted by size to efficiently assign grouped slaves
-                    int pos=0; // position where the nodes is now in list of nodes sorted by size
-                    std::list<int>::iterator it = ord_nodes.begin();
-                    it++;
-                    while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                    if (ord_nodes.size() > 1) {
+                        // Keep the map of nodes sorted by size to efficiently assign grouped slaves
+                        int pos=0; // position where the nodes is now in list of nodes sorted by size
+                        std::list<int>::iterator it = ord_nodes.begin();
                         it++;
+                        while(node_map_slaves[ord_nodes.front()].size() < node_map_slaves[*it].size()) {
+                            it++;
+                        }
+                        ord_nodes.insert(it, ord_nodes.front());
+                        ord_nodes.pop_front();
                     }
-                    ord_nodes.insert(it, ord_nodes.front());
-                    ord_nodes.pop_front();
-
                     if (masters_comm_rank[master] == 0) {
                         my_slaves=tmp_my_slaves;
                     } else {

@@ -70,12 +70,6 @@ void abcd::createInterCommunicators()
     // Get communication map information on root MPI
     mpi::environment env;
     std::string node = env.processor_name();
-    if(comm.rank() == 3 || comm.rank() == 4 || comm.rank() == 5 || comm.rank() == 6)
-        node="NODE1";
-    if(comm.rank() == 7 || comm.rank() == 8 || comm.rank() == 9 || comm.rank() == 10)
-        node="NODE2";
-    if(comm.rank() == 11 || comm.rank() == 12)
-        node="NODE3";
     int cpu = sched_getcpu();
     int root_node;
     std::vector<int> node_count; // number of MPI per node
