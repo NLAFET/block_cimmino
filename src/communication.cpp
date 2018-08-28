@@ -65,7 +65,6 @@ void abcd::distributeData()
 
         // Send the actual partitions to their respective masters
         for(int i = 1; i < parallel_cg ; i++) {
-LINFO << "MASTER " << i;
             inter_comm.send(i, 0, partitionsSets[i]);
 
             for(unsigned int k = 0; k < partitionsSets[i].size(); k++){

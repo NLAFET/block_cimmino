@@ -104,7 +104,7 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
 	for(int i = 0; i < weights.size(); i++){
 		int min_index = min_element_index(sets.begin(), sets.end());
 		pts[min_index].push_back(sorted[i]);
-		sets[min_index] +=  weights[sorted[i]];
+		sets[min_index] +=  weights[i];
 	}
     }
 #ifndef NO_METIS
