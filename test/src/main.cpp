@@ -414,6 +414,11 @@ int main(int argc, char* argv[])
            exit(-1);
         } else if (obj.icntl[Controls::num_overlap] > 0)
             cout << "Number of overlapping rows: " << obj.icntl[Controls::num_overlap] << endl;
+	obj.icntl[Controls::overlap_strategy]  = pt.get<int>("partitioning.overlap_strategy",1);
+        if (obj.icntl[Controls::overlap_strategy] > 1 || obj.icntl[Controls::overlap_strategy] < 0) {
+            cout << "Error: The overlap strategy must be either 1 (normal equations) or 0 (naive)." << endl;
+            exit(-1);
+        }
 
         /* Communication balancing distribution of partitions */
 #ifndef NO_METIS

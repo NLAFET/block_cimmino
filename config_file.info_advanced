@@ -113,6 +113,17 @@ partitioning
     ; Be careful not to input a huge number of overlapping lines, it should not be higher than the smallest partition.
     num_overlap   0
 
+        /*! \brief The overlapping strategy
+         *
+         * The overlapping strategy can be one of:
+         *  - 1: smart method-graph based (choice based on normal equations)
+         *  - 0: naive method-start (overlap first-last rows)
+         */
+        overlap_strategy
+    ; Overlapping strategy
+    ; The overlapping strategy can be 1 (normal equations) or 0 (naive)
+    overlap_strategy   1
+
     ; Masters definition
     ; 0 > Momo's implementation (enforce slave_def)
     ; 1 > 1 Master/1 Node

@@ -32,3 +32,4 @@ MV_ColMat_double spsmv ( CompRow_Mat_double &M, std::vector<int> &col_ind, MV_Co
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R);
 MV_ColMat_double gemmColMat(MV_ColMat_double &L, MV_ColMat_double &R, bool transL, bool transR);
 MV_ColMat_double upperMat(MV_ColMat_double &M);
+CompRow_Mat_double spmm_overlap ( CompRow_Mat_double &A, CompRow_Mat_double &BT );

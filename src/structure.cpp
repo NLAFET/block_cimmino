@@ -62,6 +62,7 @@ using namespace boost::lambda;
  *  Then compute overlapping and write the scaled and permuted matrix.
  *
  */
+
 void abcd::partitionMatrix()
 {
     unsigned handled_rows = 0;
@@ -275,6 +276,7 @@ void abcd::partitionMatrix()
 	    row_indices.push_back(vector<int>());
             partweights[z]=0;
         }
+
         for(int z =0; z < m_o; z++) {
             if(partvec[z] > k-1) {
                 stringstream err;
@@ -306,29 +308,67 @@ void abcd::partitionMatrix()
 
     /* Overlap num_overlap rows at the start and at the end of each partition */
     if  (icntl[Controls::num_overlap] > 0){
-        LINFO << "Duplicating " << icntl[Controls::num_overlap] <<
-		" overlapping rows between partitions.";
-        for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
-		for(int zz = 0; zz < icntl[Controls::num_overlap]; zz++)
-		{
-		   if(k < icntl[Controls::nbparts]-1 ){
-			 if(icntl[Controls::num_overlap] >=  row_indices[k+1].size()){
-			     throw std::runtime_error(" More #rows replication than the successive block");
-		          }
-      			 else{
-		   	   row_indices[k].push_back( row_indices[k+1][zz]  );
-			 }
-		   }
-		   else if( k > 0){
-	              if(icntl[Controls::num_overlap] >=  row_indices[k-1].size()){
-		          throw std::runtime_error(" More #rows replication than the previous block");
-		      }
-		      else{
-		         row_indices[k].push_back( row_indices[k-1][zz]  );
-		       }
-		   }
-		}
-	}
+        if (icntl[Controls::overlap_strategy] == 1){
+            partvec = new int[n_o];
+            for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
+                for(unsigned r = 0; r < row_indices[k].size() ; r++) {
+                    partvec[row_indices[k][r]] = k; //row_indices[k][r];
+                    //~ cout << r << " " << partvec[row_indices[k][r]] << endl;
+                }
+            }
+
+            // AT = transpose of A
+            CompRow_Mat_double AT = csr_transpose(A);
+
+            // Efficient Sequential Matrix Multiplication AAT = A * A'
+            CompRow_Mat_double AAT = spmm_overlap(A,AT);
+
+            int *jiro = AAT.rowptr_ptr();
+            int *jjco = AAT.colind_ptr();
+            double *jvalo = AAT.val_ptr();
+            for(int k = 0; k < icntl[Controls::nbparts]; k++) {
+                std::vector<std::pair<int, double>> selected_rep;
+                for(int r = 0; r <  n_o  ; r++) {
+                    if( partvec[r] != k) {
+                        double sum =0;
+                        for(int j =jiro[ r ]; j< jiro[ r+1];j++){
+                            if( partvec[ jjco[j] ] == k) {
+                                sum += jvalo[j];
+                            }
+                        }
+                        selected_rep.push_back(std::make_pair(r,sum));
+                    }
+                }
+                std::sort(selected_rep.begin(), selected_rep.end(),   pair_comparison<int, double,  position_in_pair::second,  comparison_direction::descending>);
+
+                for(int jj = 0; jj<icntl[Controls::num_overlap]; jj++){
+                    row_indices[k].push_back ( selected_rep[jj].first );
+                    LINFO3 << "Row " << selected_rep[jj].first << " added ("<< selected_rep[jj].second <<") as "<< jj+1 <<". replicated row into " << k << " .part";
+                }
+            }
+	} else if (icntl[Controls::overlap_strategy] == 0){
+            LINFO2 << "Duplicating " << icntl[Controls::num_overlap] <<
+                " overlapping rows between partitions.";
+            for(unsigned k = 0; k < icntl[Controls::nbparts]; k++) {
+                for(int zz = 0; zz < icntl[Controls::num_overlap]; zz++) {
+                    if(k < icntl[Controls::nbparts]-1 ){
+                        if(icntl[Controls::num_overlap] >=  row_indices[k+1].size()){
+                            throw std::runtime_error(" More #rows replication than the successive block");
+                        } else{
+                            row_indices[k].push_back( row_indices[k+1][zz]  );
+                            LINFO3 << "Row " << row_indices[k+1][zz] << " added as "<< zz+1 <<". replicated row into " << k << " .part";
+                        }
+                    } else if( k > 0){
+                        if(icntl[Controls::num_overlap] >=  row_indices[k-1].size()){
+                            throw std::runtime_error(" More #rows replication than the previous block");
+                        } else{
+                            row_indices[k].push_back( row_indices[k-1][zz]  );
+                            LINFO3 << "Row " << row_indices[k-1][zz] << " added as "<< zz+1 <<". replicated row into " << k << " .part";
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /* Write the (permuted) matrix A and the its uniform partitioning (#rows1, ...) to a file */
