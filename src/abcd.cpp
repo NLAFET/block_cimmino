@@ -33,7 +33,7 @@
 /*!
  * \file abcd.cpp
  * \brief Main file of the abcd class with gateway function and the main phases
- * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi, S. Cayrols
  * \version 1.0
  */
 
@@ -389,11 +389,14 @@ int abcd::factorizeAugmentedSystems()
         abcd::createInterconnections();
     }
 
-    abcd::initializeDirectSolver();
+    abcd::initializeDirectSolver(icntl[Controls::inner_solver]);
 
     // Do the Analysis in all cases except when the process is a Master with no slaves and
     // there are slaves
-    if (! (instance_type == 0 && comm.size() > parallel_cg && my_slaves.size() == 0)) {
+    // SCAYROLS_ADD add test on the solver since the analyse should have already done during
+    //              the init of the direct solver
+    if (! (instance_type == 0 && comm.size() > parallel_cg && my_slaves.size() == 0) 
+        && icntl[Controls::inner_solver] == MUMPS_SOLVER_TYPE) {
         if(inter_comm.rank() == 0 && instance_type == 0) {
             LINFO << "Launching MUMPS analysis";
         }
@@ -402,15 +405,28 @@ int abcd::factorizeAugmentedSystems()
     if(IRANK == 0){
         LINFO << "Initialization time : " << MPI_Wtime() - t;
     }
-    if(inter_comm.rank() == 0 && instance_type == 0){
-        LINFO << "Launching MUMPS factorization";
+
+    switch(icntl[Controls::inner_solver]){
+      case MUMPS_SOLVER_TYPE :
+        if(inter_comm.rank() == 0 && instance_type == 0){
+          LINFO << "Launching MUMPS factorization";
+        }
+
+        t = MPI_Wtime();
+        abcd::factorizeAugmentedSystems(mumps);
+        break;
+      case SPLDLT_SOLVER_TYPE :
+        if(inter_comm.rank() == 0 && instance_type == 0){
+          LINFO << "Launching SpLDLT factorization";
+        }
+
+        t = MPI_Wtime();
+        abcd::factorizeAugmentedSystems(inner_solver);
+        break;
     }
 
-    t = MPI_Wtime();
-    abcd::factorizeAugmentedSystems(mumps);
-
     if(IRANK == 0){
-        LINFO << "Factorization time : " << MPI_Wtime() - t;
+      LINFO << "Factorization time : " << MPI_Wtime() - t;
     }
 
     return 0;

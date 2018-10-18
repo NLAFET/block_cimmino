@@ -33,12 +33,32 @@
 /*!
  * \file cimmino.cpp
  * \brief Construction of the augmented systems and initialization of MUMPS
- * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi, S. Cayrols
  * \version 1.0
  */
 
 #include <abcd.h>
 #include <fstream>
+
+/*!
+ *  \brief Construct the augmented systems and initialize the inner solver
+ */
+void abcd::initializeDirectSolver(int solver_type)
+{
+  switch(solver_type){
+    case MUMPS_SOLVER_TYPE :
+      initializeDirectSolverMUMPS();
+      break;
+    case SPLDLT_SOLVER_TYPE :
+      initializeDirectSolverSpLDLT();
+      break;
+    default:
+      LINFO << "Unknown solver to initialize";
+      break;
+  }
+}    /* ----- end of method abcd::initializeDirectSolver ----- */
+
+
 
 /*!
  *  \brief Construct the augmented systems and initialize the MUMPS solver
@@ -48,72 +68,96 @@
  *  MUMPS solver.
  *
  */
-void abcd::initializeDirectSolver()
+void abcd::initializeDirectSolverMUMPS()
 {
-    int *sym_perm;
+  int *sym_perm;
 
-    mpi::broadcast(comm, icntl[Controls::nbparts], 0);
+  mpi::broadcast(comm, icntl[Controls::nbparts], 0);
 
-    if(comm.size() > parallel_cg) {
-        if(instance_type == 0) {
-            if(inter_comm.rank() == 0 && instance_type == 0)
-                LINFO << "Initializing MUMPS";
-            initializeMumps(mumps, true);
-            createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
-
-            // initialize matrix in MUMPS
-            mumps.n = n_aug;
-            mumps.nz = nz_aug;
-            mumps.irn = &irn_aug[0];
-            mumps.jcn = &jcn_aug[0];
-            mumps.a = &val_aug[0];
-
-            if(inter_comm.rank() == 0 && instance_type == 0)
-                LINFO << "Launching Initial MUMPS analysis";
-            analyseAugmentedSystems(mumps);
-
-            sym_perm = new int[mumps.n];
-            std::copy(mumps.sym_perm, mumps.sym_perm + mumps.n, sym_perm);
-        }
-
-        allocateMumpsSlaves(mumps);
-
-	// If the process is in a group with slaves (as master or not)
-	if (my_slaves.size() > 0 || instance_type != 0) {
-		// Then
-		// As a master, we have to reinitialize mumps
-		// As a slave, just initialize
-	        if(instance_type == 0) {
-	            mumps.job = -2;
-	            dmumps_c(&mumps);
-	            mumps.initialized = false;
-	        }
-
-	        initializeMumps(mumps);
-
-                // Save ordering for masters with slaves
-	        if(instance_type == 0) {
-		    mumps.perm_in = new int[n_aug];
-		    std::copy(sym_perm, sym_perm + n_aug, mumps.perm_in);
-		    mumps.setIcntl(7, 1);
-		}
-	} else {
-		// Useless participation in the blocking sub-communicator creation in
-		// initializeMumps launched for Masters with slave..
-		mpi::group grp;
-		mpi::communicator(comm, grp);
-	}
-    } else {
-        allocateMumpsSlaves(mumps);
-        initializeMumps(mumps);
-        createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
-    }
-
+  if(comm.size() > parallel_cg) {
     if(instance_type == 0) {
-        mumps.n = n_aug;
-        mumps.nz = nz_aug;
-        mumps.irn = &irn_aug[0];
-        mumps.jcn = &jcn_aug[0];
-        mumps.a = &val_aug[0];
+      if(inter_comm.rank() == 0 && instance_type == 0)
+        LINFO << "Initializing MUMPS";
+      initializeMumps(mumps, true);
+      createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
+
+      // initialize matrix in MUMPS
+      mumps.n = n_aug;
+      mumps.nz = nz_aug;
+      mumps.irn = &irn_aug[0];
+      mumps.jcn = &jcn_aug[0];
+      mumps.a = &val_aug[0];
+
+      if(inter_comm.rank() == 0 && instance_type == 0)
+        LINFO << "Launching Initial MUMPS analysis";
+      analyseAugmentedSystems(mumps);
+
+      sym_perm = new int[mumps.n];
+      std::copy(mumps.sym_perm, mumps.sym_perm + mumps.n, sym_perm);
     }
-}    /* ----- end of method abcd::initializeDirectSolver ----- */
+
+    allocateMumpsSlaves(mumps);
+
+    // If the process is in a group with slaves (as master or not)
+    if (my_slaves.size() > 0 || instance_type != 0) {
+      // Then
+      // As a master, we have to reinitialize mumps
+      // As a slave, just initialize
+      if(instance_type == 0) {
+        mumps.job = -2;
+        dmumps_c(&mumps);
+        mumps.initialized = false;
+      }
+
+      initializeMumps(mumps);
+
+      // Save ordering for masters with slaves
+      if(instance_type == 0) {
+        mumps.perm_in = new int[n_aug];
+        std::copy(sym_perm, sym_perm + n_aug, mumps.perm_in);
+        mumps.setIcntl(7, 1);
+      }
+    } else {
+      // Useless participation in the blocking sub-communicator creation in
+      // initializeMumps launched for Masters with slave..
+      mpi::group grp;
+      mpi::communicator(comm, grp);
+    }
+  } else {
+    allocateMumpsSlaves(mumps);
+    initializeMumps(mumps);
+    createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
+  }
+
+  if(instance_type == 0) {
+    mumps.n = n_aug;
+    mumps.nz = nz_aug;
+    mumps.irn = &irn_aug[0];
+    mumps.jcn = &jcn_aug[0];
+    mumps.a = &val_aug[0];
+  }
+}    /* ----- end of method abcd::initializeDirectSolverMUMPS ----- */
+
+
+
+void abcd::initializeDirectSolverSpLDLT(){
+
+  mpi::broadcast(comm, icntl[Controls::nbparts], 0);
+
+  initializeSpLDLT(inner_solver, true);
+
+  createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
+
+  // initialize matrix in SpLDLT
+//.n = n_aug;
+//.nz = nz_aug;
+//.irn = &irn_aug[0];
+//.jcn = &jcn_aug[0];
+//.a = &val_aug[0];
+
+  if(inter_comm.rank() == 0 && instance_type == 0)
+    LINFO << "Launching Initial SpLDLT analysis";
+
+  analyseAugmentedSystems(inner_solver);
+
+}    /* ----- end of method abcd::initializeDirectSolverSpLDLT ----- */

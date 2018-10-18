@@ -18,6 +18,12 @@ project(abcd CXX C Fortran)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
+IF(NOT "ENV{PYTHON_INC}" STREQUAL "")
+  set(PYTHON_INC $ENV{PYTHON_INC})
+  message(STATUS "Add python include path : ${PYTHON_INC}")
+  include_directories(${PYTHON_INC})
+endif()
+
 ##Environment file
 IF("${BOOST_ROOT}" STREQUAL "")
     message("BOOST_ROOT not specified. Compilation of Boost libraries mpi/serialization/python with ABCD sources.")
@@ -87,6 +93,7 @@ file(
     src/*.cpp
     src/*.c
 )
+#message(STATUS "Make lib with ${source_files}")
 add_library(abcd STATIC ${source_files})
 target_link_libraries(
     abcd

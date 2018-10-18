@@ -35,7 +35,7 @@
 /*!
  * \file abcd.h
  * \brief Header for the class ABCD
- * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi, S. Cayrols
  * \version 1.0
  */
 
@@ -62,6 +62,7 @@
 
 #include <mumps.h>
 #include "dmumps_c.h"
+#include <spldlt.h>
 
 #include <boost/mpi.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -131,6 +132,9 @@
 #undef LDEBUG
 #endif //LDEBUG
 #endif //NOLOGGING
+
+#define MUMPS_SOLVER_TYPE 1
+#define SPLDLT_SOLVER_TYPE 2
 
 using namespace std;
 using namespace boost;
@@ -452,6 +456,7 @@ private:
     **************************************************************************/
     /* MUMPS object to solve augmented systems */
     MUMPS mumps;
+    SPLDLT inner_solver;
 
     /* size and number of non-zeros of the block diagonal augmented systems for the local partitions */
     int m_n, m_nz;
@@ -518,11 +523,16 @@ private:
                                 std::vector<int> &irn_aug,
                                 std::vector<int> &jcn_aug,
                                 std::vector<double> &val_aug);
-    void initializeDirectSolver();
+    void initializeDirectSolver(int solver_type);
+    void initializeDirectSolverMUMPS();
+    void initializeDirectSolverSpLDLT();
+    void initializeSpLDLT(SPLDLT &, bool local);
     void initializeMumps(MUMPS &, bool local);
     void initializeMumps(MUMPS &);
     void analyseAugmentedSystems(MUMPS &);
+    void analyseAugmentedSystems(SPLDLT &);
     void factorizeAugmentedSystems(MUMPS &);
+    void factorizeAugmentedSystems(SPLDLT &);
 
     /**************************************************************************
      * Distribution

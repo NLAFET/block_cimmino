@@ -33,7 +33,7 @@
 /*!
  * \file defaults.h
  * \brief Header for enumerations of Controls/Info
- * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi
+ * \author R. Guivarch, P. Leleux, D. Ruiz, S. Torun, M. Zenadi, S. Cayrols
  * \version 1.0
  */
 
@@ -279,6 +279,15 @@ namespace Controls{
         /* \deprecated Use dense RHS when doing the computation */
         aug_dense       ,
 #endif //WIP
+
+        /*! \brief The inner solver used
+         *
+         * Possible values are:
+         *  - ``1`` (*default*), mumps is used
+         *
+         *  - ``2``, spldlt is used
+         */
+        inner_solver      ,
     };
     enum dcontrols {
         /* The imbalance factor in PaToH case */
