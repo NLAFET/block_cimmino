@@ -27,9 +27,18 @@ add_executable(
   abcd_run
   src/main.cpp
 )
+add_executable(
+  bc_spldlt_run
+  src/main_with_spldlt.cpp
+)
 #Configuration de l'édition de liens
 target_link_libraries(
     abcd_run
+    abcd
+    ${LIBS}
+)
+target_link_libraries(
+    bc_spldlt_run
     abcd
     ${LIBS}
 )
