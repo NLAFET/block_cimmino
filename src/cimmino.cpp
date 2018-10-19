@@ -149,11 +149,11 @@ void abcd::initializeDirectSolverSpLDLT(){
   createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
   // initialize matrix in SpLDLT
-//.n = n_aug;
-//.nz = nz_aug;
-//.irn = &irn_aug[0];
-//.jcn = &jcn_aug[0];
-//.a = &val_aug[0];
+  inner_solver.n    = n_aug;
+  inner_solver.nz   = nz_aug;
+  inner_solver.irn  = &irn_aug[0];
+  inner_solver.jcn  = &jcn_aug[0];
+  inner_solver.a    = &val_aug[0];
 
   if(inter_comm.rank() == 0 && instance_type == 0)
     LINFO << "Launching Initial SpLDLT analysis";

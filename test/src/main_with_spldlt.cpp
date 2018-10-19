@@ -478,9 +478,9 @@ int main(int argc, char* argv[])
       solver(1);
       solver(2);
 
-    //solver.nrhs = 1;
+      solver.nrhs = 1;
 
-    //solver(3);
+      solver(3);
 
       clog << "Total time: " << MPI_Wtime() - t << endl;
 
@@ -534,7 +534,7 @@ int main(int argc, char* argv[])
       solver(-1);
       solver(1);
       solver(2);
-    //solver(3);
+      solver(3);
     } catch(std::runtime_error e) {
       cout << world.rank() << " Error code : " << e.what() << endl;
       error=1;

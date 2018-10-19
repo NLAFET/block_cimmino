@@ -556,6 +556,10 @@ private:
                                 MV_ColMat_double &Rhs,
                                 double beta,
                                 MV_ColMat_double &X);
+    MV_ColMat_double sumProjectSpLDLT(double            alpha,
+                                      MV_ColMat_double  &Rhs,
+                                      double            beta,
+                                      MV_ColMat_double  &X);
 
     /**************************************************************************
      * Augmentation

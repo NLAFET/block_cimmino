@@ -126,7 +126,15 @@ void abcd::bcg(MV_ColMat_double &b)
     // Compute R(0) as sum of projections from b
     // if starting vector, R(0)=B+cst*HXk
     double cst=use_xk ? cst=-1e0 : 0.0; // if cst is 0, Xk won't be considered in sumProject
-    MV_ColMat_double sp = sumProject(1e0, b, cst, Xk);
+    MV_ColMat_double sp;
+    switch(icntl[Controls::inner_solver]){
+      case MUMPS_SOLVER_TYPE :
+        sp = sumProject(1e0, b, cst, Xk);
+        break;
+      case SPLDLT_SOLVER_TYPE :
+        sp = sumProjectSpLDLT(1e0, b, cst, Xk);
+        break;
+    }
     r.setCols(sp, 0, s);
 
     t1_total = MPI_Wtime() - t1_total;
@@ -172,7 +180,14 @@ void abcd::bcg(MV_ColMat_double &b)
         double t = MPI_Wtime();
 
         // Compute sum of projections: qp = Hp
-        qp = sumProject(0e0, b, 1e0, p);
+        switch(icntl[Controls::inner_solver]){
+          case MUMPS_SOLVER_TYPE :
+            qp = sumProject(0e0, b, 1e0, p);
+            break;
+          case SPLDLT_SOLVER_TYPE :
+            qp = sumProjectSpLDLT(0e0, b, 1e0, p);
+            break;
+        }
 
         double t1 = MPI_Wtime() - t;
 
