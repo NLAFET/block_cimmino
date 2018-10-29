@@ -84,6 +84,54 @@ IF(NOT ENV_INCLUDED)
     include(env.in)
 ENDIF()
 
+IF(DEFINED ENV{SPLDLT_LIB})
+  set(SPLDLT_LIB $ENV{SPLDLT_LIB} CACHE PATH "Location of the SpLDLT library")
+
+  find_library(SPLDLT_LIBRARY_FOUND NAMES spldlt PATHS ${SPLDLT_LIB})
+ #message(STATUS "State of SPLDLT_LIBRARY_FOUND : ${SPLDLT_LIBRARY_FOUND}")
+
+  IF(SPLDLT_LIBRARY_FOUND)
+    set(SPLDLT_LIBRARY ${SPLDLT_LIBRARY_FOUND})
+    set(LIBS ${LIBS} ${SPLDLT_LIBRARY})
+    message(STATUS "Set SPLDLT_LIBRARY : ${SPLDLT_LIBRARY_FOUND}")
+  ELSE()
+    message(WARNING "libspldlt.a cannot be found in ${SPLDLT_LIB}")
+  ENDIF()
+ENDIF()
+
+
+IF(DEFINED ENV{SPLDLT_INC})
+  set(SPLDLT_INC $ENV{SPLDLT_INC} CACHE PATH "Location of the SpLDLT include")
+  #TODO add check in the include path
+  include_directories(${SPLDLT_INC})
+ELSE()
+  set(WARNING "No SPLDLT_INC include folder path variable set in the env")
+ENDIF()
+
+IF(DEFINED ENV{SPRAL_LIB})
+  set(SPRAL_LIB $ENV{SPRAL_LIB} CACHE PATH "Location of the Spral library")
+
+  find_library(SPRAL_LIBRARY_FOUND NAMES spral PATHS ${SPRAL_LIB})
+ #message(STATUS "State of SPRAL_LIBRARY_FOUND : ${SPRAL_LIBRARY_FOUND}")
+
+  IF(SPRAL_LIBRARY_FOUND)
+    set(SPRAL_LIBRARY ${SPRAL_LIBRARY_FOUND})
+    set(LIBS ${LIBS} ${SPRAL_LIBRARY})
+    message(STATUS "Set SPRAL_LIBRARY : ${SPRAL_LIBRARY_FOUND}")
+  ELSE()
+    message(WARNING "libspral.a cannot be found in ${SPRAL_LIB}")
+  ENDIF()
+ENDIF()
+
+IF(DEFINED ENV{SPRAL_INC})
+  set(SPRAL_INC $ENV{SPRAL_INC} CACHE PATH "Location of the Spral include")
+  #TODO add check in the include path
+  include_directories(${SPRAL_INC})
+ELSE()
+  set(WARNING "No SPRAL_INC include folder path variable set in the env")
+ENDIF()
+
+
 ##Libs and Tests
 # libabcd
 file(
@@ -109,6 +157,6 @@ IF(NOT "${PYTHON_DEF}" STREQUAL "")
     if(PYTHONLIBS_FOUND)
         add_subdirectory(python)
     else()
-        message("PythonLibs didn't work")
+      message(ERROR "PythonLibs didn't work")
     endif()
 endif()

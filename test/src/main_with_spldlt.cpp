@@ -1,7 +1,7 @@
 /**
  * \file main.cpp
  * \brief Test program to launch ABCD with a configuration file.
- * \author M. Zenadi
+ * \author S. Cayrols
  * \version 1.0
  * \date October 18th 2018
  *

@@ -22,7 +22,13 @@ void abcd::analyseAugmentedSystems(SPLDLT &inner_solver)
   double t = MPI_Wtime();
 
   // Run SpLDLT Analysis
-  //TODO add the analysis here
-  // spldlt_analyse();
+  spldlt_analyse( inner_solver.n,
+                  inner_solver.ptr,
+                  inner_solver.row,
+                  inner_solver.val, //Optional here
+                  inner_solver.ncpu,
+                  &inner_solver.akeep,
+                  &inner_solver.options,
+                  &inner_solver.info);
 
 }   /* -----  end of function abcd::analyseAugmentedSystems  ----- */

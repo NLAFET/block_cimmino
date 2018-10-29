@@ -142,6 +142,8 @@ void abcd::initializeDirectSolverMUMPS()
 
 void abcd::initializeDirectSolverSpLDLT(){
 
+  int flag;
+
   mpi::broadcast(comm, icntl[Controls::nbparts], 0);
 
   initializeSpLDLT(inner_solver, true);
@@ -151,9 +153,33 @@ void abcd::initializeDirectSolverSpLDLT(){
   // initialize matrix in SpLDLT
   inner_solver.n    = n_aug;
   inner_solver.nz   = nz_aug;
-  inner_solver.irn  = &irn_aug[0];
-  inner_solver.jcn  = &jcn_aug[0];
-  inner_solver.a    = &val_aug[0];
+
+  spral_convert_coo_to_cscl(3, n_aug, n_aug, nz_aug, &irn_aug[0], &jcn_aug[0], 
+      &inner_solver.ptr, &inner_solver.row, &flag, &val_aug[0],
+      &inner_solver.val);
+
+  // initialize matrix in SpLDLT
+//inner_solver.n    = n_aug;
+//inner_solver.nz   = nz_aug;
+//inner_solver.irn  = &irn_aug[0];
+//inner_solver.jcn  = &jcn_aug[0];
+//inner_solver.a    = &val_aug[0];
+//
+//printf("PTR\n");
+//for(int i = 0; i < 40; i++){
+//  printf("%d ", inner_solver.ptr[i]);
+//}
+
+//printf("\nROW\n");
+//for(int i = 0; i < 40; i++){
+//  printf("%d ", inner_solver.row[i]);
+//}
+
+//printf("\nVAL\n");
+//for(int i = 0; i < 40; i++){
+//  printf("%f ", inner_solver.val[i]);
+//}
+//printf("\n----\n");
 
   if(inter_comm.rank() == 0 && instance_type == 0)
     LINFO << "Launching Initial SpLDLT analysis";
