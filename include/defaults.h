@@ -244,6 +244,14 @@ namespace Controls{
          */
 	num_overlap        ,
 
+        /*! \brief The overlapping strategy
+         *
+         * The overlapping strategy can be one of:
+         *  - 1: smart method-graph based (choice based on normal equations)
+         *  - 0: naive method-start (overlap first-last rows)
+         */
+        overlap_strategy,
+
 #ifdef WIP
         /*! \brief Exploit the sparcity in MUMPS
          */

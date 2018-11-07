@@ -318,6 +318,34 @@ void abcd::createInterconnections()
         }
     }
 
+    int vol = 0;
+    int maxVol =0;
+    int minVol = 0;
+    int totVol = 0;
+    int cnt = 0;
+    int maxCnt= 0;
+    int minCnt= 0;
+    int totCnt = 0;
+    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+        it != col_interconnections.end(); ++it) {
+            if (it->second.size() > 0) cnt++;
+            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
+                vol++;
+            }
+        }
+    mpi::reduce(inter_comm, vol, maxVol, mpi::maximum<int>(),0);
+    mpi::reduce(inter_comm, vol, minVol, mpi::minimum<int>(),0);
+    mpi::reduce(inter_comm, vol, totVol, std::plus<int>(),0);
+
+    mpi::reduce(inter_comm, cnt, maxCnt, mpi::maximum<int>(),0);
+    mpi::reduce(inter_comm, cnt, minCnt, mpi::minimum<int>(),0);
+    mpi::reduce(inter_comm, cnt, totCnt, std::plus<int>(),0);
+    if(IRANK==0){
+        LINFO3 << "Interconnection communications:" ;
+        LINFO3 << "Number of columns: " << totVol << " (total) " << maxVol << " (max) " << minVol << " (min)" ;
+        LINFO3 << "Number of exchanging masters: " << totCnt << " (total) " << maxCnt  << " (max) " << minCnt << " (min)";
+    }
+
     if (inter_comm.rank() == 0)
         LINFO << "Interconnections created";
 }    /* ----- end of method abcd::createInterconnections ----- */

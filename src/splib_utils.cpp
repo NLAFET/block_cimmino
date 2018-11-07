@@ -43,6 +43,10 @@
 #include <abcd.h>
 #include "blas.h"
 
+#define MKL_INT int
+
+//using namespace boost::lambda;
+
 /*!
  *  \brief Compute infinite norm of a vector
  *
@@ -378,7 +382,7 @@ spmm ( CompRow_Mat_double &A, CompRow_Mat_double &BT )
     CompRow_Mat_double C(A.dim(0), BT.dim(1), len, vv, vr, vc);
 
     return C;
-}		/* -----  end of function spmm  ----- */
+}		/* -----  end of function spmm_original  ----- */
 
 
 /*!
@@ -688,3 +692,91 @@ MV_ColMat_double upperMat(MV_ColMat_double &M){
             R(i,j) = 0;
     return R;
 }		/* -----  end of function upperMat  ----- */
+
+
+/*!
+ *  \brief Sparse Matrix-Matrix product
+ *
+ *  Returns the sparse Matrix-Matrix product of 2 sparse matrices
+ *
+ *  \param A: the first matrix
+ *  \param BT: the second matrix
+ *
+ *  \return the sparse Matrix-Matrix product
+ *
+ */
+CompRow_Mat_double spmm_overlap ( CompRow_Mat_double &A, CompRow_Mat_double &BT ) {
+    MKL_INT p, jp, j, kp, k, i, nz = 0, anz, *Cp, *Cj, *Ap, *Aj, *Bp, m, n,
+    bnz, *Bj;
+
+    double t1 = MPI_Wtime();
+    double *Ax, *Bx, *Cx;
+
+    m = A.dim(0);
+    Ap = A.rowptr_ptr();
+    Aj =  A.colind_ptr();
+    Ax =  A.val_ptr();
+    anz = A.NumNonzeros();
+
+    n = BT.dim(0);
+    Bp = BT.rowptr_ptr();;
+    Bj = BT.colind_ptr();
+    Bx = BT.val_ptr();
+    bnz = BT.NumNonzeros();
+
+    MKL_INT *xb = (int*)calloc(m,sizeof(MKL_INT));
+    double *x = (double*)calloc(m,sizeof(double));
+    MKL_INT nzmax = (anz + bnz) * 2;
+    MKL_INT nzt = (anz + bnz);
+
+    Cp = (MKL_INT*) calloc(n+1,sizeof(MKL_INT));
+    Cj = (MKL_INT*) calloc(nzmax,sizeof(MKL_INT));
+    Cx = (double*) calloc(nzmax,sizeof(double));
+
+
+    //~ #pragma omp parallel for firstprivate(xb,x,k,j,p) private(i)
+    for (i = 0; i < m; i++) {
+        if ( ( (nz + n) > nzmax ) ) {
+            nzmax += nzt ;
+            cout << "nzmax " << nzmax << " "<< nzt <<endl;
+            Cj = (MKL_INT*)realloc(Cj, sizeof(MKL_INT)*nzmax);
+            Cx = (double*)realloc(Cx, sizeof(double)*nzmax);
+            if(Cj == NULL || Cx == NULL){
+                cout << "out of Memory " << nzmax << " "<< anz <<endl;
+                exit(0);
+            }
+        }
+
+        Cp[i] = nz; /* row i of C starts here */
+        for (int jp = Ap[i]; jp < Ap[i + 1]; jp++) {
+            j = Aj[jp];
+            for (int kp = Bp[j]; kp < Bp[j + 1]; kp++) {
+                k = Bj[kp]; /* B(i,j) is nonzero */
+                if(k != i) {
+                    if (xb[k] != i +1) {
+                        xb[k] = i +1; /* i is new entry in column j */
+                        Cj[nz++] = k; /* add i to pattern of C(:,j) */
+                        x[k] = Ax[jp] * Bx[kp]; /* x(i) = beta*A(i,j) */
+                    } else {
+                        x[k] += (Ax[jp] * Bx[kp]); /* i exists in C(:,j) already */
+                    }
+                }
+            }
+        }
+        for (p = Cp[i]; p < nz; p++){
+            Cx[p] = abs(x[Cj[p]]);
+        }
+    }
+
+    cout << "SPMM Multiplication done. Time spent: " <<  t1 - MPI_Wtime() << endl;
+    Cp[m] = nz; /* finalize the last row of C */
+    Cj = (MKL_INT*)realloc(Cj, sizeof(MKL_INT)*nz);
+    Cx = (double*)realloc(Cx, sizeof(double)*nz);
+
+    CompRow_Mat_double C (n , n, nz , Cx, Cp, Cj);
+
+    delete Cp, Cj,Cx;
+    delete xb, x;
+
+    return C;
+}       /* -----  end of function spmm  ----- */

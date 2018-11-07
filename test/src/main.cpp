@@ -414,6 +414,11 @@ int main(int argc, char* argv[])
            exit(-1);
         } else if (obj.icntl[Controls::num_overlap] > 0)
             cout << "Number of overlapping rows: " << obj.icntl[Controls::num_overlap] << endl;
+	obj.icntl[Controls::overlap_strategy]  = pt.get<int>("partitioning.overlap_strategy",1);
+        if (obj.icntl[Controls::overlap_strategy] > 1 || obj.icntl[Controls::overlap_strategy] < 0) {
+            cout << "Error: The overlap strategy must be either 1 (normal equations) or 0 (naive)." << endl;
+            exit(-1);
+        }
 
         /* Communication balancing distribution of partitions */
 #ifndef NO_METIS
@@ -461,7 +466,7 @@ int main(int argc, char* argv[])
 		size_t pos = 0;
 		std::string token;
 		int cursor=0;
-		while ((pos = man_scaling.find(delimiter)) != std::string::npos && cursor < 4) {
+		while ((pos = man_scaling.find(delimiter)) != std::string::npos && cursor < 5) {
 		    token = man_scaling.substr(0, pos);
 		    istringstream (token) >> obj.man_scaling[cursor];
 		    man_scaling.erase(0, pos + delimiter.length());

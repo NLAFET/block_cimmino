@@ -92,6 +92,7 @@ abcd::abcd()
     icntl[Controls::nbparts] = 4;
     dcntl[Controls::part_imbalance] = 1.5;
     icntl[Controls::num_overlap] = 0;
+    icntl[Controls::overlap_strategy] = 0;
     icntl[Controls::minCommWeight] = 0;
     icntl[Controls::slave_tol] = 0;
     icntl[Controls::master_def] = 0;
