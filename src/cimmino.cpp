@@ -150,6 +150,8 @@ void abcd::initializeDirectSolverSpLDLT(){
 
   createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
+  LINFO << "Augmented Ai : n_aug = " << n_aug << " nz_aug " << nz_aug;
+
   // initialize matrix in SpLDLT
   inner_solver.n    = n_aug;
   inner_solver.nz   = nz_aug;

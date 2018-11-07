@@ -446,7 +446,11 @@ int main(int argc, char* argv[])
 
     solver.icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
     solver.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
-    solver.icntl[Controls::inner_solver] = SPLDLT_SOLVER_TYPE;
+
+    if(pt.get<int>("system.innerSolver", MUMPS_SOLVER_TYPE) == SPLDLT_SOLVER_TYPE)
+      solver.icntl[Controls::inner_solver] = SPLDLT_SOLVER_TYPE;
+    else
+      solver.icntl[Controls::inner_solver] = MUMPS_SOLVER_TYPE;
 
     /* scaling factor on the identity of the augmented sub-systems */
     solver.dcntl[Controls::alpha] = pt.get<double>("system.alpha", 1.0);
@@ -457,12 +461,16 @@ int main(int argc, char* argv[])
     boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
 
     if(augmentation){
+      cout << "ABCD version "<< endl;
       solver.icntl[Controls::aug_type]     = pt.get<int>("augmentation.aug_type", 2);
       solver.icntl[Controls::aug_blocking] = pt.get<int>("augmentation.aug_blocking", 256);
       cout << "Augmentation type: "<< solver.icntl[Controls::aug_type] << endl ;
       if(solver.icntl[Controls::aug_type] > 0) {
         cout << "aug_blocking " << solver.icntl[Controls::aug_blocking] << endl;
       }
+    }
+    else{
+      cout << "Block Cimmino simple"<< endl;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -487,34 +495,34 @@ int main(int argc, char* argv[])
       //////////////////////////////////////
       //	SOL/BWD/SCALED_RES
       //////////////////////////////////////
-    //if (sol_file) {
-    //  ofstream f;
-    //  f.open(sol_file->c_str());
-    //  for(int i = 0; i < solver.n_o; i++) {
-    //    f << solver.sol[i] << "\n";
-    //  }
-    //  f.close();
-    //}
+      if (sol_file) {
+        ofstream f;
+        f.open(sol_file->c_str());
+        for(int i = 0; i < solver.n_o; i++) {
+          f << solver.sol[i] << "\n";
+        }
+        f.close();
+      }
 
-    //if (conv_backward_file) {
-    //  ofstream f;
-    //  f.open(conv_backward_file->c_str());
-    //  f << "Iteration\t BackwardErr\n";
-    //  for(size_t i = 0; i < solver.rhoVector.size() ; i++) {
-    //    f << i << "\t" << solver.rhoVector[i] << "\n";
-    //  }
-    //  f.close();
-    //}
+      if (conv_backward_file) {
+        ofstream f;
+        f.open(conv_backward_file->c_str());
+        f << "Iteration\t BackwardErr\n";
+        for(size_t i = 0; i < solver.rhoVector.size() ; i++) {
+          f << i << "\t" << solver.rhoVector[i] << "\n";
+        }
+        f.close();
+      }
 
-    //if (conv_scaled_file) {
-    //  ofstream f;
-    //  f.open(conv_scaled_file->c_str());
-    //  f << "Iteration\t Scaled Residual\n";
-    //  for(size_t i = 0; i < solver.scaledResidualVector.size() ; i++) {
-    //    f << i << "\t" << solver.scaledResidualVector[i] << "\n";
-    //  }
-    //  f.close();
-    //}
+      if (conv_scaled_file) {
+        ofstream f;
+        f.open(conv_scaled_file->c_str());
+        f << "Iteration\t Scaled Residual\n";
+        for(size_t i = 0; i < solver.scaledResidualVector.size() ; i++) {
+          f << i << "\t" << solver.scaledResidualVector[i] << "\n";
+        }
+        f.close();
+      }
       /* In case of error in ABCD */
     } catch(std::runtime_error e) {
       cout << world.rank() << " Error code : " << e.what() << endl;

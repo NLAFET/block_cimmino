@@ -21,11 +21,10 @@
 void abcd::initializeSpLDLT(SPLDLT &spldlt, bool local)
 {
   /* Initialize SpLDLT parameters and structure */
-  //TODO complete here ...
 
   spldlt.akeep = NULL;
   spldlt.fkeep = NULL;
-  spldlt.ncpu  = 1;
+  spldlt.ncpu  = 2;
   spldlt.ngpu  = 0;
 
   spldlt_default_options(&spldlt.options);

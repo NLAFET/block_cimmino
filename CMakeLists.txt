@@ -33,11 +33,11 @@ IF("${BOOST_ROOT}" STREQUAL "")
         ${BOOST_ROOT}/boost
         ${BOOST_ROOT}/libs
     )
-    set(Boost_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
+    set(BOOST_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
     # check if libraries where already installed
-    find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS})
-    find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS})
-    find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS})
+    find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
     IF("${BOOSTMPI_FOUND}" STREQUAL "BOOSTMPI_FOUND-NOTFOUND")
         # libboost_mpi
         file(

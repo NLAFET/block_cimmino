@@ -54,6 +54,7 @@ void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
     for(int j = 0; j < nb_local_parts; j++) {
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
         m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
+        LINFO << "(local_part " << j << " -- Nb of columns in the augmented system : " << m_n;
     }
 
     // Allocate the data for the augmented system

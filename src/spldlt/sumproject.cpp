@@ -31,8 +31,8 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
   int s = alpha != 0 ? Rhs.dim(1) : X.dim(1);
 
   // Initialize SpLDLT rhs
-  LINFO << "Allocate inner_solver.rhs of size " << inner_solver.n * s <<
-    " = " << inner_solver.n <<" x "<< s;
+//LINFO << "Allocate inner_solver.rhs of size " << inner_solver.n * s <<
+//  " = " << inner_solver.n <<" x "<< s;
   inner_solver.rhs = new double[inner_solver.n * s];
   for(int i = 0; i < inner_solver.n * s; i++)
     inner_solver.rhs[i] = 0;
@@ -117,9 +117,9 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
     inner_solver.nrhs = s;
     inner_solver.lrhs = inner_solver.n;
 
-    double *given_rhs = NULL;
-    given_rhs = (double*)malloc(s * inner_solver.n * sizeof(double));
-    memcpy(given_rhs, inner_solver.rhs, s * inner_solver.n * sizeof(double));
+//  double *given_rhs = NULL;
+//  given_rhs = (double*)malloc(s * inner_solver.n * sizeof(double));
+//  memcpy(given_rhs, inner_solver.rhs, s * inner_solver.n * sizeof(double));
   //for(int i = 0 ; i < s * inner_solver.n; i++)
   //  given_rhs[i] = inner_solver.rhs[i]
 
@@ -130,9 +130,9 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
     spldlt_solve(0, inner_solver.nrhs, inner_solver.rhs, inner_solver.n, 
       inner_solver.akeep, inner_solver.fkeep, &inner_solver.info);
 
-    spldlt_chkerr(inner_solver.n, inner_solver.ptr, inner_solver.row, 
-        inner_solver.val, inner_solver.nrhs, inner_solver.rhs, given_rhs);
-    free(given_rhs);
+//  spldlt_chkerr(inner_solver.n, inner_solver.ptr, inner_solver.row, 
+//      inner_solver.val, inner_solver.nrhs, inner_solver.rhs, given_rhs);
+//  free(given_rhs);
 
     t = MPI_Wtime() - t;
 
@@ -163,13 +163,92 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
       int ci = local_column_index[0][i];
       for(int j = 0; j < s; j++) {
         dpt[ci + j * dlda] = inner_solver.rhs[x_pos + j * inner_solver.n];
+//      if(comm.rank() == 0)
+//        LINFO << i << " -> " << dpt[ci + j * dlda];
       }
       x_pos++;
     }
+//  if(comm.rank() == 0)
+//    LINFO << "---------";
     //}
   }
 
-  delete[] inner_solver.rhs;
+//delete[] inner_solver.rhs;
+//return Delta;
+
+// free memory and return in case of no slaves
+  if(inter_comm.size() == 1) {
+    delete[] mumps.rhs;
+//  LINFO << "Only 1 worker in sumProject";
+    return Delta;
+  }
+
+//LINFO << "Parallel Sum of Delta";
+  /* Parallel sum of deltas */
+  std::vector<double *>itcp(icntl[Controls::nbparts]); // delta rows to send
+  std::vector<double *>otcp(icntl[Controls::nbparts]); // delta rows to receive
+
+  std::vector<mpi::request> reqs; // send/recv delta requests
+  std::vector<mpi::status> sts; // status of the requests
+
+  double t = MPI_Wtime();
+  double t1 = t;
+  double t2 = 0;
+  // For each interconnection, send/receive the corresponding rows of delta
+  for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+      it != col_interconnections.end(); ++it) {
+
+    if(it->second.size() == 0) continue;
+
+    // Prepare the data to be sent
+    //create it if does not exist
+    itcp[it->first] = new double[it->second.size()*s];
+    otcp[it->first] = new double[it->second.size()*s];
+
+    // add rows of delta to send for interconnections
+    double t3 = MPI_Wtime();
+    int kp = 0;
+    for(int j = 0; j < s; j++) {
+      for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
+        itcp[it->first][kp] = Delta(*i,j);
+        kp++;
+      }
+    }
+    t2 += MPI_Wtime() - t3;
+//  if(comm.rank() == 0)
+//    LINFO << "Send data to " << it->first;
+    reqs.push_back(inter_comm.irecv(it->first, 31, otcp[it->first], kp));
+    reqs.push_back(inter_comm.isend(it->first, 31, itcp[it->first], kp));
+  }
+
+  // wait for communication to finish
+  mpi::wait_all(reqs.begin(), reqs.end());
+  t1 = MPI_Wtime() - t1;
+
+  // For each of the received rows of delta, compute the sum
+  for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+      it != col_interconnections.end(); ++it) {
+
+    if(it->second.size() == 0) continue;
+
+    // sum of deltas
+    int p = 0;
+    for(int j = 0; j < s; j++) {
+      for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
+        Delta(*i, j) += otcp[it->first][p];
+        p++;
+      }
+    }
+
+  }
+
+  // free memory
+  for(size_t i = 0; i < itcp.size(); i ++) {
+    delete[] itcp[i];
+    delete[] otcp[i];
+  }
+  delete[] mumps.rhs;
+
   return Delta;
 
 }               /* -----  end of function abcd::sumProjectSpLDLT  ----- */
