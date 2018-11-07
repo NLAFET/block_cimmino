@@ -28,16 +28,20 @@ endif()
 IF("${BOOST_ROOT}" STREQUAL "")
     message("BOOST_ROOT not specified. Compilation of Boost libraries mpi/serialization/python with ABCD sources.")
     set(BOOST_ROOT ${ABCD_PROJECT_DIR}/lib/boost/)
+    message(STATUS "ABCD project dir = ${ABCD_PROJECT_DIR}")
     set(Boost_INCLUDE_DIRS
         ${BOOST_ROOT}
         ${BOOST_ROOT}/boost
         ${BOOST_ROOT}/libs
     )
-    set(BOOST_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
+   #set(BOOST_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
+    set(BOOST_LIBRARY_DIRS ${CMAKE_BINARY_DIR})
+    message(STATUS "BOOST_LIBRARY_DIRS = ${BOOST_LIBRARY_DIRS}")
     # check if libraries where already installed
     find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
     find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
     find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    message(STATUS "BOOSTMPI_FOUND = ${BOOSTMPI_FOUND}")
     IF("${BOOSTMPI_FOUND}" STREQUAL "BOOSTMPI_FOUND-NOTFOUND")
         # libboost_mpi
         file(
