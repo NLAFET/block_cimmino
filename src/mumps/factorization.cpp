@@ -99,6 +99,11 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         double flop = mu.getRinfoG(3);
 	mpi::reduce(inter_comm, flop, sflop, std::plus<double>(),0);
 
+      //double efnz   = mu.getInfo(3); //Memory consumption/Size
+      //double efnz2  = mu.getInfo(24);//Estimate number of entries
+      //double fnz    = mu.getInfo(9); //Memory consumption/Size
+        double fnz2   = mu.getInfo(27);//Number of entries in the factors
+
         int prec = cout.precision();
         cout.precision(2);
         LINFO << string(32, '-') ;
@@ -106,10 +111,16 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
         LINFO << string(32, '-') ;
         LINFO << "| N             : " << setw(12) << mumps.n << " |" ;
         LINFO << "| NZ            : " << setw(12) << mumps.nz << " |" ;
+      //LINFO << "| EFNZ          : " << setw(12) << efnz << " |" ;
+      //LINFO << "| EFNZ2         : " << setw(12) << efnz2 << " |" ;
+      //LINFO << "| FNZ           : " << setw(12) << fnz << " |" ;
+        LINFO << "| FNZ           : " << setw(12) << fnz2 << " |" ;
         LINFO << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" ;
         LINFO << "| Time          : " << setw(6) << t << " sec |" ;
         LINFO << "| Average memory    : " << setw(6) << mem << " M| ";
         LINFO << string(32, '-') ;;
+        cout << "MUMPS STATS " << inter_comm.rank() << " : " << mumps.n
+          << " " << fnz2 << endl;
         cout.precision(prec);
     }
 

@@ -526,6 +526,7 @@ int main(int argc, char* argv[])
       /* In case of error in ABCD */
     } catch(std::runtime_error e) {
       cout << world.rank() << " Error code : " << e.what() << endl;
+      world.abort(1);
       mpi::broadcast(world, error, 0);
       error = 1;
     }
@@ -545,6 +546,8 @@ int main(int argc, char* argv[])
       solver(3);
     } catch(std::runtime_error e) {
       cout << world.rank() << " Error code : " << e.what() << endl;
+      world.abort(1);
+      mpi::broadcast(world, error, 0);
       error=1;
     }
   }

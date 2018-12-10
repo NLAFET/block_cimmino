@@ -48,6 +48,8 @@
 #include <patoh.h>
 #endif //PATOH
 
+#include <metis.h>
+
 using namespace boost::lambda;
 
 /*!
@@ -62,6 +64,132 @@ using namespace boost::lambda;
  *  Then compute overlapping and write the scaled and permuted matrix.
  *
  */
+
+CompRow_Mat_double ColumnSparsifying(CompRow_Mat_double &inMtx){
+
+	// Parameter for dropping threshold
+    int metis_ColSparsing = 1;
+
+    if(metis_ColSparsing <= 0)
+        return inMtx;
+
+    int m,i,j,k, *Ap, *Aj ;
+    double *Ax;
+    long long newVal, fre;
+
+    m = inMtx.dim(0);
+    Ap = inMtx.rowptr_ptr();
+    Aj = inMtx.colind_ptr();
+    Ax = inMtx.val_ptr();
+
+    int scaleMax= 1000; // number of bins
+    int *freqs = new int [scaleMax+1]();
+
+    int nnz_A = Ap[m];
+    int droppedRow=0;
+    int droppedCol=0;
+
+    int *Cp = new int [m + 1];
+    int *Cj = new int[nnz_A];
+    double *Cx = new double[nnz_A];
+    CompRow_Mat_double Amtx;
+
+    for(i=0;i<m+1;i++){
+        Cp[i] = 0;
+    }
+
+    //Column Sparsing
+    if(metis_ColSparsing > 0){
+        double sq = sqrt(m) * metis_ColSparsing;
+        Amtx = csr_transpose(inMtx); // make it column oriented
+        Ap = Amtx.rowptr_ptr();
+        Aj = Amtx.colind_ptr();
+        Ax = Amtx.val_ptr();
+
+        for(i=0;i<m;i++){
+            if( (Ap[i+1] - Ap[i] ) > sq)
+            {
+                droppedCol++;
+                int todroppedNNZ = (Ap[i+1] - Ap[i]) - sq;
+
+                double max = -DBL_MAX;
+				double min = DBL_MAX;
+                
+				// finding min and max in i^th column
+				for(j=Ap[i];j<Ap[i+1];j++){
+                    if(abs(Ax[j]) < min && Ax[j] != 0) {
+                        min = abs(Ax[j]);
+                    }
+                    if (abs(Ax[j]) > max){
+                        max = abs(Ax[j]);
+                    }
+                }
+
+		// linear distribution for values
+                double scaleRatio = abs((scaleMax) / (max-min)); 
+
+		// initializing
+                for(int ff=0;ff<scaleMax;ff++) freqs[ff]=0;
+
+		// find frequencies of each bin
+                Cp[i+1] = Cp[i];
+                for(j=Ap[i];j<Ap[i+1];j++){
+                    newVal = floor(scaleRatio * abs((abs(Ax[j])-min)));
+                    freqs[newVal]++;
+                }
+
+		// deciding whichh bins will be dropped 
+                int sum=0;
+                for(fre=0; fre < scaleMax;fre++){
+                    sum += freqs[fre];
+                    if(sum > todroppedNNZ )
+                        break;
+                }
+		
+		// drop values in bins < "fre" until "todroppedNNZ=0"
+                for(j=Ap[i];j<Ap[i+1];j++){
+                    newVal = floor(scaleRatio * abs((abs(Ax[j])-min)));
+
+                    if((newVal > fre) || todroppedNNZ == 0 ){
+                        k = Cp[i+1]++;
+                        Cj[k] = Aj[j];
+                        Cx[k] = Ax[j];
+                    }
+                    else{
+                        todroppedNNZ--;
+                    }
+                }
+             }
+             else{
+		// ToDo: this can be improved
+		// for already sparse columns, copy original column without sparsifying
+                Cp[i+1] = Cp[i];
+                for(j=Ap[i];j<Ap[i+1];j++){
+                    k = Cp[i+1]++;
+                    Cj[k] = Aj[j];
+                    Cx[k] = Ax[j];
+                }
+            }
+        }
+    }
+
+    int myid;
+    MPI_Comm_rank(MPI_COMM_WORLD,&myid);
+    if(myid==0) cout << "Column Dropped Cp[m] " << Cp[m] << " DroppedCol "<< droppedCol << " " <<  "metis_ColSparsing factor:"<< metis_ColSparsing  << endl;
+
+    CompRow_Mat_double E (m , m, Cp[m] , Cx, Cp, Cj);
+
+    delete Cp, Cj,Cx;
+    delete freqs;
+
+    if(metis_ColSparsing > 0){
+           return  csr_transpose(E); //CSC to CSR
+     }
+    return E;
+}
+
+
+
 
 void abcd::partitionMatrix()
 {
@@ -299,7 +427,190 @@ void abcd::partitionMatrix()
 
         LINFO << "Done with Manual Partitioning, time : " << MPI_Wtime() - t << "s.";
         break;
-    } default: {
+    } 
+    case 5: {
+        double t = MPI_Wtime();
+
+        CompRow_Mat_double Ddrop = ColumnSparsifying(A);
+        LINFO << "Sparsifying Columns Time " << MPI_Wtime() - t;
+
+        CompRow_Mat_double AAT;
+        CompRow_Mat_double AT = csr_transpose(Ddrop);
+
+        double tt2 = MPI_Wtime();
+        AAT = spmm_overlap(Ddrop,AT);
+        double tt3 = MPI_Wtime();
+
+        int nnz_AAT = AAT.NumNonzeros();
+        LINFO<< "After SPMM nnz on AAT " <<  nnz_AAT << " SPMM Time " << tt3-tt2 ;
+
+        int i,k,j;
+        int *jiro = AAT.rowptr_ptr();
+        int *jjco = AAT.colind_ptr();
+        double *jvalo = AAT.val_ptr();
+
+        idx_t *val_;
+        idx_t *adjncy, *part;
+        idx_t objval;
+        idx_t *ewgt, *vwgt;
+        idx_t *xadj  = new idx_t [n_o + 1];
+
+        val_ = new idx_t[nnz_AAT];
+
+	// for dropping some tiny values in graph after AAT
+	double metis_epsilon = 0; // 1e-16;
+
+	// scale factor for casting integer
+	int metis_scaleMax = 1000000;
+
+	// for enabling edge and vertex weights
+	int metis_vwght = 0; // 0: balance on #rows
+	int metis_ewght = 1;
+
+	double scaleRatio = abs(metis_scaleMax) ;
+
+	
+	// for casting floating number to integer
+        for(int i = 0; i < nnz_AAT; i++){
+            if(jvalo[i]==0) val_[i] = 0;
+            else{
+		// assuming jvalo is taken its absolute value during SPMM
+                double newVal = scaleRatio *  jvalo[i] ;
+                if(newVal < metis_epsilon){
+                    val_[i] = 0;
+                }
+                else
+                    val_[i]  = ceil(newVal);
+                }
+        }
+        
+	int *Ap = A.rowptr_ptr();
+        if(metis_vwght != 0)
+        {
+            vwgt = new idx_t[n_o+1];
+            for(int i = 0 ; i < n_o; i++){
+                vwgt[i] = (int)(sqrt(Ap[i+1] - Ap[i])/2)+1;
+                if (vwgt[i] == 0 )  cout << " ERROR vertex weight= 0 " << endl;
+            }
+        }
+        else
+        {
+            vwgt=NULL;
+        }
+
+        for(int i = 0; i <= n_o; i++){
+            xadj[i] = 0;
+        }
+
+        adjncy = new idx_t[nnz_AAT];
+        double *tmp_val = new double[nnz_AAT];
+
+        int nz_new = 0;
+
+	// eliminate zero and diagonal values then fill tmp_val
+        for (k = 0; k < n_o; k++) {
+            xadj[k+1] = xadj[k];
+            for (j =jiro[k]; j < jiro[k+1]; j++) {
+                //if(val_[j] != 0 && jjco[j] != k)
+                if(val_[j] != 0)
+                {
+                    i = xadj[k+1]++;
+                    adjncy[i] = jjco[j];
+                    if( metis_ewght != 0)
+                    {
+                        tmp_val[i] = val_[j];
+                    }
+                }
+            }
+        }
+        nz_new = xadj[k];
+
+        if(metis_ewght != 0)
+        {
+            ewgt = new idx_t[nz_new];
+            for(int i = 0; i < nz_new; i++){
+                ewgt[i] = tmp_val[i];
+            }
+        }
+	else {
+            ewgt = NULL;
+        }
+
+        delete[] tmp_val;
+        delete[] val_;
+
+        printf("Graph scaleFactor %d graphEpsilon %e METIS Preprocessing Time %lf\n",metis_scaleMax, metis_epsilon,MPI_Wtime()-tt3);
+
+        part = new idx_t[n_o+1];
+        idx_t nParts = icntl[Controls::nbparts];
+
+        idx_t options[METIS_NOPTIONS];
+        METIS_SetDefaultOptions(options);
+	
+		int metis_seed = -1;
+		int metis_ufactor = 100; // 10% imbalance
+		int metis_recursive = 0; // for calling METIS_PartGraphRecursive (optional)
+
+        options[METIS_OPTION_SEED]    = metis_seed;
+        options[METIS_OPTION_UFACTOR] = metis_ufactor;
+        //options[METIS_OPTION_DBGLVL]  = 17;
+
+        idx_t nVertices = n_o;
+        idx_t nWeights = 1;
+
+        LINFO << "Launching METIS " << " Vwgt: " << metis_vwght <<  " Ewgt: " << metis_ewght  <<" UFAC: " << metis_ufactor << " Recursive: " << metis_recursive << " part: " << nParts;
+
+        double t2 = MPI_Wtime();
+        int ret;
+ 	   
+        // for calling METIS_PartGraphRecursive (optional)
+        if(metis_recursive == 0){
+            ret = METIS_PartGraphKway(&nVertices,&nWeights, xadj, adjncy,  vwgt, NULL, ewgt, &nParts, NULL,NULL, options, &objval, part);
+        }else{
+            ret = METIS_PartGraphRecursive(&nVertices,&nWeights, xadj, adjncy,  vwgt, NULL, ewgt, &nParts, NULL,NULL, options, &objval, part);
+        }
+
+        LINFO << "Done with METIS, time " << setprecision(6) << MPI_Wtime()-t2 << " cut " << objval << " return " << ret;
+        int *partweights = new int[nParts];
+        int *partvec = new int[n_o];
+        for(int z =0; z < nParts; z++)
+        {
+            partweights[z]=0;
+        }
+        for(int z =0; z < n_o; z++)
+        {
+            partweights[part[z]]++;
+        }
+
+
+		// Check no empty partitions
+        for (int i = 0; i < icntl[Controls::nbparts]; i++) {
+           // row_indices: stores indices of rows for each part
+            row_indices.push_back(vector<int>());
+            if (partweights[i] == 0) {
+                info[Controls::status] = -6;
+                mpi::broadcast(comm, info[Controls::status], 0);
+                throw std::runtime_error("FATAL ERROR: METIS produced an empty partition, Try to reduce the imbalancing factor");
+            }
+        }
+ 
+        for(int zz=0;zz<n_o;zz++){
+                row_indices[part[zz]].push_back(zz);
+        }
+
+
+         delete[] part;
+         delete[] partvec;
+         delete[] partweights;
+         if(ewgt!=NULL) delete[] ewgt;
+         if(vwgt!=NULL) delete[] vwgt;
+         delete[] xadj;
+         delete[] adjncy;
+
+         LINFO << "Done with Numerically Aware Partitioning, time : " << setprecision(6) << MPI_Wtime() - t << " s.";
+	break;
+    }
+    default: {
         // Wrong job id
         info[Controls::status] = -1;
         throw std::runtime_error("Wrong partitioning type.");

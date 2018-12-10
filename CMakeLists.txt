@@ -35,7 +35,7 @@ IF("${BOOST_ROOT}" STREQUAL "")
         ${BOOST_ROOT}/libs
     )
    #set(BOOST_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
-    set(BOOST_LIBRARY_DIRS ${CMAKE_BINARY_DIR})
+    set(BOOST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/lib)
     message(STATUS "BOOST_LIBRARY_DIRS = ${BOOST_LIBRARY_DIRS}")
     # check if libraries where already installed
     find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
