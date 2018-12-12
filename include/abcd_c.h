@@ -40,6 +40,11 @@
 #ifndef _ABCD_C_H_
 #define _ABCD_C_H_
 
+#define BC_INITIALISE -1
+#define BC_PREPROCESS 1
+#define BC_FACTOR 2
+#define BC_SOLVE 3
+
 enum controls {
    abcd_nbparts            ,
    abcd_part_type          ,
@@ -50,9 +55,11 @@ enum controls {
    abcd_verbose_level      ,
    abcd_aug_type           ,
    abcd_aug_blocking       ,
+   abcd_inner_solver       ,
 
    abcd_part_imbalance     ,
    abcd_threshold          ,
+   abcd_alpha              ,
 
    abcd_status             ,
    abcd_nb_iter            ,
@@ -74,6 +81,7 @@ struct abcd_solver
   double *dinfo;
   int sym;
   char *write_problem;
+  int parallel_cg;
 
   int *irn;
   int *jcn;
@@ -89,11 +97,23 @@ typedef struct abcd_solver abcd_c;
 
 #ifndef __cplusplus
 struct abcd_solver* new_solver();
-    void call_solver(struct abcd_solver *solver, int job_id);
+  void call_solver(struct abcd_solver *solver, int job_id);
+  int parse_configFile( struct abcd_solver  *solver,
+                        char                *config_file,
+                        char                **matrix_file,
+                        char                **rhs_file);
+  int load_MM(struct abcd_solver *solver, char *matrix_file);
+  int load_RHS(struct abcd_solver *solver, char *rhs_file);
 #else
 extern "C" {
-    extern struct abcd_solver* new_solver();
-    extern void call_solver(struct abcd_solver *solver, int job_id);
+  extern struct abcd_solver* new_solver();
+  extern void call_solver(struct abcd_solver *solver, int job_id);
+  extern int parse_configFile(struct abcd_solver  *solver,
+                              char                *config_file,
+                              char                **matrix_file,
+                              char                **rhs_file);
+  extern int load_MM(struct abcd_solver *solver, char *matrix_file);
+  extern int load_RHS(struct abcd_solver *solver, char *rhs_file);
 }
 #endif
 

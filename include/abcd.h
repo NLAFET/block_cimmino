@@ -133,8 +133,15 @@
 #endif //LDEBUG
 #endif //NOLOGGING
 
+/* Block of Macro added by S. Cayrols */
 #define MUMPS_SOLVER_TYPE 1
 #define SPLDLT_SOLVER_TYPE 2
+
+#define BC_INITIALISE -1
+#define BC_PREPROCESS 1
+#define BC_FACTOR 2
+#define BC_SOLVE 3
+
 
 using namespace std;
 using namespace boost;
@@ -313,6 +320,12 @@ public:
      *
      */
     int operator() (int job_id);
+    /* Added by S. Cayrols for example purpose */
+    int parse_configFile( string config_file,
+                          string &matrix_file,
+                          string &rhs_file);
+    int load_MM(string matrix_file);
+    int load_RHS(string rhs_file);
 
 private:
 /*******************************************************************************

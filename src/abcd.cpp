@@ -70,6 +70,8 @@ abcd::abcd()
     irn = nullptr;
     jcn = nullptr;
     val = nullptr;
+    sym = 0; // Added by S. Cayrols to fix the default value 
+             // used in the C interface
     // solution + Xk,sol,rhoVector,scaledResidualVector
     use_xk = false; // CG starting vector specified
     use_xf = false; // ???
@@ -126,6 +128,7 @@ abcd::abcd()
     dinfo.assign(5, 0);
     info[Controls::status] = 0;
     info[Controls::nb_iter] = 0;
+
 }    /* ----- end of constructor abcd::abcd ----- */
 
 /*!
@@ -394,8 +397,8 @@ int abcd::factorizeAugmentedSystems()
 
     // Do the Analysis in all cases except when the process is a Master with no slaves and
     // there are slaves
-    // SCAYROLS_ADD add test on the solver since the analyse should have already done during
-    //              the init of the direct solver
+    // SCAYROLS_ADD add test on the since the analyse should have already done during
+    //              the init of the direct 
     if (! (instance_type == 0 && comm.size() > parallel_cg && my_slaves.size() == 0) 
         && icntl[Controls::inner_solver] == MUMPS_SOLVER_TYPE) {
         if(inter_comm.rank() == 0 && instance_type == 0) {
@@ -518,7 +521,7 @@ int abcd::solveSystem()
  *
  *  The gateway function that launches all other options.
  *
- *  \param job_id: the parameter choosing which phase of the solver to launch
+ *  \param job_id: the parameter choosing which phase of the to launch
  *  \return 0 no error occurred
  */
 int abcd::operator()(int job_id)
@@ -628,3 +631,391 @@ int abcd::operator()(int job_id)
     }
     return info[Controls::status];
 }    /* ----- end of method abcd::operator() ----- */
+
+
+
+/***********************************************************
+ *    Added by S. Cayrols
+ **********************************************************/
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/info_parser.hpp>
+#include <boost/property_tree/exceptions.hpp>
+#include <boost/program_options.hpp>
+#include <boost/foreach.hpp>
+
+using namespace boost::property_tree;
+
+int abcd::parse_configFile( string config_file,
+                      string &matrix_file,
+                      string &rhs_file){
+
+  ifstream conf_file(config_file.c_str());
+  boost::property_tree::ptree pt;
+
+  if(conf_file){
+    try {
+      read_info(conf_file, pt);
+    } catch (info_parser::info_parser_error e){
+      clog << " *** Problem while parsing the info file" << endl
+        << " *** The what() : " << e.what() << endl << endl
+        << " *   Check that there is no aditional comma at the end" << endl
+        << " *   or an unamed node" << endl;
+      conf_file.close();
+      exit(-1);
+    }
+    conf_file.close();
+  } else {
+    clog << "Error while opening config file" << endl;
+    return 2;
+  }
+
+  write_problem                  = pt.get<string>("write_problem", "");
+  icntl[Controls::verbose_level] = pt.get<int>("verbose_level", 0);
+  icntl[Controls::mumps_verbose] = pt.get<int>("mumps_verbose", 0);
+  log_output                     = pt.get<string>("log_filename", "");
+/*
+  //////////////////////////////////////////
+  //	SOL/BWD_ERR/SCALED_RES
+  //////////////////////////////////////////
+  boost::optional<string> sol_file            = pt.get_optional<string>("system.sol_file");
+  boost::optional<string> conv_backward_file  = pt.get_optional<string>("system.backward_err_file");
+  boost::optional<string> conv_scaled_file    = pt.get_optional<string>("system.scaled_residual_file");
+*/
+  ////////////////////////////////////////////////////////////////////////////////
+  //	PARTITIONING PART
+  ////////////////////////////////////////////////////////////////////////////////
+  try{
+    ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning");
+  } catch (ptree_bad_path e){
+    clog << "Error parsing the file, you have to give the partitioning"
+      "as in the example file" << endl;
+    clog << "The what() : " << e.what() << endl << endl;
+    return 1;
+  }
+
+  //////////////////////////////////////////
+  //	PARTITIONS
+  //////////////////////////////////////////
+  icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
+
+  icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);
+
+  icntl[Controls::nbparts] = pt.get<int>("partitioning.nbparts");
+
+  if(icntl[Controls::nbparts] < 0 
+      && icntl[Controls::nbparts] <= m) {
+    clog << "Error parsing the file, the number of partitions has to be"
+      "positive and smaller than the number of rows" << endl;
+    return 1;
+  }
+  dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.part_imbalance", 0.5);
+
+  //////////////////////////////////////////
+  //	SPECIAL PARTITIONING TYPES
+  //////////////////////////////////////////
+  /* Manual partitioning */
+  if(icntl[Controls::part_type] == 1){
+    string parts = pt.get<string>("partitioning.partsfile", "");
+
+    if(parts.length() == 0){
+      try{
+        ptree::key_type partitioning = pt.get<ptree::key_type>("partitioning.nbrows");
+      } catch (ptree_bad_path e){
+        clog << "Error parsing the file, you have to give the number of rows"
+          "per partition as in the example file" << endl;
+        clog << "The what() : " << e.what() << endl << endl;
+        return 1;
+      }
+
+      BOOST_FOREACH( ptree::value_type v, pt.get_child("partitioning.nbrows") )
+      {
+        nbrows.push_back(atoi(v.first.data()));
+      }
+
+    } else {
+      ifstream f;
+      f.open(parts.c_str());
+
+      for(unsigned k = 0; k < (unsigned int)icntl[Controls::nbparts]; k++) {
+        string l;
+        getline(f, l);
+        nbrows.push_back(atoi(l.c_str()));
+      }
+
+      f.close();
+    }
+
+    if(nbrows.size() != (size_t)icntl[Controls::nbparts]){
+      clog << "Error parsing the file, nbparts is different from the"
+        "partitioning description" << endl;
+      return 1;
+    }
+  }
+  /* Partitioning file */
+  if(icntl[Controls::part_type] ==4){
+    string partvector = pt.get<string>("partitioning.partvector", "");;
+    partvec   = new int[n];
+    const char *cstr = partvector.c_str();
+    std::fstream myfile(cstr, std::ios_base::in);
+    for(int z =0; z < n; z++) {
+      myfile >> partvec[z];
+    }
+    myfile.close();
+  }
+
+  std::cout << "Number of Parts: " << icntl[Controls::nbparts] <<
+    " - Partition method: "<< icntl[Controls::part_type] << std::endl;
+
+  //////////////////////////////////////////
+  //	INPUT FILES
+  //////////////////////////////////////////
+  matrix_file = pt.get<string>("system.matrix_file");
+
+  rhs_file.clear();
+  boost::optional<string> rhs_file_boost = pt.get_optional<string>("system.rhs_file");
+  if(rhs_file_boost){
+    rhs_file = rhs_file_boost->c_str();
+    std::cout << "RHS file is " << rhs_file << std::endl;
+  }
+
+  boost::optional<string> start_file = pt.get_optional<string>("system.start_file");
+
+  //////////////////////////////////////////
+  //	FEATURES
+  //////////////////////////////////////////
+  /* Overlaps */
+  icntl[Controls::num_overlap]  = pt.get<int>("partitioning.num_overlap",0);
+  if(icntl[Controls::num_overlap] < 0){
+    clog << "Error parsing the file, num_overlap must be"
+      "a positive integer." << endl;
+    clog << "Be careful not to input a huge number of overlapping lines,"
+      "it should not be higher than the smallest partition." << endl;
+    exit(-1);
+  } else if(icntl[Controls::num_overlap] > m){
+    clog << "Error parsing the file, num_overlap must be less than"
+      "the matrix size." << endl;
+    clog << "Be careful not to input a huge number of overlapping lines,"
+      "it should not be higher than the smallest partition." << endl;
+    exit(-1);
+  } else if (icntl[Controls::num_overlap] > 0)
+    std::cout << "Number of overlapping rows: " <<
+      icntl[Controls::num_overlap] << std::endl;
+
+  /* Communication balancing distribution of partitions */
+#ifndef NO_METIS
+  icntl[Controls::minCommWeight] = pt.get<int>("partitioning.min_comm_weight", 0);
+#else
+  icntl[Controls::minCommWeight] = 0;
+#endif
+
+  /* Enforce Master-Slave scheme: dist_scheme/slave_tol */
+  parallel_cg = pt.get<int>("dist_scheme", icntl[Controls::nbparts]);
+/*    icntl[Controls::nbparts] < world.size() ?
+//    icntl[Controls::nbparts] : world.size());*/
+
+  icntl[Controls::slave_tol]    = pt.get<int>("partitioning.slave_tol", 0);
+  if(icntl[Controls::slave_tol] < 0 ||
+      icntl[Controls::slave_tol] > parallel_cg) {
+    clog << "Error parsing the file, slave_tol must be a positive integer"
+      "inferior strictly to the number of Masters." << endl;
+    clog << "The number of Masters is the minimum between the number of"
+      "MPI processes and the number of partitions." << endl;
+    return 1;
+  }
+  parallel_cg -= icntl[Controls::slave_tol];
+
+  /* Define masters */
+  icntl[Controls::master_def]    = pt.get<int>("partitioning.master_def", 1);
+  if(icntl[Controls::master_def] < 0 || icntl[Controls::master_def] > 1){
+    clog << "Error parsing the file, master_def must be"
+      "one of 0 and 1." << endl;
+    return 1;
+  }
+
+  /* Define slaves */
+  icntl[Controls::slave_def]    = pt.get<int>("partitioning.slave_def", 2);
+  if(icntl[Controls::slave_def] < 0 || icntl[Controls::slave_def] > 2){
+    clog << "Error parsing the file, master_def must be"
+      "one of 0, 1 and 2." << endl;
+    return 1;
+  }
+  if (icntl[Controls::master_def] == 0) icntl[Controls::slave_def] = -1;
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  //	SCALING
+  ////////////////////////////////////////////////////////////////////////////
+  icntl[Controls::scaling]    = pt.get<int>("scaling", 2);
+  /* manual type */
+  if(icntl[Controls::scaling] == -1){
+    // Parse number of iterations in option line man_scaling
+    string man_scaling = pt.get<string>("man_scaling", "");
+    std::string delimiter = ":";
+    size_t pos = 0;
+    std::string token;
+    int cursor=0;
+    while ((pos = man_scaling.find(delimiter)) != std::string::npos && cursor < 4) {
+      token = man_scaling.substr(0, pos);
+      istringstream (token) >> man_scaling[cursor];
+      man_scaling.erase(0, pos + delimiter.length());
+      ++cursor;
+    }
+    if(man_scaling[0] < 0 || man_scaling[1] < 0 ||
+        man_scaling[2] < 0 || man_scaling[3] < 0) {
+      clog << "Error parsing the file, the number of iterations in"
+        "scaling must be positive integers." << std::endl;
+      return 1;
+    }
+    /* predetermined type */
+  } else if (icntl[Controls::scaling] == 1) {
+    man_scaling[0] = 5; man_scaling[1] = 20;
+    man_scaling[2] = 10; man_scaling[3] = 0;
+  } else if (icntl[Controls::scaling] == 2) {
+    man_scaling[0] = 10; man_scaling[1] = 20;
+    man_scaling[2] = 20; man_scaling[3] = 1;
+  } else if (icntl[Controls::scaling] == 0){
+    man_scaling[0] = 0; man_scaling[1] = 0;
+    man_scaling[2] = 0; man_scaling[3] = 0;
+  } else {
+    clog << "Error: choice of scaling " <<
+      icntl[Controls::scaling] << " not recognized" << std::endl;
+    return 1;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  //	BLOCK CIMMINO
+  ////////////////////////////////////////////////////////////////////////////
+  if(start_file){
+    std::cout << "Starting point for CG specified,"
+      "Block Size is changed to 1.\n";
+    icntl[Controls::block_size] = 1;
+  } else {
+    icntl[Controls::block_size] = pt.get<int>("system.block_size", 1);
+    std::cout << "Block Size: " << icntl[Controls::block_size] << std::endl;
+  }
+
+  icntl[Controls::itmax] = pt.get<int>("system.itmax", 2000);
+  dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
+
+  if(pt.get<int>("system.innerSolver", MUMPS_SOLVER_TYPE) == SPLDLT_SOLVER_TYPE)
+    icntl[Controls::inner_solver] = SPLDLT_SOLVER_TYPE;
+  else
+    icntl[Controls::inner_solver] = MUMPS_SOLVER_TYPE;
+
+  /* scaling factor on the identity of the augmented sub-systems */
+  dcntl[Controls::alpha] = pt.get<double>("system.alpha", 1.0);
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //	AUGMENTATION (ABCD)
+  ////////////////////////////////////////////////////////////////////////////////
+  boost::optional<ptree::key_type> augmentation = pt.get_optional<ptree::key_type>("augmentation");
+
+  if(augmentation){
+    std::cout << "ABCD version "<< std::endl;
+    icntl[Controls::aug_type]     = pt.get<int>("augmentation.aug_type", 2);
+    icntl[Controls::aug_blocking] = pt.get<int>("augmentation.aug_blocking", 256);
+    std::cout << "Augmentation type: "<< icntl[Controls::aug_type] << std::endl ;
+    if(icntl[Controls::aug_type] > 0) {
+      std::cout << "aug_blocking " << icntl[Controls::aug_blocking] << std::endl;
+    }
+  }
+  else{
+    std::cout << "Use Block Cimmino"<< std::endl;
+    icntl[Controls::aug_type]     = 0;
+    icntl[Controls::aug_blocking] = 0;
+  }
+  return 0;
+}
+
+
+
+extern "C" {
+    #include "mmio.h"
+    int mm_read_mtx_crd_size(_IO_FILE*, int*, int*, int*);
+    int mm_read_mtx_crd_data(_IO_FILE*, int, int, int, int*, int*, double*, char*);
+    int mm_read_banner(_IO_FILE*, char (*) [4]);
+    int mm_read_mtx_array_size(_IO_FILE*, int*, int*);
+}
+int abcd::load_MM(string matrix_file){
+
+  FILE *f = fopen(matrix_file.c_str(), "r");
+
+  if(f == NULL){
+    cerr << "Error opening the file '"<< matrix_file << "'" << endl;
+    return 1;
+  }
+  MM_typecode mat_code;
+
+  mm_read_banner(f, &mat_code);
+  mm_read_mtx_crd_size(f, (int *)&m,
+      (int *)&n, (int *)&nz);
+
+  /* allocate the arrays */
+  irn = new int[nz];
+  jcn = new int[nz];
+  val = new double[nz];
+  start_index = 1;
+
+  mm_read_mtx_crd_data(f, m, n, nz,
+      irn, jcn, val, mat_code);
+
+  /* Filtering zero-valued elements */
+  int newnnz=0;
+  for(int i=0;i<nz;i++){
+    if(val[i] != 0){
+      irn[newnnz] = irn[i];
+      jcn[newnnz] = jcn[i];
+      val[newnnz] = val[i];
+      newnnz++;
+    }
+  }
+
+  /* reallocate the arrays ? */
+  nz = newnnz;
+  irn = (int *) realloc(irn, nz * sizeof(int));
+  jcn = (int *) realloc(jcn, nz * sizeof(int));
+  val = (double *) realloc(val, nz * sizeof(double));
+
+  std::cout << "Matrix information : ";
+  std::cout << matrix_file <<" m = " << m << "; n = " << n <<
+    "; nz = " << nz << std::endl;
+
+  fclose(f);
+
+  return 0;
+}
+
+
+
+int abcd::load_RHS(string rhs_file){
+
+  FILE *rhs_f = fopen(rhs_file.c_str(), "r");
+
+  if(rhs_f == NULL){
+    cerr << "Error opening the file '"<< rhs_file.c_str() << "'" << endl;
+    return 1;
+  }
+
+  MM_typecode rhs_code;
+  int nb_v, m_v;
+
+  mm_read_banner(rhs_f, &rhs_code);
+  mm_read_mtx_array_size(rhs_f, &m_v, &nb_v);
+
+  rhs = new double[nb_v * m_v];
+  std::cout << "Reading "<< m_v << " values for each of the " <<
+    nb_v << " rhs" << std::endl;
+
+  double cv;
+  int ret;
+  for(int i = 0; i < m_v*nb_v; i++){
+    ret = fscanf(rhs_f, "%lf", &cv);
+    rhs[i] = cv;
+  }
+
+  nrhs = nb_v;
+  fclose(rhs_f);
+
+  return 0;
+}
