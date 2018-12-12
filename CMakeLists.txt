@@ -29,7 +29,7 @@ IF("${BOOST_ROOT}" STREQUAL "")
     message("BOOST_ROOT not specified. Compilation of Boost libraries mpi/serialization/python with ABCD sources.")
     set(BOOST_ROOT ${ABCD_PROJECT_DIR}/lib/boost/)
     message(STATUS "ABCD project dir = ${ABCD_PROJECT_DIR}")
-    set(Boost_INCLUDE_DIRS
+    set(BOOST_INCLUDE_DIRS
         ${BOOST_ROOT}
         ${BOOST_ROOT}/boost
         ${BOOST_ROOT}/libs
@@ -84,9 +84,9 @@ ELSE()
     set(Boost_USE_MULTITHREADED ON)
     set(Boost_NO_SYSTEM_PATHS ON)
 ENDIF()
-IF(NOT ENV_INCLUDED)
+#IF(NOT ENV_INCLUDED)
     include(env.in)
-ENDIF()
+#ENDIF()
 
 IF(DEFINED ENV{SPLDLT_LIB})
   set(SPLDLT_LIB $ENV{SPLDLT_LIB} CACHE PATH "Location of the SpLDLT library")

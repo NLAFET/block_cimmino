@@ -31,6 +31,14 @@ add_executable(
   bc_spldlt_run
   src/main_with_spldlt.cpp
 )
+add_executable(
+  bc_example
+  src/bc_example.cpp
+)
+add_executable(
+  bc_example_c
+  src/bc_example.c
+)
 #Configuration de l'édition de liens
 target_link_libraries(
     abcd_run
@@ -39,6 +47,16 @@ target_link_libraries(
 )
 target_link_libraries(
     bc_spldlt_run
+    abcd
+    ${LIBS}
+)
+target_link_libraries(
+    bc_example
+    abcd
+    ${LIBS}
+)
+target_link_libraries(
+    bc_example_c
     abcd
     ${LIBS}
 )
