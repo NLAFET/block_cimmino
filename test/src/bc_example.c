@@ -24,7 +24,9 @@ int main(int argc, char **argv)
 
   if(rank == 0) { // the master
 
-    if(argc >= 2) strncpy(config_file, argv[1], strlen(argv[1]));
+    if(argc >= 2){
+      strncpy(config_file, argv[1], strlen(argv[1]) + 1);
+    }
 
     printf("Load the config_file %s\n", config_file);
     err = parse_configFile(solver, config_file, &matrix_file, &rhs_file);
