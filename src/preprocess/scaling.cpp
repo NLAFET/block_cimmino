@@ -39,6 +39,8 @@
 
 #include <abcd.h>
 
+#if defined(USE_MUMPS)
+
 // Include scaling function from MUMPS
 extern "C"
 {
@@ -66,6 +68,19 @@ extern "C"
             double *onenormerr, double *infnormerr);
     #endif
 }
+
+#else
+    void dmumps_simscaleabs_(
+            int *irn_loc, int *jcn_loc, double *a_loc,
+            long long *nz_loc, int *m, int *n, int *numprocs,
+            int *myid, int *comm, int *rpartvec, int *cpartvec,
+            int *rsndrcvsz, int *csndrcvsz, int *reg,
+            int *iwrk, int *iwrksz,
+            int *intsz, int *resz, int *op,
+            double *rowsca, double *colsca, double *wrkrc, int *iszwrkrc,
+            int *sym, int *nb1, int *nb2, int *nb3, double *eps,
+            double *onenormerr, double *infnormerr){}
+#endif
 
 /*!
  *  \brief Scaling of the matrix

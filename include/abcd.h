@@ -61,7 +61,9 @@
 #include <map>
 
 #include <mumps.h>
-#include "dmumps_c.h"
+#if defined(USE_MUMPS)
+  #include "dmumps_c.h"
+#endif
 #include <spldlt.h>
 
 #include <boost/mpi.hpp>

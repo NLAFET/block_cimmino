@@ -9,7 +9,52 @@
 #ifndef _MUMPS_HXX_
 #define _MUMPS_HXX_
 
-#include "dmumps_c.h"
+#ifdef USE_MUMPS
+  #include "dmumps_c.h"
+#else
+  #include <stdio.h>
+  #include <stdlib.h>
+  typedef struct {
+    int sym;
+    int par;
+    int job;
+    int comm_fortran;
+    int n;
+    int nz;
+    int *irn;
+    int *jcn;
+    double *a;
+    int nz_loc;
+    int *irn_loc;
+    int *jcn_loc;
+    double *a_loc;
+    int *perm_in;
+    int *sym_perm;
+    double *rhs;
+    double *rhs_sparse;
+    double *sol_loc;
+    int *irhs_sparse;
+    int *irhs_ptr;
+    int *isol_loc;
+    int nrhs;
+    int lrhs;
+    int nz_rhs;
+    int lsol_loc;
+    int icntl[40];
+    int cntl[15];
+    int info[40];
+    int infog[40];
+    int rinfo[40];
+    int rinfog[40];
+    char write_problem[256];
+  } DMUMPS_STRUC_C;
+
+  void dmumps_c(DMUMPS_STRUC_C * mu){
+    printf("************\nMUMPS is not linked : "
+        "please define the flag USE_MUMPS and recompile.\n");
+    abort();
+  }
+#endif
 
 struct MUMPS : DMUMPS_STRUC_C {
 public:
