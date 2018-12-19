@@ -18,11 +18,17 @@ project(abcd CXX C Fortran)
 set(ABCD_PROJECT_DIR ${PROJECT_SOURCE_DIR})
 set(ABCD_PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
 
-IF(NOT "ENV{PYTHON_INC}" STREQUAL "")
+IF(DEFINED ENV{PYTHON_INC})
   set(PYTHON_INC $ENV{PYTHON_INC})
   message(STATUS "Add python include path : ${PYTHON_INC}")
   include_directories(${PYTHON_INC})
+  set(PYTHON_DEF 1)
+ELSE()
+  message(FATAL_ERROR " You have to set up PYTHON_INC env variable with\
+  the path to python include")
 endif()
+
+message(STATUS "PYTHON_DEF var = ${PYTHON_DEF}")
 
 ##Environment file
 IF("${BOOST_ROOT}" STREQUAL "")
@@ -37,10 +43,11 @@ IF("${BOOST_ROOT}" STREQUAL "")
    #set(BOOST_LIBRARY_DIRS ${BOOST_ROOT}/../../build/lib)
     set(BOOST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/lib)
     message(STATUS "BOOST_LIBRARY_DIRS = ${BOOST_LIBRARY_DIRS}")
-    # check if libraries where already installed
+
+################################################################################
+#                  check if libraries were already installed                   #
+################################################################################
     find_library(BOOSTMPI_FOUND NAMES libboost_mpi.a  libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
-    find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
-    find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
     message(STATUS "BOOSTMPI_FOUND = ${BOOSTMPI_FOUND}")
     IF("${BOOSTMPI_FOUND}" STREQUAL "BOOSTMPI_FOUND-NOTFOUND")
         # libboost_mpi
@@ -53,29 +60,35 @@ IF("${BOOST_ROOT}" STREQUAL "")
     ELSE()
         message("libboost_mpi already installed.")
     ENDIF()
+
+    find_library(BOOSTSER_FOUND NAMES libboost_serialization.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    message(STATUS "BOOSTSER_FOUND = ${BOOSTSER_FOUND}")
     IF("${BOOSTSER_FOUND}" STREQUAL "BOOSTSER_FOUND-NOTFOUND")
         # libboost_serialization
         file(
-            GLOB_RECURSE
-            src_boost
-            lib/boost/libs/serialization/*.cpp
-        )
+          GLOB_RECURSE
+          src_boost
+          lib/boost/libs/serialization/*.cpp
+          )
         add_library(boost_serialization STATIC ${src_boost})
     ELSE()
         message("libboost_serialization already installed.")
     ENDIF()
-    IF(NOT "${PYTHON_DEF}" STREQUAL "")
-        IF("${BOOSTPYT_FOUND}" STREQUAL "BOOSTPYT_FOUND-NOTFOUND")
-            # libboost_python
-            file(
-                GLOB_RECURSE
-                src_boost
-                lib/boost/libs/python/*.cpp
-            )
-            add_library(boost_python STATIC ${src_boost})
-        ELSE()
-            message("libboost_python already installed.")
-        ENDIF()
+
+    IF(${PYTHON_DEF} EQUAL 1)
+      find_library(BOOSTPYT_FOUND NAMES libboost_python.a PATHS ${BOOST_LIBRARY_DIRS} NO_DEFAULT_PATH)
+      message(STATUS "BOOSTPYT_FOUND = ${BOOSTPYT_FOUND}")
+      IF("${BOOSTPYT_FOUND}" STREQUAL "BOOSTPYT_FOUND-NOTFOUND")
+        # libboost_python
+        file(
+          GLOB_RECURSE
+          src_boost
+          lib/boost/libs/python/*.cpp
+          )
+        add_library(boost_python STATIC ${src_boost})
+      ELSE()
+        message("libboost_python already installed.")
+      ENDIF()
     ENDIF()
 ELSE()
     message("BOOST_ROOT specified at ${BOOST_DIR}.")
@@ -157,11 +170,11 @@ target_link_libraries(
 add_subdirectory(test)
 
 # Python
-IF(NOT "${PYTHON_DEF}" STREQUAL "")
-    find_package (PythonLibs REQUIRED)
-    if(PYTHONLIBS_FOUND)
-        add_subdirectory(python)
-    else()
-      message(ERROR "PythonLibs didn't work")
-    endif()
-endif()
+#IF(NOT "${PYTHON_DEF}" STREQUAL "")
+#    find_package (PythonLibs REQUIRED)
+#    if(PYTHONLIBS_FOUND)
+#        add_subdirectory(python)
+#    else()
+#      message(ERROR "PythonLibs didn't work")
+#    endif()
+#endif()
