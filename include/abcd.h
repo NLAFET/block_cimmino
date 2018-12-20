@@ -514,6 +514,7 @@ private:
     **************************************************************************/
     void scaling();
     void scaleMatrix();
+    void scaleMatrixSpral();
     void diagScaleMatrix(std::vector<double> & , std::vector<double> & );
     void diagScaleStart (MV_ColMat_double &X, std::vector<double> &dcol);
     void diagScaleRhs (VECTOR_double &b, std::vector<double> &drow);

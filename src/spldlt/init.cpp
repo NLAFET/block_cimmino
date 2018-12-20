@@ -24,7 +24,7 @@ void abcd::initializeSpLDLT(SPLDLT &spldlt, bool local)
 
   spldlt.akeep = NULL;
   spldlt.fkeep = NULL;
-  spldlt.ncpu  = 2;
+  spldlt.ncpu  = 1;
   spldlt.ngpu  = 0;
 
   spldlt_default_options(&spldlt.options);
