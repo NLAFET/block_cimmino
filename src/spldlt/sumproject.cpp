@@ -178,7 +178,6 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
 
 // free memory and return in case of no slaves
   if(inter_comm.size() == 1) {
-    delete[] mumps.rhs;
 //  LINFO << "Only 1 worker in sumProject";
     return Delta;
   }
@@ -247,7 +246,6 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
     delete[] itcp[i];
     delete[] otcp[i];
   }
-  delete[] mumps.rhs;
 
   return Delta;
 

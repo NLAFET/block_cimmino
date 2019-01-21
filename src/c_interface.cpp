@@ -81,6 +81,7 @@ void call_solver(struct abcd_solver* solver, int job_id)
 
     // CPP -> C
     //solver -> write_problem = (char *)(obj -> write_problem).c_str();
+    solver->rhs = obj->rhs;
     solver->sol = obj->sol;
     solver->m   = obj->m;
     solver->n   = obj->n;
