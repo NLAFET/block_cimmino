@@ -295,7 +295,16 @@ namespace Controls{
          *
          *  - ``2``, spldlt is used
          */
-        inner_solver      ,
+        innerSolver      ,
+
+        /* number of cpu given to the analysis in SpLDLT */
+        innerSolver_ncpu,
+
+        /* number of gpu given to the analysis in SpLDLT */
+        innerSolver_ngpu,
+
+        /* aggregation given to the analysis in SpLDLT */
+        innerSolver_nemin,
     };
     enum dcontrols {
         /* The imbalance factor in PaToH case */

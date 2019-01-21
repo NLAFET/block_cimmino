@@ -129,6 +129,12 @@ abcd::abcd()
     info[Controls::status] = 0;
     info[Controls::nb_iter] = 0;
 
+    /* Inner solver init */
+    icntl[Controls::innerSolver]       = SPLDLT_SOLVER_TYPE;
+    icntl[Controls::innerSolver_ncpu]  = 1;
+    icntl[Controls::innerSolver_ngpu]  = 0;
+    icntl[Controls::innerSolver_nemin] = 4;
+
 }    /* ----- end of constructor abcd::abcd ----- */
 
 /*!
@@ -393,14 +399,14 @@ int abcd::factorizeAugmentedSystems()
         abcd::createInterconnections();
     }
 
-    abcd::initializeDirectSolver(icntl[Controls::inner_solver]);
+    abcd::initializeDirectSolver(icntl[Controls::innerSolver]);
 
     // Do the Analysis in all cases except when the process is a Master with no slaves and
     // there are slaves
     // SCAYROLS_ADD add test on the since the analyse should have already done during
     //              the init of the direct 
     if (! (instance_type == 0 && comm.size() > parallel_cg && my_slaves.size() == 0) 
-        && icntl[Controls::inner_solver] == MUMPS_SOLVER_TYPE) {
+        && icntl[Controls::innerSolver] == MUMPS_SOLVER_TYPE) {
         if(inter_comm.rank() == 0 && instance_type == 0) {
             LINFO << "Launching MUMPS analysis";
         }
@@ -410,7 +416,7 @@ int abcd::factorizeAugmentedSystems()
         LINFO << "Initialization time : " << MPI_Wtime() - t;
     }
 
-    switch(icntl[Controls::inner_solver]){
+    switch(icntl[Controls::innerSolver]){
       case MUMPS_SOLVER_TYPE :
         if(inter_comm.rank() == 0 && instance_type == 0){
           LINFO << "Launching MUMPS factorization";
@@ -418,6 +424,8 @@ int abcd::factorizeAugmentedSystems()
 
         t = MPI_Wtime();
         abcd::factorizeAugmentedSystems(mumps);
+        abcd::factorizeAugmentedSystems(inner_solver);
+        abort();
         break;
       case SPLDLT_SOLVER_TYPE :
         if(inter_comm.rank() == 0 && instance_type == 0){
@@ -899,9 +907,13 @@ int abcd::parse_configFile( string config_file,
   dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
 
   if(pt.get<int>("system.innerSolver", MUMPS_SOLVER_TYPE) == SPLDLT_SOLVER_TYPE)
-    icntl[Controls::inner_solver] = SPLDLT_SOLVER_TYPE;
+    icntl[Controls::innerSolver] = SPLDLT_SOLVER_TYPE;
   else
-    icntl[Controls::inner_solver] = MUMPS_SOLVER_TYPE;
+    icntl[Controls::innerSolver] = MUMPS_SOLVER_TYPE;
+
+  icntl[Controls::innerSolver_ncpu]  = pt.get<int>("innerSolver.ncpu", 1);
+  icntl[Controls::innerSolver_ngpu]  = pt.get<int>("innerSolver.ngpu", 0);
+  icntl[Controls::innerSolver_nemin] = pt.get<int>("innerSolver.nemin", 4);
 
   /* scaling factor on the identity of the augmented sub-systems */
   dcntl[Controls::alpha] = pt.get<double>("system.alpha", 1.0);

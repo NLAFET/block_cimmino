@@ -48,6 +48,7 @@ void abcd::initializeDirectSolver(int solver_type)
   switch(solver_type){
     case MUMPS_SOLVER_TYPE :
       initializeDirectSolverMUMPS();
+      initializeDirectSolverSpLDLT();
       break;
     case SPLDLT_SOLVER_TYPE :
       initializeDirectSolverSpLDLT();

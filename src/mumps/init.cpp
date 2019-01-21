@@ -118,5 +118,10 @@ void abcd::initializeMumps(MUMPS &mu, bool local)
         mu.setIcntl(8, -2);
         mu.setIcntl(12, 2);
         mu.setIcntl(14, 90);
+
+      //mu.setIcntl(6, 0);
+      //mu.setIcntl(7, 4);
+      //mu.setIcntl(8, 0);
+      //mu.setIcntl(12, 1);
     }
 }               /* -----  end of function abcd::initializeMumps  ----- */

@@ -24,8 +24,8 @@ void abcd::initializeSpLDLT(SPLDLT &spldlt, bool local)
 
   spldlt.akeep = NULL;
   spldlt.fkeep = NULL;
-  spldlt.ncpu  = 1;
-  spldlt.ngpu  = 0;
+  spldlt.ncpu  = icntl[Controls::innerSolver_ncpu];
+  spldlt.ngpu  = icntl[Controls::innerSolver_ncpu];
 
   spldlt_default_options(&spldlt.options);
 
@@ -33,6 +33,7 @@ void abcd::initializeSpLDLT(SPLDLT &spldlt, bool local)
   spldlt.options.options.scaling     = 0;//no scaling                                  
   spldlt.options.options.print_level = 1;//enable printing                             
   spldlt.options.options.print_level = 0;//disable printing                            
+  spldlt.options.options.nemin       = icntl[Controls::innerSolver_nemin];
   spldlt.options.options.use_gpu     = (spldlt.ngpu > 0);//disable GPU
 
   spldlt_init(spldlt.ncpu, spldlt.ngpu);

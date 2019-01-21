@@ -53,6 +53,12 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
 
   double t = MPI_Wtime();
 
+  mu.setIcntl(7, 5); //Ordering strategy
+  mu.setIcntl(6, 0); //permutes the matrix to a zero-free diagonal
+  mu.setIcntl(8, 0); //scaling strategy
+  mu.setIcntl(12, 1);//ordering strategy for symmetric matrices
+  mu.setIcntl(14, 90);
+
   // Run MUMPS Analysis
   mu(1);
 
@@ -83,6 +89,10 @@ void abcd::analyseAugmentedSystems(MUMPS &mu)
     LINFO << string(32, '-') ;
     LINFO << "| Flops estimate: " << setw(6) << scientific << flop << string(4, ' ') << " |" ;
     LINFO << "| Time:           " << setw(6) << t << " sec |" ;
+    LINFO << "| Ordering method " << setw(6) << mu.getIcntl(7) << " |" ;
+    LINFO << "| permute  method " << setw(6) << mu.getInfoG(23) << " |" ;
+    LINFO << "| scaling  method " << setw(6) << mu.getInfoG(33) << " |" ;
+    LINFO << "| symOrder method " << setw(6) << mu.getInfoG(24) << " |" ;
     LINFO << string(32, '-') ;;
     cout.precision(prec);
   }

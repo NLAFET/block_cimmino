@@ -52,6 +52,8 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
 {
     double t = MPI_Wtime();
 
+    LINFO << "Numeric threshold : " << mu.getCntl(1); //Num threshold
+    LINFO << "Static  threshold : " << mu.getCntl(4); //Static threshold
     // Run MUMPS factorization
     mu(2);
 
@@ -114,7 +116,7 @@ void abcd::factorizeAugmentedSystems(MUMPS &mu)
       //LINFO << "| EFNZ          : " << setw(12) << efnz << " |" ;
       //LINFO << "| EFNZ2         : " << setw(12) << efnz2 << " |" ;
       //LINFO << "| FNZ           : " << setw(12) << fnz << " |" ;
-        LINFO << "| FNZ           : " << setw(12) << fnz2 << " |" ;
+        LINFO << "| FNZ           : " << setw(12) << long(fnz2) << " |" ;
         LINFO << "| Flops         : " << setw(6) << scientific << flop << string(4, ' ') << " |" ;
         LINFO << "| Time          : " << setw(6) << t << " sec |" ;
         LINFO << "| Average memory    : " << setw(6) << mem << " M| ";

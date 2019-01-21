@@ -62,13 +62,13 @@ void abcd::factorizeAugmentedSystems(SPLDLT &inner_solver)
     LINFO << string(32, '-') ;
     LINFO << "| SpLDLT FACTORIZ on MA " << setw(7) << inter_comm.rank() << " |" ;
     LINFO << string(32, '-') ;
-    LINFO << "| N             : " << setw(12) << inner_solver.n << " |" ;
-    LINFO << "| NZ            : " << setw(12) << inner_solver.nz << " |" ;
-    LINFO << "| FNZ           : " << setw(12) << nfactor << " |" ;
-    LINFO << "| Flops         : " << setw(6) << scientific << flops << string(4, ' ') << " |" ;
-    LINFO << "| Time          : " << setw(6) << t << " sec |" ;
-    LINFO << "| Average memory    : " << setw(6) << mem << " M| ";
-    LINFO << "| Delay             : " << setw(6) << inner_solver.info.num_delay << " |" ;
+    LINFO << "| N                 : " << setw(12) << inner_solver.n << " |" ;
+    LINFO << "| NZ                : " << setw(12) << inner_solver.nz << " |" ;
+    LINFO << "| FNZ               : " << setw(12) << nfactor << " |" ;
+    LINFO << "| Flops             : " << setw(6)  << scientific << double(flops) << string(4, ' ') << " |" ;
+    LINFO << "| Time              : " << setw(6)  << t << " sec |" ;
+    LINFO << "| Average memory    : " << setw(6)  << mem << " M| ";
+    LINFO << "| Delay             : " << setw(6)  << inner_solver.info.num_delay << " |" ;
     LINFO << string(32, '-') ;;
     cout << "SpLDLT STATS " << inter_comm.rank() << " : " << inner_solver.n
       << " " << nfactor << endl;
