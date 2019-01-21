@@ -448,9 +448,9 @@ int main(int argc, char* argv[])
     solver.dcntl[Controls::threshold] = pt.get<double>("system.threshold", 1e-12);
 
     if(pt.get<int>("system.innerSolver", MUMPS_SOLVER_TYPE) == SPLDLT_SOLVER_TYPE)
-      solver.icntl[Controls::inner_solver] = SPLDLT_SOLVER_TYPE;
+      solver.icntl[Controls::innerSolver] = SPLDLT_SOLVER_TYPE;
     else
-      solver.icntl[Controls::inner_solver] = MUMPS_SOLVER_TYPE;
+      solver.icntl[Controls::innerSolver] = MUMPS_SOLVER_TYPE;
 
     /* scaling factor on the identity of the augmented sub-systems */
     solver.dcntl[Controls::alpha] = pt.get<double>("system.alpha", 1.0);
