@@ -711,10 +711,15 @@ int abcd::parse_configFile( string config_file,
 
   icntl[Controls::nbparts] = pt.get<int>("partitioning.nbparts");
 
-  if(icntl[Controls::nbparts] < 0 
-      && icntl[Controls::nbparts] <= m) {
+//if(icntl[Controls::nbparts] < 0 
+//    && icntl[Controls::nbparts] <= m) {
+//  clog << "Error parsing the file, the number of partitions has to be"
+//    "positive and smaller than the number of rows" << endl;
+//  return 1;
+//}
+  if(icntl[Controls::nbparts] < 0 ){
     clog << "Error parsing the file, the number of partitions has to be"
-      "positive and smaller than the number of rows" << endl;
+      " positive" << endl;
     return 1;
   }
   dcntl[Controls::part_imbalance] = pt.get<double>("partitioning.part_imbalance", 0.5);
@@ -796,16 +801,17 @@ int abcd::parse_configFile( string config_file,
   icntl[Controls::num_overlap]  = pt.get<int>("partitioning.num_overlap",0);
   if(icntl[Controls::num_overlap] < 0){
     clog << "Error parsing the file, num_overlap must be"
-      "a positive integer." << endl;
+      " a positive integer." << endl;
     clog << "Be careful not to input a huge number of overlapping lines,"
-      "it should not be higher than the smallest partition." << endl;
+      " it should not be higher than the smallest partition." << endl;
     exit(-1);
-  } else if(icntl[Controls::num_overlap] > m){
-    clog << "Error parsing the file, num_overlap must be less than"
-      "the matrix size." << endl;
-    clog << "Be careful not to input a huge number of overlapping lines,"
-      "it should not be higher than the smallest partition." << endl;
-    exit(-1);
+//} else if(icntl[Controls::num_overlap] > m){
+//  clog << "m = " << m << " num_overlap = " << icntl[Controls::num_overlap] << endl;
+//  clog << "Error parsing the file, num_overlap must be less than"
+//    " the matrix size." << endl;
+//  clog << "Be careful not to input a huge number of overlapping lines,"
+//    " it should not be higher than the smallest partition." << endl;
+//  exit(-1);
   } else if (icntl[Controls::num_overlap] > 0)
     std::cout << "Number of overlapping rows: " <<
       icntl[Controls::num_overlap] << std::endl;
