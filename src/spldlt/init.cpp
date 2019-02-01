@@ -25,7 +25,7 @@ void abcd::initializeSpLDLT(SPLDLT &spldlt, bool local)
   spldlt.akeep = NULL;
   spldlt.fkeep = NULL;
   spldlt.ncpu  = icntl[Controls::innerSolver_ncpu];
-  spldlt.ngpu  = icntl[Controls::innerSolver_ncpu];
+  spldlt.ngpu  = icntl[Controls::innerSolver_ngpu];
 
   spldlt_default_options(&spldlt.options);
 

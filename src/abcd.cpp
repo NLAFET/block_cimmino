@@ -263,7 +263,7 @@ int abcd::initializeMatrix()
         }
         Coord_Mat_double t_A;
         t_A = Coord_Mat_double(m, n, nz, val, irn, jcn, MV_Matrix_::ref);
-        A = CompRow_Mat_double(t_A);
+          A = CompRow_Mat_double(t_A);
 
         LINFO << "> Matrix initialized in " << setprecision(2) << MPI_Wtime() - t << "s.";
     }
@@ -705,6 +705,8 @@ int abcd::parse_configFile( string config_file,
   //////////////////////////////////////////
   //	PARTITIONS
   //////////////////////////////////////////
+  icntl[Controls::part_orient] = pt.get<int>("partitioning.part_orient", ROW_PARTITIONING);
+
   icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
 
   icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);

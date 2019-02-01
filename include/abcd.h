@@ -144,6 +144,9 @@
 #define BC_FACTOR 2
 #define BC_SOLVE 3
 
+//Value selected from dimension index in A, i.e. dim(0) is the #rows
+#define ROW_PARTITIONING 0
+#define COL_PARTITIONING 1
 
 using namespace std;
 using namespace boost;
@@ -344,6 +347,7 @@ private:
     **************************************************************************/
     /* Matrix (possibly augmented) */
     CompRow_Mat_double A;
+    CompCol_Mat_double Ac;
 //    double nrmA;
 
     /* dimensions of the (augmented or not) matrix */
@@ -574,6 +578,10 @@ private:
                                 double beta,
                                 MV_ColMat_double &X);
     MV_ColMat_double sumProjectSpLDLT(double            alpha,
+                                      MV_ColMat_double  &Rhs,
+                                      double            beta,
+                                      MV_ColMat_double  &X);
+    MV_ColMat_double concatProjectSpLDLT(double            alpha,
                                       MV_ColMat_double  &Rhs,
                                       double            beta,
                                       MV_ColMat_double  &X);

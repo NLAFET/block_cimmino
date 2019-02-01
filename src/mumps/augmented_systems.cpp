@@ -48,15 +48,28 @@
 void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
         std::vector<int> &irn_aug, std::vector<int> &jcn_aug, std::vector<double> &val_aug)
 {
+    int orient = 1;
+    int cplmt  = 0;
+
     // Size of augmented system after gathering partitions
     m_n = 0; // number of columns in the augmented system
     m_nz = 0; // number of non-zeros in the augmented system
+
+    //Swap
+    if (icntl[Controls::part_orient] == COL_PARTITIONING){
+      orient = 0;
+      cplmt  = 1;
+    }
     for(int j = 0; j < nb_local_parts; j++) {
+        int nrow_idty = partitions[j].dim(orient);
+
         m_n += partitions[j].dim(0) + partitions[j].dim(1);
-        m_nz += partitions[j].dim(1) + partitions[j].NumNonzeros();
+        m_nz += nrow_idty + partitions[j].NumNonzeros();
         LINFO << "(local_part " << j << " -- Nb of columns in the augmented system : " << m_n;
     }
 
+    std::cout << "Create COO representation of the aug system of dimension " 
+      << m_n << " with " << m_nz << " nnz" << std::endl;
     // Allocate the data for the augmented system
     n_aug = m_n;
     nz_aug = m_nz;
@@ -71,31 +84,41 @@ void abcd::createAugmentedSystems(int &n_aug, int &nz_aug,
 
     // Build the augmented system
     for(int p = 0; p < nb_local_parts; ++p) {
+        int nrow_idty = partitions[p].dim(orient);
         // fill the identity
-        for(int i = 0; i < partitions[p].dim(1); ++i) {
+        for(int i = 0; i < nrow_idty; ++i) {
             irn_aug[st + i] = i_pos + i;
             jcn_aug[st + i] = j_pos + i;
             val_aug[st + i] = dcntl[Controls::alpha];
         }
 
         // we get down by nb_cols
-        i_pos += partitions[p].dim(1);
+        i_pos += nrow_idty;
         // we added nb_cols elements
-        st += partitions[p].dim(1);
+        st += nrow_idty;
 
+        CompRow_Mat_double lpart = (icntl[Controls::part_orient] == COL_PARTITIONING)
+          ? csr_transpose(partitions[p]) : partitions[p];
+      //int nlrow = partitions[p].dim(cplmt);
+        int nlrow = lpart.dim(0);
+        printf("TransPart of %d rows\n", nlrow);
+
+        //TODO could be just convert into COO format, shifted 
+        //     and copied into irn, jcn, and val
         // Add partition in lower triangular part (symmetric augmented systems)
-        for(int k = 0; k < partitions[p].dim(0); ++k) {
-            for(int j = partitions[p].row_ptr(k); j < partitions[p].row_ptr(k + 1); ++j) {
+        for(int k = 0; k < nlrow; ++k) {
+          //for(int j = partitions[p].row_ptr(k); j < partitions[p].row_ptr(k + 1); ++j) {
+            for(int j = lpart.row_ptr(k); j < lpart.row_ptr(k + 1); ++j) {
                 irn_aug[st] = i_pos + k;
-                jcn_aug[st] = j_pos + partitions[p].col_ind(j);
-                val_aug[st] = partitions[p].val(j);
+                jcn_aug[st] = j_pos + lpart.col_ind(j);
+                val_aug[st] = lpart.val(j);
 
                 st++;
             }
         }
 
         // shift to build augmented system of next partition
-        i_pos += partitions[p].dim(0);
+        i_pos += nlrow;
         j_pos += partitions[p].dim(1) + partitions[p].dim(0);
 
     }

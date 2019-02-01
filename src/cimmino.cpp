@@ -48,7 +48,7 @@ void abcd::initializeDirectSolver(int solver_type)
   switch(solver_type){
     case MUMPS_SOLVER_TYPE :
       initializeDirectSolverMUMPS();
-      initializeDirectSolverSpLDLT();
+    //initializeDirectSolverSpLDLT();
       break;
     case SPLDLT_SOLVER_TYPE :
       initializeDirectSolverSpLDLT();
@@ -152,6 +152,16 @@ void abcd::initializeDirectSolverSpLDLT(){
   createAugmentedSystems(n_aug, nz_aug, irn_aug, jcn_aug, val_aug);
 
   LINFO << "Augmented Ai : n_aug = " << n_aug << " nz_aug " << nz_aug;
+  Coord_Mat_double tmpM(n_aug, n_aug, nz_aug,
+      &val_aug[0],
+      &irn_aug[0],
+      &jcn_aug[0],
+      1
+      );
+
+  //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
+  std::cout << "Augmented system" << std::endl;
+  std::cout << tmpM;
 
   // initialize matrix in SpLDLT
   inner_solver.n    = n_aug;
@@ -161,6 +171,29 @@ void abcd::initializeDirectSolverSpLDLT(){
       &inner_solver.ptr, &inner_solver.row, &flag, &val_aug[0],
       &inner_solver.val);
 
+#if 0
+  Coord_Mat_double tmpCoo(n_aug, n_aug, nz_aug, &val_aug[0],
+      &irn_aug[0], &jcn_aug[0]);
+  CompCol_Mat_double tmp(tmpCoo);
+
+  std::cout << tmp << std::endl;
+
+  inner_solver.ptr = new long[n_aug + 1];
+  inner_solver.row = new int[nz_aug];
+  inner_solver.val = new double[nz_aug];
+  int *tmpPtr = tmp.colptr_ptr();
+  int *tmpRowPtr = tmp.rowind_ptr();
+  double *tmpValPtr = tmp.val_ptr();
+
+  for (int i = 0; i < n_aug + 1; i++)
+    inner_solver.ptr[i] = (long) tmpPtr[i];
+
+  for (int i = 0; i < nz_aug; i++){
+    inner_solver.row[i] = tmpRowPtr[i];
+    inner_solver.val[i] = tmpValPtr[i];
+  }
+#endif
+
   // initialize matrix in SpLDLT
 //inner_solver.n    = n_aug;
 //inner_solver.nz   = nz_aug;
@@ -168,21 +201,21 @@ void abcd::initializeDirectSolverSpLDLT(){
 //inner_solver.jcn  = &jcn_aug[0];
 //inner_solver.a    = &val_aug[0];
 //
-//printf("PTR\n");
-//for(int i = 0; i < 40; i++){
-//  printf("%d ", inner_solver.ptr[i]);
-//}
+  printf("PTR\n");
+  for(int i = 0; i < n_aug + 1; i++){
+    printf("%ld ", inner_solver.ptr[i]);
+  }
 
-//printf("\nROW\n");
-//for(int i = 0; i < 40; i++){
-//  printf("%d ", inner_solver.row[i]);
-//}
+  printf("\nROW\n");
+  for(int i = 0; i < nz_aug; i++){
+    printf("%d ", inner_solver.row[i]);
+  }
 
-//printf("\nVAL\n");
-//for(int i = 0; i < 40; i++){
-//  printf("%f ", inner_solver.val[i]);
-//}
-//printf("\n----\n");
+  printf("\nVAL\n");
+  for(int i = 0; i < nz_aug; i++){
+    printf("%f ", inner_solver.val[i]);
+  }
+  printf("\n----\n");
 
   if(inter_comm.rank() == 0 && instance_type == 0)
     LINFO << "Launching Initial SpLDLT analysis";

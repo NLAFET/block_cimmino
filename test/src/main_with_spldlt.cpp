@@ -257,6 +257,8 @@ int main(int argc, char* argv[])
     //////////////////////////////////////////
     //	PARTITIONS
     //////////////////////////////////////////
+    solver.icntl[Controls::part_orient] = pt.get<int>("partitioning.part_orient", ROW_PARTITIONING);
+
     solver.icntl[Controls::part_type] = pt.get<int>("partitioning.part_type", 2);
 
     solver.icntl[Controls::part_guess] = pt.get<int>("partitioning.part_guess", 0);

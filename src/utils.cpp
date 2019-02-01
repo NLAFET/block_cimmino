@@ -74,9 +74,11 @@ void abcd::partitionWeights(std::vector<std::vector<int> > &partitionsSets, std:
         sets[i] = 0;
         pts[i];
     }
+    std::cout << "Compute Partition SET" << std::endl;
 
     // If #masters=#partitions, 1partition per Master
     if (nb_parts == (int)weights.size() ) {
+        std::cout << "1 Part per master" << std::endl;
         for(int i = 0; i < nb_parts; i++) {
             pts[i].push_back(i);
             sets[i]+=weights[i];

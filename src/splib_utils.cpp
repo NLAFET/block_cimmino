@@ -108,38 +108,127 @@ double squaredNorm(VECTOR_double &V, VECTOR_int &I){
 
 CompRow_Mat_double CSC_extractByIndices(CompRow_Mat_double &M, vector<int> row_index)
 {
-    int *mptr = M.rowptr_ptr();
-    int * sub_row_vect = new int[row_index.size()+1];
-    sub_row_vect[0]=0;
-    for(int i = 1; i < row_index.size()+1; i++){
-        sub_row_vect[i] = sub_row_vect[i-1] +  mptr[ row_index[i-1]+1 ] -  mptr[ row_index[i-1] ];
-	//cout << " subrow vect " << i << " "  << sub_row_vect[i] << " " << row_index[i] << " " << mptr[ row_index[i] ] << " " << mptr[ row_index[i-1]] << endl;
+  int *mptr = M.rowptr_ptr();
+  int * sub_row_vect = new int[row_index.size()+1];
+  sub_row_vect[0]=0;
+  for(int i = 1; i < row_index.size()+1; i++){
+    sub_row_vect[i] = sub_row_vect[i-1] +  mptr[ row_index[i-1]+1 ] -  mptr[ row_index[i-1] ];
+    //cout << " subrow vect " << i << " "  << sub_row_vect[i] << " " << row_index[i] << " " << mptr[ row_index[i] ] << " " << mptr[ row_index[i-1]] << endl;
+  }
+  int local_nnz = sub_row_vect[ row_index.size()];
+
+  int * sub_col_vect =  new int[local_nnz];
+  double * sub_val_vect = new double[local_nnz] ;
+
+  int * colptr = M.colind_ptr();
+  double * valptr = M.val_ptr();
+
+  int cnt =0;
+  for(int i = 0; i < row_index.size(); i++){
+    for(int j= mptr[ row_index[i] ]; j < mptr[ row_index[i]+1 ] ; j++){
+      sub_col_vect[cnt] = colptr[j];
+      sub_val_vect[cnt] =  valptr[j];
+      cnt++;
     }
-    int local_nnz = sub_row_vect[ row_index.size()];
+  }
 
-    int * sub_col_vect =  new int[local_nnz];
-    double * sub_val_vect = new double[local_nnz] ;
+  CompRow_Mat_double nM( row_index.size(), M.dim(1), local_nnz,
+      sub_val_vect,
+      sub_row_vect,
+      sub_col_vect
+      );
 
-    int * colptr = M.colind_ptr();
-    double * valptr = M.val_ptr();
+  //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
+  std::cout << "Returned submatrix" << std::endl;
+  std::cout << nM;
+  return nM;
+}
 
-    int cnt =0;
-    for(int i = 0; i < row_index.size(); i++){
-	for(int j= mptr[ row_index[i] ]; j < mptr[ row_index[i]+1 ] ; j++){
-		sub_col_vect[cnt] = colptr[j];
-		sub_val_vect[cnt] =  valptr[j];
-		cnt++;
-	}
+// Assume col_index array is sorted and contiguous
+CompRow_Mat_double CSR_extractByColIndices(CompRow_Mat_double &M, vector<int> col_index)
+{
+  int *mptr       = M.rowptr_ptr();
+  int * colptr    = M.colind_ptr();
+  double * valptr = M.val_ptr();
+
+  int nrow = M.dim(0);
+  int col_shift = col_index[0];
+
+  std::cout << M.rowptr_.size() << std::endl;
+  printf("Allocate array of size %d\n", nrow + 1);
+  int * sub_row_vect = new int[nrow + 1];
+
+  std::cout << "Col_INDEX" <<std::endl;
+  for (auto elt = col_index.begin(); elt != col_index.end(); elt++)
+    std::cout << *elt <<std::endl;
+
+  sub_row_vect[0] = 0;
+  int nlcol = 0; //#column for the current row
+  int k     = 0; //pos in col_index
+  for(int i = 0; i < nrow; i++){
+    nlcol = 0;
+    k     = 0;
+  //for(int j = mptr[i]; j < mptr[i + 1] ; j++){
+    for(int j = mptr[i]; j < mptr[i + 1] ; j++){
+      while(k < col_index.size()){
+        if (colptr[j] > col_index[k]){
+          k++;
+        }else{
+          if(colptr[j] == col_index[k]){
+            printf("row[%d] col %d ? %d => %d\n", i, colptr[j], col_index[k], nlcol+1);
+            nlcol++;
+          }
+          break;
+        }
+      }
     }
+    printf("Want to set %d using %d and %d\n", i+1, i, nlcol);
+    sub_row_vect[i + 1] = sub_row_vect[i] + nlcol;
+  }
+  int local_nnz = sub_row_vect[nrow];
 
-    CompRow_Mat_double nM( row_index.size(), M.dim(1), local_nnz,
-            sub_val_vect,
-            sub_row_vect,
-            sub_col_vect
-            );
+  int * sub_col_vect    = new int[local_nnz];
+  double * sub_val_vect = new double[local_nnz];
 
-    //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
-    return nM;
+  int cnt =0;
+  for(int i = 0; i < nrow; i++){
+    k = 0;
+    for(int j = mptr[i]; j < mptr[i + 1] ; j++){
+      while(k < col_index.size()){
+        if (colptr[j] > col_index[k]){
+          k++;
+        }else{
+          if(colptr[j] == col_index[k]){
+            sub_col_vect[cnt] = colptr[j] - col_shift; // /!\  shifted assuming contiguous columns indices in col_index 
+            assert(colptr[j] - col_shift >= 0);
+            sub_val_vect[cnt] = valptr[j];
+            cnt++;
+          }
+          break;
+        }
+      }
+    }
+  }
+  assert(cnt == local_nnz);
+
+  for (int i = 0; i < nrow + 1; i++)
+    printf("%d ", sub_row_vect[i]);
+  printf("\n");
+  for (int i = 0; i < local_nnz; i++)
+    printf("%d ", sub_col_vect[i]);
+  printf("\n");
+
+  printf("Create CSR matrix of size %dx%ld\n", nrow, col_index.size());
+  CompRow_Mat_double nM(nrow, col_index.size(), local_nnz,
+      sub_val_vect,
+      sub_row_vect,
+      sub_col_vect
+      );
+
+  //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;
+  std::cout << "Returned submatrix" << std::endl;
+  std::cout << nM;
+  return nM;
 }
 
 /*!

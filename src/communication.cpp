@@ -54,10 +54,12 @@ void abcd::distributeData()
         std::vector<int> nnz_parts; // nz in each partition
         std::vector<int> m_parts; // #rows in each partition
 
+        int orient = 0;
+        if (icntl[Controls::part_orient] == COL_PARTITIONING) orient = 1;
         for(int k = 0; k < icntl[Controls::nbparts]; k++) {
             nnz_parts.push_back(parts[k].NumNonzeros());
             // Criteria for partition distribution
-            m_parts.push_back(parts[k].dim(0));
+            m_parts.push_back(parts[k].dim(orient));
         }
 
         // Distribute partitions to the masters

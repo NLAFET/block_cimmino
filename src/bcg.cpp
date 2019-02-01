@@ -54,6 +54,7 @@
  */
 void abcd::bcg(MV_ColMat_double &b)
 {
+    std::cout << "============ BCG ==================" << std::endl;
     std::streamsize oldprec = std::cout.precision();
     double t1_total, t2_total;
 
@@ -72,6 +73,7 @@ void abcd::bcg(MV_ColMat_double &b)
 
     // if no starting point used, init it with all zeros
     if(!use_xk) {
+        std::cout << "Create Xk of size " << n << "x" << nrhs << std::endl;
         Xk = MV_ColMat_double(n, nrhs, 0);
     // else init starting point for all block_size vectors
     } else if (Xk.dim(1) != s) {
@@ -127,12 +129,21 @@ void abcd::bcg(MV_ColMat_double &b)
     // if starting vector, R(0)=B+cst*HXk
     double cst=use_xk ? cst=-1e0 : 0.0; // if cst is 0, Xk won't be considered in sumProject
     MV_ColMat_double sp;
+    
+  //auto innerSolver_func = (icntl[Controls::part_orient] == ROW_PARTITIONING)
+  //  ? sumProjectSpLDLT : concatProjectSpLDLT;
+
     switch(icntl[Controls::innerSolver]){
       case MUMPS_SOLVER_TYPE :
         sp = sumProject(1e0, b, cst, Xk);
         break;
       case SPLDLT_SOLVER_TYPE :
-        sp = sumProjectSpLDLT(1e0, b, cst, Xk);
+        sp = (icntl[Controls::part_orient] == ROW_PARTITIONING) 
+          ? sumProjectSpLDLT(1e0, b, cst, Xk) 
+          : concatProjectSpLDLT(1e0, b, cst, Xk);
+      //sp = sumProjectSpLDLT(1e0, b, cst, Xk);
+      //sp = concatProjectSpLDLT(1e0, b, cst, Xk);
+      //sp = innerSolver_func(1e0, b, cst, Xk);
         break;
     }
     r.setCols(sp, 0, s);
@@ -186,7 +197,12 @@ void abcd::bcg(MV_ColMat_double &b)
             qp = sumProject(0e0, b, 1e0, p);
             break;
           case SPLDLT_SOLVER_TYPE :
-            qp = sumProjectSpLDLT(0e0, b, 1e0, p);
+            qp = (icntl[Controls::part_orient] == ROW_PARTITIONING) 
+              ? sumProjectSpLDLT(0e0, b, 1e0, p) 
+              : concatProjectSpLDLT(0e0, b, 1e0, p);
+          //qp = sumProjectSpLDLT(0e0, b, 1e0, p);
+          //qp = concatProjectSpLDLT(0e0, b, 1e0, p);
+          //qp = innerSolver_func(0e0, b, 1e0, p);
             break;
         }
 

@@ -305,6 +305,9 @@ namespace Controls{
 
         /* aggregation given to the analysis in SpLDLT */
         innerSolver_nemin,
+
+        /* precise the type of the partitioning : either row of column */
+        part_orient      ,
     };
     enum dcontrols {
         /* The imbalance factor in PaToH case */
