@@ -156,7 +156,7 @@ void abcd::initializeDirectSolverSpLDLT(){
       &val_aug[0],
       &irn_aug[0],
       &jcn_aug[0],
-      1
+      0
       );
 
   //delete[] sub_col_vect, sub_val_vect, m_row_ptr, sub_row_vect;

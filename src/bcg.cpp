@@ -55,6 +55,8 @@
 void abcd::bcg(MV_ColMat_double &b)
 {
     std::cout << "============ BCG ==================" << std::endl;
+    std::cout << "RHS : " << b;
+    std::cout << std::endl;
     std::streamsize oldprec = std::cout.precision();
     double t1_total, t2_total;
 
@@ -147,6 +149,7 @@ void abcd::bcg(MV_ColMat_double &b)
         break;
     }
     r.setCols(sp, 0, s);
+    std::cout << "R " << r << std::endl;
 
     t1_total = MPI_Wtime() - t1_total;
 
@@ -160,6 +163,8 @@ void abcd::bcg(MV_ColMat_double &b)
     if(gqr(r, r, gammak, s, false) != 0){
         gmgs2(r, r, gammak, s, false);
     }
+
+    std::cout << "Gammak " << gammak << std::endl;
 
     // product of gamma_k = gamma_0
     p = r;
@@ -234,6 +239,7 @@ void abcd::bcg(MV_ColMat_double &b)
         double t2 = MPI_Wtime();
         // compute the backward residual
         rho = abcd::compute_rho(Xk, u);
+        std::cout << "===========> rho " << rho << std::endl;
         t2 = MPI_Wtime() - t2;
         rhoVector.push_back(rho);
         scaledResidualVector.push_back(dinfo[Controls::scaled_residual]);
@@ -320,10 +326,15 @@ double abcd::compute_rho(MV_ColMat_double &x, MV_ColMat_double &u)
     double rho = 999.999, minNrmR = 999.999;
     int min_j = 0;
 
+  //std::cout << "[RHO] given x" << x << std::endl;
+  //std::cout << "[RHO] given b" << u << std::endl;
+
     // Compute norm of X and R
     VECTOR_double nrmX(nrhs, 0);
     VECTOR_double nrmR(nrhs, 0);
     abcd::get_nrmres(x, u, nrmR, nrmX);
+  //std::cout << "Computed Xnorm= " << nrmX << std::endl;
+  //std::cout << "Computed Rnorm= " << nrmR << std::endl;
 
     double temp_rho = 0;
     for(int j = 0; j < nrhs; ++j) {

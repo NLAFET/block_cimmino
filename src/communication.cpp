@@ -297,11 +297,14 @@ void abcd::createInterconnections()
             it != their_cols.end(); ++it) {
         // Returns a map corresponding to indices of interconnected columns
         // local to current process and local to interconnected process
-        col_interconnections[it->first] =
+        if (icntl[Controls::part_orient] == ROW_PARTITIONING){
+          col_interconnections[it->first] =
             getIntersectionIndices(
                 merge_index, their_cols[it->first]
-            ).first;
-
+                ).first;
+        }else{
+          col_interconnections[it->first] = merge_index;
+        }
     }
 
     /*
@@ -310,14 +313,19 @@ void abcd::createInterconnections()
      * before in the MPI ranks)
      */
     comm_map.assign(n, 1);
-    for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); ++it) {
+    if (icntl[Controls::part_orient] == ROW_PARTITIONING){
+      for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
+          it != col_interconnections.end(); ++it) {
         // if I share data with it->first and I'm after him, let him compute!
         if(inter_comm.rank() > it->first) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
-                if(comm_map[*i] == 1) comm_map[*i] = -1;
-            }
+          for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
+            if(comm_map[*i] == 1) comm_map[*i] = -1;
+          }
         }
+      }
+    }else{
+      for (int i = 0; i < n; i++)
+        comm_map[i] = 1;
     }
 
     int vol = 0;

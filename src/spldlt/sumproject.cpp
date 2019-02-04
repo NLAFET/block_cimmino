@@ -277,14 +277,16 @@ MV_ColMat_double abcd::sumProjectSpLDLT(double            alpha,
  *  \param X: vector Ai*X second part of the RHS
  *
  */
-MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
-                                        MV_ColMat_double  &Rhs,
-                                        double            beta,
-                                        MV_ColMat_double  &X)
+MV_ColMat_double abcd::concatProjectSpLDLT( double            alpha,
+                                            MV_ColMat_double  &Rhs,
+                                            double            beta,
+                                            MV_ColMat_double  &X)
 {
 
-  std::cout << "GIVEN X" <<std::endl;
-  std::cout << X << std::endl;
+//std::cout << "[CONCAT] GIVEN X" << std::endl;
+//std::cout << X << std::endl;
+//std::cout << "[CONCAT] GIVEN RHS" << std::endl;
+//std::cout << Rhs << std::endl;
   
   // Check size of X equals size of Rhs, if both Rhs and X provided
   if (alpha!=0 && beta!=0) assert(X.dim(1) == Rhs.dim(1));
@@ -310,9 +312,9 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
     for(int k = 0; k < nb_local_parts; k++) {
       CompRow_Mat_double *part = &partitions[k];
 
-      std::cout << "Partition of dimension " << part->dim(0) << "x" 
-        << part->dim(1) << std::endl;
-      std::cout << *part << std::endl;
+///   std::cout << "Partition of dimension " << part->dim(0) << "x" 
+///     << part->dim(1) << std::endl;
+///   std::cout << *part << std::endl;
       /* Build local */
       // local alpha*Rhs
       MV_ColMat_double r(part->dim(0), s, 0); // rhs
@@ -327,9 +329,9 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
       if(beta != 0){
         // Compress X
         int x_pos = 0;
-        std::cout << "local column index" << std::endl;
-        for (auto elt = local_column_index[k].begin(); elt != local_column_index[k].end(); elt++)
-          std::cout << *elt << std::endl;
+///     std::cout << "local column index" << std::endl;
+///     for (auto elt = local_column_index[k].begin(); elt != local_column_index[k].end(); elt++)
+///       std::cout << *elt << std::endl;
 
         for(size_t i = 0; i < local_column_index[k].size(); i++) {
           int ci = local_column_index[k][i];
@@ -341,77 +343,41 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
 
         // rhs=beta*Ai*X
         r = smv(*part, compressed_x) * beta;
+///     std::cout << "r=AiXc" << std::endl;
+///     std::cout << r << std::endl;
 
         //Gather the contribution from other processors
         if(inter_comm.size() == 1) break;
 
         /* Parallel sum of deltas */
-        std::vector<double *>itcp(icntl[Controls::nbparts]); // delta rows to send
-        std::vector<double *>otcp(icntl[Controls::nbparts]); // delta rows to receive
+      //std::vector<double *>itcp(icntl[Controls::nbparts]); // delta rows to send
+      //std::vector<double *>otcp(icntl[Controls::nbparts]); // delta rows to receive
 
-        std::vector<mpi::request> reqs; // send/recv delta requests
-        std::vector<mpi::status> sts; // status of the requests
+      //std::vector<mpi::request> reqs; // send/recv delta requests
+      //std::vector<mpi::status> sts; // status of the requests
 
         double t = MPI_Wtime();
         double t1 = t;
-        double t2 = 0;
-        // For each interconnection, send/receive the corresponding rows of r_i=A_ix_i
-        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); ++it) {
-
-          if(it->second.size() == 0) continue;
-
-          // Prepare the data to be sent
-          //create it if does not exist
-          itcp[it->first] = new double[it->second.size()*s];
-          otcp[it->first] = new double[it->second.size()*s];
-
-          // add rows of delta to send for interconnections
-          double t3 = MPI_Wtime();
-          int kp = 0;
-          for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
-              itcp[it->first][kp] = r(*i,j);
-              kp++;
-            }
-          }
-          t2 += MPI_Wtime() - t3;
-          //  if(comm.rank() == 0)
-          //    LINFO << "Send data to " << it->first;
-          reqs.push_back(inter_comm.irecv(it->first, 31, otcp[it->first], kp));
-          reqs.push_back(inter_comm.isend(it->first, 31, itcp[it->first], kp));
-        }
-
-        // wait for communication to finish
-        mpi::wait_all(reqs.begin(), reqs.end());
+        double *r_ptr = r.ptr();
+        double *tmp_r = new double[n * s];
+        std::memcpy(tmp_r, r_ptr, n * s * sizeof(double));
+        mpi::all_reduce(inter_comm, tmp_r, n * s,  r_ptr, std::plus<double>());
         t1 = MPI_Wtime() - t1;
 
-        // For each of the received rows of delta, compute the sum
-        for(std::map<int, std::vector<int> >::iterator it = col_interconnections.begin();
-            it != col_interconnections.end(); ++it) {
-
-          if(it->second.size() == 0) continue;
-
-          // sum of deltas
-          int p = 0;
-          for(int j = 0; j < s; j++) {
-            for(std::vector<int>::iterator i = it->second.begin(); i != it->second.end(); ++i) {
-              r(*i, j) += otcp[it->first][p];
-              p++;
-            }
-          }
-
-        }
-
+        delete[] tmp_r;
         // free memory
-        for(size_t i = 0; i < itcp.size(); i ++) {
-          delete[] itcp[i];
-          delete[] otcp[i];
-        }
+      //for(size_t i = 0; i < itcp.size(); i ++) {
+      //  delete[] itcp[i];
+      //  delete[] otcp[i];
+      //}
+
+///     std::cout << "Computed Ax" << std::endl;
+///     std::cout << r << std::endl;
       }
 
       // If X and Rhs provided, rhs=alpha*Rhs+beta*Ai*X
       if(alpha != 0 && beta !=0){
+        std::cerr << "Not implemented in the column case" << std::endl;
         // Build beta*Rhs
         MV_ColMat_double rr(part->dim(0), s);
         for (int i = b_pos; i < b_pos + part->dim(0); ++i) //b_pos=0 normalement
@@ -452,9 +418,9 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
     inner_solver.nrhs = s;
     inner_solver.lrhs = inner_solver.n;
 
-    double *given_rhs = NULL;
-    given_rhs = (double*)malloc(s * inner_solver.n * sizeof(double));
-    memcpy(given_rhs, inner_solver.rhs, s * inner_solver.n * sizeof(double));
+//  double *given_rhs = NULL;
+//  given_rhs = (double*)malloc(s * inner_solver.n * sizeof(double));
+//  memcpy(given_rhs, inner_solver.rhs, s * inner_solver.n * sizeof(double));
   //for(int i = 0 ; i < s * inner_solver.n; i++)
   //  given_rhs[i] = inner_solver.rhs[i]
 
@@ -464,13 +430,14 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
     spldlt_solve(0, inner_solver.nrhs, inner_solver.rhs, inner_solver.n, 
       inner_solver.akeep, inner_solver.fkeep, &inner_solver.info);
 
-    spldlt_chkerr(inner_solver.n, inner_solver.ptr, inner_solver.row, 
-        inner_solver.val, inner_solver.nrhs, inner_solver.rhs, given_rhs);
-    free(given_rhs);
+//  spldlt_chkerr(inner_solver.n, inner_solver.ptr, inner_solver.row, 
+//      inner_solver.val, inner_solver.nrhs, inner_solver.rhs, given_rhs);
+//  free(given_rhs);
 
     t = MPI_Wtime() - t;
 
-    int x_pos   = 0;
+    int x_pos   = partitions[0].dim(0);
+//  std::cout << "Position of first x in returned sol " << x_pos << std::endl;
     double *dpt = Delta.ptr(); // pointer to delta
     // If only 1 partition, delta is just the compressed solution
     for(size_t i = 0; i < local_column_index[0].size(); i++) {
@@ -480,10 +447,13 @@ MV_ColMat_double abcd::concatProjectSpLDLT(double            alpha,
 //      if(comm.rank() == 0)
 //        LINFO << i << " -> " << dpt[ci + j * dlda];
       }
+      assert(x_pos + (s - 1) * inner_solver.n <= inner_solver.n * s);
       x_pos++;
     }
   }
 
+//std::cout << "Returned DELTA" << std::endl;
+//std::cout << Delta << std::endl;
 
   return Delta;
 

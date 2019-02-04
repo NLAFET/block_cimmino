@@ -303,8 +303,8 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
                       VECTOR_double &nrmR, VECTOR_double &nrmX)
 {
     //initialize local x,r and norms
-    int rn = x.dim(1);
     int rm = x.dim(0);
+    int rn = x.dim(1);
 
     nrmX = 0;
     nrmR = 0;
@@ -319,47 +319,88 @@ void abcd::get_nrmres(MV_ColMat_double &x, MV_ColMat_double &b,
     // compute local 1-norm of X
     int pos = 0;
     for(int i = 0; i < rm; i++) {
-        if(comm_map[i] == 1) {
-            for(int j = 0; j < rn; j++) {
-                nrmXV(j) += abs(x(i, j));
-            }
-            pos++;
+      if(comm_map[i] == 1) {
+        for(int j = 0; j < rn; j++) {
+          nrmXV(j) += abs(x(i, j));
         }
+        pos++;
+      }
     }
 
-    pos = 0;
-    /* Compute residual loc_r=b-A*x for A on all local partitions */
-    for(int p = 0; p < nb_local_parts; p++) {
+    if ( icntl[Controls::part_orient] == ROW_PARTITIONING) {
+      pos = 0;
+      /* Compute residual loc_r=b-A*x for A on all local partitions */
+      for(int p = 0; p < nb_local_parts; p++) {
         for(int j = 0; j < rn; j++) {
-            // Compress x
-            VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
-            int x_pos = 0;
-            for(size_t i = 0; i < local_column_index[p].size(); i++) {
-                int ci = local_column_index[p][i];
-                compressed_x(x_pos) = x(ci, j);
+          // Compress x
+          VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
+          int x_pos = 0;
+          for(size_t i = 0; i < local_column_index[p].size(); i++) {
+            int ci = local_column_index[p][i];
+            compressed_x(x_pos) = x(ci, j);
 
-                x_pos++;
-            }
-            // Compute loc_r=Ai*x
-            VECTOR_double vj =  partitions[p] * compressed_x;
-            int c = 0;
-            for(int i = pos; i < pos + partitions[p].dim(0); i++)
-                loc_r(i, j) = vj[c++];
+            x_pos++;
+          }
+          // Compute loc_r=Ai*x
+          VECTOR_double vj =  partitions[p] * compressed_x;
+          int c = 0;
+          for(int i = pos; i < pos + partitions[p].dim(0); i++)
+            loc_r(i, j) = vj[c++];
         }
 
         pos += partitions[p].dim(0);
-    }
-    // loc_r=b-Ai*x
-    loc_r  = b - loc_r;
+      }
+      // loc_r=b-Ai*x
+      loc_r  = b - loc_r;
 
-    // Compute Inf-norm of the residual
-    for(int j = 0; j < rn; j++){
+      // Compute Inf-norm of the residual
+      for(int j = 0; j < rn; j++){
         VECTOR_double loc_r_j = loc_r(j);
         nrmRV(j) = infNorm(loc_r_j);
-    }
+      }
 
-    // Reduce norms of X and R among all masters
-    mpi::all_reduce(inter_comm, nrmRV.ptr(), rn, nrmR.ptr(), mpi::maximum<double>());
+      // Reduce norms of X and R among all masters
+      mpi::all_reduce(inter_comm, nrmRV.ptr(), rn, nrmR.ptr(), mpi::maximum<double>());
+    }else{
+      pos = 0;
+      /* Compute residual loc_r=b-A*x for A on all local partitions */
+      for(int p = 0; p < nb_local_parts; p++) {
+        double *tmp = new double [partitions[p].dim(0)];
+        for(int j = 0; j < rn; j++) {
+          // Compress x
+          VECTOR_double compressed_x = VECTOR_double((partitions[p].dim(1)), 0);
+          int x_pos = 0;
+          for(size_t i = 0; i < local_column_index[p].size(); i++) {
+            int ci = local_column_index[p][i];
+            compressed_x(x_pos) = x(ci, j);
+
+            x_pos++;
+          }
+          // Compute loc_r=Ai*x
+          VECTOR_double vj =  partitions[p] * compressed_x;
+          std::memcpy(tmp, vj.ptr(), partitions[p].dim(0) * sizeof(double)); 
+        //std::cout << "A_ix = " << vj <<std::endl;
+          mpi::all_reduce(inter_comm, tmp, partitions[p].dim(0), vj.ptr(), std::plus<double>());
+
+          int c = 0;
+          for(int i = pos; i < pos + partitions[p].dim(0); i++)
+            loc_r(i, j) = vj[c++];
+        }
+        delete[] tmp;
+        pos += partitions[p].dim(0);
+      }
+    //std::cout << "Ax = " << loc_r <<std::endl;
+      // loc_r=b-Ai*x
+      loc_r  = b - loc_r;
+    //std::cout << "b - Ax = " << loc_r <<std::endl;
+
+      // Compute Inf-norm of the residual
+      for(int j = 0; j < rn; j++){
+        VECTOR_double loc_r_j = loc_r(j);
+        nrmR(j) = infNorm(loc_r_j);
+      }
+
+    }
     mpi::all_reduce(inter_comm, nrmXV.ptr(), rn, nrmX.ptr(), std::plus<double>());
 }               /* -----  end of function abcd::get_nrmres  ----- */
 
