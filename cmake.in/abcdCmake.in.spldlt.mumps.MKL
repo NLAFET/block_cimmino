@@ -1,0 +1,141 @@
+# Uncomment if you installed boost manually (should contain 
+# folders lib/ include/)
+#set(BOOST_ROOT $ENV{BOOST_ROOT})
+
+IF( NOT DEFINED USE_SPLDLT )
+  set(USE_SPLDLT 1)
+ENDIF()
+
+IF( NOT DEFINED USE_MUMPS)
+  set(USE_MUMPS 0)
+ENDIF()
+
+IF( ${USE_SPLDLT} EQUAL 1 )
+  message(STATUS "Inner solver added : SPLDLT")
+ENDIF()
+
+IF( ${USE_MUMPS} EQUAL 1 )
+  message(STATUS "Inner solver added : MUMPS")
+ENDIF()
+
+set(CMAKE_CXX_COMPILER mpic++)
+set(CMAKE_C_COMPILER mpicc)
+set(CMAKE_FC_COMPILER mpif90)
+set(CMAKE_OPENMP_FLAG -fopenmp)
+
+set(BLAS_LAPACK_SCALAPACK_DIRS $ENV{MKLROOT})
+set(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
+    mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
+    mkl_blacs_intelmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
+    )
+
+# Put here the location of mpi libraries and headers
+set(MPI_LIB_DIR $ENV{MPI_LIB})
+set(MPI_INC_DIR $ENV{MPI_INC})
+set(MPI_LIBRARIES
+    mpi
+    mpifort
+    mpicxx
+    dl
+)
+
+
+#set(INC_DIRS
+#  $ENV{MUMPS_INC}
+#  $ENV{SCOTCH_INC}
+#  $ENV{PATOH_INC}
+#  $ENV{PYTHON_INC}
+#  $ENV{METIS_INC}
+#  $ENV{SPRAL_INC}
+#  $ENV{SPLDLT_INC}
+#)
+#set(LIB_DIRS
+#  $ENV{MUMPS_LIB}
+#  $ENV{SCOTCH_LIB}
+#  $ENV{PATOH_LIB}
+#  $ENV{HWLOC_LIB}
+#  $ENV{METIS_LIB}
+#  $ENV{SPRAL_LIB}
+#  $ENV{SPLDLT_LIB}
+#)
+
+IF(${USE_SPLDLT} EQUAL 1)
+  set(SPLDLT_INC_DIRS
+    $ENV{METIS_INC}
+    $ENV{SPRAL_INC}
+    $ENV{STARPU_INC}
+    $ENV{SPLDLT_INC}
+  )
+
+  set(SPLDLT_LIB_DIRS
+    $ENV{METIS_LIB}
+    $ENV{HWLOC_LIB}
+    $ENV{SPRAL_LIB}
+    $ENV{STARPU_LIB}
+    $ENV{SPLDLT_LIB}
+  )
+
+  set(SPLDLT_LIBS
+    spldlt
+   #starpu-1.3
+    spral
+    metis
+    hwloc
+  )
+ENDIF()
+
+IF(${USE_MUMPS} EQUAL 1)
+  set(MUMPS_INC_DIRS
+    $ENV{MUMPS_INC}
+    $ENV{SCOTCH_INC}
+    $ENV{METIS_INC}
+  )
+
+  set(MUMPS_LIB_DIRS
+    $ENV{MUMPS_LIB}
+    $ENV{SCOTCH_LIB}
+    $ENV{METIS_LIB}
+    $ENV{HWLOC_LIB}
+  )
+
+  set(MUMPS_LIBS
+    esmumps
+    scotch
+    scotcherr
+    scotcherrexit
+    ptesmumps
+    ptscotch
+    ptscotcherr
+    ptscotcherrexit
+    metis
+  # parmetis
+    hwloc
+  )
+ENDIF()
+
+set(INC_DIRS
+  $ENV{PATOH_INC}
+ #$ENV{PYTHON_INC}
+  ${MUMPS_INC_DIRS}
+  ${SPLDLT_INC_DIRS}
+)
+
+set(LIB_DIRS
+  ${MUMPS_LIB_DIRS}
+  ${SPLDLT_LIB_DIRS}
+)
+
+set(LIBS
+    ${LIBS}
+    ${MUMPS_LIBS}
+  ##if you used -Dscotch in mumps, uncomment the following
+  # idem for metis/parmetis
+  # patoh
+  # parmetis
+    ${SPLDLT_LIBS}
+  #others when needed
+    pthread
+    z
+)
+
+message(STATUS "LIBS PATH : ${LIB_DIRS}")
