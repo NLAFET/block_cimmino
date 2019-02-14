@@ -1,0 +1,47 @@
+# Uncomment if you installed boost manually (should contain 
+# folders lib/ include/)
+#set(BOOST_ROOT $ENV{BOOST_ROOT})
+
+set(CMAKE_CXX_COMPILER mpic++)
+set(CMAKE_C_COMPILER mpicc)
+set(CMAKE_FC_COMPILER mpif90)
+set(CMAKE_OPENMP_FLAG -fopenmp)
+
+set(BLAS_LAPACK_SCALAPACK_DIRS $ENV{MKLROOT})
+set(BLAS_LAPACK_SCALAPACK_LIBS mkl_lapack95_lp64 mkl_blas95_lp64
+    mkl_scalapack_lp64 mkl_cdft_core mkl_gf_lp64 mkl_sequential mkl_core
+    mkl_blacs_intelmpi_lp64 mkl_lapack95_lp64 mkl_blas95_lp64
+    )
+
+# Put here the location of mpi libraries and headers
+set(MPI_LIB_DIR $ENV{MPI_LIB})
+set(MPI_INC_DIR $ENV{MPI_INC})
+set(MPI_LIBRARIES
+    mpi
+    mpifort
+    mpicxx
+    dl
+)
+
+set(INC_DIRS
+  $ENV{SCOTCH_INC}
+  $ENV{PATOH_INC}
+  $ENV{PYTHON_INC}
+  $ENV{METIS_INC}
+)
+set(LIB_DIRS
+  $ENV{SCOTCH_LIB}
+  $ENV{PATOH_LIB}
+  $ENV{HWLOC_LIB}
+  $ENV{METIS_LIB}
+)
+set(LIBS
+  # idem for metis/parmetis
+    metis
+    patoh
+  # parmetis
+  #others when needed
+    hwloc
+    pthread
+    z
+)
